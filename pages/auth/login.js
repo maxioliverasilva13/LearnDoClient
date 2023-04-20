@@ -1,24 +1,23 @@
 import React from "react";
 import Link from "next/link";
-import Alert from "components/Popups/Alert";
 
 // layout for page
 
 import Auth from "layouts/Auth.js";
 
 export default function Login() {
-  const [showAlert, setShowAlert] = React.useState(true);
+  const [showAlert, setShowAlert] = React.useState(false);
 
+  // Form params: user (puede contener email o nickname), password, remember (checkbox).
   
-  const handleSubmit = async (e, data) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = document.getElementById('email').value;
+    const user = document.getElementById('user').value;
     const remember = document.getElementById('customCheckLogin').value;
     console.log(remember);
-    if(!email){
+    if(!user){
       setShowAlert(true);
     }
-    // console.log(data)
 
     // try {
     // const res = await fetch('http://localhost:8080/api/login',
@@ -49,7 +48,7 @@ export default function Login() {
                 <i className="fas fa-bell" />
               </span>
               <span className="inline-block align-middle mr-8">
-                <b className="capitalize">Atención!</b> Email o Contraseña incorrectos.
+                <b className="capitalize">Atención!</b> Usuario o Contraseña incorrectos.
               </span>
               <button className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
                 onClick={() => setShowAlert(false)}
@@ -68,17 +67,18 @@ export default function Login() {
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                      htmlFor="email"
+                      htmlFor="user"
                     >
-                      Email
+                      Email o Nickname
                     </label>
                     <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      autoComplete="email"
+                      type="text"
+                      id="user"
+                      name="user"
+                      autoComplete="username"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Email"
+                      placeholder="Email o Nickname"
+                      required
                     />
                   </div>
 
@@ -96,6 +96,7 @@ export default function Login() {
                       autoComplete="current-password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Contraseña"
+                      required
                     />
                   </div>
                   <div>
