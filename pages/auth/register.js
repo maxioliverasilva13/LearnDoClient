@@ -1,34 +1,91 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import Alert from "components/Popups/Alert";
 
 // layout for page
 
 import Auth from "layouts/Auth.js";
 
 export default function Register() {
-  const [image, setImage] = React.useState(null);
-  // Nickname, email, telefono, nombre completo, imagen, pequeña biografia
+  const [profileImage, setProfileImage] = React.useState(null);
+  const [passMatch, setPassMatch] = React.useState(true);
+  const [nickValue, setNickValue] = useState('');
+  const [pwdState, setPwdState] = React.useState({
+    password: "",
+    confirmPassword: ""
+  });
+  
+  // Estados de Popups (Nickname)
+  const [showNickUsed, setShowNickUsed] = React.useState(false);
+  const [showLoading, setShowLoading] = React.useState(false);
+  const [showNickAvailable, setShowNickAvailable] = React.useState(false);
 
-  const onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      setImage(URL.createObjectURL(event.target.files[0]));
+  const onImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setProfileImage(URL.createObjectURL(e.target.files[0]));
     }
   }
-   
+
+  useEffect(() => {
+    validatePassword();
+  }, [pwdState]);
+
+  // "Prototipo" de cómo funcionaría el delay cuando deja de escribir el nickname para consultar la
+  // disponibilidad del mismo.
+  // useEffect(() => {
+  //   setShowLoading(true);  // muestro el popup de cargando
+  //   const timer = setTimeout(() => {
+  //     llamadaApi();
+  //     if(condicion && nickValue.length > 0){
+  //       setShowNickUsed(true);
+  //     }else{
+  //       setShowNickAvailable(true);
+  //     }
+  //   }, 800);
+
+  //   return () => clearTimeout(timer)
+  //   setShowLoading(false);
+  // }, [nickValue]);
+  
+  const handlePwChange = (e) => {
+    const { id, value } = e.target;
+    setPwdState((prevState) => ({
+      ...prevState,
+      [id]: value
+    }));
+  };
+
+  const validatePassword = () => {
+    const submitbutton = document.getElementById('submit');
+    if(pwdState.password === pwdState.confirmPassword){
+       setPassMatch(true)
+       submitbutton.classList.remove("cursor-not-allowed");
+      }else{
+      setPassMatch(false);
+      submitbutton.classList.add("cursor-not-allowed");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    validatePassword();
+  };
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">
         <div className="flex content-center justify-center h-full">
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
-              <div className="flex-auto px-4 lg:px-10 py-10">
+              <div className="flex-auto px-4 lg:px-10 py-9">
                 <div className="text-blueGray-400 text-center mb-3 font-bold">
                   <small>Registra una cuenta con tus credenciales</small>
                 </div>
-                <form>
+                <form action="/api/signup" method="POST" onSubmit={handleSubmit}>
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                      htmlFor=""
+                      htmlFor="nickname"
                     >
                       Nickname
                     </label>
@@ -36,16 +93,25 @@ export default function Register() {
                       type="text"
                       id="nickname"
                       name="nickname"
+                      value={nickValue}
+                      onChange={e => setNickValue(e.target.value)}
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Nickname"
                       required
                     />
                   </div>
+                  <Alert important={"Genial!"} text={"El nickname se encuentra disponible."} color={"bg-green-600"} icon={"fas fa-solid fa-check"} 
+                  show={showNickAvailable} setShow={setShowNickAvailable} />
+                  <Alert important={"Un momento..."} text={"Comprobando disponibilidad."} color={"bg-yellow-500"} icon={"fas fa-solid fa-spinner fa-spin"} 
+                  show={showLoading}/>
+                  <Alert important={"Uups..."} text={"Ese nickname ya se encuentra en uso."} color={"bg-red-500"} icon={"fas fa-regular fa-user"} 
+                  show={showNickUsed} setShow={setShowNickUsed} />
+
                   
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                      htmlFor="grid-password"
+                      htmlFor="email"
                     >
                       Email
                     </label>
@@ -53,6 +119,7 @@ export default function Register() {
                       type="email"
                       id="email"
                       name="email"
+                      autoComplete="username"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
                       required
@@ -70,6 +137,14 @@ export default function Register() {
                       type="tel"
                       id="telefono"
                       name="telefono"
+                      minLength="9"
+                      maxLength="15"
+                      onKeyDown={(event) => {
+                        if (!/[0-9]/.test(event.key) && event.key !== "Backspace" && event.key !== "Delete" && event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+                          event.preventDefault();
+                        }
+                      }}
+                        
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Teléfono"
                       required
@@ -94,8 +169,8 @@ export default function Register() {
                     />
                   </div>
 
-                  <div className="flex flex-wrap justify-between relative w-full mb-3">
-                    <div>
+                  <div className="flex flex-col sm:flex-row sm:flex-wrap justify-between relative w-full mb-3">
+                    <div className="sm:w-5/12">
                       <label
                         className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                         htmlFor="password"
@@ -106,102 +181,95 @@ export default function Register() {
                         type="password"
                         id="password"
                         autoComplete="new-password"
+                        value={pwdState.password}
+                        onChange={handlePwChange}
                         className="border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                         required
                       />
                     </div>
-                    <div>
+                    <div className="sm:w-5/12">
                       <label
                         className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="repeat-password"
+                        htmlFor="confirmPassword"
                       >
                         Repetir Contraseña
                       </label>
                       <input
                         type="password"
-                        id="repeat-password"
+                        id="confirmPassword"
                         name="password"
                         autoComplete="new-password"
+                        value={pwdState.confirmPassword}
+                        onChange={handlePwChange}
                         className="border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Repeat password"
+                        placeholder="Confirmar Contraseña"
                         required
                       />
                     </div>
                   </div>
-                  <div className="mx-4">
-                    <p className="text-white py-2 border-0 rounded relative mb-4 bg-red-500 text-center">Las contraseñas no coinciden.</p>
-                  </div>
-
-
+                  {
+                    !passMatch && (
+                      <div className="mx-4">
+                        <p className="text-white py-2 border-0 rounded relative mb-4 bg-red-500 text-center">Las contraseñas no coinciden.</p>
+                      </div>
+                      )
+                  }
 
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
+                    htmlFor="biografia"
                   >
                     Biografía
                   </label>
                   <textarea
                     type="text"
+                    id="biografia"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     rows="4"
                     placeholder="Breve biografía."
                   ></textarea>
                 </div>
 
-                <div className="relative w-full mb-3">
-                    <div>
+                <div className="flex flex-col sm:flex-row relative w-full mb-3 gap-y-3">
+                    <div className="w-full sm:w-4/6">
                       <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="password"
+                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2 bg-rose-600! md:bg-blue-700!"
+                        htmlFor="foto"
                       >
                         Foto perfil
                       </label>
                       <input
                         type="file"
                         id="foto"
+                        name="image"
                         onChange={onImageChange}
                         className="border-0 px-6 py-3 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Password"
                         //required
                       />
                     </div>
                     
-                    <div className="flex flex-wrap justify-center">
-                      <div className="w-6/12 sm:w-4/12 px-4">
-                        <img src={image} defaultValue='' alt="preview imagen portada" className="shadow rounded-full w-full max-w-full h-full align-middle border-none" />
+                    <div className="w-full sm:w-2/6">
+                      <div className="flex w-full justify-center">
+                        { !profileImage ? <img src="/img/profileIMG.png" alt="vista previa imagen"
+                        className="shadow rounded-full h-[120px] w-[120px] min-w-[120px] min-h-[120px] align-middle border-none" />
+                        : 
+                        <img src={profileImage} alt="vista previa imagen de perfil"
+                        className="shadow rounded-full h-[120px] w-[120px] min-w-[120px] min-h-[120px] align-middle border-none" />
+                        }
                       </div>
                     </div>
-
-                  </div>
-
-                  <div>
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input
-                        id="customCheckLogin"
-                        type="checkbox"
-                        className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
-                      />
-                      <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                        I agree with the{" "}
-                        <a
-                          href="#pablo"
-                          className="text-lightBlue-500"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          Privacy Policy
-                        </a>
-                      </span>
-                    </label>
                   </div>
 
                   <div className="text-center mt-6">
                     <button
-                      className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                      className="bg-blue-800 text-white active:bg-blue-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="submit"
+                      id="submit"
+                      disabled={!passMatch}
                     >
-                      Create Account
+                      Registrarse
                     </button>
                   </div>
                 </form>
