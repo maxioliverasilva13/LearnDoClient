@@ -304,8 +304,11 @@ export default function Register() {
                     >
                       Registrarse
                     </button>
-                    <button onClick={handleUpload}>Upload to Firebase</button>
-              <p>{percent} "% done"</p>
+                    {/* eliminar */}
+                    <button className="bg-orange-500 text-white active:bg-orange-400 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                    onClick={handleUpload}>Upload to Firebase</button>
+                    <p>{percent} "% done"</p>
+                    {/* eliminar */}
                   </div>
                 </form>
               </div>
