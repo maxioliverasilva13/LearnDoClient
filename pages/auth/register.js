@@ -6,6 +6,10 @@ import Alert from "components/Popups/Alert";
 
 import Auth from "layouts/Auth.js";
 
+// Firebase
+import storage from "firebaseConfig";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 export default function Register() {
   const [profileImage, setProfileImage] = React.useState(null);
   const [passMatch, setPassMatch] = React.useState(true);
@@ -20,7 +24,13 @@ export default function Register() {
   const [showLoading, setShowLoading] = React.useState(false);
   const [showNickAvailable, setShowNickAvailable] = React.useState(false);
 
+  // Firebase (solo para probar, luego eliminarlo).
+  const [percent, setPercent] = useState(0);
+  const [firebaseImage, setFirebaseImage] = React.useState(null);
+
+
   const onImageChange = (e) => {
+    setFirebaseImage(e.target.files[0]);
     if (e.target.files && e.target.files[0]) {
       setProfileImage(URL.createObjectURL(e.target.files[0]));
     }
@@ -69,6 +79,29 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     validatePassword();
+  };
+
+  const handleUpload = () => {
+    if (!firebaseImage) {
+      alert("Please upload an image first!");
+      return;
+    } 
+    
+    const storageRef = ref(storage, `/profileImages/${Date.now() + firebaseImage.name}`); // modificar esta línea para usar un nombre distinto para el archivo
+    const uploadTask = uploadBytesResumable(storageRef, firebaseImage);
+
+    uploadTask.on("state_changed",
+      (snapshot) => {
+        const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        setPercent(percent);
+      },
+      (err) => console.log(err), 
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          console.log(url);
+        });
+      }
+    );
   };
 
   return (
@@ -271,6 +304,8 @@ export default function Register() {
                     >
                       Registrarse
                     </button>
+                    <button onClick={handleUpload}>Upload to Firebase</button>
+              <p>{percent} "% done"</p>
                   </div>
                 </form>
               </div>
