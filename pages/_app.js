@@ -66,12 +66,10 @@ export default class MyApp extends App {
     return (
       <React.Fragment>
         <Head>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          />
-          <title>Notus NextJS by Creative Tim</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>LearnDo</title>
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+          <script src="https://cdn.tailwindcss.com"></script>
         </Head>
         <Layout>
           <Component {...pageProps} />
