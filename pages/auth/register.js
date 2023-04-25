@@ -9,6 +9,7 @@ import Auth from "layouts/Auth.js";
 // Firebase
 import storage from "firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useGetCurrentUserQuery } from "store/services/UserService";
 
 export default function Register() {
   const [profileImage, setProfileImage] = React.useState(null);
@@ -18,6 +19,8 @@ export default function Register() {
     password: "",
     confirmPassword: ""
   });
+  
+  const { data } = useGetCurrentUserQuery();
   
   // Estados de Popups (Nickname)
   const [showNickUsed, setShowNickUsed] = React.useState(false);
@@ -107,8 +110,8 @@ export default function Register() {
   return (
     <>
       <div className="container mx-auto px-4 h-full">
-        <div className="flex content-center justify-center h-full">
-          <div className="w-full lg:w-6/12 px-4">
+        <div className="py-10 m-auto content-center justify-center h-full">
+          <div className="w-full m-auto lg:w-6/12 px-4">
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
               <div className="flex-auto px-4 lg:px-10 py-9">
                 <div className="text-blueGray-400 text-center mb-3 font-bold">

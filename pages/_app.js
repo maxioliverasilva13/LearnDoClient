@@ -8,6 +8,8 @@ import PageChange from "components/PageChange/PageChange.js";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
+import { Provider } from "react-redux";
+import store from "store/store";
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
@@ -64,6 +66,7 @@ export default class MyApp extends App {
     const Layout = Component.layout || (({ children }) => <>{children}</>);
 
     return (
+      <Provider store={store}>
       <React.Fragment>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -75,6 +78,7 @@ export default class MyApp extends App {
           <Component {...pageProps} />
         </Layout>
       </React.Fragment>
+      </Provider>
     );
   }
 }
