@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Dropdown from 'react-dropdown';
 
 import Alert from "components/Popups/Alert";
 
@@ -9,25 +10,62 @@ import Auth from "layouts/Auth.js";
 // Firebase
 import storage from "firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import useForm from "hooks/useForm";
+import Button from "components/Button/Button";
+import { useLazyCheckNicknameQuery, useSignUpMutation } from "store/services/UserService";
+import VerifyAccount from "components/VerifyAccount/VerifyAccount";
+
+let timer = null;
+
+const availableTypes = {
+  availabe: "Available",
+  notAvailable: "NotAvailable",
+  checking: "Checking",
+  nothing: "nothing",
+}
+
+const rolOptions = [
+  {
+    label: "Organizador",
+    value: "organizador"
+  },
+  {
+    label: "Estudiante",
+    value: "estudiante"
+  }
+]
 
 export default function Register() {
   const [profileImage, setProfileImage] = React.useState(null);
+  const [userCreatedCorrect, setUserCreatedCorrect] = React.useState(false);
   const [passMatch, setPassMatch] = React.useState(true);
+  const [error, setError] = useState({
+    show: false,
+    message: "",
+  })
   const [nickValue, setNickValue] = useState('');
-  const [pwdState, setPwdState] = React.useState({
-    password: "",
-    confirmPassword: ""
-  });
   
-  // Estados de Popups (Nickname)
-  const [showNickUsed, setShowNickUsed] = React.useState(false);
-  const [showLoading, setShowLoading] = React.useState(false);
-  const [showNickAvailable, setShowNickAvailable] = React.useState(false);
+  // const { data } = useGetCurrentUserQuery();
+
+  const { formValues, handleChangeValue }  = useForm({
+    nickname: "",
+    email: "",
+    telefono: "",
+    nombre: "",
+    password: "",
+    biografia: "",
+    rol: "estudiante",
+    image: "",
+    confirmPassword: "",
+  })
+
+  const [nicknameAvailable, setNicknameAvailable] = useState(availableTypes.nothing)
+  const [checkNickname, { isLoading }] = useLazyCheckNicknameQuery();
+  const [createUser, { isLoading: isLoadingCreateUser }] = useSignUpMutation();
 
   // Firebase (solo para probar, luego eliminarlo).
-  const [percent, setPercent] = useState(0);
+  const [percent, setPercent] = useState(null);
   const [firebaseImage, setFirebaseImage] = React.useState(null);
-
 
   const onImageChange = (e) => {
     setFirebaseImage(e.target.files[0]);
@@ -37,53 +75,97 @@ export default function Register() {
   }
 
   useEffect(() => {
-    validatePassword();
-  }, [pwdState]);
+    if (formValues?.nickname?.length > 0) {
+      setNicknameAvailable(availableTypes.checking);
+    }
+    clearTimeout(timer)
+    timer = setTimeout(async () => {
+      if(formValues?.nickname?.length > 0){
+        const response = await checkNickname(formValues?.nickname);
+        const exists = response.data?.existe;
+        if (exists) {
+          setNicknameAvailable(availableTypes.notAvailable)
+        } else {
+          setNicknameAvailable(availableTypes.availabe)
+        }
+      }else{
+      }
+    }, 2000);
 
-  // "Prototipo" de cómo funcionaría el delay cuando deja de escribir el nickname para consultar la
-  // disponibilidad del mismo.
-  // useEffect(() => {
-  //   setShowLoading(true);  // muestro el popup de cargando
-  //   const timer = setTimeout(() => {
-  //     llamadaApi();
-  //     if(condicion && nickValue.length > 0){
-  //       setShowNickUsed(true);
-  //     }else{
-  //       setShowNickAvailable(true);
-  //     }
-  //   }, 800);
-
-  //   return () => clearTimeout(timer)
-  //   setShowLoading(false);
-  // }, [nickValue]);
+    return () => clearTimeout(timer)
+  }, [formValues.nickname]);
   
-  const handlePwChange = (e) => {
-    const { id, value } = e.target;
-    setPwdState((prevState) => ({
-      ...prevState,
-      [id]: value
-    }));
-  };
-
   const validatePassword = () => {
     const submitbutton = document.getElementById('submit');
-    if(pwdState.password === pwdState.confirmPassword){
+    if(formValues.password === formValues.confirmPassword){
        setPassMatch(true)
        submitbutton.classList.remove("cursor-not-allowed");
+       return true;
       }else{
-      setPassMatch(false);
+       setError({
+         show: true,
+         message: "Las contraseñas no coinciden"
+        })
+       setPassMatch(false);
       submitbutton.classList.add("cursor-not-allowed");
+      return false;
     }
   };
+  
+  const handleFinishUserRegister = async (imageUrl) => {
+    handleChangeValue("image", imageUrl);
+    const formValuesToSend = {
+      ...formValues,
+      imagen: imageUrl,
+      rol: formValues?.rol || "estudiante"
+    }
+
+    const response = await createUser(formValuesToSend);
+    if (response?.data?.user) {
+      setUserCreatedCorrect(true);
+      setError({
+        ...error,
+        show: false,
+      })
+    } else { 
+      console.log(response)
+      if (response?.error?.data?.ok === false) {
+        setError({
+          show: true,
+          message: "Error, el email ya existe o los datos son invalidos"
+        })
+      }
+    }
+    console.log(response.data)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    validatePassword();
+    if (!validatePassword()) {
+      return;
+    }
+
+    if (nicknameAvailable === availableTypes.availabe && formValues.password === formValues.confirmPassword && formValues.nickname && formValues.nombre && formValues.telefono && formValues.email && formValues.biografia) {
+      setError({
+        ...error,
+        show: false,
+      })
+      handleUpload();
+    } else { 
+      
+      setError({
+        message: "Verifique todos los campos",
+        show: true,
+      })
+    }
   };
 
   const handleUpload = () => {
     if (!firebaseImage) {
-      alert("Please upload an image first!");
+      setError({
+        message: "Por favor, agregue una imagen",
+        show: true,
+      })
       return;
     } 
     
@@ -95,10 +177,21 @@ export default function Register() {
         const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
         setPercent(percent);
       },
-      (err) => console.log(err), 
+      (err) => {
+        setError({
+          show: true,
+          message: "No se pudo subir la imagen correctamente"
+        })
+        setPercent(null)
+      }, 
       () => {
+        setError({
+          ...error,
+          show: false,
+        })
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
+          handleFinishUserRegister(url);
+        setPercent(null)
         });
       }
     );
@@ -107,12 +200,24 @@ export default function Register() {
   return (
     <>
       <div className="container mx-auto px-4 h-full">
-        <div className="flex content-center justify-center h-full">
-          <div className="w-full lg:w-6/12 px-4">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
+        <div className="py-10 transition-all m-auto content-center justify-center h-full">
+          <div className="w-full transition-all m-auto lg:w-6/12 px-4">
+            <div className="relative transition-all flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
+              
+
+              {userCreatedCorrect ? 
+                <VerifyAccount email={formValues.email} />
+              :
+              
               <div className="flex-auto px-4 lg:px-10 py-9">
                 <div className="text-blueGray-400 text-center mb-3 font-bold">
                   <small>Registra una cuenta con tus credenciales</small>
+                </div>
+                <div className="my-2">
+                  {
+                    error.show && 
+                    <Alert show={true} important={"Uups..."} text={error.message} color={"bg-red-500"} icon={"fas fa-regular fa-user"} />
+                  }
                 </div>
                 <form action="/api/signup" method="POST" onSubmit={handleSubmit}>
                   <div className="relative w-full mb-3">
@@ -126,19 +231,28 @@ export default function Register() {
                       type="text"
                       id="nickname"
                       name="nickname"
-                      value={nickValue}
-                      onChange={e => setNickValue(e.target.value)}
+                      value={formValues.nickname}
+                      onChange={e => handleChangeValue("nickname", e.target.value)}
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Nickname"
                       required
                     />
                   </div>
-                  <Alert important={"Genial!"} text={"El nickname se encuentra disponible."} color={"bg-green-600"} icon={"fas fa-solid fa-check"} 
-                  show={showNickAvailable} setShow={setShowNickAvailable} />
-                  <Alert important={"Un momento..."} text={"Comprobando disponibilidad."} color={"bg-yellow-500"} icon={"fas fa-solid fa-spinner fa-spin"} 
-                  show={showLoading}/>
-                  <Alert important={"Uups..."} text={"Ese nickname ya se encuentra en uso."} color={"bg-red-500"} icon={"fas fa-regular fa-user"} 
-                  show={showNickUsed} setShow={setShowNickUsed} />
+                  {
+                    nicknameAvailable === availableTypes.availabe && 
+                    <Alert important={"Genial!"} text={"El nickname se encuentra disponible."} color={"bg-green-600"} icon={"fas fa-solid fa-check"} 
+                  show />
+                  }
+                  {
+                    nicknameAvailable === availableTypes.checking &&
+                    <Alert important={"Un momento..."} text={"Comprobando disponibilidad."} color={"bg-yellow-500"} icon={"fas fa-solid fa-spinner fa-spin"} 
+                  show/>
+                  }
+                  {
+                    nicknameAvailable === availableTypes.notAvailable && 
+                    <Alert important={"Uups..."} text={"Ese nickname ya se encuentra en uso."} color={"bg-red-500"} icon={"fas fa-regular fa-user"} 
+                    show />
+                  }
 
                   
                   <div className="relative w-full mb-3">
@@ -156,6 +270,8 @@ export default function Register() {
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
                       required
+                      value={formValues.email}
+                      onChange={e => handleChangeValue("email", e.target.value)}
                     />
                   </div>
 
@@ -177,7 +293,8 @@ export default function Register() {
                           event.preventDefault();
                         }
                       }}
-                        
+                      value={formValues.telefono}
+                      onChange={e => handleChangeValue("telefono", e.target.value)}
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Teléfono"
                       required
@@ -199,11 +316,13 @@ export default function Register() {
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Nombre completo"
                       required
+                      value={formValues.nombre}
+                      onChange={e => handleChangeValue("nombre", e.target.value)}
                     />
                   </div>
 
-                  <div className="flex flex-col sm:flex-row sm:flex-wrap justify-between relative w-full mb-3">
-                    <div className="sm:w-5/12">
+                  <div className="flex flex-col sm:flex-row justify-between relative w-full gap-4 mb-3">
+                    <div className="flex-grow w-full">
                       <label
                         className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                         htmlFor="password"
@@ -214,14 +333,14 @@ export default function Register() {
                         type="password"
                         id="password"
                         autoComplete="new-password"
-                        value={pwdState.password}
-                        onChange={handlePwChange}
-                        className="border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-0 px-4 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Contraseña"
                         required
+                        value={formValues.password}
+                        onChange={e => handleChangeValue("password", e.target.value)}
                       />
                     </div>
-                    <div className="sm:w-5/12">
+                    <div className="flex-grow w-full">
                       <label
                         className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                         htmlFor="confirmPassword"
@@ -233,22 +352,14 @@ export default function Register() {
                         id="confirmPassword"
                         name="password"
                         autoComplete="new-password"
-                        value={pwdState.confirmPassword}
-                        onChange={handlePwChange}
-                        className="border-0 px-6 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        value={formValues.confirmPassword}
+                        onChange={e => handleChangeValue("confirmPassword", e.target.value)}
+                        className="border-0 px-4 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Confirmar Contraseña"
                         required
                       />
                     </div>
                   </div>
-                  {
-                    !passMatch && (
-                      <div className="mx-4">
-                        <p className="text-white py-2 border-0 rounded relative mb-4 bg-red-500 text-center">Las contraseñas no coinciden.</p>
-                      </div>
-                      )
-                  }
-
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -262,8 +373,13 @@ export default function Register() {
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     rows="4"
                     placeholder="Breve biografía."
+                    value={formValues.biografia}
+                    onChange={e => handleChangeValue("biografia", e.target.value)}
                   ></textarea>
                 </div>
+                <div className="relative w-full mb-3">
+                <Dropdown options={rolOptions} className="rounded-md!" onChange={(val) => handleChangeValue("rol", val?.value)} value={"estudiante"} placeholder="Select an option" />
+                  </div>
 
                 <div className="flex flex-col sm:flex-row relative w-full mb-3 gap-y-3">
                     <div className="w-full sm:w-4/6">
@@ -296,22 +412,18 @@ export default function Register() {
                   </div>
 
                   <div className="text-center mt-6">
-                    <button
-                      className="bg-blue-800 text-white active:bg-blue-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                    <Button
+                      isLoading={(percent !== 100 && percent != null) || isLoading || isLoadingCreateUser }
+                      text="Registrarse"
                       type="submit"
-                      id="submit"
-                      disabled={!passMatch}
-                    >
-                      Registrarse
-                    </button>
+                    />
                     {/* eliminar */}
-                    <button className="bg-orange-500 text-white active:bg-orange-400 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                    onClick={handleUpload}>Upload to Firebase</button>
-                    <p>{percent} "% done"</p>
+{/*                     <p>{percent} "% done"</p> */}
                     {/* eliminar */}
                   </div>
                 </form>
               </div>
+              }
             </div>
           </div>
         </div>
