@@ -20,9 +20,42 @@ export const UserService = createApi({
         return response;
       },
     }),
+    signIn: builder.mutation({
+      query: (data) => ({
+        url: apiRoutes.signIn(),
+        method: "POST",
+        body: data
+      }),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    signUp: builder.mutation({
+      query: (data) => ({
+        url: apiRoutes.signUp(),
+        method: "POST",
+        body: data
+      }),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    checkNickname: builder.query({
+      query: (nickname) => `${apiRoutes.checkNickname()}?nickname=${nickname}`,
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
 export const {
   useGetCurrentUserQuery,
+  useLazyGetCurrentUserQuery,
+  useSignInMutation,
+  useLazyCheckNicknameQuery,
+  useSignUpMutation,
 } = UserService;

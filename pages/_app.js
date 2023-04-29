@@ -5,28 +5,31 @@ import Head from "next/head";
 import Router from "next/router";
 
 import PageChange from "components/PageChange/PageChange.js";
-
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
 import { Provider } from "react-redux";
 import store from "store/store";
+import CheckTokenWrapper from "components/CheckTokenWrapper/CheckTokenWrapper";
+import LoadingWrapper from "components/LoadingWrapper/LoadingWrapper";
+import "../styles/index.css"
+import 'react-dropdown/style.css';
 
-Router.events.on("routeChangeStart", (url) => {
-  console.log(`Loading: ${url}`);
-  document.body.classList.add("body-page-transition");
-  ReactDOM.render(
-    <PageChange path={url} />,
-    document.getElementById("page-transition")
-  );
-});
-Router.events.on("routeChangeComplete", () => {
-  ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
-  document.body.classList.remove("body-page-transition");
-});
-Router.events.on("routeChangeError", () => {
-  ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
-  document.body.classList.remove("body-page-transition");
-});
+// Router.events.on("routeChangeStart", (url) => {
+//   console.log(`Loading: ${url}`);
+//   document.body.classList.add("body-page-transition");
+//   ReactDOM.render(
+//     <PageChange path={url} />,
+//     document.getElementById("page-transition")
+//   );
+// });
+// Router.events.on("routeChangeComplete", () => {
+//   ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
+//   document.body.classList.remove("body-page-transition");
+// });
+// Router.events.on("routeChangeError", () => {
+//   ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
+//   document.body.classList.remove("body-page-transition");
+// });
 
 export default class MyApp extends App {
   componentDidMount() {
@@ -67,17 +70,24 @@ export default class MyApp extends App {
 
     return (
       <Provider store={store}>
-      <React.Fragment>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>LearnDo</title>
-          <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-          <script src="https://cdn.tailwindcss.com"></script>
-        </Head>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </React.Fragment>
+        <React.Fragment>
+          <Head>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1.0"
+            />
+            <title>LearnDo</title>
+            <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+            <script src="https://cdn.tailwindcss.com"></script>
+          </Head>
+          <CheckTokenWrapper>
+            <LoadingWrapper>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </LoadingWrapper>
+          </CheckTokenWrapper>
+        </React.Fragment>
       </Provider>
     );
   }

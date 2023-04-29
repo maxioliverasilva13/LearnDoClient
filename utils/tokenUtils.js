@@ -6,3 +6,7 @@ export const storageToken = (token) => {
 }
 
 export const getToken = () => localStorage.getItem(DEFAULT_TOKEN_KEY_STORAGE);
+
+export const clearToken = () => {
+    localStorage.clear(DEFAULT_TOKEN_KEY_STORAGE);
+}

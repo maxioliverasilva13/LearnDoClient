@@ -1,7 +1,8 @@
 const apiRoutes = {
-    signIn: () => "/api/auth/signIn",
+    signIn: () => "/api/auth/login",
     activate: () => "/api/auth/activate",
-    signUp: () => "/api/auth/signUp",
+    signUp: () => "/api/auth/signup",
+    checkNickname: () => "/api/auth/checkNickname",
     me: () => "/api/auth/me",
 }
 
