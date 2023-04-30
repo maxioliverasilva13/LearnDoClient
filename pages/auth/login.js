@@ -48,28 +48,31 @@ export default function Login() {
     try {
       setChecking(true);
       const response = await handleSignIn(values);
-      if (response?.error) {
+      if (response?.error || response?.error?.data) {
         setChecking(false);
         setShowAlert(true);
       } else {
-        setShowAlert(false);
-        const token = response?.data?.access_token;
-        const userInfo = response?.data?.user;
-        storageToken(token);
-        handleSetUserInfo(userInfo);
-        window.location.href = appRoutes.home();
+        if (response?.data?.access_token) {
+          setShowAlert(false);
+          const token = response?.data?.access_token;
+          const userInfo = response?.data?.user;
+          storageToken(token);
+          handleSetUserInfo(userInfo);
+          window.location.href = appRoutes.home();
+        } else {
+          setChecking(false);
+          setShowAlert(true);
+        }
+       
       }
     } catch (error) {
       setChecking(false)
       setShowAlert(true);
     }
   }
-  if (checking) {
-    return <Spinner />
-  }
-
   return (
     <>
+      {checking &&   <Spinner />}
       <div className="container mx-auto px-4 h-full">
         <div className="flex flex-col content-center items-center justify-center h-full">
           {showAlert ? (

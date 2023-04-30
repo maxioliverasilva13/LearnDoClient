@@ -31,6 +31,17 @@ export const UserService = createApi({
         return response;
       },
     }),
+    activate: builder.mutation({
+      query: (data) => ({
+        url: apiRoutes.activate(),
+        method: "PUT",
+        body: data
+      }),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
     signUp: builder.mutation({
       query: (data) => ({
         url: apiRoutes.signUp(),
@@ -57,5 +68,6 @@ export const {
   useLazyGetCurrentUserQuery,
   useSignInMutation,
   useLazyCheckNicknameQuery,
+  useActivateMutation,
   useSignUpMutation,
 } = UserService;
