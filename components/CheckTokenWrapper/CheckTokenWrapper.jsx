@@ -4,15 +4,16 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import appRoutes from "routes/appRoutes";
 import { useGetCurrentUserQuery, useLazyGetCurrentUserQuery } from "store/services/UserService";
+import { getToken } from "utils/tokenUtils";
 
 
 const listOfPublicPath = [
     appRoutes.login(),
     appRoutes.register(),
+    appRoutes.activate(),
 ]
 
 const CheckTokenWrapper = ({ children }) => {
-
     const { userInfo , handleSetUserInfo, handleSetLoading } = useGlobalSlice();
     const { pathname, push } = useRouter();
 
@@ -35,7 +36,10 @@ const CheckTokenWrapper = ({ children }) => {
     }
 
     useEffect(() => {
-        handleCheckUserInfo();
+        const token = getToken();
+        if (token) {
+            handleCheckUserInfo();
+        }
     }, [pathname, userInfo])
 
     if (isLoading) {
