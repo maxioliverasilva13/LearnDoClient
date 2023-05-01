@@ -64,10 +64,10 @@ export const UserService = createApi({
 });
 
 export const {
-  useGetCurrentUserQuery,
   useLazyGetCurrentUserQuery,
   useSignInMutation,
   useLazyCheckNicknameQuery,
   useActivateMutation,
   useSignUpMutation,
+  useGetCurrentUserQuery,
 } = UserService;

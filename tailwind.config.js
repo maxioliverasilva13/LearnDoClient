@@ -2,19 +2,20 @@ const plugin = require("tailwindcss/plugin");
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  important: false,
-  purge: {
-    enabled: true,
-    content: ["./**/*.html", "./*.html", "./**/*.js", "./*.js"],
-    options: {
-      safelist: [],
-    },
-  },
+  important: true,
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./**/*.html", "./*.html", "./**/*.js", "./*.js", "./**/*.jsx", "./*.jsx"
+  ],
   theme: {
     colors: {
       ...colors,
     },
     extend: {
+      colors: {
+        red2: "red"
+      },
       minHeight: {
         "screen-75": "75vh",
       },
@@ -88,7 +89,7 @@ module.exports = {
     "disabled",
   ],
   plugins: [
-    require("@tailwindcss/forms"),
+    // require("@tailwindcss/forms"),
     plugin(function ({ addComponents, theme }) {
       const screens = theme("screens", {});
       addComponents([

@@ -1,10 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
-import Router from "next/router";
+// import Router from "next/router";
 
-import PageChange from "components/PageChange/PageChange.js";
+// import PageChange from "components/PageChange/PageChange.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
 import { Provider } from "react-redux";
@@ -12,6 +12,7 @@ import store from "store/store";
 import CheckTokenWrapper from "components/CheckTokenWrapper/CheckTokenWrapper";
 import LoadingWrapper from "components/LoadingWrapper/LoadingWrapper";
 import "../styles/index.css"
+import "../styles/tailwind.css"
 import 'react-dropdown/style.css';
 
 // Router.events.on("routeChangeStart", (url) => {
