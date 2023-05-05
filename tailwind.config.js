@@ -9,6 +9,9 @@ module.exports = {
     "./**/*.html", "./*.html", "./**/*.js", "./*.js", "./**/*.jsx", "./*.jsx"
   ],
   theme: {
+    fontFamily: {
+      'Gotham': ['Gotham', 'sans-serif'],
+    },
     colors: {
       ...colors,
     },
