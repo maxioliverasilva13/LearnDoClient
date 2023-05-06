@@ -15,6 +15,10 @@ module.exports = {
       ...colors,
     },
     extend: {
+      fontFamily: {
+        'gotham': ['Gotham', 'sans-serif']
+      },
+
       minHeight: {
         "screen-75": "75vh",
       },
@@ -28,6 +32,7 @@ module.exports = {
         2: 2,
         3: 3,
       },
+      
       inset: {
         "-100": "-100%",
         "-225-px": "-225px",
