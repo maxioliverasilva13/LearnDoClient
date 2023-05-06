@@ -7,7 +7,6 @@ import CourseGroup from "components/CourseGroup/CourseGroup";
 // layout for page
 import Image from 'next/image';
 import welcome from 'public/img/welcome.svg'
-import Admin from "layouts/Admin.js";
 
 const recomendados = [
   {
@@ -82,8 +81,8 @@ const recomendados = [
 export default function Dashboard() {
   return (
     <>
-      <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start"> {/* MODIFICAR ESTILO */}
-        <div className="w-full h-auto flex flex-col items-start justify-center pt-28 gap-y-28"> {/* MODIFICAR ESTILO */}
+      <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start">
+        <div className="w-full h-auto flex flex-col items-start justify-center pt-28 gap-y-28">
 
 
 
