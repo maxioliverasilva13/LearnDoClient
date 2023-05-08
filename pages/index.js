@@ -78,7 +78,7 @@ const recomendados = [
   },
 ];
 
-export default function Dashboard() {
+export default function LandingPage() {
   return (
     <>
       <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start">

@@ -3,6 +3,7 @@ const appRoutes = {
     register: () => "/auth/register",
     activate: () => "/activate/[token]",
     home: () => "/home",
+    seminarios: () => "/seminarios",
 }
 
 export default appRoutes;
