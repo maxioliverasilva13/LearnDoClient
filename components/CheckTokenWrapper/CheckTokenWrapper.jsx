@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import appRoutes from "routes/appRoutes";
 import { useGetCurrentUserQuery, useLazyGetCurrentUserQuery } from "store/services/UserService";
+import { initPusher } from "utils/pusher";
 import { getToken } from "utils/tokenUtils";
 
 
@@ -18,7 +19,13 @@ const CheckTokenWrapper = ({ children }) => {
     const { pathname, push } = useRouter();
 
     const isPublicPath = listOfPublicPath.includes(pathname);
-    
+
+    useEffect(() => {
+        if (userInfo?.id) {
+            initPusher();
+        }
+    }, [userInfo])
+
     const [loadCurrentUser, { isLoading, }] = useLazyGetCurrentUserQuery();
 
     const handleCheckUserInfo = async () => {
@@ -39,6 +46,10 @@ const CheckTokenWrapper = ({ children }) => {
         const token = getToken();
         if (token) {
             handleCheckUserInfo();
+        } else {
+            if (!isPublicPath) {
+                push(appRoutes.login())
+            }
         }
     }, [pathname, userInfo])
 
