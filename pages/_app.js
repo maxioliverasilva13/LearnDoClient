@@ -79,6 +79,7 @@ export default class MyApp extends App {
             />
             <title>LearnDo</title>
             <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+            <link href="https://fonts.cdnfonts.com/css/gotham" rel="stylesheet"/>
             <script src="https://cdn.tailwindcss.com"></script>
           </Head>
           <CheckTokenWrapper>
