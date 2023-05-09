@@ -1,40 +1,58 @@
 import React from "react";
 
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
+import { BiMessageAlt } from 'react-icons/bi';
+import { FaBeer } from 'react-icons/fa';
 
 export default function Navbar() {
   return (
     <>
       {/* Navbar */}
-      <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
-        <div className="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
-          {/* Brand */}
-          <a
-            className="text-white text-sm uppercase hidden lg:inline-block font-semibold"
-            href="#pablo"
-            onClick={(e) => e.preventDefault()}
-          >
-            Dashboard
-          </a>
-          {/* Form */}
-          <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
-            <div className="relative flex w-full flex-wrap items-stretch">
-              <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
-                <i className="fas fa-search"></i>
-              </span>
-              <input
-                type="text"
-                placeholder="Search here..."
-                className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
-              />
-            </div>
-          </form>
-          {/* User */}
-          <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-            <UserDropdown />
-          </ul>
+      <header className="flex items-center text-white h-16" style={{ backgroundColor: '#31174A' }}>
+        {/* Logo */}
+        <div className="px-4">
+          <span className="text-lg font-bold">learndo</span>
         </div>
-      </nav>
+        {/* Navigation */}
+        <nav className="flex-grow">
+          <ul className="flex justify-center">
+            <li className="px-4">
+              <a href="#" className="hover:text-gray-400">Inicio</a>
+            </li>
+            <li className="px-4">
+              <a href="#" className="hover:text-gray-400">Cursos</a>
+            </li>
+            <li className="px-4">
+              <a href="#" className="hover:text-gray-400">Seminarios</a>
+            </li>
+            <li className="px-4">
+              <a href="#" className="hover:text-gray-400">Mis cursos</a>
+            </li>
+          </ul>
+        </nav>
+        {/* Search bar and user avatar */}
+        <div className="flex items-center px-4">
+          <div className="relative">
+            <input type="text" placeholder="Buscar" className="text-white px-4 py-2 w-64 border border-white rounded-l-full rounded-r-full h-8 w-[200px]" style={{ backgroundColor: '#31174A' }}>
+            </input>
+          </div>
+          <div>
+            <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out ml-4">
+
+            </button>
+          </div>
+          <div className="ml-4 relative">
+            <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out">
+              <BiMessageAlt size={30} />
+            </button>
+          </div>
+          <div className="ml-4 relative">
+            <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out">
+              <img className="h-8 w-8 rounded-full object-cover" src="https://via.placeholder.com/50" alt="User avatar"></img>
+            </button>
+          </div>
+        </div>
+      </header>
       {/* End Navbar */}
     </>
   );

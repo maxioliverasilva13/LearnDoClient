@@ -2,15 +2,16 @@ const plugin = require("tailwindcss/plugin");
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  important: false,
-  purge: {
-    enabled: true,
-    content: ["./**/*.html", "./*.html", "./**/*.js", "./*.js"],
-    options: {
-      safelist: [],
-    },
-  },
+  important: true,
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./**/*.html", "./*.html", "./**/*.js", "./*.js", "./**/*.jsx", "./*.jsx"
+  ],
   theme: {
+    fontFamily: {
+      'Gotham': ['Gotham', 'sans-serif'],
+    },
     colors: {
       ...colors,
     },

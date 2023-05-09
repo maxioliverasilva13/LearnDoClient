@@ -2,6 +2,7 @@ import Link from "next/link";
 import appRoutes from "routes/appRoutes";
 
 const VerifyAccount = ({ email }) => {
+    
   return (
     <div className="w-full px-6 py-4 flex flex-col items-center justify-center gap-y-4">
       <h1 className="font-bold text-gray-900 text-center">

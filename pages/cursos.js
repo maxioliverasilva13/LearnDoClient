@@ -9,7 +9,7 @@ import FilterEventoModal from "components/Popups/FilterEventoModal";
 import Admin from "layouts/Admin.js";
 
 
-export default function Cursos() {
+export default function Cursos() {  
 
   const [cursosList, setCursosList] = useState([]);   
   const [hasMore, setHasMore] = useState(true);
@@ -57,7 +57,12 @@ export default function Cursos() {
     });
   }
 
- 
+
+  useEffect(() => {
+    getCursos(page);   
+  }, []); 
+
+
   useEffect(()=>{
     if(filterData){
       setCursosList([]);  
@@ -70,7 +75,9 @@ export default function Cursos() {
   
   useEffect(()=>{
     getCursos(); 
+
   }, [page,busqueda])
+
 
 
   function loadMoreItems() {
@@ -113,7 +120,11 @@ export default function Cursos() {
                         className="bg-transparent border-white text-white outline-none	rounded-full no-underline	hover:border-white	border-3	"
                         placeholder="buscar"
                         onChange={handleChangeSearch}
+
                         value={busqueda}                      />
+
+                     
+
 
                       <div className={ "flex items-center gap-5" } > 
                         <div className={ "flex items-center" } onClick={openModalFilters}> 

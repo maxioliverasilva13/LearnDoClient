@@ -1,9 +1,8 @@
-@tailwind base;
+@import "tailwindcss/base";
 
-@tailwind components;
+@import "tailwindcss/components";
 
-@tailwind utilities;
-
+@import "tailwindcss/utilities";
 
 .spinner {
     animation-name: spin;
@@ -38,6 +37,112 @@
   }
 
 
+* { 
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  width: 100%!important;
+  height: 100vh!important;
+  background: linear-gradient(180deg, #780EFF 0%, #5B23A2 26.04%, #000000 100%)!important;
+}
+
+#__next { 
+  width: 100%!important;
+  height: 100%!important;
+}
+  
+.cursoBGOverlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%)!important;
+}
+
+.cursoOverlay {
+  transition-property: all;
+  transition-duration: 400ms;
+  background: transparent;
+}
+
+.cursoOverlay:hover {
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%)!important;
+}
+
+.swiper { 
+  overflow: visible!important;
+}
+
+.swiper-button-next { 
+  right: -35px!important;
+  font-weight: 800!important;
+  color: white!important;
+}
+
+.swiper-button-prev { 
+  left: -35px!important;
+  font-weight: 800!important;
+  color: white!important;
+}
+
+.cursosGridTemplate {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 220px))
+}
+
+@keyframes appearsMessageYouAnimation {
+  from {
+    margin-left: 200px;
+  }
+  to {
+    margin-right: 0px;
+  }
+}
+
+
+@keyframes messageAppearsMe {
+  from {
+    margin-left: -200px;
+  }
+  to {
+    margin-left: 0px;
+  }
+}
+
+
+.messageAppearsAnimationMe {
+  animation: messageAppearsMe .5s ease;
+}
+
+
+.appearsMessageYou {
+  animation: appearsMessageYouAnimation .5s ease!important;
+}
+
+
+/* width */
+.chat ::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.chat ::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.chat ::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+.chat ::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  width: 10px;
+}
+
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -55,4 +160,6 @@
     transform: translate(-50%, -50%);
     z-index: 1000;
     /* Resto de las reglas de estilo del contenedor del modal */
+
+
   }
