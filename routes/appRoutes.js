@@ -4,6 +4,8 @@ const appRoutes = {
     activate: () => "/activate/[token]",
     home: () => "/home",
     seminarios: () => "/seminarios",
+    cursos: () => "/cursos",
+    landing: () => "/",
 }
 
 export default appRoutes;
