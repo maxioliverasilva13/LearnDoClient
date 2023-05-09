@@ -57,11 +57,7 @@ export default function Cursos() {
     });
   }
 
-  useEffect(() => {
-    getCursos(page);   
-  }, []); 
-
-
+ 
   useEffect(()=>{
     if(filterData){
       setCursosList([]);  
@@ -74,7 +70,7 @@ export default function Cursos() {
   
   useEffect(()=>{
     getCursos(); 
-  }, [page])
+  }, [page,busqueda])
 
 
   function loadMoreItems() {
@@ -93,9 +89,9 @@ export default function Cursos() {
 
  function handleChangeSearch(event){
       setCursosList([]);   
+      setPage(1);
       const text = event.target.value;
       setBusqueda(text);
-      getCursos();
  }
 
  
@@ -117,7 +113,7 @@ export default function Cursos() {
                         className="bg-transparent border-white text-white outline-none	rounded-full no-underline	hover:border-white	border-3	"
                         placeholder="buscar"
                         onChange={handleChangeSearch}
-                      />
+                        value={busqueda}                      />
 
                       <div className={ "flex items-center gap-5" } > 
                         <div className={ "flex items-center" } onClick={openModalFilters}> 
