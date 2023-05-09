@@ -17,16 +17,16 @@ export default function Navbar() {
         <nav className="flex-grow">
           <ul className="flex justify-center">
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Inicio</a>
+              <a href="#" className="hover:text-gray-400">Dashboard</a>
             </li>
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Cursos</a>
+              <a href="#" className="hover:text-gray-400">Mis Cursos</a>
             </li>
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Seminarios</a>
+              <a href="#" className="hover:text-gray-400">Mis Seminarios</a>
             </li>
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Mis cursos</a>
+              <a href="#" className="hover:text-gray-400">Agregar</a>
             </li>
           </ul>
         </nav>
@@ -35,9 +35,6 @@ export default function Navbar() {
           <div className="relative">
             <input type="text" placeholder="Buscar" className="text-white px-4 py-2 w-64 border border-white rounded-l-full rounded-r-full h-8 w-[200px]" style={{ backgroundColor: '#31174A' }}>
             </input>
-          </div>
-          <div className="ml-4 relative">
-            <MdOutlineStars size={30} />
           </div>
           <div className="ml-4 relative">
             <BiMessageAlt size={30} />
