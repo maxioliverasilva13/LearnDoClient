@@ -1,18 +1,20 @@
 import clsx from "clsx";
 import useChats from "hooks/useChats";
 import useForm from "hooks/useForm";
+import useGlobalSlice from "hooks/useGlobalSlice";
 import moment from "moment";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import { AiOutlineSend } from "react-icons/ai";
+import { useCreateMessageMutation } from "store/services/MessageService";
 
-const MessageItem = ({ isFromMe = false, message, date }) => {
-    const hour = moment(message?.date).format("hh:mm");
+const MessageItem = ({ isFromMe = false, contenido, created_at }) => {
+    const hour = moment(created_at).format("hh:mm");
   return (
     <div
       className={clsx(
         "w-full h-auto flex items-center",
-        isFromMe ? "justify-end messageAppearsAnimationMe" : "justify-start appearsMessageYou"
+        isFromMe ? "justify-end appearsMessageYou" : "justify-start messageAppearsAnimationMe"
       )}
     >
       <div
@@ -21,7 +23,7 @@ const MessageItem = ({ isFromMe = false, message, date }) => {
           isFromMe ? "bg-[#EAEAEA] text-black" : "bg-[#780EFF] text-white"
         )}
       >
-        <span>{message}</span>
+        <span>{contenido}</span>
         <span className="text-[12px] mt-2">{hour}</span>
       </div>
     </div>
@@ -29,24 +31,44 @@ const MessageItem = ({ isFromMe = false, message, date }) => {
 };
 
 const Chat = () => {
-  const { chats, activeChatInfo, activeChatId, handleAddMessage } = useChats();
+  const { userInfo } = useGlobalSlice();
+  const { activeChatInfo, activeChatId, handleAddMessage } = useChats();
   const { formValues, handleChangeValue } = useForm({
     message: "",
   });
+  const [addMessage, { isLoading }] = useCreateMessageMutation();
+  const refChat = useRef(null);
 
-  const handleMessageNew = () => {
+  const handleMessageNew = async (uid) => {
     const newMessage = {
       message: formValues?.message,
-      isFromMe: true,
-      date: new Date().toString(),
+      user_from_id: userInfo?.id,
+      user_to_id: activeChatInfo?.userId,
     };
 
-    handleAddMessage({
-      message: newMessage,
-      chatId: activeChatId,
-    });
-    handleChangeValue("message", "")
+    const response = await addMessage(newMessage);
+    if (response?.data?.ok) {
+      handleAddMessage({
+        message: response?.data?.message,
+        chatId: activeChatId,
+      });
+      handleChangeValue("message", "")
+    }
+
   };
+
+  useEffect(() => {
+    if (refChat?.current) {
+      refChat.current?.scrollTo({ top: refChat?.current?.scrollHeight + 6000, });
+    }
+  }, [activeChatInfo?.messages ])
+
+  // useEffect(() => {
+  //   if (refChat?.current) {
+  //     const element = document.getElementById("ScrollChats");
+  //     element.scrollTop = element?.scrollHeight;
+  //   }
+  // }, [refChat])
 
   const renderMessages = () => {
     if ((activeChatInfo?.messages?.length || 0) <= 0) {
@@ -59,17 +81,17 @@ const Chat = () => {
       );
     }
     return (
-      <div className="w-full gap-y-8 h-full flex-grow flex flex-col max-h-full overflow-auto">
+      <div id="ScrollChats" ref={refChat} className="w-full px-4 py-4 chat gap-y-8 h-full flex-grow flex flex-col max-h-full overflow-auto">
         {activeChatInfo?.messages?.map((message) => {
-          return <MessageItem {...message} />;
+          return <MessageItem isFromMe={userInfo?.id === message?.user_from_id} {...message} />;
         })}
       </div>
     );
   };
 
   return (
-    <div className="w-full h-full transition-all flex flex-col items-start justify-start flex-grow max-h-full overflow-auto p-4">
-      <div className="w-full h-auto transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5">
+    <div className="w-full h-full transition-all flex flex-col items-start justify-start flex-grow max-h-full overflow-auto">
+      <div className="w-full shadow-md h-auto transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5">
         <div className="w-[90px] transition-all h-[90px] relative max-w-[90px] max-h-[90px]">
           <Image
             src={activeChatInfo?.userImage}
@@ -84,12 +106,12 @@ const Chat = () => {
         </p>
       </div>
       {renderMessages()}
-      <div className="w-full h-auto flex items-center gap-2 justify-start">
+      <div className="w-full p-4 h-auto flex items-center gap-2 justify-start">
         <input
           onChange={(e) => handleChangeValue("message", e?.target?.value)}
           value={formValues.message}
           placeholder="Escribe un mensaje..."
-          className="w-full flex-grow px-4 h-[60px] text-white bg-transparent border border-white rounded-full"
+          className="w-full flex-grow outline-none px-4 h-[60px] text-white bg-transparent border border-white rounded-full"
         />
         <AiOutlineSend
           onClick={handleMessageNew}

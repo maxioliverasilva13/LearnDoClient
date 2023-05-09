@@ -29,7 +29,7 @@ export const ChatsSlice = createSlice({
           return {
             ...item,
             messages: [...item?.messages, newMessage],
-            lastMessage: newMessage?.message,
+            lastMessage: newMessage?.contenido,
           };
         }
         return item;
