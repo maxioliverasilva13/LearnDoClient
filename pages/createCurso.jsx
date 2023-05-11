@@ -6,13 +6,17 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import { VscCheck } from 'react-icons/vsc'
 import { RxCross1 } from 'react-icons/rx'
 
-import AddColaboradoresModal from 'components/Modals/AddColaboradoresModal';
-
+import ColaboradoresModal from 'components/Modals/ColaboradoresModal';
+import AddModuloModal from 'components/Modals/AddModuloModal';
 
 export default function CreateCurso() {
     // Modals
-    const [isColaboradoresOpen, setIsColaboradoresOpen] = useState(true);
-
+    const [isColaboradoresOpen, setIsColaboradoresOpen] = useState(false);
+    const [isModulosOpen, setIsModulosOpen] = useState(false);
+    const modals = {
+        modulos: () => setIsModulosOpen(current => !current),
+        colaboradores: () => setIsColaboradoresOpen(current => !current),
+    }
 
     const [cursoImage, setCursoImage] = React.useState('/img/img-1-1000x600.jpg');
     const [firebaseImage, setFirebaseImage] = React.useState(null);
@@ -21,19 +25,13 @@ export default function CreateCurso() {
     const [modulos, setModulos] = useState([
         {
             id: 1,
-            nombre: "Módulo Create",
-        },
-        {
-            id: 2,
-            nombre: "Módulo Read",
-        },
-        {
-            id: 3,
-            nombre: "Módulo Update",
-        },
-        {
-            id: 4,
-            nombre: "Módulo Delete",
+            nombre: "Módulo Programacion",
+            clases: [
+                {
+                nombre: "Clase tutorial",
+                video: "www.si.com",
+                },
+            ]
         },
     ]);
     const [colaboradores, setColaboradores] = useState([
@@ -84,20 +82,27 @@ export default function CreateCurso() {
     const handleCheckboxChange = event => {
         setIsFree(current => !current);
     };
+
+    const handleRemoveCollaborator = (user) => {
+        setColaboradores((current) =>
+          current.filter((colaborador) => colaborador.id !== user.id)
+        );
+    };
     
-    const handleColaboradoresModal = () => {
-        setIsColaboradoresOpen(true);
+    const handleOpenModal = (value) => {
+        value();      
     };
 
     
   return (
     <>
-      <AddColaboradoresModal open={isColaboradoresOpen} setIsOpen={setIsColaboradoresOpen} colaboradores={colaboradores} setColaboradores={setColaboradores} />
+      <ColaboradoresModal open={isColaboradoresOpen} setIsOpen={setIsColaboradoresOpen} colaboradores={colaboradores} setColaboradores={setColaboradores} />
+      <AddModuloModal open={isModulosOpen} setIsOpen={setIsModulosOpen} modulos={modulos} setModulos={setModulos} />
       <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start item-no-scrollbar">
         <div className="w-full h-auto flex flex-col items-start justify-center pt-16">
             <p className="text-5xl text-white px-16 py-4">Agregar un curso</p>
 
-            <div className="px-16 w-full gap-8 flex flex-col lg:flex-row justify-center text-white">
+            <div className="px-16 w-full gap-8 flex flex-col lg:flex-row justify-center text-white font-light">
                 <div className="flex flex-col gap-4 w-full sm:w-1/3"> {/* INICIO columna 1 */}
                     <div className="flex flex-col gap-y-4">
                         <div className="flex w-full justify-center">
@@ -156,9 +161,10 @@ export default function CreateCurso() {
                 
                 <div className="flex flex-col gap-4 w-full sm:w-1/3"> {/* INICIO columna 2 */}
                     <div className="flex items-center justify-between">
-                        <p className="text-lg">Módulos</p>
+                        <p className="text-lg font-normal">Módulos</p>
                         <button className="w-max self-center active:bg-purple-800 text-white font-semibold
-                            hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150">
+                            hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                            onClick={() => handleOpenModal(modals.modulos)}>
                             Agregar Módulo
                         </button>
                     </div>
@@ -179,10 +185,10 @@ export default function CreateCurso() {
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <p className="text-lg">Colaboradores</p>
+                        <p className="text-lg font-normal">Colaboradores</p>
                         <button className="w-max self-center active:bg-purple-800 text-white font-semibold
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                        onClick={handleColaboradoresModal}>
+                            onClick={() => handleOpenModal(modals.colaboradores)}>
                             Agregar Colaborador
                         </button>
                     </div>
@@ -195,6 +201,7 @@ export default function CreateCurso() {
                                         <RiDeleteBin6Line className="cursor-pointer"
                                             color="white"
                                             size={30}
+                                            onClick={(e) => { handleRemoveCollaborator(colaborador) }}
                                         />
                                     </div>
                                 );
@@ -205,7 +212,7 @@ export default function CreateCurso() {
 
                 <div className="flex flex-col gap-4 w-full sm:w-1/3"> {/* INICIO columna 3 */}
                     <div className="flex items-center justify-between">
-                        <p className="text-lg">Sugerencias</p>
+                        <p className="text-lg font-normal">Sugerencias</p>
                         <a className="w-max self-center active:bg-purple-800 text-white font-semibold
                             hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                             href='/createCurso#'>

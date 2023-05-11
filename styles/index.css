@@ -11,20 +11,15 @@
     animation-timing-function: linear;
   }
 
-  @font-face {
-    font-family: 'Gotham';
-    src: url("../public/fonts/GothamMedium.ttf") format("opentype");
-}
-
 @font-face {
-    font-family: 'Gotham';
-    font-weight: bold;
-    src: url("../public/fonts/GothamMedium.ttf") format("opentype");
+  font-family: 'Gotham';
+  src: url("../public/fonts/GothamMedium.ttf") format("opentype");
 }
 
-
-
-
+*{
+  font-family: 'Gotham';
+}
+  
   @keyframes spin {
     from {
       transform: rotate(0deg);
