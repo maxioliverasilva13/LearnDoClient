@@ -93,19 +93,19 @@ export default function LandingPage() {
               </div>
               <div className="flex flex-col my-auto overflow-hidden w-full md:w-2/5 px-12 gap-y-4">
                 <div className="flex flex-col gap-y-4 w-full mb-8 text-center">
-                  <p className="font-Gotham text-white font-normal text-lg">
+                  <p className="text-white font-normal text-lg">
                     Accede a cientos de cursos, seminarios con los mejores profesionales o conviértete en organizador y crea tus propios cursos para generar tu propia audiencia y comunidad.
                   </p>
-                  <p className="font-Gotham text-white font-normal text-lg">
+                  <p className="text-white font-normal text-lg">
                     ¡Las posibilidades son infinitas! ¿Qué esperas?
                   </p>
                 </div>
 
-                <button className="w-max self-center active:bg-purple-800 text-white font-semibold
+                <a className="w-max self-center active:bg-purple-800 text-white font-semibold
                 hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                type="button">
+                href="/auth/register">
                   Registrarme
-                </button>                
+                </a>                
 
                 
                 <div className="w-full flex justify-center gap-x-2"> {/* SPACER */}
@@ -120,11 +120,11 @@ export default function LandingPage() {
                   </div>
                 </div> {/* SPACER */}
 
-                <button className="w-max self-center bg-purple-700 active:bg-purple-800 text-white font-semibold
+                <a className="w-max self-center bg-purple-700 active:bg-purple-800 text-white font-semibold
                 hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                type="button">
+                href="/auth/login">
                   Iniciar Sesión
-                </button> 
+                </a> 
 
               </div>
             </div>

@@ -13,13 +13,13 @@
 
   @font-face {
     font-family: 'Gotham';
-    src: url("/fonts/GothamMedium.ttf") format("opentype");
+    src: url("../public/fonts/GothamMedium.ttf") format("opentype");
 }
 
 @font-face {
     font-family: 'Gotham';
     font-weight: bold;
-    src: url("/fonts/GothamMedium.ttf") format("opentype");
+    src: url("../public/fonts/GothamMedium.ttf") format("opentype");
 }
 
 
@@ -163,6 +163,28 @@ body {
 /* Handle on hover */
 .chat ::-webkit-scrollbar-thumb:hover {
   background: #555; 
+  width: 10px;
+}
+
+/* width */
+.item-no-scrollbar ::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.item-no-scrollbar ::-webkit-scrollbar-track {
+  background: inherit; 
+}
+ 
+/* Handle */
+.item-no-scrollbar ::-webkit-scrollbar-thumb {
+  background: #780EFF; /* color de la barra */ 
+  border-radius: 100px;
+}
+
+/* Handle on hover */
+.item-no-scrollbar ::-webkit-scrollbar-thumb:hover {
+  background: #600EFF; /* cuando hago hover */
   width: 10px;
 }
 
