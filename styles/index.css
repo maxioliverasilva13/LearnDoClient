@@ -13,18 +13,18 @@
 
   @font-face {
     font-family: 'Gotham';
-    src: url("public/fonts/GothamMedium.ttf") format("opentype");
+    src: url("/fonts/GothamMedium.ttf") format("opentype");
 }
 
 @font-face {
     font-family: 'Gotham';
     font-weight: bold;
-    src: url("public/fonts/GothamMedium.ttf") format("opentype");
+    src: url("/fonts/GothamMedium.ttf") format("opentype");
 }
 
 
 *{
-  font-family: 'Gotham';
+  /* font-family: 'Gotham'; */
 }
   
   @keyframes spin {
@@ -100,6 +100,14 @@ body {
   }
 }
 
+@keyframes appearsMessageAlert {
+  from {
+    margin-left: 500px;
+  }
+  to {
+    margin-right: 0px;
+  }
+}
 
 @keyframes messageAppearsMe {
   from {
@@ -110,6 +118,19 @@ body {
   }
 }
 
+@keyframes opacityAppears {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100;
+  }
+}
+
+.appearsAnimation {
+  transition: all .3s ease;
+  animation: opacityAppears .3s ease;
+}
 
 .messageAppearsAnimationMe {
   animation: messageAppearsMe .5s ease;
@@ -118,6 +139,11 @@ body {
 
 .appearsMessageYou {
   animation: appearsMessageYouAnimation .5s ease!important;
+}
+
+
+.appearsMessage {
+  animation: appearsMessageAlert .5s ease!important;
 }
 
 

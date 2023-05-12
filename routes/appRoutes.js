@@ -6,6 +6,7 @@ const appRoutes = {
     seminarios: () => "/seminarios",
     cursos: () => "/cursos",
     landing: () => "/",
+    messages: () => "/messages",
 }
 
 export default appRoutes;

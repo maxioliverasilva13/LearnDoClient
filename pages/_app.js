@@ -11,9 +11,10 @@ import { Provider } from "react-redux";
 import store from "store/store";
 import CheckTokenWrapper from "components/CheckTokenWrapper/CheckTokenWrapper";
 import LoadingWrapper from "components/LoadingWrapper/LoadingWrapper";
-import "../styles/index.css"
-import "../styles/tailwind.css"
-import 'react-dropdown/style.css';
+import "../styles/index.css";
+import "../styles/tailwind.css";
+import "react-dropdown/style.css";
+import MessageWrapper from "components/MessageWrapper/MessageWrapper";
 
 // Router.events.on("routeChangeStart", (url) => {
 //   console.log(`Loading: ${url}`);
@@ -79,14 +80,19 @@ export default class MyApp extends App {
             />
             <title>LearnDo</title>
             <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-            <link href="https://fonts.cdnfonts.com/css/gotham" rel="stylesheet"/>
+            <link
+              href="https://fonts.cdnfonts.com/css/gotham"
+              rel="stylesheet"
+            />
             <script src="https://cdn.tailwindcss.com"></script>
           </Head>
           <CheckTokenWrapper>
             <LoadingWrapper>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              <MessageWrapper>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </MessageWrapper>
             </LoadingWrapper>
           </CheckTokenWrapper>
         </React.Fragment>

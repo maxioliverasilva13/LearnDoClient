@@ -8,7 +8,7 @@ import FooterSmall from "components/Footers/FooterSmall.js";
 export default function Auth({ children }) {
   return (
     <>
-      {/* <Navbar transparent /> */}
+      <Navbar transparent />
       <main>
         <section className="flex items-center relative w-full h-full min-h-screen">
           <div
