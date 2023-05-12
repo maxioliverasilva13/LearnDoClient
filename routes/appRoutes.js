@@ -5,6 +5,7 @@ const appRoutes = {
     home: () => "/home",
     seminarios: () => "/seminarios",
     cursos: () => "/cursos",
+    profile: () => "/perfil",
     landing: () => "/",
     messages: () => "/messages",
 }
