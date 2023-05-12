@@ -6,6 +6,7 @@ const apiRoutes = {
     me: () => "/api/auth/me",
     getMessages: () => "/api/messages/",
     createMessage: () => "/api/messages/create",
+    listarEventos:() => "/api/eventos"
 }
 
 export default apiRoutes;

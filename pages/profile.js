@@ -1,142 +1,252 @@
-import React from "react";
-
-import Navbar from "components/Navbars/AuthNavbar.js";
-import Footer from "components/Footers/Footer.js";
+import React , { useState, useRef} from "react";
+import { useEffect } from "react";
+import Spinner from "components/Spinner/Spinner";
+import { useChangeMeInfoMutation, useGetCurrentUserQuery } from "store/services/UserService";
+import Alert from "components/Popups/Alert";
+import storage from "firebaseConfig";
+import { ref,  getDownloadURL ,uploadBytes} from "firebase/storage";
 
 export default function Profile() {
+  const [ userData , setUserData ] = useState(null);
+  const [userAvatar , setUserAvatar] = useState(null);
+
+  const [loading,setLoading] = useState(true);
+  const inputRef = useRef(null);
+  const [avatarImported, setAvatarImported] = useState(null);
+
+  const [handleChangeMeInfo, { changingInfo }] = useChangeMeInfoMutation();
+  const { data,  error } =  useGetCurrentUserQuery();
+
+
+
+  useEffect(()=>{
+      if(data){
+        const  { userInfo } = data;
+        const { imagen , ...datos} = userInfo;
+        setUserData(datos);
+        setUserAvatar(imagen);  
+        setLoading(false);
+      }
+
+      if(error){
+        //redirect to page 500
+      }
+
+      
+  },[])
+
+
+  
+
+
+  function handleClickFile(){
+    inputRef.current.click();
+  }
+  function onImageChange(e){   
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setUserAvatar(URL.createObjectURL(file));
+      setAvatarImported(file);
+    }
+  }
+
+  const uploadFile = async (file) => {
+    const fileName = file.name;
+    const extension = fileName.split(".").pop();
+    if(extension != 'png' && extension != 'jpg' && extension != 'jpeg'){
+
+    }
+    const storageRef = ref(
+      storage,
+      `/profileImages/${Date.now() + fileName}`
+    ); 
+    const uploadTask = await uploadBytes(storageRef, file);
+    const url =  await  getDownloadURL(storageRef);
+    return url;
+  };
+
+  async function onSave(){
+    setLoading(true);
+    try{
+      if(avatarImported){ 
+         const urlResult = await uploadFile(avatarImported);
+      }
+
+      const body = {
+          ...userData,
+         imagen : userAvatar
+      }
+      const response = await handleChangeMeInfo(body);
+     
+      setLoading(false);
+    }catch(e){
+      setLoading(false);
+    }
+
+  }
   return (
     <>
-      <Navbar transparent />
-      <main className="profile-page">
-        <section className="relative block h-500-px">
-          <div
-            className="absolute top-0 w-full h-full bg-center bg-cover"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2710&q=80')",
-            }}
-          >
-            <span
-              id="blackOverlay"
-              className="w-full h-full absolute opacity-50 bg-black"
-            ></span>
-          </div>
-          <div
-            className="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-16"
-            style={{ transform: "translateZ(0)" }}
-          >
-            <svg
-              className="absolute bottom-0 overflow-hidden"
-              xmlns="http://www.w3.org/2000/svg"
-              preserveAspectRatio="none"
-              version="1.1"
-              viewBox="0 0 2560 100"
-              x="0"
-              y="0"
-            >
-              <polygon
-                className="text-blueGray-200 fill-current"
-                points="2560 0 2560 100 0 100"
-              ></polygon>
-            </svg>
-          </div>
+      <main className={ "bg-gradient-to-b from-[#780eff]  via-[#5B23A2] to-[#000] h-screen flex items-center justify-center text-white" }>
+        <section  className={ "relative block " }>
         </section>
-        <section className="relative py-16 bg-blueGray-200">
-          <div className="container mx-auto px-4">
-            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
-              <div className="px-6">
-                <div className="flex flex-wrap justify-center">
-                  <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                    <div className="relative">
-                      <img
-                        alt="..."
-                        src="/img/team-2-800x800.jpg"
-                        className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                    <div className="py-6 px-3 mt-32 sm:mt-0">
-                      <button
-                        className="bg-blueGray-700 active:bg-blueGray-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                        type="button"
-                      >
-                        Connect
-                      </button>
-                    </div>
-                  </div>
-                  <div className="w-full lg:w-4/12 px-4 lg:order-1">
-                    <div className="flex justify-center py-4 lg:pt-4 pt-8">
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          22
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          Friends
-                        </span>
-                      </div>
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          10
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          Photos
-                        </span>
-                      </div>
-                      <div className="lg:mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          89
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          Comments
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center mt-12">
-                  <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-                    Jenna Stones
-                  </h3>
-                  <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                    <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>{" "}
-                    Los Angeles, California
-                  </div>
-                  <div className="mb-2 text-blueGray-600 mt-10">
-                    <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                    Solution Manager - Creative Tim Officer
-                  </div>
-                  <div className="mb-2 text-blueGray-600">
-                    <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-                    University of Computer Science
-                  </div>
-                </div>
-                <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
+        <section   className={ " relative py-16 bg-blueGray-200}"  }>
+            {
+              (loading)  ?
+                <Spinner></Spinner>
+              :  <div className="container mx-auto px-4">
+              <div className="relative flex flex-col min-w-0 break-words bg-[#2d2e2e] w-full mb-6 shadow-xl rounded-lg  border-4	">
+                <div className="px-6">
                   <div className="flex flex-wrap justify-center">
-                    <div className="w-full lg:w-9/12 px-4">
-                      <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        An artist of considerable range, Jenna the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                        performs and records all of his own music, giving it a
-                        warm, intimate feel with a solid groove structure. An
-                        artist of considerable range.
-                      </p>
-                      <a
-                        href="#pablo"
-                        className="font-normal text-lightBlue-500"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        Show more
-                      </a>
+                    <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+                      <div className="relative">
+                        <img
+                          alt="..."
+                          src={userAvatar}
+                          className="shadow-xl rounded-full h-auto align-middle border-none  -m-16 -ml-20 lg:-ml-16 max-w-150-px max-h-150-px object-cover	"
+                        />  
+                            
+                      </div>
+                      
+                    </div>
+                    
+                    <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
+                      <div className="py-6 px-3 mt-32 sm:mt-0">
+                      <button
+                          onClick={onSave}
+                          className="bg-[#8526ff] transition delay-150 duration-150 hover:bg-white hover:text-black rounded font-medium   p-4 rounded-full focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 uppercase hover:shadow-md"
+                          type="button"
+                        >
+
+                         Guardar cambios
+                        </button>
+                      
+                      </div>
+                    </div>
+                    <div className="w-full lg:w-4/12 px-4 lg:order-1">
+                      <div className="flex justify-center py-4 lg:pt-4 pt-8">
+                        <div className="mr-4 p-3 text-center">
+                          <span className="text-xl font-bold block uppercase tracking-wide ">
+                            22
+                          </span>
+                          <span className="text-sm ">
+                            Cursos
+                          </span>
+                        </div>
+                        <div className="mr-4 p-3 text-center">
+                          <span className="text-xl font-bold block uppercase tracking-wide">
+                            10
+                          </span>
+                          <span className="text-sm ">
+                            Photos
+                          </span>
+                        </div>
+                        <div className="lg:mr-4 p-3 text-center">
+                          <span className="text-xl font-bold block uppercase tracking-wide ">
+                            89
+                          </span>
+                          <span className="text-sm ">
+                            Comments
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  <div className="flex justify-center">
+                    <div>
+                          <   button className="z-10	 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" onClick={handleClickFile}>
+                            <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                            <span>Cambiar imagen</span>
+  
+                        </button> 
+                        <input
+                                  type="file"
+                                  id="foto"
+                                  name="image"
+                                  ref={inputRef}
+                                  onChange={onImageChange}
+                                  className="hidden border-0 px-6 py-3 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                  //required
+                         />
+
+                    </div>
+                 
+                  </div>
+                  
+                  <div className="text-center mt-12 p-16">
+                    
+                    <div className="flex justify-center gap-5 flex-wrap
+                    ">
+                      <div>
+                        <input 
+                         value={userData.nickname}
+                         disabled
+                        type="text" id="first_name" className="min-w-[500px] bg-transparent text-white border-2   text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nickname" required/>
+                      </div>
+                      <div>
+                        <input
+                        disabled
+                         value={userData.email}
+                         
+                     
+                          type="text" id="first_name" className="min-w-[500px] bg-transparent text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Correo" required/>
+                      </div>
+  
+                      <div>
+                        <input
+                         value={userData.nombre} 
+                         onChange={ (e) => setUserData((prev)=> {
+                          return {
+                            ...prev,
+                            nombre: e.target.value
+                          }
+                         })}
+                        type="text" id="first_name" className="min-w-[500px] bg-transparent  text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nombre" required/>
+                        
+                      </div>
+  
+                      <div>
+                        <input
+                         value={userData.apellido} 
+                         onChange={ (e) => setUserData((prev)=> {
+                          return {
+                            ...prev,
+                            apellido: e.target.value
+                          }
+                         })}
+                        type="text" id="first_name" className="min-w-[500px] bg-transparent  text-white border-2  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Apellido" required/>
+                        
+                      </div>
+  
+                      <div>
+                        <input
+                         value={userData.telefono} 
+                         onChange={ (e) => setUserData((prev)=> {
+                          return {
+                            ...prev,
+                            telefono: e.target.value
+                          }
+                         })}
+                        type="text" id="first_name" className="min-w-[500px] bg-transparent  text-white border-2  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Telefono" required/>
+                        
+                      </div>
+                    </div>
+                   
+                    
+                  </div>
+                 
                 </div>
               </div>
             </div>
-          </div>
+            }
+
+            {
+     
+              
+                
+            }
+         
         </section>
       </main>
-      <Footer />
     </>
   );
 }

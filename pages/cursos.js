@@ -1,4 +1,5 @@
 import React , { useEffect,useState} from "react";
+import { useDispatch, useSelector } from 'react-redux';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from "axios";
@@ -7,6 +8,12 @@ import FilterEventoModal from "components/Popups/FilterEventoModal";
 
 // layout for page
 import Admin from "layouts/Admin.js";
+
+//services
+import { useListarEventosQuery } from "store/services/EventoService";
+
+
+
 
 
 export default function Cursos() {  
@@ -21,45 +28,30 @@ export default function Cursos() {
   const [filterData, setFilterData] = useState(null);
   const [busqueda,setBusqueda] =  useState('');
 
+
+ 
+
   
   const  updateShowModal = (show)=>{
     setModalFilter(show);
   }
 
 
-  const getCursos = ()=>{
+  const getCursos = async ()=>{
     setLoading(true); 
-    const urlFinal = new URL("http://127.0.0.1:8000/api/eventos");
-
-    urlFinal.searchParams.append("page",page);
-    urlFinal.searchParams.append("maxRows", rowsNumbers);
-
-    if(filterData){
-      if(filterData.categoriasIds && filterData.categoriasIds.length > 0 ){
-        var categoriasArrQry = filterData.categoriasIds.map(function(id, idx) {
-          return '&categoria[' + idx + ']=' + id;
-       }).join('&');
-       urlFinal.href = urlFinal.href+ categoriasArrQry;
-       
-      }
-    }
-    if(busqueda && busqueda.trim().length > 0){
-      urlFinal.searchParams.append("busqueda",busqueda);
-
-    }
-    axios.get(urlFinal.href).then(response =>{
-      const { data } = response;
-      const { result} = data;
-      
-      setCursosList(cursosList.concat(result));
-      setHasMore(result.length > 0);
-      setLoading(false);
-    });
+    const response  = await handleListarEventos();
+    const { data } = response;
+    const { result} = data;
+    
+    setCursosList(cursosList.concat(result));
+    setHasMore(result.length > 0);
+    setLoading(false);
+   
   }
 
 
   useEffect(() => {
-    getCursos(page);   
+    getCursos();   
   }, []); 
 
 
