@@ -118,7 +118,7 @@ export default function ColaboradoresModal({
                         return (
                           <div
                             key={index}
-                            className="flex w-full py-2 px-6 bg-[#780EFF] rounded-full justify-between items-center"
+                            className="flex flex-col sm:flex-row w-full py-2 px-6 bg-[#780EFF] rounded-full justify-between items-center"
                           >
                             <p className="truncate">
                               {filteredUser.nickname} {filteredUser.email}
@@ -143,7 +143,7 @@ export default function ColaboradoresModal({
                         return (
                           <div
                             key={index}
-                            className="flex w-full py-2 px-6 bg-[#780EFF] rounded-full justify-between items-center"
+                            className="flex flex-col sm:flex-row w-full py-2 px-6 bg-[#780EFF] rounded-full justify-between items-center"
                           >
                             <p className="truncate">{colaborador.nombre}</p>
                             <RiDeleteBin6Line

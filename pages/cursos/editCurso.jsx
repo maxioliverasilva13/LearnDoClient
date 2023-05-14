@@ -1,7 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useForm from "hooks/useForm";
 import useGlobalSlice from "hooks/useGlobalSlice";
+import Alert from "components/Popups/Alert";
 
 import { FiEdit3 } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -18,7 +19,7 @@ import {
 import ColaboradoresModal from "components/Modals/ColaboradoresModal";
 import AddModuloModal from "components/Modals/AddModuloModal";
 
-export default function CreateCurso() {
+export default function EditCurso() {
   // Modals
   const [isColaboradoresOpen, setIsColaboradoresOpen] = useState(false);
   const [isModulosOpen, setIsModulosOpen] = useState(false);
@@ -30,6 +31,20 @@ export default function CreateCurso() {
   const [cursoImage, setCursoImage] = React.useState("/img/img-1-1000x600.jpg");
   const [isFree, setIsFree] = useState(false);
   const { userInfo } = useGlobalSlice();
+  const [error, setError] = useState({
+    show: false,
+    message: "",
+  });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setError({
+        show: false,
+      });
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [error.show]);
 
   const { formValues, handleChangeValue } = useForm({
     nombre: "",
@@ -39,7 +54,7 @@ export default function CreateCurso() {
     porcentaje_aprobacion: "",
   });
 
-  // Service uses9
+  // Services
   const [createEvento, { isLoading }] = useCreateEventoMutation();
   const [createCurso] = useCreateCursoMutation();
 
@@ -88,9 +103,10 @@ export default function CreateCurso() {
     },
   ]);
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    setCursoImage(selectedFile);
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setCursoImage(URL.createObjectURL(e.target.files[0]));
+    }
   };
 
   const handleCheckboxChange = (event) => {
@@ -107,37 +123,82 @@ export default function CreateCurso() {
     value();
   };
 
+  const validateInputs = () => {
+    if (cursoImage === "/img/img-1-1000x600.jpg") {
+      setError({
+        show: true,
+        message: "Seleccione una IMAGEN para el curso.",
+      });
+    }
+    if (formValues.nombre.trim() === "") {
+      setError({
+        show: true,
+        message: "Por favor ingrese un NOMBRE para el curso.",
+      });
+      return false;
+    }
+    if (formValues.porcentaje_aprobacion.trim() === "") {
+      setError({
+        show: true,
+        message: "Por favor ingrese el PORCENTAJE de APROBACIÓN para el curso.",
+      });
+      return false;
+    }
+    if (formValues.descripcion.trim() === "") {
+      setError({
+        show: true,
+        message: "Por favor ingrese una DESCRIPCIÓN para el curso.",
+      });
+      return false;
+    }
+    if (!isFree) {
+      if (formValues.precio.trim() === "") {
+        setError({
+          show: true,
+          message: "Por favor ingrese el PRECIO del el curso.",
+        });
+        return false;
+      }
+    }
+    // Todos los inputs tienen contenido
+    return true;
+  };
+
   const handleCreateCurso = async (e) => {
     e.preventDefault();
-    if (cursoImage) {
-      const eventoData = {
-        nombre: formValues?.nombre,
-        descripcion: formValues?.descripcion,
-        imagen: "TESTTESTTEST",
-        es_pago: formValues?.es_pago,
-        precio: formValues?.precio,
-        organizador: userInfo?.id,
-      };
-      await createEvento(eventoData)
-        .unwrap()
-        .then(({ evento }) => {
-          console.log("ID DEL EVENTO CREADO: " + evento.id);
-          createCurso({
-            evento_id: evento.id,
-            porcentaje_aprobacion: formValues.porcentaje_aprobacion,
-          })
-            .unwrap()
-            .then((response) => {
-              console.log(response);
-            })
-            .catch((error) => {
-              console.error("Error al crear el curso: ", error);
-            });
+    if (!validateInputs()) return;
+    const eventoData = {
+      nombre: formValues?.nombre,
+      descripcion: formValues?.descripcion,
+      imagen: "TESTTESTTEST",
+      es_pago: formValues?.es_pago,
+      precio: formValues?.precio,
+      organizador: userInfo?.id,
+      // modulos: modulos,
+      // colaboradores: colaboradores,
+      // sugerencias: sugerencias,
+    };
+    /*
+    await createEvento(eventoData)
+      .unwrap()
+      .then(({ evento }) => {
+        console.log("ID DEL EVENTO CREADO: " + evento.id);
+        createCurso({
+          evento_id: evento.id,
+          porcentaje_aprobacion: formValues.porcentaje_aprobacion,
         })
-        .catch((error) => {
-          console.error("Error al crear el evento: ", error);
-        });
-    }
+          .unwrap()
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("Error al crear el curso: ", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error al crear el evento: ", error);
+      });
+      */
   };
 
   return (
@@ -156,11 +217,10 @@ export default function CreateCurso() {
       />
       <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start item-no-scrollbar">
         <div className="w-full h-auto flex flex-col items-start justify-center pt-16">
-          <p className="text-5xl text-white px-16 py-4">Agregar un curso</p>
+          <p className="text-5xl text-white px-16 py-4">Modificar curso</p>
 
           <div className="px-16 w-full gap-8 flex flex-col lg:flex-row justify-center text-white font-light">
             <div className="flex flex-col gap-4 w-full sm:w-1/3">
-              {" "}
               {/* INICIO columna 1 */}
               <div className="flex flex-col gap-y-4">
                 <div className="flex w-full justify-center">
@@ -187,7 +247,7 @@ export default function CreateCurso() {
                     handleChangeValue("nombre", e?.target?.value)
                   }
                   value={formValues.nombre}
-                  className="border border-white px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  className="border border-white px-6 py-3 text-white placeholder:text-white bg-inherit rounded-full text-md shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Nombre del Curso"
                 />
                 <input
@@ -200,7 +260,7 @@ export default function CreateCurso() {
                   value={formValues.porcentaje_aprobacion}
                   min={5}
                   max={99}
-                  className="border border-white px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  className="border border-white px-6 py-3 text-white placeholder:text-white bg-inherit rounded-full text-md shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Porcentaje de aprobación"
                 />
                 <textarea
@@ -211,18 +271,18 @@ export default function CreateCurso() {
                     handleChangeValue("descripcion", e?.target?.value)
                   }
                   value={formValues.descripcion}
-                  className="border border-white px-6 py-3 text-white bg-inherit rounded-3xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  className="border border-white px-6 py-3 text-white placeholder:text-white bg-inherit rounded-3xl text-md shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Descripción del Curso"
                 />
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center gap-4 h-12 min-h-12">
                   <label htmlFor="gratuito">
                     <input
                       type="checkbox"
                       id="gratuito"
-                      className="accent-pink-500"
+                      className="accent-pink-500 mr-2"
                       value={isFree}
                       onChange={handleCheckboxChange}
-                    />{" "}
+                    />
                     Gratuito
                   </label>
                   {!isFree && (
@@ -234,16 +294,15 @@ export default function CreateCurso() {
                         handleChangeValue("precio", e?.target?.value)
                       }
                       value={formValues.precio}
-                      className="border border-white px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring w-max ease-linear transition-all duration-150"
+                      className="border border-white px-6 py-3 text-white placeholder:text-white bg-inherit rounded-full text-md shadow focus:outline-none focus:ring w-max ease-linear transition-all duration-150"
                       placeholder="Precio"
                     />
                   )}
                 </div>
               </div>
-            </div>{" "}
+            </div>
             {/* FIN columna 1 */}
             <div className="flex flex-col gap-4 w-full sm:w-1/3">
-              {" "}
               {/* INICIO columna 2 */}
               <div className="flex items-center justify-between">
                 <p className="text-lg font-normal">Módulos</p>
@@ -290,7 +349,7 @@ export default function CreateCurso() {
                   return (
                     <div
                       key={colaborador.id}
-                      className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center"
+                      className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <p>{colaborador.nombre}</p>
                       <RiDeleteBin6Line
@@ -305,10 +364,9 @@ export default function CreateCurso() {
                   );
                 })}
               </div>
-            </div>{" "}
+            </div>
             {/* FIN columna 2 */}
             <div className="flex flex-col gap-4 w-full sm:w-1/3">
-              {" "}
               {/* INICIO columna 3 */}
               <div className="flex items-center justify-between">
                 <p className="text-lg font-normal">Sugerencias</p>
@@ -344,9 +402,22 @@ export default function CreateCurso() {
                   );
                 })}
               </div>
-            </div>{" "}
+            </div>
             {/* FIN columna 3 */}
           </div>
+
+          {error.show && (
+            <div className="flex items-center justify-center w-full mt-2">
+              <Alert
+                show={true}
+                setShow={error.show}
+                important={"Uups..."}
+                text={error.message}
+                color={"bg-red-500"}
+                icon={"fas fa-regular fa-user"}
+              />
+            </div>
+          )}
 
           <div className="flex justify-center w-full mt-6">
             <button
