@@ -54,7 +54,7 @@ const CheckTokenWrapper = ({ children }) => {
         return <Spinner />
     }
 
-    return <div className="w-full h-full flex flex-col items-start justify-start max-h-screen overflow-auto">
+    return <div id="ScrollableContainer" className=" w-full h-full flex flex-col items-start justify-start max-h-screen overflow-auto">
         {!isPublicPath && <Navbar />}
         <div className="max-h-full flex-grow w-full h-full">
         {children}

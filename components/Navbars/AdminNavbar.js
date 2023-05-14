@@ -9,13 +9,14 @@ import appRoutes from "routes/appRoutes";
 
 export default function Navbar() {
   const { noReadsMessages } = useChats();
+  
 
   const hasNoReadsMessages = noReadsMessages?.length > 0;
 
   return (
     <>
       {/* Navbar */}
-      <header className="flex w-full items-center text-white h-16 min-h-[64px]" style={{ backgroundColor: '#31174A' }}>
+      <header className="flex sticky top-0 left-0 z-[30] w-full items-center text-white h-16 min-h-[64px]" style={{ backgroundColor: '#31174A' }}>
         {/* Logo */}
         <div className="px-4">
           <span className="text-lg font-bold">learndo</span>

@@ -3,7 +3,7 @@ import React from "react";
 import App from "next/app";
 import Head from "next/head";
 // import Router from "next/router";
-
+ 
 // import PageChange from "components/PageChange/PageChange.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
@@ -79,6 +79,7 @@ export default class MyApp extends App {
               content="width=device-width, initial-scale=1.0"
             />
             <title>LearnDo</title>
+            <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet"/>
             <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
             <link
               href="https://fonts.cdnfonts.com/css/gotham"
