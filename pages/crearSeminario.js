@@ -4,9 +4,12 @@ import InputText from "components/InputText/InputText";
 import Alert from "components/Popups/Alert";
 import SelectLocationModal from "components/SelectLocationModal/SelectLocationModal";
 import useForm from "hooks/useForm";
+import useGlobalSlice from "hooks/useGlobalSlice";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
+import { useCreateEventoMutation } from "store/services/EventosService";
+import { EventosType } from "utils/evento";
 import { scrollTop } from "utils/pageUtils";
 
 const CrearSeminario = () => {
@@ -24,11 +27,14 @@ const CrearSeminario = () => {
       lng: 0,
     },
   });
+  const { userInfo, handleSetLoading } = useGlobalSlice();
   const [previewImage, setPreviewImage] = useState(null);
   const [checkedGratis, setCheckedGratis] = useState(false);
   const [checkedOnline, setCheckedOnline] = useState(false);
   const [openSelectLocation, setOpenSelectLocation] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [createSeminario ] = useCreateEventoMutation();
 
   const hasPreviewImage = previewImage !== null;
 
@@ -54,10 +60,13 @@ const CrearSeminario = () => {
   };
 
   useEffect(() => {
-    if (error) {
+    if (error || success) {
       scrollTop();
     }
-  }, [error]);
+    if (error === true) {
+      setSuccess(false)
+    }
+  }, [error, success]);
 
   const getValidationError = (value) => {
     if (error?.validated) {
@@ -67,7 +76,7 @@ const CrearSeminario = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e?.preventDefault();
 
     // checking errors
@@ -80,7 +89,7 @@ const CrearSeminario = () => {
         !formValues?.hora ||
         !formValues?.link ||
         (!checkedGratis &&
-          (formValues?.precio === 0 || formValues?.capacidad === 0))
+          (formValues?.precio === 0))
       ) {
         setError({
           type: "required",
@@ -94,22 +103,21 @@ const CrearSeminario = () => {
             link: !formValues?.link,
             precio:
               !checkedGratis &&
-              (formValues?.precio === 0 || formValues?.capacidad === 0),
+              (formValues?.precio === 0),
             capacidad: !formValues?.capacidad || formValues?.capacidad === 0,
           },
         });
         return;
       }
-    } else {
+    } else {      
       if (
         !formValues?.imagen ||
         !formValues?.nombre ||
         !formValues?.descripcion ||
         !formValues?.fecha ||
         !formValues?.hora ||
-        !formValues?.precio ||
         (!checkedGratis &&
-          (formValues?.precio === 0 || formValues?.capacidad === 0)) ||
+        (formValues?.precio === 0)) ||
         formValues?.ubicacion?.lat === 0 ||
         formValues?.ubicacion?.lng === 0
       ) {
@@ -124,7 +132,7 @@ const CrearSeminario = () => {
             hora: !formValues?.hora,
             precio:
               !checkedGratis &&
-              (formValues?.precio === 0 || formValues?.capacidad === 0),
+              (formValues?.precio === 0),
             capacidad: !formValues?.capacidad || formValues?.capacidad === 0,
             lat: formValues?.ubicacion?.lat === 0,
             lng: formValues?.ubicacion?.lng === 0,
@@ -138,10 +146,25 @@ const CrearSeminario = () => {
     const prepareData = {
       ...formValues,
       isOnline: checkedOnline,
-      isGratis: checkedGratis,
+      es_pago: !checkedGratis,
+      organizador: userInfo?.id,
+      tipo: checkedOnline ? EventosType.seminarioV : EventosType.seminarioP,
+      nombre_ubicacion: formValues?.nombre,
+      latitud: formValues?.ubicacion?.lat,
+      longitud: formValues?.ubicacion?.lng,
+      maximo_participantes: formValues?.capacidad,
+      link: formValues?.link,
+      fecha: formValues?.fecha,
+      hora: formValues?.hora,
+
     }
-    console.log("prepareData", prepareData)
+    const response = await createSeminario(prepareData);
+    if (response?.data?.curso) {
+      setSuccess(true);
+    }
   };
+
+  console.log(error)
 
   return (
     <div className="w-full h-auto md:pt-10 flex flex-col items-center justify-start">
@@ -151,7 +174,17 @@ const CrearSeminario = () => {
         show={error !== null}
         important={true}
         icon={<i className="fas fa-bell" />}
+        setShow={() => setError(null)}
       />
+      <Alert
+        text={"Seminario creado correctamente"}
+        color="bg-green-500"
+        show={success}
+        important={true}
+        setShow={setSuccess}
+        icon={<i className="fas fa-bell" />}
+      />
+
 
       <p className="w-full text-center text-white text-[32px] font-bold">
         Agergar Seminario
@@ -189,6 +222,7 @@ const CrearSeminario = () => {
           onChange={handleChangeImage}
           type="file"
           className="sr-only"
+          draggable={true}
           id="inputFile"
           name="inputFile"
         />

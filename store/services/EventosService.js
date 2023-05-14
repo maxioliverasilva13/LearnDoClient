@@ -7,14 +7,19 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders,
 });
   
-export const UserService = createApi({
-  reducerPath: "UserService",
+export const EventosService = createApi({
+  reducerPath: "EventosService",
   baseQuery: baseQuery,
-  tagTypes: ["UserInfo"],
+  tagTypes: ["Evento"],
   endpoints: builder => ({
-    getCurrentUser: builder.query({
-      query: () => "/api/asd/asd",
-      providesTags: ["UserInfo"],
+    createEvento: builder.mutation({
+      query: (data) => {
+        return {
+          url: apiRoutes.createEvento(),
+          method: "POST",
+          body: data,
+        }
+      },
       transformResponse(value) {
         const response = value;
         return response;
@@ -25,6 +30,5 @@ export const UserService = createApi({
 });
 
 export const {
-  useLazyGetCurrentUserQuery,
-
-} = UserService;
+  useCreateEventoMutation,
+} = EventosService;

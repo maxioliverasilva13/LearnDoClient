@@ -20,6 +20,7 @@ const SelectLocationModal = ({ setOpen, open, setLatLng }) => {
 
     map.current &&
       map.current.on("load", (event) => {
+        map?.current?.resize();
         if (defaultMarker) {
           const currentOffset = defaultMarker?.getLngLat();
           generateNewMarker({
