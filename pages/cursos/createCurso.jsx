@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import useForm from "hooks/useForm";
 import useGlobalSlice from "hooks/useGlobalSlice";
+import { useRouter } from "next/router";
 
 import { FiEdit3 } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -16,6 +17,7 @@ import {
 import ColaboradoresModal from "components/Modals/ColaboradoresModal";
 import AddModuloModal from "components/Modals/AddModuloModal";
 import EditModuloModal from "components/Modals/EditModuloModal";
+import appRoutes from "routes/appRoutes";
 
 export default function CreateCurso() {
   // Modals
@@ -27,7 +29,7 @@ export default function CreateCurso() {
     editModulo: () => setIsEditModuloOpen((current) => !current),
     colaboradores: () => setIsColaboradoresOpen((current) => !current),
   };
-
+  
   const [cursoImage, setCursoImage] = React.useState("/img/img-1-1000x600.jpg");
   const [isFree, setIsFree] = useState(false);
   const { userInfo } = useGlobalSlice();
@@ -35,17 +37,17 @@ export default function CreateCurso() {
     show: false,
     message: "",
   });
-
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       setError({
         show: false,
       });
     }, 5000);
-
+    
     return () => clearTimeout(timer);
   }, [error.show]);
-
+  
   const { formValues, handleChangeValue } = useForm({
     nombre: "",
     descripcion: "",
@@ -54,11 +56,13 @@ export default function CreateCurso() {
     porcentaje_aprobacion: "",
   });
 
+  const { pathname, push } = useRouter();
+  
   // Services
   const [createEvento] = useCreateEventoMutation();
   const [createModulo] = useCreateModuloMutation();
   const [createColaboraciones] = useCreateColaboracionesMutation();
-
+  
   const [selectedModule, setSelectedModule] = useState(null);
   const [modulos, setModulos] = useState([
     {
@@ -92,7 +96,7 @@ export default function CreateCurso() {
       type: "estudiante",
     },
   ]);
-
+  
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       setCursoImage(URL.createObjectURL(event.target.files[0]));
@@ -102,7 +106,7 @@ export default function CreateCurso() {
   const handleCheckboxChange = (event) => {
     setIsFree((current) => !current);
   };
-
+  
   const handleRemoveCollaborator = (user) => {
     setColaboradores((current) =>
       current.filter((colaborador) => colaborador.id !== user.id)
@@ -188,13 +192,14 @@ export default function CreateCurso() {
       .then(({ evento }) => {
         console.log("ID DEL EVENTO CREADO: " + evento?.id);
         if (colaboradores.length > 0) {
-          const colabs = {
-            evento_id: evento?.id,
-            colaboradores: colaboradores,
-          }
-          createColaboraciones(colabs);
-          console.log("entro");
         }
+        const colabs = {
+          evento_id: evento?.id,
+          colaboradores: colaboradores,
+        }
+        console.log("entro");
+        console.log(colabs);
+        createColaboraciones(colabs);
         modulos.forEach((modulo) => {
           let modData = {
             nombre: modulo?.nombre,
@@ -206,6 +211,7 @@ export default function CreateCurso() {
             .unwrap()
             .then((response) => {
               console.log(response);
+              //push(appRoutes.cursos());
             })
             .catch((error) => {
               console.error(
