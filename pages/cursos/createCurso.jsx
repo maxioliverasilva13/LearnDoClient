@@ -60,7 +60,24 @@ export default function CreateCurso() {
   const [createColaboraciones] = useCreateColaboracionesMutation();
 
   const [selectedModule, setSelectedModule] = useState(null);
-  const [modulos, setModulos] = useState([]);
+  const [modulos, setModulos] = useState([
+    {
+      nombre: "aaasdsadsadsadsadsadasds",
+      estado: "aprobado",
+      clases: [
+        {
+          nombre: "Clase 1",
+          video: "video1",
+          duracion: 60,
+        },
+        {
+          nombre: "Clase 2",
+          video: "video2",
+          duracion: 120,
+        },
+      ],
+    },
+  ]);
   const [colaboradores, setColaboradores] = useState([
     {
       id: 1,
@@ -122,7 +139,10 @@ export default function CreateCurso() {
         message: "Por favor ingrese el PORCENTAJE de APROBACIÓN para el curso.",
       });
       return false;
-    }else if(formValues.porcentaje_aprobacion.trim() < 1 || formValues.porcentaje_aprobacion.trim() > 100){
+    } else if (
+      formValues.porcentaje_aprobacion.trim() < 1 ||
+      formValues.porcentaje_aprobacion.trim() > 100
+    ) {
       setError({
         show: true,
         message: "El porcentaje de aprobación debe de estar entre 1% y 100%.",
@@ -167,7 +187,14 @@ export default function CreateCurso() {
       .unwrap()
       .then(({ evento }) => {
         console.log("ID DEL EVENTO CREADO: " + evento?.id);
-        if(colaboradores.length > 0) {createColaboraciones({evento_id: evento?.id, colaboradores: colaboradores});console.log('entro')};
+        if (colaboradores.length > 0) {
+          const colabs = {
+            evento_id: evento?.id,
+            colaboradores: colaboradores,
+          }
+          createColaboraciones(colabs);
+          console.log("entro");
+        }
         modulos.forEach((modulo) => {
           let modData = {
             nombre: modulo?.nombre,
@@ -311,7 +338,9 @@ export default function CreateCurso() {
                 <button
                   className="w-max self-center active:bg-purple-800 text-white font-semibold
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                  onClick={() => handleOpenModal(modals.createModulo)}
+                  onClick={() => {
+                    handleOpenModal(modals.createModulo);
+                  }}
                 >
                   Agregar Módulo
                 </button>
@@ -347,8 +376,8 @@ export default function CreateCurso() {
                   className="w-max self-center active:bg-purple-800 text-white font-semibold
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                   onClick={() => {
-                    handleOpenModal(modals.colaboradores);
                     console.log(colaboradores);
+                    handleOpenModal(modals.colaboradores);
                   }}
                 >
                   Agregar Colaborador

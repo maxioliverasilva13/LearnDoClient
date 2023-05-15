@@ -18,7 +18,7 @@ export default function AddModuloModal({
   // const [searchValue, setSearchValue] = useState("");
 
   const [classes, setClasses] = useState([
-    { nombre: "", video: "", duracion: "" }, // Línea por defecto
+    { nombre: "", video: "", duracion: 0 }, // Línea por defecto
   ]);
   const cancelButtonRef = useRef(null);
 
@@ -92,7 +92,7 @@ export default function AddModuloModal({
     };
     console.log(modulo);
     setModulos((current) => [...current, modulo]);
-    setClasses([{ nombre: "", video: "", duracion: "" }]); // reseteo el array
+    setClasses([{ nombre: "", video: "", duracion: 0 }]); // reseteo el array
     setIsOpen(false);
   };
 
@@ -104,7 +104,7 @@ export default function AddModuloModal({
   };
 
   const handleAddLine = () => {
-    setClasses([...classes, { nombre: "", video: "", duracion: "" }]);
+    setClasses([...classes, { nombre: "", video: "", duracion: 0 }]);
     console.log(classes);
   };
 
@@ -120,7 +120,7 @@ export default function AddModuloModal({
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={() => {setIsOpen((current)=>!current); setClasses([{ nombre: "", video: "", duracion: "" }]);}}
+        onClose={() => {setIsOpen((current)=>!current); setClasses([{ nombre: "", video: "", duracion: 0 }]);}}
       >
         <Transition.Child
           as={Fragment}
