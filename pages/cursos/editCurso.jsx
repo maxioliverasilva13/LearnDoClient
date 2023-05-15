@@ -151,6 +151,7 @@ export default function EditCurso() {
         show: true,
         message: "Seleccione una IMAGEN para el curso.",
       });
+      return false;
     }
     if (formValues.nombre.trim() === "") {
       setError({
@@ -206,7 +207,6 @@ export default function EditCurso() {
       precio: formValues?.precio,
       organizador: userInfo?.id,
       tipo: "curso",
-      nombre_foro: "Foro " + formValues?.nombre,
     };
   };
 

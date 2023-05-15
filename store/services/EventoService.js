@@ -48,8 +48,8 @@ export const EventoService = createApi({
                 es_pago: data?.es_pago,
                 precio: data?.precio,
                 organizador: data?.organizador,
+                porcentaje_aprobacion: data?.porcentaje_aprobacion,
                 tipo: data?.tipo,
-                nombre_foro: data?.nombre_foro,
             }
         }),
         transformResponse(value) {
@@ -73,6 +73,20 @@ export const EventoService = createApi({
           return response;
         },
       }),
+      createColaboraciones: builder.mutation({
+        query: (data) => ({
+            url: `${apiRoutes.createColaboraciones()}`,
+            method: "POST",
+            body: {
+                evento_id: data?.evento_id,
+                colaboradores: data?.colaboradores,
+            }
+        }),
+        transformResponse(value) {
+          const response = value;
+          return response;
+        },
+      }),
   }),
 });
 
@@ -80,4 +94,5 @@ export const {
   useListarEventosQuery,
   useCreateEventoMutation,
   useCreateModuloMutation,
+  useCreateColaboracionesMutation,
 } = EventoService;

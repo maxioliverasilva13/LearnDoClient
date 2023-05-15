@@ -13,6 +13,7 @@ const apiRoutes = {
     getEventos: () => "/api/eventos/",
     createEvento: () => "/api/eventos/createEvento",
     createModulo: () => "/api/modulos/createModulo",
+    createColaboraciones: () => "/api/colaboraciones/createColaboraciones",
 }
 
 export default apiRoutes;

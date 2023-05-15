@@ -10,6 +10,7 @@ import Alert from "components/Popups/Alert";
 import {
   useCreateEventoMutation,
   useCreateModuloMutation,
+  useCreateColaboracionesMutation,
 } from "store/services/EventoService";
 
 import ColaboradoresModal from "components/Modals/ColaboradoresModal";
@@ -54,8 +55,9 @@ export default function CreateCurso() {
   });
 
   // Services
-  const [createEvento, { isLoading }] = useCreateEventoMutation();
+  const [createEvento] = useCreateEventoMutation();
   const [createModulo] = useCreateModuloMutation();
+  const [createColaboraciones] = useCreateColaboracionesMutation();
 
   const [selectedModule, setSelectedModule] = useState(null);
   const [modulos, setModulos] = useState([]);
@@ -105,6 +107,7 @@ export default function CreateCurso() {
         show: true,
         message: "Seleccione una IMAGEN para el curso.",
       });
+      return false;
     }
     if (formValues.nombre.trim() === "") {
       setError({
@@ -156,15 +159,15 @@ export default function CreateCurso() {
       es_pago: formValues?.es_pago === true ? 1 : 0,
       precio: formValues?.precio,
       organizador: userInfo?.id,
+      porcentaje_aprobacion: formValues?.porcentaje_aprobacion,
       tipo: "curso",
-      nombre_foro: "Foro " + formValues?.nombre,
     };
 
     await createEvento(cursoData)
       .unwrap()
       .then(({ evento }) => {
         console.log("ID DEL EVENTO CREADO: " + evento?.id);
-
+        if(colaboradores.length > 0) {createColaboraciones({evento_id: evento?.id, colaboradores: colaboradores});console.log('entro')};
         modulos.forEach((modulo) => {
           let modData = {
             nombre: modulo?.nombre,
@@ -172,7 +175,7 @@ export default function CreateCurso() {
             curso_id: evento?.id,
             estado: "aprobado",
           };
-          createModulo(modData) // este endpoint debería resolver crear módulo + sus clases (recibe directamente el array de clases)
+          createModulo(modData)
             .unwrap()
             .then((response) => {
               console.log(response);
@@ -314,10 +317,10 @@ export default function CreateCurso() {
                 </button>
               </div>
               <div className="flex flex-col overflow-y-scroll scroll-smooth px-5 py-3 h-[250px] max-h-[250px] border border-white rounded-xl gap-y-4">
-                {modulos.map((item) => {
+                {modulos.map((item, index) => {
                   return (
                     <div
-                      key={item.id}
+                      key={index}
                       className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <p>{item.nombre}</p>
@@ -352,10 +355,10 @@ export default function CreateCurso() {
                 </button>
               </div>
               <div className="flex flex-col overflow-y-scroll scroll-smooth px-5 py-3 h-[250px] max-h-[250px] border border-white rounded-xl gap-y-4">
-                {colaboradores.map((colaborador) => {
+                {colaboradores.map((colaborador, index) => {
                   return (
                     <div
-                      key={colaborador.id}
+                      key={index}
                       className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <p>{colaborador.nombre}</p>
