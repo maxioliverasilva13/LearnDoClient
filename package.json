@@ -17,6 +17,7 @@
     "firebase": "^9.20.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
+    "mapbox-gl": "^2.14.1",
     "moment": "^2.29.4",
     "next": "12.2.5",
     "prop-types": "^15.8.1",
@@ -33,7 +34,8 @@
     "react-select": "^5.7.3",
     "react-spinners": "^0.13.8",
     "swiper": "^9.2.4",
-    "tailwindcss": "3.3.1"
+    "tailwindcss": "3.3.1",
+    "use-sound": "^4.0.1"
   },
   "scripts": {
     "start": "next start",

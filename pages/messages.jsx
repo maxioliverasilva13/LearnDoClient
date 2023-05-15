@@ -3,54 +3,45 @@ import Spinner from "components/Spinner/Spinner";
 import UserChat from "components/UserChat/UserChat";
 import useChats from "hooks/useChats";
 import useGlobalSlice from "hooks/useGlobalSlice";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useGetMessagesQuery } from "store/services/MessageService";
-import { PUSHER_MESSAGESENT_EVENT_NAME, formatChannelMessageSendName, subscribe } from "utils/pusher";
-let addedEvents = false;
+import { sortChats } from "utils/messages";
 
 const Message = () => {
   const { userInfo } = useGlobalSlice();
-  const { handleSetChats, handleAddMessage, chats, activeChatId } = useChats();
+  const { chats, activeChatId, handleSetChatId } = useChats();
   const uid = userInfo?.id;
-  const { data = [], isLoading } = useGetMessagesQuery(userInfo?.id, {
+  const { isLoading } = useGetMessagesQuery(userInfo?.id, {
     skip: !uid,
   });
 
-  useEffect(() => {
-    if (data?.length > 0 && addedEvents == false) {
-      addedEvents = true;
-      data?.map((item) => {
-        const channelName = formatChannelMessageSendName(item?.chatId, userInfo?.id)
-        console.log(channelName)
-        const subscription = subscribe(channelName);
-
-        console.log("suscripto");
-        subscription.bind("createMessage", (data) => {
-          const newMessage = data?.message;
-          handleAddMessage({
-            chatId: item?.chatId,
-            message: newMessage,
-          })
-        })
-      })
-    }
-  }, [data])
+  const { asPath = "" } = useRouter();
+  const sortedChats = sortChats(chats)
 
   useEffect(() => {
-    if (!isLoading && data) {
-        handleSetChats(data);
+    const hashChatId = asPath?.split("#")[1];
+    if (hashChatId) {
+      const chatId = hashChatId?.replace("chatId", "");
+      if (chatId) {
+        try {
+          handleSetChatId(Number(chatId))
+        } catch (error) {
+
+        }
+      }
     }
-  }, [isLoading]);
+  }, [])
 
   if (isLoading) {
     return <Spinner />
   }
 
   return (
-    <div className="px-12 pt-[40px] pb-[20px] w-full h-full flex flex-col items-start justify-start">
+    <div className="px-12 flex-grow max-h-full pt-[40px] pb-[20px] w-full h-full flex flex-col items-start justify-start">
       <div className="w-full flex flex-grow h-full flex-row items-start justify-start">
         {/* Chats List */}
-        <div className="w-[400px] p-2 h-full flex flex-col border-r-[4px] border-white">
+        <div className="md:w-[400px] w-[300px] p-2 h-full flex flex-col border-r-[4px] border-white">
           <p className="text-white text-[52px] font-bold text-center">
             Chats
           </p>
@@ -59,7 +50,7 @@ const Message = () => {
             className="w-full px-4 rounded-full outline-0 my-4 py-2 border-2 border-white bg-transparent text-white text-base"
             placeholder="Buscar"
           />
-          {chats?.map((item) => {
+          {sortedChats?.map((item) => {
             return <UserChat key={`ChatItem-${item?.chatId}`} {...item} />;
           })}
         </div>

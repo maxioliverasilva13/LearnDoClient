@@ -3,12 +3,20 @@ import React from "react";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
 import { BiMessageAlt } from 'react-icons/bi';
 import { FaBeer } from 'react-icons/fa';
+import useChats from "hooks/useChats";
+import Link from "next/link";
+import appRoutes from "routes/appRoutes";
 
 export default function Navbar() {
+  const { noReadsMessages } = useChats();
+  
+
+  const hasNoReadsMessages = noReadsMessages?.length > 0;
+
   return (
     <>
       {/* Navbar */}
-      <header className="flex items-center text-white h-16" style={{ backgroundColor: '#31174A' }}>
+      <header className="flex sticky top-0 left-0 z-[30] w-full items-center text-white h-16 min-h-[64px]" style={{ backgroundColor: '#31174A' }}>
         {/* Logo */}
         <div className="px-4">
           <span className="text-lg font-bold">learndo</span>
@@ -41,11 +49,18 @@ export default function Navbar() {
 
             </button>
           </div>
+          <Link href={appRoutes.messages()}>
           <div className="ml-4 relative">
-            <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out">
+            <button className="flex relative text-sm border-2 border-transparent rounded-full">
               <BiMessageAlt size={30} />
+              {
+                hasNoReadsMessages && <div className="absolute text-[8px] text-center flex items-center justify-center rounded-full border border-white right-0 bottom-0 w-[14px] h-[14px] bg-red-500">
+                <span className="font-semibold">{noReadsMessages?.length}</span>
+              </div>
+              }
             </button>
           </div>
+          </Link>
           <div className="ml-4 relative">
             <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out">
               <img className="h-8 w-8 rounded-full object-cover" src="https://via.placeholder.com/50" alt="User avatar"></img>
