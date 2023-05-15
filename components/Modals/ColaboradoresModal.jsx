@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useLazyFilterByNicknameOrEmailQuery } from "store/services/UserService";
+import useGlobalSlice from "hooks/useGlobalSlice";
 
 let timer = null;
 
@@ -19,6 +20,7 @@ export default function ColaboradoresModal({
 
   const [filteredUsers, setFilteredUsers] = useState([]);
   const cancelButtonRef = useRef(null);
+  const { userInfo } = useGlobalSlice();
 
   useEffect(() => {
     if (searchValue.length > 0) {
@@ -41,6 +43,10 @@ export default function ColaboradoresModal({
   }, [searchValue]);
 
   const handleAddCollaborator = (user) => {
+    if(user.id === userInfo.id){
+      console.log("No puedes agregarte a ti mismo como colaborador.");
+      return;
+    }
     setFilteredUsers((current) =>
       current.filter((colaborador) => colaborador.id !== user.id)
     );

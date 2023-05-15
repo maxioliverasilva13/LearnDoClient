@@ -12,9 +12,7 @@ const apiRoutes = {
     filterByNicknameOrEmail: () => "/api/usuarios/filterByNicknameOrEmail",
     getEventos: () => "/api/eventos/",
     createEvento: () => "/api/eventos/createEvento",
-    createCurso: () => "/api/cursos/createCurso",
     createModulo: () => "/api/modulos/createModulo",
-    createClase: () => "/api/clases/createClase",
 }
 
 export default apiRoutes;

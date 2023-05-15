@@ -9,9 +9,7 @@ import Alert from "components/Popups/Alert";
 
 import {
   useCreateEventoMutation,
-  useCreateCursoMutation,
   useCreateModuloMutation,
-  useCreateClaseMutation,
 } from "store/services/EventoService";
 
 import ColaboradoresModal from "components/Modals/ColaboradoresModal";
@@ -57,36 +55,10 @@ export default function CreateCurso() {
 
   // Services
   const [createEvento, { isLoading }] = useCreateEventoMutation();
-  const [createCurso] = useCreateCursoMutation();
   const [createModulo] = useCreateModuloMutation();
 
   const [selectedModule, setSelectedModule] = useState(null);
-  const [modulos, setModulos] = useState([
-    {
-      id: 1,
-      nombre: "Módulo Programacion",
-      clases: [
-        {
-          nombre: "Clase tutorial",
-          video: "www.si.com",
-        },
-      ],
-    },
-    {
-      id: 21,
-      nombre: "Módulo Tecnologia",
-      clases: [
-        {
-          nombre: "Clase tutorial",
-          video: "www.si.com",
-        },
-        {
-          nombre: "Clase 2",
-          video: "www.sdsdsd.com",
-        },
-      ],
-    },
-  ]);
+  const [modulos, setModulos] = useState([]);
   const [colaboradores, setColaboradores] = useState([
     {
       id: 1,
@@ -121,13 +93,11 @@ export default function CreateCurso() {
   const handleOpenModal = (value) => {
     value();
   };
-  
+
   const handleOpenEditModal = (value, module) => {
     setSelectedModule(module);
     value();
   };
-
-  
 
   const validateInputs = () => {
     if (cursoImage === "/img/img-1-1000x600.jpg") {
@@ -147,6 +117,12 @@ export default function CreateCurso() {
       setError({
         show: true,
         message: "Por favor ingrese el PORCENTAJE de APROBACIÓN para el curso.",
+      });
+      return false;
+    }else if(formValues.porcentaje_aprobacion.trim() < 1 || formValues.porcentaje_aprobacion.trim() > 100){
+      setError({
+        show: true,
+        message: "El porcentaje de aprobación debe de estar entre 1% y 100%.",
       });
       return false;
     }
@@ -177,54 +153,41 @@ export default function CreateCurso() {
       nombre: formValues?.nombre,
       descripcion: formValues?.descripcion,
       imagen: "TESTTESTTEST",
-      es_pago: formValues?.es_pago,
+      es_pago: formValues?.es_pago === true ? 1 : 0,
       precio: formValues?.precio,
       organizador: userInfo?.id,
-      // modulos: modulos,
-      // colaboradores: colaboradores,
+      tipo: "curso",
+      nombre_foro: "Foro " + formValues?.nombre,
     };
 
-    await modulos.forEach((modulo) => {
-      let modData = {
-        nombre: modulo.nombre,
-        clases: modulo.clases,
-      };
-      createModulo(modData) // este endpoint debería resolver crear módulo + sus clases (recibe directamente el array de clases)
-        .unwrap()
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error(
-            "Error al crear el modulo " + modulo.nombre + ": ",
-            error
-          );
-        });
-    });
-    // luego creo
-
-    // console.log(cursoData);
-    /*
-    await createEvento(eventoData)
+    await createEvento(cursoData)
       .unwrap()
       .then(({ evento }) => {
-        console.log("ID DEL EVENTO CREADO: " + evento.id);
-        createCurso({
-          evento_id: evento.id,
-          porcentaje_aprobacion: formValues.porcentaje_aprobacion,
-        })
-          .unwrap()
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.error("Error al crear el curso: ", error);
-          });
+        console.log("ID DEL EVENTO CREADO: " + evento?.id);
+
+        modulos.forEach((modulo) => {
+          let modData = {
+            nombre: modulo?.nombre,
+            clases: modulo?.clases,
+            curso_id: evento?.id,
+            estado: "aprobado",
+          };
+          createModulo(modData) // este endpoint debería resolver crear módulo + sus clases (recibe directamente el array de clases)
+            .unwrap()
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.error(
+                "Error al crear el modulo " + modulo?.nombre + ": ",
+                error
+              );
+            });
+        });
       })
       .catch((error) => {
         console.error("Error al crear el evento: ", error);
       });
-    */
   };
 
   return (
@@ -241,7 +204,7 @@ export default function CreateCurso() {
         modulos={modulos}
         setModulos={setModulos}
       />
-      {selectedModule !== null && 
+      {selectedModule !== null && (
         <EditModuloModal
           open={isEditModuloOpen}
           setIsOpen={setIsEditModuloOpen}
@@ -250,9 +213,9 @@ export default function CreateCurso() {
           allModules={modulos}
           setModules={setModulos}
         />
-      }
+      )}
       <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start item-no-scrollbar">
-        <div className="w-full h-auto flex flex-col items-start justify-center pt-16">
+        <div className="w-full h-auto flex flex-col items-start justify-center">
           <p className="text-5xl text-white px-16 py-4">Agregar un curso</p>
 
           <div className="px-16 w-full gap-8 flex flex-col lg:flex-row justify-center text-white font-light">
@@ -416,7 +379,7 @@ export default function CreateCurso() {
               <Alert
                 show={true}
                 setShow={error.show}
-                important={"Uups..."}
+                important={"Error."}
                 text={error.message}
                 color={"bg-red-500"}
                 icon={"fas fa-regular fa-user"}

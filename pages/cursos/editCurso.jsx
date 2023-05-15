@@ -11,20 +11,21 @@ import { RxCross1 } from "react-icons/rx";
 
 import {
   useCreateEventoMutation,
-  useCreateCursoMutation,
   useCreateModuloMutation,
-  useCreateClaseMutation,
 } from "store/services/EventoService";
 
 import ColaboradoresModal from "components/Modals/ColaboradoresModal";
 import AddModuloModal from "components/Modals/AddModuloModal";
+import EditModuloModal from "components/Modals/EditModuloModal";
 
 export default function EditCurso() {
   // Modals
   const [isColaboradoresOpen, setIsColaboradoresOpen] = useState(false);
-  const [isModulosOpen, setIsModulosOpen] = useState(false);
+  const [isCreateModuloOpen, setIsCreateModuloOpen] = useState(false);
+  const [isEditModuloOpen, setIsEditModuloOpen] = useState(false);
   const modals = {
-    modulos: () => setIsModulosOpen((current) => !current),
+    createModulo: () => setIsCreateModuloOpen((current) => !current),
+    editModulo: () => setIsEditModuloOpen((current) => !current),
     colaboradores: () => setIsColaboradoresOpen((current) => !current),
   };
 
@@ -56,15 +57,31 @@ export default function EditCurso() {
 
   // Services
   const [createEvento, { isLoading }] = useCreateEventoMutation();
-  const [createCurso] = useCreateCursoMutation();
 
+  const [selectedModule, setSelectedModule] = useState(null);
   const [modulos, setModulos] = useState([
     {
-      id: 1,
       nombre: "Módulo Programacion",
       clases: [
         {
           nombre: "Clase tutorial",
+          video: "www.si.com",
+        },
+      ],
+    },
+    {
+      nombre: "Módulo Ingenieria Industrial",
+      clases: [
+        {
+          nombre: "Clase tutorial",
+          video: "www.si.com",
+        },
+        {
+          nombre: "Clase ejemplo",
+          video: "www.si.com",
+        },
+        {
+          nombre: "Clase Oficial",
           video: "www.si.com",
         },
       ],
@@ -123,6 +140,11 @@ export default function EditCurso() {
     value();
   };
 
+  const handleOpenEditModal = (value, module) => {
+    setSelectedModule(module);
+    value();
+  };
+
   const validateInputs = () => {
     if (cursoImage === "/img/img-1-1000x600.jpg") {
       setError({
@@ -141,6 +163,15 @@ export default function EditCurso() {
       setError({
         show: true,
         message: "Por favor ingrese el PORCENTAJE de APROBACIÓN para el curso.",
+      });
+      return false;
+    } else if (
+      formValues.porcentaje_aprobacion.trim() < 1 ||
+      formValues.porcentaje_aprobacion.trim() > 100
+    ) {
+      setError({
+        show: true,
+        message: "El porcentaje de aprobación debe de estar entre 1% y 100%.",
       });
       return false;
     }
@@ -164,41 +195,19 @@ export default function EditCurso() {
     return true;
   };
 
-  const handleCreateCurso = async (e) => {
+  const handleModifyCurso = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
-    const eventoData = {
+    const cursoData = {
       nombre: formValues?.nombre,
       descripcion: formValues?.descripcion,
       imagen: "TESTTESTTEST",
-      es_pago: formValues?.es_pago,
+      es_pago: formValues?.es_pago === true ? 1 : 0,
       precio: formValues?.precio,
       organizador: userInfo?.id,
-      // modulos: modulos,
-      // colaboradores: colaboradores,
-      // sugerencias: sugerencias,
+      tipo: "curso",
+      nombre_foro: "Foro " + formValues?.nombre,
     };
-    /*
-    await createEvento(eventoData)
-      .unwrap()
-      .then(({ evento }) => {
-        console.log("ID DEL EVENTO CREADO: " + evento.id);
-        createCurso({
-          evento_id: evento.id,
-          porcentaje_aprobacion: formValues.porcentaje_aprobacion,
-        })
-          .unwrap()
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.error("Error al crear el curso: ", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error al crear el evento: ", error);
-      });
-      */
   };
 
   return (
@@ -210,13 +219,23 @@ export default function EditCurso() {
         setColaboradores={setColaboradores}
       />
       <AddModuloModal
-        open={isModulosOpen}
-        setIsOpen={setIsModulosOpen}
+        open={isCreateModuloOpen}
+        setIsOpen={setIsCreateModuloOpen}
         modulos={modulos}
         setModulos={setModulos}
       />
+      {selectedModule !== null && (
+        <EditModuloModal
+          open={isEditModuloOpen}
+          setIsOpen={setIsEditModuloOpen}
+          currentModule={selectedModule}
+          setSelectedModule={setSelectedModule}
+          allModules={modulos}
+          setModules={setModulos}
+        />
+      )}
       <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start item-no-scrollbar">
-        <div className="w-full h-auto flex flex-col items-start justify-center pt-16">
+        <div className="w-full h-auto flex flex-col items-start justify-center">
           <p className="text-5xl text-white px-16 py-4">Modificar curso</p>
 
           <div className="px-16 w-full gap-8 flex flex-col lg:flex-row justify-center text-white font-light">
@@ -309,22 +328,25 @@ export default function EditCurso() {
                 <button
                   className="w-max self-center active:bg-purple-800 text-white font-semibold
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                  onClick={() => handleOpenModal(modals.modulos)}
+                  onClick={() => handleOpenModal(modals.createModulo)}
                 >
                   Agregar Módulo
                 </button>
               </div>
               <div className="flex flex-col overflow-y-scroll scroll-smooth px-5 py-3 h-[250px] max-h-[250px] border border-white rounded-xl gap-y-4">
-                {modulos.map((item) => {
+                {modulos.map((item, index) => {
                   return (
                     <div
-                      key={item.id}
+                      key={index}
                       className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <p>{item.nombre}</p>
                       <FiEdit3
                         className="cursor-pointer"
                         color="white"
+                        onClick={() => {
+                          handleOpenEditModal(modals.editModulo, item);
+                        }}
                         size={30}
                       />
                     </div>
@@ -338,17 +360,16 @@ export default function EditCurso() {
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                   onClick={() => {
                     handleOpenModal(modals.colaboradores);
-                    console.log(colaboradores);
                   }}
                 >
                   Agregar Colaborador
                 </button>
               </div>
               <div className="flex flex-col overflow-y-scroll scroll-smooth px-5 py-3 h-[250px] max-h-[250px] border border-white rounded-xl gap-y-4">
-                {colaboradores.map((colaborador) => {
+                {colaboradores.map((colaborador, index) => {
                   return (
                     <div
-                      key={colaborador.id}
+                      key={index}
                       className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <p>{colaborador.nombre}</p>
@@ -379,10 +400,10 @@ export default function EditCurso() {
                 </a>
               </div>
               <div className="flex flex-col overflow-y-scroll scroll-smooth px-5 py-3 h-[500px] max-h-[500px] border border-white rounded-xl gap-y-4">
-                {sugerencias.map((sugerencia) => {
+                {sugerencias.map((sugerencia, index) => {
                   return (
                     <div
-                      key={sugerencia.id}
+                      key={index}
                       className="flex w-full py-4 px-6 bg-green-500 rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <p>{sugerencia.nombre}</p>
@@ -411,7 +432,7 @@ export default function EditCurso() {
               <Alert
                 show={true}
                 setShow={error.show}
-                important={"Uups..."}
+                important={"Error."}
                 text={error.message}
                 color={"bg-red-500"}
                 icon={"fas fa-regular fa-user"}
@@ -424,8 +445,7 @@ export default function EditCurso() {
               type="submit"
               className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mb-1 ease-linear transition-all duration-150"
               onClick={(e) => {
-                handleCreateCurso(e);
-                console.log(formValues);
+                handleModifyCurso(e);
               }}
             >
               Guardar Cambios

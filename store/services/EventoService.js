@@ -48,21 +48,8 @@ export const EventoService = createApi({
                 es_pago: data?.es_pago,
                 precio: data?.precio,
                 organizador: data?.organizador,
-            }
-        }),
-        transformResponse(value) {
-          const response = value;
-          return response;
-        },
-      }),
-    createCurso: builder.mutation({
-        query: (value) => ({
-            url: `${apiRoutes.createCurso()}`,
-            method: "POST",
-            body: {
-                evento_id: value?.evento_id,
-                porcentaje_aprobacion: value?.porcentaje_aprobacion,
-                ganancias: value?.ganancias,
+                tipo: data?.tipo,
+                nombre_foro: data?.nombre_foro,
             }
         }),
         transformResponse(value) {
@@ -75,24 +62,9 @@ export const EventoService = createApi({
             url: `${apiRoutes.createModulo()}`,
             method: "POST",
             body: {
-                evento_id: data?.evento_id,
+                curso_id: data?.curso_id,
                 nombre: data?.nombre,
-                estado: data?.estado,
-            }
-        }),
-        transformResponse(value) {
-          const response = value;
-          return response;
-        },
-      }),
-    createClase: builder.mutation({
-        query: (data) => ({
-            url: `${apiRoutes.createClase()}`,
-            method: "POST",
-            body: {
-                modulo_id: data?.evento_id,
-                nombre: data?.nombre,
-                duracion: data?.duracion,
+                clases: data?.clases,
                 estado: data?.estado,
             }
         }),
@@ -107,7 +79,5 @@ export const EventoService = createApi({
 export const {
   useListarEventosQuery,
   useCreateEventoMutation,
-  useCreateCursoMutation,
   useCreateModuloMutation,
-  useCreateClaseMutation,
 } = EventoService;
