@@ -5,6 +5,7 @@ import Alert from "components/Popups/Alert";
 import SelectLocationModal from "components/SelectLocationModal/SelectLocationModal";
 import useForm from "hooks/useForm";
 import useGlobalSlice from "hooks/useGlobalSlice";
+import useUploadImage from "hooks/useUploadImage";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
@@ -29,28 +30,31 @@ const CrearSeminario = () => {
   });
   const { userInfo, handleSetLoading } = useGlobalSlice();
   const [previewImage, setPreviewImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [checkedGratis, setCheckedGratis] = useState(false);
   const [checkedOnline, setCheckedOnline] = useState(false);
   const [openSelectLocation, setOpenSelectLocation] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [createSeminario ] = useCreateEventoMutation();
+  const [createSeminario] = useCreateEventoMutation();
+  const { handleUpload, imageUrl } = useUploadImage();
 
   const hasPreviewImage = previewImage !== null;
 
   const handleChangeImage = (e) => {
     const firstFile = e?.target?.files[0];
     if (firstFile) {
+      setSelectedFile(firstFile);
       const newSrc = URL.createObjectURL(firstFile);
       setPreviewImage(newSrc);
     }
   };
 
   useEffect(() => {
-      if (previewImage) {
-        handleChangeValue("imagen", previewImage)
-      }
-  }, [previewImage])
+    if (previewImage) {
+      handleChangeValue("imagen", previewImage);
+    }
+  }, [previewImage]);
 
   const handleChangeLatLng = (cordenates) => {
     handleChangeValue("ubicacion", {
@@ -64,7 +68,7 @@ const CrearSeminario = () => {
       scrollTop();
     }
     if (error === true) {
-      setSuccess(false)
+      setSuccess(false);
     }
   }, [error, success]);
 
@@ -88,8 +92,7 @@ const CrearSeminario = () => {
         !formValues?.fecha ||
         !formValues?.hora ||
         !formValues?.link ||
-        (!checkedGratis &&
-          (formValues?.precio === 0))
+        (!checkedGratis && formValues?.precio === 0)
       ) {
         setError({
           type: "required",
@@ -101,23 +104,20 @@ const CrearSeminario = () => {
             fecha: !formValues?.fecha,
             hora: !formValues?.hora,
             link: !formValues?.link,
-            precio:
-              !checkedGratis &&
-              (formValues?.precio === 0),
+            precio: !checkedGratis && formValues?.precio === 0,
             capacidad: !formValues?.capacidad || formValues?.capacidad === 0,
           },
         });
         return;
       }
-    } else {      
+    } else {
       if (
         !formValues?.imagen ||
         !formValues?.nombre ||
         !formValues?.descripcion ||
         !formValues?.fecha ||
         !formValues?.hora ||
-        (!checkedGratis &&
-        (formValues?.precio === 0)) ||
+        (!checkedGratis && formValues?.precio === 0) ||
         formValues?.ubicacion?.lat === 0 ||
         formValues?.ubicacion?.lng === 0
       ) {
@@ -130,9 +130,7 @@ const CrearSeminario = () => {
             descripcion: !formValues?.descripcion,
             fecha: !formValues?.fecha,
             hora: !formValues?.hora,
-            precio:
-              !checkedGratis &&
-              (formValues?.precio === 0),
+            precio: !checkedGratis && formValues?.precio === 0,
             capacidad: !formValues?.capacidad || formValues?.capacidad === 0,
             lat: formValues?.ubicacion?.lat === 0,
             lng: formValues?.ubicacion?.lng === 0,
@@ -143,6 +141,8 @@ const CrearSeminario = () => {
     }
     setError(null);
 
+    handleSetLoading(true);
+    const newImage = await handleUpload(selectedFile);
     const prepareData = {
       ...formValues,
       isOnline: checkedOnline,
@@ -156,15 +156,14 @@ const CrearSeminario = () => {
       link: formValues?.link,
       fecha: formValues?.fecha,
       hora: formValues?.hora,
-
-    }
+      imagen: newImage,
+    };
     const response = await createSeminario(prepareData);
-    if (response?.data?.curso) {
+    if (response?.data?.evento) {
       setSuccess(true);
     }
+    handleSetLoading(false);
   };
-
-  console.log(error)
 
   return (
     <div className="w-full h-auto md:pt-10 flex flex-col items-center justify-start">
@@ -184,7 +183,6 @@ const CrearSeminario = () => {
         setShow={setSuccess}
         icon={<i className="fas fa-bell" />}
       />
-
 
       <p className="w-full text-center text-white text-[32px] font-bold">
         Agergar Seminario
