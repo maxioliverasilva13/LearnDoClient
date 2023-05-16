@@ -3,7 +3,7 @@ const { default: storage } = require("firebaseConfig");
 const { useState } = require("react");
 
 const useUploadImage = () => {
-  const [error, setError] = useState(null);
+  const [imageError, setImageError] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
   const handleUpload = async (file) => {
@@ -11,7 +11,6 @@ const useUploadImage = () => {
         if (!file) {
             return null;
           }
-      
           const storageRef = ref(
             storage,
             `/profileImages/${Date.now() + file?.name}`
@@ -22,14 +21,14 @@ const useUploadImage = () => {
           setImageUrl(newUrl);
           return newUrl;
     } catch (error) {
-        setError("Error al submir imagen");
+        setImageError("Error al submir imagen");
         return "";
     }
   };
 
   return {
     handleUpload,
-    error,
+    imageError,
     imageUrl,
   };
 };

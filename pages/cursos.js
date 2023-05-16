@@ -79,7 +79,7 @@ export default function Cursos() {
     <> 
       
       <div className="flex flex-wrap bg text-white relative">
-        <div className="w-full px-4 ">
+        <div className="w-full">
             <div className={ "bg-gradient-to-b from-[#780eff]  via-[#5B23A2] to-[#000] pt-12" } style={{minHeight: "100vh"}}>
               <div className={ " mt-10 " }>
                   <p className={" text-white text-center 	text-5xl font-semibold "}>Todos los eventos disponibles en nuestra plataforma</p>
@@ -158,4 +158,4 @@ export default function Cursos() {
   );
 }
 
-Cursos.layout = Admin;
+// Cursos.layout = Admin;

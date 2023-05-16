@@ -24,7 +24,6 @@ const store = configureStore({
         MessageService.middleware,
         EventosService.middleware,
         EventoService.middleware,
-
     ),
 });
 
