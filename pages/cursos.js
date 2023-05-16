@@ -1,4 +1,5 @@
 import React , { useEffect,useState} from "react";
+import { useDispatch, useSelector } from 'react-redux';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from "axios";
@@ -8,8 +9,13 @@ import FilterEventoModal from "components/Popups/FilterEventoModal";
 // layout for page
 import Admin from "layouts/Admin.js";
 
+//services
+import { useListarEventosQuery } from "store/services/EventoService";
 
-export default function Cursos() {
+
+
+
+export default function Cursos() {  
 
   const [cursosList, setCursosList] = useState([]);   
   const [hasMore, setHasMore] = useState(true);
@@ -17,64 +23,31 @@ export default function Cursos() {
   const [rowsNumbers ,setRowsNumbers] = useState(15);
   const [loading, setLoading ] = useState(true);
   const [showModalFilter, setModalFilter] = useState(false);
-  
+
   const [filterData, setFilterData] = useState(null);
   const [busqueda,setBusqueda] =  useState('');
+
+  const { data, error, isLoading , refetch} = useListarEventosQuery(page, rowsNumbers, filterData,busqueda);
+
+ 
 
   
   const  updateShowModal = (show)=>{
     setModalFilter(show);
   }
-
-
-  const getCursos = ()=>{
-    setLoading(true); 
-    const urlFinal = new URL("http://127.0.0.1:8000/api/eventos");
-
-    urlFinal.searchParams.append("page",page);
-    urlFinal.searchParams.append("maxRows", rowsNumbers);
-
-    if(filterData){
-      if(filterData.categoriasIds && filterData.categoriasIds.length > 0 ){
-        var categoriasArrQry = filterData.categoriasIds.map(function(id, idx) {
-          return '&categoria[' + idx + ']=' + id;
-       }).join('&');
-       urlFinal.href = urlFinal.href+ categoriasArrQry;
-       
-      }
-    }
-    if(busqueda && busqueda.trim().length > 0){
-      urlFinal.searchParams.append("busqueda",busqueda);
-
-    }
-    axios.get(urlFinal.href).then(response =>{
-      const { data } = response;
-      const { result} = data;
-      
-      setCursosList(cursosList.concat(result));
-      setHasMore(result.length > 0);
-      setLoading(false);
-    });
-  }
-
-  useEffect(() => {
-    getCursos(page);   
-  }, []); 
-
-
-  useEffect(()=>{
-    if(filterData){
-      setCursosList([]);  
-      setPage(1);
-      getCursos();
-    }
-    
-  }, [filterData])
-
   
+
   useEffect(()=>{
-    getCursos(); 
-  }, [page])
+    setLoading(true); 
+    refetch();
+
+    if (data) {
+      const { result } = data;
+      setCursosList(result);
+      setLoading(false); 
+    } 
+
+  }, [page,busqueda,filterData])
 
 
   function loadMoreItems() {
@@ -83,7 +56,9 @@ export default function Cursos() {
 
   function onFilterEvent(filterObj){
        setModalFilter(false);
+       setCursosList([]);  
        setFilterData(filterObj);
+       setPage(1);
   }
 
   function openModalFilters(){
@@ -93,9 +68,9 @@ export default function Cursos() {
 
  function handleChangeSearch(event){
       setCursosList([]);   
+      setPage(1);
       const text = event.target.value;
       setBusqueda(text);
-      getCursos();
  }
 
  
@@ -114,10 +89,10 @@ export default function Cursos() {
                   <div className= { "w-full flex justify-between items-center	 px-10 py-10" }>
                       <input
                         type="text"
-                        className="bg-transparent border-white text-white outline-none	rounded-full no-underline	hover:border-white	border-3	"
+                        className="bg-transparent border-white border-2 p-1 text-white outline-none	rounded-full no-underline	hover:border-white"
                         placeholder="buscar"
                         onChange={handleChangeSearch}
-                      />
+                        value={busqueda}                      />
 
                       <div className={ "flex items-center gap-5" } > 
                         <div className={ "flex items-center" } onClick={openModalFilters}> 
