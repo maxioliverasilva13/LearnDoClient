@@ -165,26 +165,26 @@ export default function CreateCurso() {
 
     await createEvento(cursoData)
       .unwrap()
-      .then(({ evento }) => {
+      .then(async ({ evento }) => {
         console.log("ID DEL EVENTO CREADO: " + evento?.id);
-        if (colaboradores.length > 0) {
+        if (colaboradores?.length > 0) {
+          const colabs = {
+            evento_id: evento?.id,
+            colaboradores: colaboradores,
+          }
+          createColaboraciones(colabs);
         }
-        const colabs = {
-          evento_id: evento?.id,
-          colaboradores: colaboradores,
-        }
-        createColaboraciones(colabs);
-        modulos.forEach((modulo) => {
+        await Promise.all(modulos?.map((modulo) => {
           let modData = {
             nombre: modulo?.nombre,
             clases: modulo?.clases,
             curso_id: evento?.id,
             estado: "aprobado",
           };
-          createModulo(modData)
+          return createModulo(modData)
             .unwrap()
             .then((response) => {
-              push(appRoutes.cursos());
+              console.log("entro");
             })
             .catch((error) => {
               console.error(
@@ -192,7 +192,8 @@ export default function CreateCurso() {
                 error
               );
             });
-        });
+        }));
+        push(appRoutes.cursos());
       })
       .catch((error) => {
         console.error("Error al crear el evento: ", error);
