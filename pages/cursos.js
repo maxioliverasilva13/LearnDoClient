@@ -15,7 +15,6 @@ import { useListarEventosQuery } from "store/services/EventoService";
 
 
 
-
 export default function Cursos() {  
 
   const [cursosList, setCursosList] = useState([]);   
@@ -24,10 +23,11 @@ export default function Cursos() {
   const [rowsNumbers ,setRowsNumbers] = useState(15);
   const [loading, setLoading ] = useState(true);
   const [showModalFilter, setModalFilter] = useState(false);
-  
+
   const [filterData, setFilterData] = useState(null);
   const [busqueda,setBusqueda] =  useState('');
 
+  const { data, error, isLoading , refetch} = useListarEventosQuery(page, rowsNumbers, filterData,busqueda);
 
  
 
@@ -35,40 +35,19 @@ export default function Cursos() {
   const  updateShowModal = (show)=>{
     setModalFilter(show);
   }
-
-
-  const getCursos = async ()=>{
-    setLoading(true); 
-    const response  = await handleListarEventos();
-    const { data } = response;
-    const { result} = data;
-    
-    setCursosList(cursosList.concat(result));
-    setHasMore(result.length > 0);
-    setLoading(false);
-   
-  }
-
-
-  useEffect(() => {
-    getCursos();   
-  }, []); 
-
-
-  useEffect(()=>{
-    if(filterData){
-      setCursosList([]);  
-      setPage(1);
-      getCursos();
-    }
-    
-  }, [filterData])
-
   
-  useEffect(()=>{
-    getCursos(); 
 
-  }, [page,busqueda])
+  useEffect(()=>{
+    setLoading(true); 
+    refetch();
+
+    if (data) {
+      const { result } = data;
+      setCursosList(result);
+      setLoading(false); 
+    } 
+
+  }, [page,busqueda,filterData])
 
 
 
@@ -78,7 +57,9 @@ export default function Cursos() {
 
   function onFilterEvent(filterObj){
        setModalFilter(false);
+       setCursosList([]);  
        setFilterData(filterObj);
+       setPage(1);
   }
 
   function openModalFilters(){
@@ -109,7 +90,7 @@ export default function Cursos() {
                   <div className= { "w-full flex justify-between items-center	 px-10 py-10" }>
                       <input
                         type="text"
-                        className="bg-transparent border-white text-white outline-none	rounded-full no-underline	hover:border-white	border-3	"
+                        className="bg-transparent border-white border-2 p-1 text-white outline-none	rounded-full no-underline	hover:border-white"
                         placeholder="buscar"
                         onChange={handleChangeSearch}
 

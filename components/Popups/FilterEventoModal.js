@@ -20,6 +20,14 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent}) => {
     { value: "SeminarioPresencial", label: 'Seminario Presencial'  },
   ];
 
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isSelected ? 'white' : 'black', // set the text color based on the selected state
+    }),
+  };
+  
+
   function closeModal(){
     updateShowModal(false);
   }
@@ -105,6 +113,7 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent}) => {
                                   color: "black"
                                 },
                               })}
+                              styles={customStyles}
                         
 
                                />
@@ -136,6 +145,7 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent}) => {
                                   text: 'black'
                                 },
                               })}
+                              styles={customStyles}
                             />
 
 

@@ -14,9 +14,10 @@ const store = configureStore({
     ChatsSlice,
    [UserService.reducerPath]: UserService.reducer,
    [MessageService.reducerPath]: MessageService.reducer,
-  },[EventoService.reducerPath]: EventoService.reducer,
+   [EventoService.reducerPath]: EventoService.reducer,
+  },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(
+    getDefaultMiddleware().concat(   
         UserService.middleware,
         MessageService.middleware,
         EventoService.middleware
