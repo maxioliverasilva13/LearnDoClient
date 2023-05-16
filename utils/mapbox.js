@@ -15,7 +15,7 @@ export const generateNewMarker = ({ lat, lng, map }) => {
 export const initMap = (container, coords) => {
     const map = new Map({
         container,
-        style: 'mapbox://styles/mapbox/dark-v10',
+        style: 'mapbox://styles/mapbox/satellite-streets-v12',
         pitchWithRotate: false,
         center: coords,
         zoom: 15,

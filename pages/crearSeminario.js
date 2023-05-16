@@ -9,7 +9,7 @@ import useUploadImage from "hooks/useUploadImage";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
-import { useCreateEventoMutation } from "store/services/EventosService";
+import { useCrearSeminarioMutation } from "store/services/EventoService";
 import { EventosType } from "utils/evento";
 import { scrollTop } from "utils/pageUtils";
 
@@ -36,7 +36,7 @@ const CrearSeminario = () => {
   const [openSelectLocation, setOpenSelectLocation] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [createSeminario] = useCreateEventoMutation();
+  const [createSeminario] = useCrearSeminarioMutation();
   const { handleUpload, imageUrl } = useUploadImage();
 
   const hasPreviewImage = previewImage !== null;
