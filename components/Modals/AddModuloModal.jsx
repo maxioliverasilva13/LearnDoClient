@@ -120,7 +120,10 @@ export default function AddModuloModal({
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={() => {setIsOpen((current)=>!current); setClasses([{ nombre: "", video: "", duracion: 0 }]);}}
+        onClose={() => {
+          setIsOpen((current) => !current);
+          setClasses([{ nombre: "", video: "", duracion: 0 }]);
+        }}
       >
         <Transition.Child
           as={Fragment}
@@ -154,14 +157,22 @@ export default function AddModuloModal({
                     >
                       Agregar Módulo
                     </Dialog.Title>
-                    <input
-                      type="text"
-                      id="nombreModulo"
-                      name="nombreModulo"
-                      className="border border-white max-w-md self-center px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
-                      placeholder="Nombre para el Módulo"
-                    />
-
+                    <div className="flex flex-col gap-5 md:gap-0 md:flex-row justify-around">
+                      <input
+                        type="text"
+                        id="nombreModulo"
+                        name="nombreModulo"
+                        className="border border-white max-w-md self-center px-6 py-3 text-white placeholder:text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                        placeholder="Nombre para el Módulo"
+                      />
+                      <button
+                        className="w-max self-center active:bg-purple-800 text-white font-semibold
+                      hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                        // onClick={/* TODO: CREAR la EVALUACIÓN para éste módulo (front+back) */}
+                      >
+                        Crear Evaluación
+                      </button>
+                    </div>
                     <div className="my-2">
                       {error.show && (
                         <Alert

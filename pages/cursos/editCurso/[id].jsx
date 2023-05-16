@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import useForm from "hooks/useForm";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import Alert from "components/Popups/Alert";
+import { useRouter } from 'next/router';
 
 import { FiEdit3 } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -119,6 +120,7 @@ export default function EditCurso() {
       nombre: "Curso Y",
     },
   ]);
+  const router = useRouter();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -246,7 +248,7 @@ export default function EditCurso() {
                   <img
                     src={cursoImage}
                     alt="vista previa imagen de perfil"
-                    className="shadow rounded-md object-scale-down h-auto w-[500px] align-middle border-none"
+                    className="shadow rounded-md object-scale-down h-auto max-h-80 w-[500px] align-middle border-none"
                   />
                 </div>
                 <input

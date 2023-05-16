@@ -2,16 +2,14 @@ import { Fragment, useRef, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-
 import Alert from "components/Popups/Alert";
 
-export default function EditModuloModal ({
+export default function EditModuloModal({
   open,
   setIsOpen,
   currentModule,
   setSelectedModule,
 }) {
-
   const [classes, setClasses] = useState(currentModule?.clases);
   const cancelButtonRef = useRef(null);
 
@@ -116,7 +114,10 @@ export default function EditModuloModal ({
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={() => {setIsOpen((current) => !current); setSelectedModule(null)}}
+        onClose={() => {
+          setIsOpen((current) => !current);
+          setSelectedModule(null);
+        }}
       >
         <Transition.Child
           as={Fragment}
@@ -150,14 +151,23 @@ export default function EditModuloModal ({
                     >
                       Editar Módulo
                     </Dialog.Title>
-                    <input
-                      type="text"
-                      id="nombreModulo"
-                      name="nombreModulo"
-                      defaultValue={currentModule?.nombre}
-                      className="border border-white max-w-md self-center px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
-                      placeholder="Nombre para el Módulo"
-                    />
+                    <div className="flex flex-col gap-5 md:gap-0 md:flex-row justify-around">
+                      <input
+                        type="text"
+                        id="nombreModulo"
+                        name="nombreModulo"
+                        defaultValue={currentModule?.nombre}
+                        className="border border-white max-w-md self-center px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                        placeholder="Nombre para el Módulo"
+                      />
+                      <button
+                        className="w-max self-center active:bg-purple-800 text-white font-semibold
+                      hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                        // onClick={/* TODO: MODIFICAR la EVALUACIÓN de éste módulo (front+back) */}
+                      >
+                        Modificar Evaluación
+                      </button>
+                    </div>
 
                     <div className="my-2">
                       {error.show && (
@@ -230,6 +240,7 @@ export default function EditModuloModal ({
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
                     onClick={() => {
                       setIsOpen(false);
+                      setSelectedModule(null);
                     }}
                     ref={cancelButtonRef}
                   >

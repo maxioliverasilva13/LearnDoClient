@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import useForm from "hooks/useForm";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import { useRouter } from "next/router";
+import useUploadImage from "hooks/useUploadImage";
 
 import { FiEdit3 } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -30,7 +31,9 @@ export default function CreateCurso() {
     colaboradores: () => setIsColaboradoresOpen((current) => !current),
   };
   
-  const [cursoImage, setCursoImage] = React.useState("/img/img-1-1000x600.jpg");
+  const [cursoImage, setCursoImage] = React.useState("/img/img-1-1000x600.jpg"); // imagen a mostrar
+  const [firebaseImage, setFirebaseImage] = useState(null);
+  const { handleUpload, imageError, imageUrl } = useUploadImage();
   const [isFree, setIsFree] = useState(false);
   const { userInfo } = useGlobalSlice();
   const [error, setError] = useState({
@@ -56,7 +59,7 @@ export default function CreateCurso() {
     porcentaje_aprobacion: "",
   });
 
-  const { pathname, push } = useRouter();
+  const { push } = useRouter();
   
   // Services
   const [createEvento] = useCreateEventoMutation();
@@ -64,40 +67,11 @@ export default function CreateCurso() {
   const [createColaboraciones] = useCreateColaboracionesMutation();
   
   const [selectedModule, setSelectedModule] = useState(null);
-  const [modulos, setModulos] = useState([
-    {
-      nombre: "aaasdsadsadsadsadsadasds",
-      estado: "aprobado",
-      clases: [
-        {
-          nombre: "Clase 1",
-          video: "video1",
-          duracion: 60,
-        },
-        {
-          nombre: "Clase 2",
-          video: "video2",
-          duracion: 120,
-        },
-      ],
-    },
-  ]);
-  const [colaboradores, setColaboradores] = useState([
-    {
-      id: 1,
-      nickname: "pepe03",
-      email: "pepe@mail.com",
-      telefono: "098365963",
-      nombre: "Pepe Gonzales",
-      biografia: "esta es mi biografia",
-      imagen: "img1",
-      status_id: 2,
-      creditos_number: 0,
-      type: "estudiante",
-    },
-  ]);
+  const [modulos, setModulos] = useState([]);
+  const [colaboradores, setColaboradores] = useState([]);
   
   const handleFileChange = (event) => {
+    setFirebaseImage(event.target.files[0]);
     if (event.target.files && event.target.files[0]) {
       setCursoImage(URL.createObjectURL(event.target.files[0]));
     }
@@ -176,10 +150,12 @@ export default function CreateCurso() {
   const handleCreateCurso = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
+    const uploadedImageUrl = await handleUpload(firebaseImage)
+    .catch((error) => console.log(error));
     const cursoData = {
       nombre: formValues?.nombre,
       descripcion: formValues?.descripcion,
-      imagen: "TESTTESTTEST",
+      imagen: uploadedImageUrl,
       es_pago: formValues?.es_pago === true ? 1 : 0,
       precio: formValues?.precio,
       organizador: userInfo?.id,
@@ -197,8 +173,6 @@ export default function CreateCurso() {
           evento_id: evento?.id,
           colaboradores: colaboradores,
         }
-        console.log("entro");
-        console.log(colabs);
         createColaboraciones(colabs);
         modulos.forEach((modulo) => {
           let modData = {
@@ -210,8 +184,7 @@ export default function CreateCurso() {
           createModulo(modData)
             .unwrap()
             .then((response) => {
-              console.log(response);
-              //push(appRoutes.cursos());
+              push(appRoutes.cursos());
             })
             .catch((error) => {
               console.error(
@@ -262,7 +235,7 @@ export default function CreateCurso() {
                   <img
                     src={cursoImage}
                     alt="vista previa imagen de perfil"
-                    className="shadow rounded-md object-scale-down h-auto w-[500px] align-middle border-none"
+                    className="shadow rounded-md object-scale-down h-auto max-h-80 w-[500px] align-middle border-none"
                   />
                 </div>
                 <input
@@ -345,6 +318,7 @@ export default function CreateCurso() {
                   className="w-max self-center active:bg-purple-800 text-white font-semibold
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                   onClick={() => {
+                    // console.log(modulos);
                     handleOpenModal(modals.createModulo);
                   }}
                 >
@@ -364,7 +338,6 @@ export default function CreateCurso() {
                         color="white"
                         onClick={() => {
                           handleOpenEditModal(modals.editModulo, item);
-                          console.log(modulos);
                         }}
                         size={30}
                       />
@@ -382,7 +355,6 @@ export default function CreateCurso() {
                   className="w-max self-center active:bg-purple-800 text-white font-semibold
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                   onClick={() => {
-                    console.log(colaboradores);
                     handleOpenModal(modals.colaboradores);
                   }}
                 >
