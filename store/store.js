@@ -19,7 +19,7 @@ const store = configureStore({
    [EventoService.reducerPath]: EventoService.reducer,
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(
+    getDefaultMiddleware().concat(   
         UserService.middleware,
         MessageService.middleware,
         EventosService.middleware,

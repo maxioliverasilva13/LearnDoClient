@@ -12,11 +12,12 @@ const baseQuery = fetchBaseQuery({
 export const EventoService = createApi({
   reducerPath: "EventoService",
   baseQuery: baseQuery,
-  tagTypes: ["EventoInfo"],
+  tagTypes: ["EventoInfo","ListEventos"],
   endpoints: builder => ({
     listarEventos: builder.query({
       query: (page,rowsNumbers, filterData = null,busqueda = '') =>{
-        let query = `${apiRoutes.listarEventos()}?page=${nickname}&maxRows=${rowsNumbers}`;
+        console.log(filterData);
+        let query = `${apiRoutes.listarEventos()}?page=${page}&maxRows=${rowsNumbers}`;
         if(filterData){
             if(filterData.categoriasIds && filterData.categoriasIds.length > 0 ){
               var categoriasArrQry = filterData.categoriasIds.map(function(id, idx) {
@@ -25,11 +26,12 @@ export const EventoService = createApi({
              query = `${query}${categoriasArrQry}`;
              
             }
-          }
-          if(busqueda && busqueda.trim().length > 0){
-            query = `${query}${busqueda}`;
-          }
-          return query;
+        }
+        if(busqueda && busqueda.trim().length > 0){
+          query = `${query}${busqueda}`;
+        }
+        console.log(query);
+        return query;
       },
       providesTags: ["ListEventos"],
       transformResponse(value) {
@@ -42,5 +44,6 @@ export const EventoService = createApi({
 });
 
 export const {
-  useListarEventosQuery
+  useListarEventosQuery,
+  
 } = EventoService;

@@ -87,7 +87,7 @@ export default function Profile() {
   return (
     <>
       <main className={ "bg-gradient-to-b from-[#780eff]  via-[#5B23A2] to-[#000] h-screen flex items-center justify-center text-white" }>
-        <section  className={ "relative block " }>
+        <section  className={ "relative block " }> 
         </section>
         <section   className={ " relative py-16 bg-blueGray-200}"  }>
             {
