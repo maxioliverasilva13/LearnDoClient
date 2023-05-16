@@ -13,8 +13,8 @@ export const EventoService = createApi({
   tagTypes: ["Eventos", "EventoInfo", "ListEventos"],
   endpoints: builder => ({
     listarEventos: builder.query({
-      query: (page,rowsNumbers, filterData = null,busqueda = '') =>{
-        console.log(filterData);
+      query: (data) =>{
+        const {page,rowsNumbers, filterData = null,busqueda = ''} = data;
         let query = `${apiRoutes.listarEventos()}?page=${page}&maxRows=${rowsNumbers}`;
         if(filterData){
             if(filterData.categoriasIds && filterData.categoriasIds.length > 0 ){
@@ -28,7 +28,7 @@ export const EventoService = createApi({
         if(busqueda && busqueda.trim().length > 0){
           query = `${query}${busqueda}`;
         }
-        console.log(query);
+        // console.log(query);
         return query;
       },
       providesTags: ["ListEventos"],
