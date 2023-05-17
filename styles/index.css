@@ -206,3 +206,8 @@ body {
 .multiSelect div {
   width: 100%;
 }
+
+
+.bgFilter {
+  backdrop-filter: blur(10px);
+}

@@ -1,4 +1,5 @@
 import { Popup, Marker, Map } from 'mapbox-gl';
+import { generateRandomColor } from './color';
 
 export const generateNewMarker = ({ lat, lng, map }) => {
     const popUp = new Popup({ closeButton: false, anchor: 'left', })
@@ -11,6 +12,21 @@ export const generateNewMarker = ({ lat, lng, map }) => {
 
     return marker;
 }
+
+
+export const generateNewMarkerWithCustomHtml = ({ lat, lng, map, html }) => {
+    const popUp = new Popup({ closeButton: false, anchor: 'left', })
+        .setHTML(html)
+
+        console.log("randomcolor is",  generateRandomColor())
+    const marker = new Marker({ color: `#${generateRandomColor()}`, scale: 1.5, draggable: false })
+        .setLngLat([lng, lat])
+        .setPopup(popUp)
+        .addTo(map)
+
+    return marker;
+}
+
 
 export const initMap = (container, coords) => {
     const map = new Map({

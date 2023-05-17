@@ -14,7 +14,7 @@ const apiRoutes = {
     createModulo: () => "/api/modulos/createModulo",
     createColaboraciones: () => "/api/colaboraciones/createColaboraciones",
     listarCategorias: () => "/api/categorias/",
-
+    listarEventosPresenciales: () => "/api/seminarios/presenciales",
 }
 
 export default apiRoutes;

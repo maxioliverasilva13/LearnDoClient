@@ -10,7 +10,7 @@ const baseQuery = fetchBaseQuery({
 export const EventoService = createApi({
   reducerPath: "EventoService",
   baseQuery: baseQuery,
-  tagTypes: ["Eventos", "EventoInfo", "ListEventos"],
+  tagTypes: ["Eventos", "EventoInfo", "ListEventos", "EventosPresenciales"],
   endpoints: (builder) => ({
     listarEventos: builder.query({
       query: (data) => {
@@ -103,6 +103,14 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getSeminariosPresenciales: builder.query({
+      query: () => apiRoutes.listarEventosPresenciales(),
+      providesTags: ["Categorias", "EventosPresenciales"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -111,5 +119,6 @@ export const {
   useCreateEventoMutation,
   useCreateModuloMutation,
   useCreateColaboracionesMutation,
-  useCrearSeminarioMutation,
+  useCrearSeminarioMutatio,
+  useGetSeminariosPresencialesQuery,
 } = EventoService;
