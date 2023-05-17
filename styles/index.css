@@ -201,3 +201,8 @@ body {
     z-index: 1000;
     /* Resto de las reglas de estilo del contenedor del modal */
   }
+
+
+.multiSelect div {
+  width: 100%;
+}

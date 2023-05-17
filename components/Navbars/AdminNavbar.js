@@ -25,16 +25,16 @@ export default function Navbar() {
         <nav className="flex-grow">
           <ul className="flex justify-center">
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Inicio</a>
+              <Link href={appRoutes.home()} className="hover:text-gray-400">Inicio</Link>
             </li>
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Cursos</a>
+              <Link href={appRoutes.cursos()} className="hover:text-gray-400">Cursos</Link>
             </li>
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Seminarios</a>
+              <Link href={appRoutes.seminarios()} className="hover:text-gray-400">Seminarios</Link>
             </li>
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Mis cursos</a>
+              <Link href="#" className="hover:text-gray-400">Mis cursos</Link>
             </li>
           </ul>
         </nav>

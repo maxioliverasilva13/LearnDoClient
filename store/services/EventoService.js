@@ -67,6 +67,7 @@ export const EventoService = createApi({
           body: data,
         };
       },
+      invalidatesTags: ["ListEventos"],
       transformResponse(value) {
         const response = value;
         return response;

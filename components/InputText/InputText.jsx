@@ -6,6 +6,7 @@ const InputText = ({
   hasError,
   placeholder,
   type = "text",
+  label,
 }) => {
   if (type === "textarea") {
     return (
@@ -23,16 +24,22 @@ const InputText = ({
   }
 
   return (
-    <input
+    <div className="w-full h-auto flex flex-col gap-2 items-start justify-start">
+      {label && (
+        <span className="text-white text-[14px] font-medium">{label}</span>
+      )}
+      <input
       onChange={onChange}
       value={value}
       type={type}
       className={clsx(
-        "appearsAnimation w-full flex-grow flex text-white outline-none placeholder-white px-4 py-2 h-[40px] bg-transparent rounded-full border",
+        "appearsAnimation placeholder-white w-full flex-grow flex text-white outline-none placeholder-white px-4 py-2 h-[40px] bg-transparent rounded-full border",
         hasError ? "border-red-500" : "border-white"
       )}
       placeholder={placeholder}
     />
+    </div>
+    
   );
 };
 

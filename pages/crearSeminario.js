@@ -1,6 +1,8 @@
 import clsx from "clsx";
 import CheckBox from "components/Checkbox/Checkbox";
+import CustomDateTime from "components/DatePicker/DateTime";
 import InputText from "components/InputText/InputText";
+import MultiSelect from "components/MultiSelect/MultiSelect";
 import Alert from "components/Popups/Alert";
 import SelectLocationModal from "components/SelectLocationModal/SelectLocationModal";
 import useForm from "hooks/useForm";
@@ -9,25 +11,29 @@ import useUploadImage from "hooks/useUploadImage";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
+import { useGetCategoriasQuery } from "store/services/CategoriaService";
 import { useCrearSeminarioMutation } from "store/services/EventoService";
+import { formatToOptions } from "utils/categorias";
 import { EventosType } from "utils/evento";
 import { scrollTop } from "utils/pageUtils";
 
 const CrearSeminario = () => {
-  const { formValues, handleChangeValue } = useForm({
-    imagen: "",
-    nombre: "",
-    descripcion: "",
-    precio: 0,
-    fecha: "",
-    hora: "",
-    link: "",
-    capacidad: 0,
-    ubicacion: {
-      lat: 0,
-      lng: 0,
-    },
-  });
+  const { formValues, handleChangeValue, handleChangeValueMultipleValues } =
+    useForm({
+      imagen: "",
+      nombre: "",
+      descripcion: "",
+      precio: 0,
+      fecha: "",
+      hora: "",
+      link: "",
+      duracion: 0,
+      capacidad: 0,
+      ubicacion: {
+        lat: 0,
+        lng: 0,
+      },
+    });
   const { userInfo, handleSetLoading } = useGlobalSlice();
   const [previewImage, setPreviewImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -37,7 +43,15 @@ const CrearSeminario = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [createSeminario] = useCrearSeminarioMutation();
-  const { handleUpload, imageUrl } = useUploadImage();
+  const { handleUpload } = useUploadImage();
+  const { data: categorias, isLoading } = useGetCategoriasQuery();
+  const [selectedCategorias, setSelectedCategorias] = useState([]);
+
+  const optionsCategorias = formatToOptions(categorias);
+
+  useEffect(() => {
+    handleSetLoading(isLoading);
+  }, [isLoading]);
 
   const hasPreviewImage = previewImage !== null;
 
@@ -91,6 +105,7 @@ const CrearSeminario = () => {
         !formValues?.descripcion ||
         !formValues?.fecha ||
         !formValues?.hora ||
+        formValues?.duracion === 0 ||
         !formValues?.link ||
         (!checkedGratis && formValues?.precio === 0)
       ) {
@@ -106,6 +121,7 @@ const CrearSeminario = () => {
             link: !formValues?.link,
             precio: !checkedGratis && formValues?.precio === 0,
             capacidad: !formValues?.capacidad || formValues?.capacidad === 0,
+            duracion: formValues?.duracion === 0,
           },
         });
         return;
@@ -116,6 +132,7 @@ const CrearSeminario = () => {
         !formValues?.nombre ||
         !formValues?.descripcion ||
         !formValues?.fecha ||
+        formValues?.duracion === 0 ||
         !formValues?.hora ||
         (!checkedGratis && formValues?.precio === 0) ||
         formValues?.ubicacion?.lat === 0 ||
@@ -134,6 +151,7 @@ const CrearSeminario = () => {
             capacidad: !formValues?.capacidad || formValues?.capacidad === 0,
             lat: formValues?.ubicacion?.lat === 0,
             lng: formValues?.ubicacion?.lng === 0,
+            duracion: formValues?.duracion === 0,
           },
         });
         return;
@@ -157,6 +175,8 @@ const CrearSeminario = () => {
       fecha: formValues?.fecha,
       hora: formValues?.hora,
       imagen: newImage,
+      duracion: formValues?.duracion,
+      categorias: selectedCategorias?.map((item) => item?.value)
     };
     const response = await createSeminario(prepareData);
     if (response?.data?.evento) {
@@ -238,6 +258,20 @@ const CrearSeminario = () => {
           placeholder="Descripcion"
           type="textarea"
         />
+        <CustomDateTime
+          hasError={getValidationError("hora") || getValidationError("fecha")}
+          setValues={(fecha, hora) => {
+            handleChangeValueMultipleValues("fecha", fecha, "hora", hora);
+          }}
+        />
+        <InputText
+          hasError={getValidationError("duracion")}
+          value={formValues?.duracion}
+          onChange={(e) => handleChangeValue("duracion", e?.target?.value)}
+          placeholder="Duracion en horas"
+          type="number"
+          label={"Duracion Horas"}
+        />
 
         <div className="w-full flex h-[40px] items-center justify-start gap-4">
           <CheckBox setValue={setCheckedGratis} label="Gratis" />
@@ -251,22 +285,6 @@ const CrearSeminario = () => {
             />
           )}
         </div>
-
-        <div className="w-full flex h-[40px] items-center justify-start gap-4">
-          <InputText
-            hasError={getValidationError("fecha")}
-            onChange={(e) => handleChangeValue("fecha", e?.target?.value)}
-            value={formValues?.fecha}
-            placeholder="Fecha"
-          />
-          <InputText
-            hasError={getValidationError("hora")}
-            onChange={(e) => handleChangeValue("hora", e?.target?.value)}
-            value={formValues?.hora}
-            placeholder="Hora"
-          />
-        </div>
-
         <div className="w-full flex h-[40px] items-center justify-start gap-4">
           <CheckBox setValue={setCheckedOnline} label="Online" />
           {checkedOnline && (
@@ -279,6 +297,7 @@ const CrearSeminario = () => {
           )}
         </div>
         <InputText
+          label={"Capacidad"}
           hasError={getValidationError("capacidad")}
           value={formValues?.capacidad}
           onChange={(e) => handleChangeValue("capacidad", e?.target?.value)}
@@ -300,6 +319,11 @@ const CrearSeminario = () => {
             Seleccionar Ubicacion
           </button>
         )}
+        <MultiSelect
+          value={selectedCategorias}
+          setValue={setSelectedCategorias}
+          options={optionsCategorias}
+        />
         <button
           type="submit"
           className="px-6 py-4 text-white rounded-full font-semibold bg-[#780EFF]"

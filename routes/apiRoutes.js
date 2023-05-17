@@ -11,9 +11,10 @@ const apiRoutes = {
     listarEventos:() => "/api/eventos",
     filterByNicknameOrEmail: () => "/api/usuarios/filterByNicknameOrEmail",
     getEventos: () => "/api/eventos/",
-    createEvento: () => "/api/eventos/createEvento",
     createModulo: () => "/api/modulos/createModulo",
     createColaboraciones: () => "/api/colaboraciones/createColaboraciones",
+    listarCategorias: () => "/api/categorias/",
+
 }
 
 export default apiRoutes;
