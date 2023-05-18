@@ -157,7 +157,7 @@ export default function CreateCurso() {
       descripcion: formValues?.descripcion,
       imagen: uploadedImageUrl,
       es_pago: formValues?.es_pago === true ? 1 : 0,
-      precio: formValues?.precio,
+      precio: formValues?.precio || 0,
       organizador: userInfo?.id,
       porcentaje_aprobacion: formValues?.porcentaje_aprobacion,
       tipo: "curso",
@@ -165,7 +165,8 @@ export default function CreateCurso() {
 
     await createEvento(cursoData)
       .unwrap()
-      .then(async ({ evento }) => {
+      .then(async (response) => {
+        const { evento } = response;
         console.log("ID DEL EVENTO CREADO: " + evento?.id);
         if (colaboradores?.length > 0) {
           const colabs = {
