@@ -119,6 +119,6 @@ export const {
   useCreateEventoMutation,
   useCreateModuloMutation,
   useCreateColaboracionesMutation,
-  useCrearSeminarioMutatio,
+  useCrearSeminarioMutation,
   useGetSeminariosPresencialesQuery,
 } = EventoService;
