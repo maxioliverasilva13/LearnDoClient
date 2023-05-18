@@ -4,6 +4,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useLazyFilterByNicknameOrEmailQuery } from "store/services/UserService";
 
+import CreateEvaluacionModal from "./CreateEvaluacionModal";
 import Alert from "components/Popups/Alert";
 
 export default function AddModuloModal({
@@ -21,11 +22,17 @@ export default function AddModuloModal({
     { nombre: "", video: "", duracion: 0 }, // Línea por defecto
   ]);
   const cancelButtonRef = useRef(null);
-
+  
   const [error, setError] = useState({
     show: false,
     message: "",
   });
+
+  const [isEvalModuloOpen, setIsEvalModuloOpen] = useState(false);
+  
+  const handleOpenModal = () => {
+    setIsEvalModuloOpen((current) => !current);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -33,7 +40,7 @@ export default function AddModuloModal({
         show: false,
       });
     }, 5000);
-
+    
     return () => clearTimeout(timer);
   }, [error.show]);
 
@@ -113,8 +120,15 @@ export default function AddModuloModal({
     updatedClasses.splice(index, 1);
     setClasses(updatedClasses);
   };
+  
 
   return (
+    <>
+    <CreateEvaluacionModal
+        isOpen={isEvalModuloOpen}
+        setIsOpen={setIsEvalModuloOpen}
+        // setModulos={setModulos}
+      />
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
@@ -169,6 +183,7 @@ export default function AddModuloModal({
                         className="w-max self-center active:bg-purple-800 text-white font-semibold
                       hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                         // onClick={/* TODO: CREAR la EVALUACIÓN para éste módulo (front+back) */}
+                        onClick={handleOpenModal}
                       >
                         Crear Evaluación
                       </button>
@@ -256,5 +271,6 @@ export default function AddModuloModal({
         </div>
       </Dialog>
     </Transition.Root>
+    </>
   );
 }
