@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
 import { BiMessageAlt } from 'react-icons/bi';
 import { MdOutlineStars } from 'react-icons/md';
+import { useRouter } from "next/router";
+
+import Modal from "../Modal/modal"
 
 export default function Navbar() {
+  const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
   return (
     <>
       {/* Navbar */}
@@ -15,18 +20,19 @@ export default function Navbar() {
         </div>
         {/* Navigation */}
         <nav className="flex-grow">
-          <ul className="flex justify-center">
+          <ul className="flex justify-center ml-[200px]">
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Inicio</a>
+              <a href="#" className="hover:text-gray-400" onClick={() => setShowModal(true)}>Inicio</a>
             </li>
             <li className="px-4">
               <a href="#" className="hover:text-gray-400">Cursos</a>
             </li>
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Seminarios</a>
+              <a href="#" className="hover:text-gray-400">Seminarios
+              </a>
             </li>
             <li className="px-4">
-              <a href="#" className="hover:text-gray-400">Mis cursos</a>
+              <a href="/mis_cursos" className="hover:text-gray-400 ">Mis cursos</a>
             </li>
           </ul>
         </nav>
@@ -48,6 +54,7 @@ export default function Navbar() {
             </button>
           </div>
         </div>
+        <Modal isVisible={showModal}/>
       </header>
       {/* End Navbar */}
     </>
