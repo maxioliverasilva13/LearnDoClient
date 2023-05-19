@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { RxCrossCircled } from 'react-icons/rx';
 
 
-const Modal = ({ isVisible, onClose, children }) => {
+const Modal = ({ isVisible, onClose, children, alto, ancho }) => {
     if (!isVisible) return null;
 
     const handleClose = (e) => {
@@ -10,15 +10,15 @@ const Modal = ({ isVisible, onClose, children }) => {
     }
 
     return (
-        <div className="fixed inset-0 bg-black-800/200 backdrop-blur-sm flex justify-center items-center" id="wrapper" onClick={handleClose}>
-            <div className="w-[600px] h-auto bg-gray-900 p-2 rounded-lg flex flex-col">
+        <div className="fixed inset-0 bg-black-800/200 backdrop-blur-md flex justify-center items-center" id="wrapper" onClick={handleClose}>
+            <div className="bg-gray-900 p-2 rounded-lg flex flex-col" style={{ height: `${alto}%`, width: `${ancho}%`  }}>
                 <div className="w-full flex justify-end items-start">
                     <button classname="" onClick={() => onClose()}>
                         <RxCrossCircled size={30} color="white">
                         </RxCrossCircled>
                     </button>
                 </div>
-                <div className="flex flex-col items-center justify-start">
+                <div className="h-full w-full flex flex-col items-center justify-start">
                     {children}
                 </div>
             </div>

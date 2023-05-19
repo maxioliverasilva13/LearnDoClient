@@ -5,15 +5,13 @@ import { BiMessageAlt } from 'react-icons/bi';
 import { MdOutlineStars } from 'react-icons/md';
 import { useRouter } from "next/router";
 
-import Modal from "../Modal/modal"
 
 export default function Navbar() {
   const router = useRouter();
-  const [showModal, setShowModal] = useState(false);
   return (
     <>
       {/* Navbar */}
-      <header className="flex items-center text-white h-16" style={{ backgroundColor: '#31174A' }}>
+      <header className="w-full flex items-center text-white h-16" style={{ backgroundColor: '#31174A' }}>
         {/* Logo */}
         <div className="px-4">
           <span className="text-lg font-bold">learndo</span>
@@ -54,7 +52,6 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-        <Modal isVisible={showModal}/>
       </header>
       {/* End Navbar */}
     </>
