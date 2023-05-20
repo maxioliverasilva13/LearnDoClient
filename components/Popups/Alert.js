@@ -13,12 +13,12 @@ const Alert = ({important, text, color, icon, show, setShow}) => {
           <span className="inline-block align-middle mr-8">
             <b className="capitalize">{important}</b> {text}
           </span>
-          <button
+          {/* <button
             className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
             onClick={() => setShow(false)}
           >
             <span>×</span>
-          </button>
+          </button> */}
         </div>
       ) : null}
     </>

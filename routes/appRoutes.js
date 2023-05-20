@@ -7,6 +7,7 @@ const appRoutes = {
     cursos: () => "/cursos",
     profile: () => "/perfil",
     landing: () => "/",
-}  
+    messages: () => "/messages",
+}
 
 export default appRoutes;

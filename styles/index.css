@@ -11,9 +11,14 @@
     animation-timing-function: linear;
   }
 
+@font-face {
+  font-family: 'Gotham';
+  src: url("../public/fonts/GothamMedium.ttf") format("opentype");
+}
 
-
-
+*{
+  /* font-family: 'Gotham'; */
+}
 
   @keyframes spin {
     from {
@@ -89,6 +94,14 @@ body {
   }
 }
 
+@keyframes appearsMessageAlert {
+  from {
+    margin-left: 500px;
+  }
+  to {
+    margin-right: 0px;
+  }
+}
 
 @keyframes messageAppearsMe {
   from {
@@ -99,6 +112,19 @@ body {
   }
 }
 
+@keyframes opacityAppears {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100;
+  }
+}
+
+.appearsAnimation {
+  transition: all .3s ease;
+  animation: opacityAppears .3s ease;
+}
 
 .messageAppearsAnimationMe {
   animation: messageAppearsMe .5s ease;
@@ -107,6 +133,11 @@ body {
 
 .appearsMessageYou {
   animation: appearsMessageYouAnimation .5s ease!important;
+}
+
+
+.appearsMessage {
+  animation: appearsMessageAlert .5s ease!important;
 }
 
 
@@ -131,6 +162,28 @@ body {
   width: 10px;
 }
 
+/* width */
+.item-no-scrollbar ::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.item-no-scrollbar ::-webkit-scrollbar-track {
+  background: inherit; 
+}
+ 
+/* Handle */
+.item-no-scrollbar ::-webkit-scrollbar-thumb {
+  background: #780EFF; /* color de la barra */ 
+  border-radius: 100px;
+}
+
+/* Handle on hover */
+.item-no-scrollbar ::-webkit-scrollbar-thumb:hover {
+  background: #600EFF; /* cuando hago hover */
+  width: 10px;
+}
+
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -151,3 +204,13 @@ body {
 
 
   }
+
+
+.multiSelect div {
+  width: 100%;
+}
+
+
+.bgFilter {
+  backdrop-filter: blur(10px);
+}

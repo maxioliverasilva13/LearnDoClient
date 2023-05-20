@@ -58,9 +58,12 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent}) => {
   
         <div className="modal-overlay">
   <div className="modal-container">
-  <div
+    
+      <div
          className={"fixed top-0 right-0 z-50 w-full h-full flex items-center justify-center" }
        >  
+
+       
             <form action="#" method="get"  tabIndex="-1" aria-hidden="true" >
        <div className={"relative w-full h-full max-w-md md:h-auto"}>
            <div className={"relative bg-white rounded-lg shadow dark:bg-gray-800 w-[500px] h-auto"}>

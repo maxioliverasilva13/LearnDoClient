@@ -12,9 +12,18 @@ const useForm = (initialValues) => {
         })
     }
 
+    const handleChangeValueMultipleValues = (key, value, key2, value2) => {
+        setFormValues({
+            ...formValues,
+            [key]: value,
+            [key2]: value2,
+        })
+    }
+
     return {
         formValues,
         handleChangeValue,
+        handleChangeValueMultipleValues,
     }
 }
 

@@ -127,14 +127,13 @@ export default function Register() {
     };
 
     const response = await createUser(formValuesToSend);
-    if (response?.data?.user) {
+    if (response?.data?.ok) {
       setUserCreatedCorrect(true);
       setError({
         ...error,
         show: false,
       });
     } else {
-      console.log(response);
       if (response?.error?.data?.ok === false) {
         setError({
           show: true,
