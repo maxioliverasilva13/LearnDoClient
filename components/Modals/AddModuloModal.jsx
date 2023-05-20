@@ -13,14 +13,10 @@ export default function AddModuloModal({
   modulos,
   setModulos,
 }) {
-  // const [checkNickname] = useLazyFilterByNicknameOrEmailQuery();
 
-  // const [isQueryLoading, setIsQueryLoading] = useState(false);
-  // const [searchValue, setSearchValue] = useState("");
-
-  const [classes, setClasses] = useState([
-    { nombre: "", video: "", duracion: 0 }, // Línea por defecto
-  ]);
+  const [classes, setClasses] = useState([{ nombre: "", video: "", duracion: 0 },]);
+  const [evaluacion, setEvaluacion] = useState({ nombre: "", maximo_puntuacion: "", preguntas: []});
+  
   const cancelButtonRef = useRef(null);
   
   const [error, setError] = useState({
@@ -43,28 +39,6 @@ export default function AddModuloModal({
     
     return () => clearTimeout(timer);
   }, [error.show]);
-
-  /*
-  useEffect(() => {
-    if (searchValue.length > 0) {
-      setFilteredUsers([]);
-      setIsQueryLoading(true);
-    }
-
-    clearTimeout(timer);
-    timer = setTimeout(async () => {
-      if (searchValue.length >= 2) {
-        await checkNickname(searchValue).then((res) => {
-          // console.log(res.data);
-          setFilteredUsers(res.data);
-          setIsQueryLoading(false);
-        });
-      }
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [searchValue]);
-  */
 
   const handleSaveModulo = (e) => {
     e.preventDefault();
@@ -96,6 +70,7 @@ export default function AddModuloModal({
       nombre: nombre,
       estado: "aprobado",
       clases: classes,
+      evaluacion: evaluacion,
     };
     console.log(modulo);
     setModulos((current) => [...current, modulo]);
@@ -127,7 +102,7 @@ export default function AddModuloModal({
     <CreateEvaluacionModal
         isOpen={isEvalModuloOpen}
         setIsOpen={setIsEvalModuloOpen}
-        // setModulos={setModulos}
+        setEvaluacion={setEvaluacion}       
       />
     <Transition.Root show={open} as={Fragment}>
       <Dialog

@@ -81,6 +81,7 @@ export const EventoService = createApi({
           curso_id: data?.curso_id,
           nombre: data?.nombre,
           clases: data?.clases,
+          evaluacion: data?.evaluacion,
           estado: data?.estado,
         },
       }),
