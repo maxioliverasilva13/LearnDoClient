@@ -15,6 +15,7 @@ const apiRoutes = {
     createColaboraciones: () => "/api/colaboraciones/createColaboraciones",
     listarCategorias: () => "/api/categorias/",
     listarEventosPresenciales: () => "/api/seminarios/presenciales",
+    getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso"
 }
 
 export default apiRoutes;
