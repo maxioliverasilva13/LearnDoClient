@@ -15,6 +15,9 @@ const apiRoutes = {
     createColaboraciones: () => "/api/colaboraciones/createColaboraciones",
     listarCategorias: () => "/api/categorias/",
     listarEventosPresenciales: () => "/api/seminarios/presenciales",
+    createComment: () => "/api/comentarios",
+    createPost: () => "/api/publicaciones",
+    createPost: () => "/api/publicaciones",
     getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso"
 }
 

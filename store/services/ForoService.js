@@ -7,12 +7,12 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders,
 });
 
-export const EventoService = createApi({
-  reducerPath: "EventoService",
+export const ForoService = createApi({
+  reducerPath: "ForoService",
   baseQuery: baseQuery,
-  tagTypes: ["Eventos", "EventoInfo", "ListEventos", "EventosPresenciales", "SelectedCursoInfo"],
+  tagTypes: ["ForoInfo"],
   endpoints: (builder) => ({
-    listarEventos: builder.query({
+    getForo: builder.query({
       query: (data) => {
         const { page, rowsNumbers, filterData = null, busqueda = "" } = data;
         let query = `${apiRoutes.listarEventos()}?page=${page}&maxRows=${rowsNumbers}`;
@@ -111,14 +111,6 @@ export const EventoService = createApi({
         return response;
       },
     }),
-    getCompleteCursoInfo: builder.query({
-    query: ({cursoId}) => `${apiRoutes.getCompleteCursoInfo()}?cursoId=${cursoId}`,
-      providesTags: ["SelectedCursoInfo"],
-      transformResponse(value) {
-        const response = value;
-        return response;
-      },
-    }),
   }),
 });
 
@@ -127,7 +119,6 @@ export const {
   useCreateEventoMutation,
   useCreateModuloMutation,
   useCreateColaboracionesMutation,
-  useCrearSeminarioMutation,
+  useCrearSeminarioMutatio,
   useGetSeminariosPresencialesQuery,
-  useGetCompleteCursoInfoQuery,
 } = EventoService;

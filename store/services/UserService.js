@@ -67,6 +67,7 @@ export const UserService = createApi({
         method: "PUT",
         body: data
       }),
+
     }),
     filterByNicknameOrEmail: builder.query({
       query: (value) => `${apiRoutes.filterByNicknameOrEmail()}?value=${value}`,
@@ -85,6 +86,5 @@ export const {
   useActivateMutation,
   useSignUpMutation,
   useGetCurrentUserQuery,
-  useChangeMeInfoMutation,
-  useLazyFilterByNicknameOrEmailQuery,
+  useChangeMeInfoMutation
 } = UserService;

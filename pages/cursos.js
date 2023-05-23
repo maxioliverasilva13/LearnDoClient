@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React , { useEffect,useState} from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import InfiniteScroll from "react-infinite-scroll-component";
-import axios from "axios";
 import Spinner from "components/Spinner/Spinner";
 import FilterEventoModal from "components/Popups/FilterEventoModal";
+
+// layout for page
+import Admin from "layouts/Admin.js";
 
 //services
 import { useListarEventosQuery } from "store/services/EventoService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 
-export default function Cursos() {
-  const [cursosList, setCursosList] = useState([]);
+
+
+
+export default function Cursos() {  
+
+  const [cursosList, setCursosList] = useState([]);   
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [rowsNumbers, setRowsNumbers] = useState(15);
@@ -21,16 +28,18 @@ export default function Cursos() {
   const [filterData, setFilterData] = useState(null);
   const [busqueda, setBusqueda] = useState("");
 
-  const { data, error, isLoading, refetch } = useListarEventosQuery({
-    page: page,
-    rowsNumbers,
-    filterData,
-    busqueda,
-  });
+  const { data, error, isLoading , refetch} = useListarEventosQuery(page, rowsNumbers, filterData,busqueda);
+ 
 
-  const updateShowModal = (show) => {
+  
+  const  updateShowModal = (show)=>{
     setModalFilter(show);
-  };
+  }
+  
+
+
+
+  
 
   useEffect(() => {
     refetch();
@@ -60,16 +69,19 @@ export default function Cursos() {
     setModalFilter(true);
   }
 
-  function handleChangeSearch(event) {
-    setCursosList([]);
-    setPage(1);
-    const text = event.target.value;
-    setBusqueda(text);
-  }
+ function handleChangeSearch(event){
+      setCursosList([]);   
+      setPage(1);
+      const text = event.target.value;
+      setBusqueda(text);
+ }
+
+ 
 
   return (
     <>
       <div className="flex flex-wrap bg text-white relative">
+
         <div className="w-full">
           <div
             className={
@@ -143,4 +155,7 @@ export default function Cursos() {
       </div>
     </>
   );
+
 }
+
+Cursos.layout = Admin;
