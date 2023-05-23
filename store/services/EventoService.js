@@ -10,7 +10,7 @@ const baseQuery = fetchBaseQuery({
 export const EventoService = createApi({
   reducerPath: "EventoService",
   baseQuery: baseQuery,
-  tagTypes: ["Eventos", "EventoInfo", "ListEventos", "EventosPresenciales"],
+  tagTypes: ["Eventos", "EventoInfo", "ListEventos", "EventosPresenciales", "SelectedCursoInfo"],
   endpoints: (builder) => ({
     listarEventos: builder.query({
       query: (data) => {
@@ -111,6 +111,14 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getCompleteCursoInfo: builder.query({
+    query: ({cursoId}) => `${apiRoutes.getCompleteCursoInfo()}?cursoId=${cursoId}`,
+      providesTags: ["SelectedCursoInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -119,6 +127,7 @@ export const {
   useCreateEventoMutation,
   useCreateModuloMutation,
   useCreateColaboracionesMutation,
-  useCrearSeminarioMutatio,
+  useCrearSeminarioMutation,
   useGetSeminariosPresencialesQuery,
+  useGetCompleteCursoInfoQuery,
 } = EventoService;

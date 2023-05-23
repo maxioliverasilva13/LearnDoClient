@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
 import { BiMessageAlt } from 'react-icons/bi';
+import { MdOutlineStars } from 'react-icons/md';
+
 import { FaBeer } from 'react-icons/fa';
 import useChats from "hooks/useChats";
 import Link from "next/link";
@@ -23,7 +25,7 @@ export default function Navbar() {
         </div>
         {/* Navigation */}
         <nav className="flex-grow">
-          <ul className="flex justify-center">
+          <ul className="flex justify-center ml-[200px]">
             <li className="px-4">
               <Link href={appRoutes.home()} className="hover:text-gray-400">Inicio</Link>
             </li>
@@ -44,10 +46,8 @@ export default function Navbar() {
             <input type="text" placeholder="Buscar" className="text-white px-4 py-2 w-64 border border-white rounded-l-full rounded-r-full h-8 w-[200px]" style={{ backgroundColor: '#31174A' }}>
             </input>
           </div>
-          <div>
-            <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out ml-4">
-
-            </button>
+          <div className="ml-4 relative">
+            <MdOutlineStars size={30} />
           </div>
           <Link href={appRoutes.messages()}>
           <div className="ml-4 relative">
@@ -62,8 +62,8 @@ export default function Navbar() {
           </div>
           </Link>
           <div className="ml-4 relative">
-            <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out">
-              <img className="h-8 w-8 rounded-full object-cover" src="https://via.placeholder.com/50" alt="User avatar"></img>
+            <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out">
+              <img class="h-8 w-8 rounded-full object-cover" src="https://via.placeholder.com/50" alt="User avatar"></img>
             </button>
           </div>
         </div>

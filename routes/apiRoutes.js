@@ -17,10 +17,8 @@ const apiRoutes = {
     listarEventosPresenciales: () => "/api/seminarios/presenciales",
     createComment: () => "/api/comentarios",
     createPost: () => "/api/publicaciones",
-    createPost: () => "/api/publicaciones"
-    
-
-    
+    createPost: () => "/api/publicaciones",
+    getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso"
 }
 
 export default apiRoutes;

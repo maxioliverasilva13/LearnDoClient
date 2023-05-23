@@ -11,6 +11,7 @@ import Admin from "layouts/Admin.js";
 
 //services
 import { useListarEventosQuery } from "store/services/EventoService";
+import useGlobalSlice from "hooks/useGlobalSlice";
 
 
 
@@ -21,8 +22,8 @@ export default function Cursos() {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [rowsNumbers, setRowsNumbers] = useState(15);
-  const [loading, setLoading] = useState(true);
   const [showModalFilter, setModalFilter] = useState(false);
+  const { handleSetLoading  } = useGlobalSlice();
 
   const [filterData, setFilterData] = useState(null);
   const [busqueda, setBusqueda] = useState("");
@@ -46,21 +47,22 @@ export default function Cursos() {
     if (data) {
       const { result } = data;
       setCursosList(result);
-    } 
-
-  }, [page,busqueda,filterData])
-
-
+    }
+  }, [page, busqueda, filterData, data]);
 
   function loadMoreItems() {
     setPage(page + 1);
   }
 
-  function onFilterEvent(filterObj){
-       setModalFilter(false);
-       setCursosList([]);  
-       setFilterData(filterObj);
-       setPage(1);
+  useEffect(() => {
+    handleSetLoading(isLoading)
+  }, [isLoading])
+
+  function onFilterEvent(filterObj) {
+    setModalFilter(false);
+    setCursosList([]);
+    setFilterData(filterObj);
+    setPage(1);
   }
 
   function openModalFilters() {
@@ -116,7 +118,6 @@ export default function Cursos() {
                   </div>
                 </div>
               </div>
-              {isLoading && <Spinner></Spinner>}
               {cursosList.length <= 0 && !isLoading && (
                 <h2>Lo sentimos pero no existen eventos disponibles.</h2>
               )}
