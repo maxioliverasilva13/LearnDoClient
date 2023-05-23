@@ -10,7 +10,16 @@
     animation-iteration-count: infinite;
     animation-timing-function: linear;
   }
-  
+
+@font-face {
+  font-family: 'Gotham';
+  src: url("../public/fonts/GothamMedium.ttf") format("opentype");
+}
+
+*{
+  /* font-family: 'Gotham'; */
+}
+
   @keyframes spin {
     from {
       transform: rotate(0deg);
@@ -20,9 +29,24 @@
     }
   }
 
+* { 
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
 
 body {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  width: 100%!important;
+  height: 100vh!important;
   background: linear-gradient(180deg, #780EFF 0%, #5B23A2 26.04%, #000000 100%)!important;
+}
+
+#__next { 
+  width: 100%!important;
+  height: 100%!important;
 }
   
 .cursoBGOverlay {
@@ -58,4 +82,178 @@ body {
 
 .cursosGridTemplate {
   grid-template-columns: repeat(auto-fit, minmax(220px, 220px))
+}
+
+@keyframes appearsMessageYouAnimation {
+  from {
+    margin-left: 200px;
+  }
+  to {
+    margin-right: 0px;
+  }
+}
+
+@keyframes appearsMessageAlert {
+  from {
+    margin-left: 500px;
+  }
+  to {
+    margin-right: 0px;
+  }
+}
+
+@keyframes messageAppearsMe {
+  from {
+    margin-left: -200px;
+  }
+  to {
+    margin-left: 0px;
+  }
+}
+
+@keyframes opacityAppears {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100;
+  }
+}
+
+.appearsAnimation {
+  transition: all .3s ease;
+  animation: opacityAppears .3s ease;
+}
+
+.messageAppearsAnimationMe {
+  animation: messageAppearsMe .5s ease;
+}
+
+
+.appearsMessageYou {
+  animation: appearsMessageYouAnimation .5s ease!important;
+}
+
+
+.appearsMessage {
+  animation: appearsMessageAlert .5s ease!important;
+}
+
+
+/* width */
+.chat ::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.chat ::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.chat ::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+.chat ::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  width: 10px;
+}
+
+/* width */
+.item-no-scrollbar ::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.item-no-scrollbar ::-webkit-scrollbar-track {
+  background: inherit; 
+}
+ 
+/* Handle */
+.item-no-scrollbar ::-webkit-scrollbar-thumb {
+  background: #780EFF; /* color de la barra */ 
+  border-radius: 100px;
+}
+
+/* Handle on hover */
+.item-no-scrollbar ::-webkit-scrollbar-thumb:hover {
+  background: #600EFF; /* cuando hago hover */
+  width: 10px;
+}
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
+  .modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    /* Resto de las reglas de estilo del contenedor del modal */
+  }
+
+
+.multiSelect div {
+  width: 100%;
+}
+
+
+.bgFilter {
+  backdrop-filter: blur(10px);
+}
+
+.moduloContainer:hover {
+  transition: all .3s ease;
+  background-color: #d9d9d94b;
+}
+.moduloContainer::after {
+  transition: all .3s ease;
+  content: '';
+  width: 0; 
+  height: 0; 
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+  
+  border-left: 30px solid transparent;
+  position: absolute;
+  right: -30px;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.moduloContainerActive {
+  transition: all .3s ease-in-out;
+  background-color: #d9d9d94b;
+}
+.moduloContainerActive::after {
+  transition: all .3s ease;
+  content: '';
+  width: 0; 
+  height: 0; 
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+  
+  border-left: 30px solid #d9d9d94b;
+  position: absolute;
+  right: -30px;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.moduloContainer:hover::after {
+  border-left: 30px solid #d9d9d94b;
 }

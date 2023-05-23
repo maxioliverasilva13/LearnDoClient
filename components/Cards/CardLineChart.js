@@ -1,7 +1,7 @@
 import React from "react";
 import Chart from "chart.js";
 
-export default function CardLineChart() {
+export default function CardLineChart({title}) {
   React.useEffect(() => {
     var config = {
       type: "line",
@@ -18,18 +18,18 @@ export default function CardLineChart() {
         datasets: [
           {
             label: new Date().getFullYear(),
-            backgroundColor: "#4c51bf",
-            borderColor: "#4c51bf",
+            backgroundColor: "#780EFF",
+            borderColor: "#780EFF",
             data: [65, 78, 66, 44, 56, 67, 75],
             fill: false,
           },
-          {
-            label: new Date().getFullYear() - 1,
-            fill: false,
-            backgroundColor: "#fff",
-            borderColor: "#fff",
-            data: [40, 68, 86, 74, 56, 60, 87],
-          },
+          // {
+          //   label: new Date().getFullYear() - 1,
+          //   fill: false,
+          //   backgroundColor: "#fff",
+          //   borderColor: "#fff",
+          //   data: [40, 68, 86, 74, 56, 60, 87],
+          // },
         ],
       },
       options: {
@@ -108,14 +108,14 @@ export default function CardLineChart() {
   }, []);
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">
+      <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-[#242424] p-10">
         <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
           <div className="flex flex-wrap items-center">
-            <div className="relative w-full max-w-full flex-grow flex-1">
+            <div className="relative w-full max-w-full flex-grow flex-1 p-">
               <h6 className="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
                 Overview
               </h6>
-              <h2 className="text-white text-xl font-semibold">Sales value</h2>
+              <h2 className="text-white text-xl font-semibold">{title}</h2>
             </div>
           </div>
         </div>

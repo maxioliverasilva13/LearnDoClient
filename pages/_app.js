@@ -3,7 +3,7 @@ import React from "react";
 import App from "next/app";
 import Head from "next/head";
 // import Router from "next/router";
-
+ 
 // import PageChange from "components/PageChange/PageChange.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
@@ -11,9 +11,10 @@ import { Provider } from "react-redux";
 import store from "store/store";
 import CheckTokenWrapper from "components/CheckTokenWrapper/CheckTokenWrapper";
 import LoadingWrapper from "components/LoadingWrapper/LoadingWrapper";
-import "../styles/index.css"
-import "../styles/tailwind.css"
-import 'react-dropdown/style.css';
+import "../styles/index.css";
+import "../styles/tailwind.css";
+import "react-dropdown/style.css";
+import MessageWrapper from "components/MessageWrapper/MessageWrapper";
 
 // Router.events.on("routeChangeStart", (url) => {
 //   console.log(`Loading: ${url}`);
@@ -78,14 +79,21 @@ export default class MyApp extends App {
               content="width=device-width, initial-scale=1.0"
             />
             <title>LearnDo</title>
+            <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet"/>
             <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+            <link
+              href="https://fonts.cdnfonts.com/css/gotham"
+              rel="stylesheet"
+            />
             <script src="https://cdn.tailwindcss.com"></script>
           </Head>
           <CheckTokenWrapper>
             <LoadingWrapper>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              <MessageWrapper>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </MessageWrapper>
             </LoadingWrapper>
           </CheckTokenWrapper>
         </React.Fragment>

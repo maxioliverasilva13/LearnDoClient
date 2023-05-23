@@ -60,6 +60,21 @@ export const UserService = createApi({
         return response;
       },
     }),
+
+    changeMeInfo: builder.mutation({
+      query: (data) => ({
+        url: apiRoutes.me(),
+        method: "PUT",
+        body: data
+      }),
+    }),
+    filterByNicknameOrEmail: builder.query({
+      query: (value) => `${apiRoutes.filterByNicknameOrEmail()}?value=${value}`,
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -70,4 +85,6 @@ export const {
   useActivateMutation,
   useSignUpMutation,
   useGetCurrentUserQuery,
+  useChangeMeInfoMutation,
+  useLazyFilterByNicknameOrEmailQuery,
 } = UserService;

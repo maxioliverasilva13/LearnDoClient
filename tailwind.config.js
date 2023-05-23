@@ -9,13 +9,17 @@ module.exports = {
     "./**/*.html", "./*.html", "./**/*.js", "./*.js", "./**/*.jsx", "./*.jsx"
   ],
   theme: {
+    fontFamily: {
+      'Gotham': ['Gotham', 'sans-serif'],
+    },
     colors: {
       ...colors,
     },
     extend: {
-      colors: {
-        red2: "red"
+      fontFamily: {
+        'gotham': ['Gotham', 'sans-serif']
       },
+
       minHeight: {
         "screen-75": "75vh",
       },
@@ -29,6 +33,7 @@ module.exports = {
         2: 2,
         3: 3,
       },
+      
       inset: {
         "-100": "-100%",
         "-225-px": "-225px",
@@ -89,7 +94,7 @@ module.exports = {
     "disabled",
   ],
   plugins: [
-    // require("@tailwindcss/forms"),
+    require("@tailwindcss/forms"),
     plugin(function ({ addComponents, theme }) {
       const screens = theme("screens", {});
       addComponents([
