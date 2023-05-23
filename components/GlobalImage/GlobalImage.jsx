@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const GlobalImage = ({ src, className, objectFit, layout }) => {
   const [isLoading, setIsLoading] = useState(true);
-
+  const imageSrc = src || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
   const handleLoadingComplete = () => {
     setIsLoading(false);
   };
@@ -12,8 +12,8 @@ const GlobalImage = ({ src, className, objectFit, layout }) => {
   return (
     <Image
       onLoadingComplete={handleLoadingComplete}
-      src={src}
-      loader={() => src}
+      src={imageSrc}
+      loader={() => imageSrc}
       className={clsx(
         className,
         "transition-all",

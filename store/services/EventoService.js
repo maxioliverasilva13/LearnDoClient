@@ -145,6 +145,25 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    puntuarCurso: builder.mutation({
+      query: (data) => {
+        return {
+          url: `${apiRoutes.puntuarCurso()}`,
+          method: "POST",
+          body: {
+            description: data?.description,
+            rating: data?.rating,
+            userId: data?.userId,
+            cursoId: data?.cursoId,
+          },
+        };
+      },
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+      invalidatesTags: ["SelectedCursoInfo"],
+    }),
   }),
 });
 
@@ -157,4 +176,5 @@ export const {
   useUploadVideoMutation,
   useGetSeminariosPresencialesQuery,
   useGetCompleteCursoInfoQuery,
+  usePuntuarCursoMutation,
 } = EventoService;

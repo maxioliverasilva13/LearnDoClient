@@ -4,7 +4,7 @@ import { BsChevronDown } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import OutsideClickHandler from 'react-outside-click-handler';
 
-const MultiSelect = ({ options, value, setValue }) => {
+const MultiSelect = ({ options, value, setValue, }) => {
   const [isExpanded, setIsExpanded] = useState(null);
   const [query, setQuery] = useState("");
   const hasQuery = query !== "";
@@ -27,6 +27,7 @@ const MultiSelect = ({ options, value, setValue }) => {
     if (!itemExists) {
       setValue([...value, item]);
     }
+    setIsExpanded(false);
   };
 
   const handleRemoveItem = (item) => {
@@ -76,7 +77,7 @@ const MultiSelect = ({ options, value, setValue }) => {
         })}
       </div>
       {isExpanded && (
-        <div className="w-full appearsAnimation max-h-[200px] overflow-auto h-auto p-2 flex flex-col rounded-lg shadow-md absolute top-full bg-white">
+        <div className="w-full appearsAnimation max-h-[200px] overflow-auto h-auto p-2 flex flex-col rounded-lg shadow-md absolute top-[55px] bg-white">
           {
           valuesToMap?.map((item, index) => {
             return (

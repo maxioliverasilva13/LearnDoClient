@@ -62,17 +62,6 @@ export default function MisCursos() {
                 <Tarjeta nombreCurso={"lalala"} descripcionCurso={"jasdfj"} porcentajeCurso={"20"}></Tarjeta>
                 <Tarjeta nombreCurso={"lalala"} descripcionCurso={"jasdfj"} porcentajeCurso={"30"}></Tarjeta>
                 <Tarjeta nombreCurso={"lalala"} descripcionCurso={"jasdfj"} porcentajeCurso={"40"}></Tarjeta>
-
-                <button className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5" onClick={() => setShowModal(true)}>
-                    Ñañaña
-                </button>
-                <Modal isVisible={showModal} onClose={() => setShowModal(false)} className="flex flex-row justify-center" alto={26} ancho={31}>
-                    <a className="text-2xl text-white">¿Que te parece este curso?</a>
-                    <div className="flex flex-row mt-8 mb-8">
-                        <StarRating></StarRating>
-                    </div>
-                    <button className="h-10 w-32 mb-8 rounded-full text-white" style={{ backgroundColor: '#780EFF' }} onClick={() => setShowModal(false)} onClose={() => setShowModal(false)}>Aceptar</button>
-                </Modal>
             </main>
 
         </>

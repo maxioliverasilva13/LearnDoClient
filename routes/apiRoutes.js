@@ -19,6 +19,7 @@ const apiRoutes = {
     createPost: () => "/api/publicaciones",
     getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso",
     uploadVideo: () => "/api/videos/upload-video",
+    puntuarCurso: () => "/api/puntuacion/",
 }
 
 export default apiRoutes;
