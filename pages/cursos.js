@@ -36,26 +36,16 @@ export default function Cursos() {
   }
   
 
-  useEffect(()=>{
-    setLoading(true); 
-    const { data, error, isLoading, refetch } = useListarEventosQuery({
-      page: page,
-      rowsNumbers,
-      filterData,
-      busqueda,
-    });
-  })
+
 
   
 
   useEffect(() => {
-    setLoading(true);
     refetch();
 
     if (data) {
       const { result } = data;
       setCursosList(result);
-      setLoading(false); 
     } 
 
   }, [page,busqueda,filterData])
@@ -126,8 +116,8 @@ export default function Cursos() {
                   </div>
                 </div>
               </div>
-              {loading && <Spinner></Spinner>}
-              {cursosList.length <= 0 && !loading && (
+              {isLoading && <Spinner></Spinner>}
+              {cursosList.length <= 0 && !isLoading && (
                 <h2>Lo sentimos pero no existen eventos disponibles.</h2>
               )}
               <FilterEventoModal
