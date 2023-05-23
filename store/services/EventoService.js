@@ -50,6 +50,7 @@ export const EventoService = createApi({
           precio: data?.precio,
           organizador: data?.organizador,
           porcentaje_aprobacion: data?.porcentaje_aprobacion,
+          categorias: data?.categorias,
           tipo: data?.tipo,
         },
       }),
@@ -81,6 +82,7 @@ export const EventoService = createApi({
           curso_id: data?.curso_id,
           nombre: data?.nombre,
           clases: data?.clases,
+          evaluacion: data?.evaluacion,
           estado: data?.estado,
         },
       }),
@@ -98,6 +100,21 @@ export const EventoService = createApi({
           colaboradores: data?.colaboradores,
         },
       }),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    uploadVideo: builder.mutation({
+      query: (data) => {
+        const formData = new FormData();
+        formData.append("id_clase", data?.id_clase);
+        formData.append("video", data?.video);
+        return{
+        url: `${apiRoutes.uploadVideo()}`,
+        method: "POST",
+        body: formData,
+      }},
       transformResponse(value) {
         const response = value;
         return response;
@@ -128,6 +145,7 @@ export const {
   useCreateModuloMutation,
   useCreateColaboracionesMutation,
   useCrearSeminarioMutation,
+  useUploadVideoMutation,
   useGetSeminariosPresencialesQuery,
   useGetCompleteCursoInfoQuery,
 } = EventoService;

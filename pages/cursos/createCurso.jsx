@@ -13,7 +13,12 @@ import {
   useCreateEventoMutation,
   useCreateModuloMutation,
   useCreateColaboracionesMutation,
+  useUploadVideoMutation,
 } from "store/services/EventoService";
+
+import MultiSelect from "components/MultiSelect/MultiSelect";
+import { useGetCategoriasQuery } from "store/services/CategoriaService";
+import { formatToOptions } from "utils/categorias";
 
 import ColaboradoresModal from "components/Modals/ColaboradoresModal";
 import AddModuloModal from "components/Modals/AddModuloModal";
@@ -30,46 +35,49 @@ export default function CreateCurso() {
     editModulo: () => setIsEditModuloOpen((current) => !current),
     colaboradores: () => setIsColaboradoresOpen((current) => !current),
   };
-  
+
   const [cursoImage, setCursoImage] = React.useState("/img/img-1-1000x600.jpg"); // imagen a mostrar
   const [firebaseImage, setFirebaseImage] = useState(null);
   const { handleUpload, imageError, imageUrl } = useUploadImage();
-  const [isFree, setIsFree] = useState(false);
+  const [isPaid, setIsPaid] = useState(true);
   const { userInfo } = useGlobalSlice();
   const [error, setError] = useState({
     show: false,
     message: "",
   });
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setError({
         show: false,
       });
     }, 5000);
-    
+
     return () => clearTimeout(timer);
   }, [error.show]);
-  
+
   const { formValues, handleChangeValue } = useForm({
     nombre: "",
     descripcion: "",
-    es_pago: !isFree,
     precio: "",
     porcentaje_aprobacion: "",
   });
 
   const { push } = useRouter();
-  
+
   // Services
   const [createEvento] = useCreateEventoMutation();
   const [createModulo] = useCreateModuloMutation();
   const [createColaboraciones] = useCreateColaboracionesMutation();
-  
+  const [uploadVideo] = useUploadVideoMutation();
+  const { data: categorias, isLoading } = useGetCategoriasQuery();
+  const [selectedCategorias, setSelectedCategorias] = useState([]);
+  const optionsCategorias = formatToOptions(categorias);
+
   const [selectedModule, setSelectedModule] = useState(null);
   const [modulos, setModulos] = useState([]);
   const [colaboradores, setColaboradores] = useState([]);
-  
+
   const handleFileChange = (event) => {
     setFirebaseImage(event.target.files[0]);
     if (event.target.files && event.target.files[0]) {
@@ -78,9 +86,9 @@ export default function CreateCurso() {
   };
 
   const handleCheckboxChange = (event) => {
-    setIsFree((current) => !current);
+    setIsPaid((current) => !current);
   };
-  
+
   const handleRemoveCollaborator = (user) => {
     setColaboradores((current) =>
       current.filter((colaborador) => colaborador.id !== user.id)
@@ -134,7 +142,7 @@ export default function CreateCurso() {
       });
       return false;
     }
-    if (!isFree) {
+    if (isPaid) {
       if (formValues.precio.trim() === "") {
         setError({
           show: true,
@@ -143,6 +151,13 @@ export default function CreateCurso() {
         return false;
       }
     }
+    if (selectedCategorias.length < 1) {
+      setError({
+        show: true,
+        message: "Por favor seleccione al menos una CATEGORÍA .",
+      });
+      return false;
+    }
     // Todos los inputs tienen contenido
     return true;
   };
@@ -150,16 +165,20 @@ export default function CreateCurso() {
   const handleCreateCurso = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
-    const uploadedImageUrl = await handleUpload(firebaseImage)
-    .catch((error) => console.log(error));
+    const uploadedImageUrl = await handleUpload(firebaseImage).catch((error) =>
+      console.log(error)
+    );
+    // console.log("categorias: ", selectedCategorias);
     const cursoData = {
       nombre: formValues?.nombre,
       descripcion: formValues?.descripcion,
       imagen: uploadedImageUrl,
-      es_pago: formValues?.es_pago === true ? 1 : 0,
-      precio: formValues?.precio || 0,
+      //imagen: "test",
+      es_pago: isPaid ? 1 : 0,
+      precio: formValues?.precio,
       organizador: userInfo?.id,
       porcentaje_aprobacion: formValues?.porcentaje_aprobacion,
+      categorias: selectedCategorias?.map((item) => item?.value),
       tipo: "curso",
     };
 
@@ -172,29 +191,42 @@ export default function CreateCurso() {
           const colabs = {
             evento_id: evento?.id,
             colaboradores: colaboradores,
-          }
+          };
           createColaboraciones(colabs);
         }
-        await Promise.all(modulos?.map((modulo) => {
-          let modData = {
-            nombre: modulo?.nombre,
-            clases: modulo?.clases,
-            curso_id: evento?.id,
-            estado: "aprobado",
-          };
-          return createModulo(modData)
-            .unwrap()
-            .then((response) => {
-              console.log("entro");
-            })
-            .catch((error) => {
-              console.error(
-                "Error al crear el modulo " + modulo?.nombre + ": ",
-                error
-              );
-            });
-        }));
-        push(appRoutes.cursos());
+        await Promise.all(
+          modulos?.map((modulo) => {
+            let modData = {
+              nombre: modulo?.nombre,
+              clases: modulo?.clases,
+              evaluacion: modulo?.evaluacion,
+              curso_id: evento?.id,
+              estado: "aprobado",
+            };
+            return createModulo(modData)
+              .unwrap()
+              .then(async (response) => {
+                const clases = response?.clases;
+                await Promise.all(
+                  clases.map((clase) => {
+                    return uploadVideo({
+                      id_clase: clase.id,
+                      video: modulo?.clases?.find(
+                        (item) => item?.nombre === clase.nombre
+                      )?.video,
+                    });
+                  })
+                );
+              })
+              .catch((error) => {
+                console.error(
+                  "Error al crear el modulo " + modulo?.nombre + ": ",
+                  error
+                );
+              });
+          })
+        );
+        // push(appRoutes.cursos());
       })
       .catch((error) => {
         console.error("Error al crear el evento: ", error);
@@ -225,9 +257,9 @@ export default function CreateCurso() {
           setModules={setModulos}
         />
       )}
-      <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start item-no-scrollbar">
+      <div className="w-full py-4 md:px-10 px-4 h-max overflow-auto max-h-screen justify-start item-no-scrollbar">
         <div className="w-full h-auto flex flex-col items-start justify-center">
-          <p className="text-5xl text-white px-16 py-4">Agregar un curso</p>
+          <p className="text-5xl text-white px-16 pb-4">Agregar un curso</p>
 
           <div className="px-16 w-full gap-8 flex flex-col lg:flex-row justify-center text-white font-light">
             <div className="flex flex-col gap-4 w-full sm:w-1/3">
@@ -290,12 +322,12 @@ export default function CreateCurso() {
                       type="checkbox"
                       id="gratuito"
                       className="accent-pink-500 mr-2"
-                      value={isFree}
+                      value={isPaid}
                       onChange={handleCheckboxChange}
                     />
                     Gratuito
                   </label>
-                  {!isFree && (
+                  {isPaid && (
                     <input
                       type="number"
                       id="precio"
@@ -346,6 +378,14 @@ export default function CreateCurso() {
                     </div>
                   );
                 })}
+              </div>
+              <div className="flex flex-col gap-y-4">
+                {/* // CATEGORIAS */}
+                <MultiSelect
+                  value={selectedCategorias}
+                  setValue={setSelectedCategorias}
+                  options={optionsCategorias}
+                />
               </div>
             </div>
             {/* FIN columna 2 */}
@@ -398,13 +438,13 @@ export default function CreateCurso() {
               />
             </div>
           )}
-          <div className="flex justify-center w-full mt-6">
+          <div className="flex justify-center w-full">
             <button
               type="submit"
               className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mb-1 ease-linear transition-all duration-150"
               onClick={(e) => {
                 handleCreateCurso(e);
-                // console.log(formValues);
+                console.log("modulos: ", modulos);
               }}
             >
               Crear Curso
