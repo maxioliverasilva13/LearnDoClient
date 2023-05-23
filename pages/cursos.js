@@ -157,5 +157,3 @@ export default function Cursos() {
   );
 
 }
-
-Cursos.layout = Admin;
