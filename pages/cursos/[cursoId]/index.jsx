@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
 import { useGetCompleteCursoInfoQuery } from "store/services/EventoService";
-import lottieNotFound from "../../lottie/lottie_not_found.json";
+import lottieNotFound from "../../../lottie/lottie_not_found.json";
 import { generateRandomColor } from "utils/color";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 import { formatCursoDescripcion } from "utils/evento";
@@ -120,7 +120,6 @@ const CursoInfo = () => {
 
   const getCantClases = () => {
     var cantClases = 0;
-    console.log(data?.modulos)
     data?.modulos?.map((item) => {
       cantClases += item?.clases?.length;
       return item;

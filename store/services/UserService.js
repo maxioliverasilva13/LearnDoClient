@@ -86,5 +86,6 @@ export const {
   useActivateMutation,
   useSignUpMutation,
   useGetCurrentUserQuery,
-  useChangeMeInfoMutation
+  useChangeMeInfoMutation,
+  useLazyFilterByNicknameOrEmailQuery,
 } = UserService;

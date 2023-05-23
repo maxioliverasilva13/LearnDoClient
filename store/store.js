@@ -18,18 +18,18 @@ const store = configureStore({
    [UserService.reducerPath]: UserService.reducer,
    [MessageService.reducerPath]: MessageService.reducer,
    [EventoService.reducerPath]: EventoService.reducer,
-   [CategoriaService.reducerPath]: CategoriaService.reducer,
    [PublicacionService.reducerPath]: PublicacionService.reducer,
    [ComentarioService.reducerPath]: ComentarioService.reducer,
+   [CategoriaService.reducerPath]: CategoriaService.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(   
         UserService.middleware,
         MessageService.middleware,
         EventoService.middleware,
-        CategoriaService.middleware,
         PublicacionService.middleware,
         ComentarioService.middleware,
+        CategoriaService.middleware,
     ),
 });
 

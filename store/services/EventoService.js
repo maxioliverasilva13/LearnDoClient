@@ -10,7 +10,13 @@ const baseQuery = fetchBaseQuery({
 export const EventoService = createApi({
   reducerPath: "EventoService",
   baseQuery: baseQuery,
-  tagTypes: ["Eventos", "EventoInfo", "ListEventos", "EventosPresenciales", "SelectedCursoInfo"],
+  tagTypes: [
+    "Eventos",
+    "EventoInfo",
+    "ListEventos",
+    "EventosPresenciales",
+    "SelectedCursoInfo",
+  ],
   endpoints: (builder) => ({
     listarEventos: builder.query({
       query: (data) => {
@@ -110,11 +116,12 @@ export const EventoService = createApi({
         const formData = new FormData();
         formData.append("id_clase", data?.id_clase);
         formData.append("video", data?.video);
-        return{
-        url: `${apiRoutes.uploadVideo()}`,
-        method: "POST",
-        body: formData,
-      }},
+        return {
+          url: `${apiRoutes.uploadVideo()}`,
+          method: "POST",
+          body: formData,
+        };
+      },
       transformResponse(value) {
         const response = value;
         return response;
@@ -129,9 +136,11 @@ export const EventoService = createApi({
       },
     }),
     getCompleteCursoInfo: builder.query({
-    query: ({cursoId}) => `${apiRoutes.getCompleteCursoInfo()}?cursoId=${cursoId}`,
+      query: ({ cursoId }) =>
+        `${apiRoutes.getCompleteCursoInfo()}?cursoId=${cursoId}`,
       providesTags: ["SelectedCursoInfo"],
       transformResponse(value) {
+        console.log(value);
         const response = value;
         return response;
       },
