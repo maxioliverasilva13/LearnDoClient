@@ -12,6 +12,7 @@ import Admin from "layouts/Admin.js";
 //services
 import { useListarEventosQuery } from "store/services/EventoService";
 import useGlobalSlice from "hooks/useGlobalSlice";
+import GlobalImage from "components/GlobalImage/GlobalImage";
 
 
 
@@ -102,8 +103,8 @@ export default function Cursos() {
               >
                 <input
                   type="text"
-                  className="bg-transparent border-white border-2 p-1 text-white outline-none	rounded-full no-underline	hover:border-white"
-                  placeholder="buscar"
+                  className="bg-transparent border-white border-2 py-2 px-4 text-white outline-none	rounded-full no-underline	hover:border-white"
+                  placeholder="Buscar"
                   onChange={handleChangeSearch}
                   value={busqueda}
                 />
@@ -139,10 +140,18 @@ export default function Cursos() {
                         className="max-w-[250px] min-h-[350px]"
                         key={curso.id}
                       >
-                        <img
-                          className="max-w-[250px] min-h-[350px] object-cover rounded-lg	"
-                          src="https://definicion.de/wp-content/uploads/2010/11/curso-1.jpg"
-                        ></img>
+                          <div
+                        className="w-[250px] h-[300px] relative rounded-lg overflow-hidden shadow-md"
+                        key={curso.id}
+                      >
+                        <GlobalImage 
+                          src={curso?.imagen}
+                          loader={() => curso?.imagen}
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                        <p className="text-xl	">{curso.nombre}</p>
+                      </div>
                         <p className="text-xl	">{curso.nombre}</p>
                       </div>
                     );
