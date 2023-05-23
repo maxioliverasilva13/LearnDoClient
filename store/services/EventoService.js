@@ -50,6 +50,7 @@ export const EventoService = createApi({
           precio: data?.precio,
           organizador: data?.organizador,
           porcentaje_aprobacion: data?.porcentaje_aprobacion,
+          categorias: data?.categorias,
           tipo: data?.tipo,
         },
       }),
@@ -104,6 +105,21 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    uploadVideo: builder.mutation({
+      query: (data) => {
+        const formData = new FormData();
+        formData.append("id_clase", data?.id_clase);
+        formData.append("video", data?.video);
+        return{
+        url: `${apiRoutes.uploadVideo()}`,
+        method: "POST",
+        body: formData,
+      }},
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
     getSeminariosPresenciales: builder.query({
       query: () => "/publicaciones/",
       providesTags: ["Categorias", "EventosPresenciales"],
@@ -129,6 +145,7 @@ export const {
   useCreateModuloMutation,
   useCreateColaboracionesMutation,
   useCrearSeminarioMutation,
+  useUploadVideoMutation,
   useGetSeminariosPresencialesQuery,
   useGetCompleteCursoInfoQuery,
 } = EventoService;

@@ -13,7 +13,12 @@ import {
   useCreateEventoMutation,
   useCreateModuloMutation,
   useCreateColaboracionesMutation,
+  useUploadVideoMutation,
 } from "store/services/EventoService";
+
+import MultiSelect from "components/MultiSelect/MultiSelect";
+import { useGetCategoriasQuery } from "store/services/CategoriaService";
+import { formatToOptions } from "utils/categorias";
 
 import ColaboradoresModal from "components/Modals/ColaboradoresModal";
 import AddModuloModal from "components/Modals/AddModuloModal";
@@ -64,6 +69,10 @@ export default function CreateCurso() {
   const [createEvento] = useCreateEventoMutation();
   const [createModulo] = useCreateModuloMutation();
   const [createColaboraciones] = useCreateColaboracionesMutation();
+  const [uploadVideo] = useUploadVideoMutation();
+  const { data: categorias, isLoading } = useGetCategoriasQuery();
+  const [selectedCategorias, setSelectedCategorias] = useState([]);
+  const optionsCategorias = formatToOptions(categorias);
 
   const [selectedModule, setSelectedModule] = useState(null);
   const [modulos, setModulos] = useState([]);
@@ -142,6 +151,13 @@ export default function CreateCurso() {
         return false;
       }
     }
+    if (selectedCategorias.length < 1) {
+      setError({
+        show: true,
+        message: "Por favor seleccione al menos una CATEGORÍA .",
+      });
+      return false;
+    }
     // Todos los inputs tienen contenido
     return true;
   };
@@ -152,14 +168,17 @@ export default function CreateCurso() {
     const uploadedImageUrl = await handleUpload(firebaseImage).catch((error) =>
       console.log(error)
     );
+    // console.log("categorias: ", selectedCategorias);
     const cursoData = {
       nombre: formValues?.nombre,
       descripcion: formValues?.descripcion,
       imagen: uploadedImageUrl,
+      //imagen: "test",
       es_pago: isPaid ? 1 : 0,
       precio: formValues?.precio,
       organizador: userInfo?.id,
       porcentaje_aprobacion: formValues?.porcentaje_aprobacion,
+      categorias: selectedCategorias?.map((item) => item?.value),
       tipo: "curso",
     };
 
@@ -186,8 +205,18 @@ export default function CreateCurso() {
             };
             return createModulo(modData)
               .unwrap()
-              .then((response) => {
-                console.log("entro");
+              .then(async (response) => {
+                const clases = response?.clases;
+                await Promise.all(
+                  clases.map((clase) => {
+                    return uploadVideo({
+                      id_clase: clase.id,
+                      video: modulo?.clases?.find(
+                        (item) => item?.nombre === clase.nombre
+                      )?.video,
+                    });
+                  })
+                );
               })
               .catch((error) => {
                 console.error(
@@ -197,7 +226,7 @@ export default function CreateCurso() {
               });
           })
         );
-        push(appRoutes.cursos());
+        // push(appRoutes.cursos());
       })
       .catch((error) => {
         console.error("Error al crear el evento: ", error);
@@ -350,6 +379,14 @@ export default function CreateCurso() {
                   );
                 })}
               </div>
+              <div className="flex flex-col gap-y-4">
+                {/* // CATEGORIAS */}
+                <MultiSelect
+                  value={selectedCategorias}
+                  setValue={setSelectedCategorias}
+                  options={optionsCategorias}
+                />
+              </div>
             </div>
             {/* FIN columna 2 */}
             <div className="flex flex-col gap-4 w-full sm:w-1/3">
@@ -401,7 +438,7 @@ export default function CreateCurso() {
               />
             </div>
           )}
-          <div className="flex justify-center w-full mt-6">
+          <div className="flex justify-center w-full">
             <button
               type="submit"
               className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mb-1 ease-linear transition-all duration-150"

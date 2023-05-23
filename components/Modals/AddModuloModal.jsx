@@ -72,7 +72,7 @@ export default function AddModuloModal({
       clases: classes,
       evaluacion: evaluacion,
     };
-    console.log(modulo);
+    // console.log(modulo);
     setModulos((current) => [...current, modulo]);
     setClasses([{ nombre: "", video: "", duracion: 0 }]); // reseteo el array
     setIsOpen(false);
@@ -84,10 +84,18 @@ export default function AddModuloModal({
     updatedClasses[index][name] = value;
     setClasses(updatedClasses);
   };
+  
+  const handleInputVideoChange = (e, index) => {
+    const { name } = e.target;
+    const value = e.target.files[0];
+    const updatedClasses = [...classes];
+    updatedClasses[index][name] = value;
+    setClasses(updatedClasses);
+  };
 
   const handleAddLine = () => {
     setClasses([...classes, { nombre: "", video: "", duracion: 0 }]);
-    console.log(classes);
+    // console.log(classes);
   };
 
   const handleDeleteLine = (index) => {
@@ -142,7 +150,7 @@ export default function AddModuloModal({
                   <div className="text-center flex flex-col gap-2 text-white item-no-scrollbar">
                     <Dialog.Title
                       as="h3"
-                      className="text-base font-semibold leading-6"
+                      className="text-base font-semibold leading-6 mb-2"
                     >
                       Agregar Módulo
                     </Dialog.Title>
@@ -176,7 +184,7 @@ export default function AddModuloModal({
                       )}
                     </div>
                     <p className="self-start">Clases</p>
-                    <div className="flex flex-col py-1 overflow-y-scroll scroll-smooth h-[260px] max-h-[260px] gap-y-4">
+                    <div className="flex flex-col py-1 overflow-y-scroll scroll-smooth h-[520px] max-h-[520px] gap-y-4">
                       {classes.map((clase, index) => {
                         return (
                           <div
@@ -186,8 +194,10 @@ export default function AddModuloModal({
                             <input
                               type="file"
                               id="video"
+                              accept="video/mp4,video/x-m4v,video/*"
                               name="video"
-                              onChange={(e) => handleInputChange(e, index)}
+                              placeholder="video para la clase"
+                              onChange={(e) => handleInputVideoChange(e, index)}
                               className="border-0 max-w-xs text-white rounded text-sm shadow bg-[#1E1E1E] focus:outline-none focus:ring ring-[#780EFF] ease-linear transition-all duration-150"
                             />
                             <input
