@@ -8,14 +8,15 @@ import FilterEventoModal from "components/Popups/FilterEventoModal";
 
 //services
 import { useListarEventosQuery } from "store/services/EventoService";
+import useGlobalSlice from "hooks/useGlobalSlice";
 
 export default function Cursos() {
   const [cursosList, setCursosList] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [rowsNumbers, setRowsNumbers] = useState(15);
-  const [loading, setLoading] = useState(true);
   const [showModalFilter, setModalFilter] = useState(false);
+  const { handleSetLoading  } = useGlobalSlice();
 
   const [filterData, setFilterData] = useState(null);
   const [busqueda, setBusqueda] = useState("");
@@ -32,19 +33,21 @@ export default function Cursos() {
   };
 
   useEffect(() => {
-    setLoading(true);
     refetch();
 
     if (data) {
       const { result } = data;
       setCursosList(result);
-      setLoading(false);
     }
-  }, [page, busqueda, filterData]);
+  }, [page, busqueda, filterData, data]);
 
   function loadMoreItems() {
     setPage(page + 1);
   }
+
+  useEffect(() => {
+    handleSetLoading(isLoading)
+  }, [isLoading])
 
   function onFilterEvent(filterObj) {
     setModalFilter(false);
@@ -103,8 +106,7 @@ export default function Cursos() {
                   </div>
                 </div>
               </div>
-              {loading && <Spinner></Spinner>}
-              {cursosList.length <= 0 && !loading && (
+              {cursosList.length <= 0 && !isLoading && (
                 <h2>Lo sentimos pero no existen eventos disponibles.</h2>
               )}
               <FilterEventoModal
@@ -142,5 +144,3 @@ export default function Cursos() {
     </>
   );
 }
-
-// Cursos.layout = Admin;
