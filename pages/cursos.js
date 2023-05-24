@@ -1,4 +1,4 @@
-import React , { useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,29 +11,37 @@ import Admin from "layouts/Admin.js";
 
 //services
 import { useListarEventosQuery } from "store/services/EventoService";
+import { useGetCategoriasQuery } from "store/services/CategoriaService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 
-
-
-
-export default function Cursos() {  
-
-  const [cursosList, setCursosList] = useState([]);   
+export default function Cursos() {
+  const [cursosList, setCursosList] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [rowsNumbers, setRowsNumbers] = useState(15);
   const [showModalFilter, setModalFilter] = useState(false);
-  const { handleSetLoading  } = useGlobalSlice();
+  const { handleSetLoading } = useGlobalSlice();
 
   const [filterData, setFilterData] = useState(null);
   const [busqueda, setBusqueda] = useState("");
 
-  const { data, error, isLoading , refetch} = useListarEventosQuery({page, rowsNumbers, filterData,busqueda});
-  
-  const  updateShowModal = (show)=>{
+  const { data, error, isLoading, refetch } = useListarEventosQuery({
+    page,
+    rowsNumbers,
+    filterData,
+    busqueda,
+  });
+
+  const {
+    data: categorias,
+    error: errorCategorias,
+    isLoading: isLoadingCats,
+  } = useGetCategoriasQuery();
+
+  const updateShowModal = (show) => {
     setModalFilter(show);
-  }
+  };
 
   useEffect(() => {
     refetch();
@@ -42,15 +50,22 @@ export default function Cursos() {
       const { result } = data;
       setCursosList(result);
     }
-  }, [page, busqueda, filterData, data]);
+  }, [busqueda, filterData, data]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      refetch();
+    }, 250);
+    return () => clearTimeout(timeoutId);
+  }, [page]);
 
   function loadMoreItems() {
     setPage(page + 1);
   }
 
   useEffect(() => {
-    handleSetLoading(isLoading)
-  }, [isLoading])
+    handleSetLoading(isLoading);
+  }, [isLoading]);
 
   function onFilterEvent(filterObj) {
     setModalFilter(false);
@@ -63,26 +78,18 @@ export default function Cursos() {
     setModalFilter(true);
   }
 
- function handleChangeSearch(event){
-      setCursosList([]);   
-      setPage(1);
-      const text = event.target.value;
-      setBusqueda(text);
- }
-
- 
+  function handleChangeSearch(event) {
+    setCursosList([]);
+    setPage(1);
+    const text = event.target.value;
+    setBusqueda(text);
+  }
 
   return (
     <>
       <div className="flex flex-wrap bg text-white relative">
-
         <div className="w-full">
-          <div
-            className={
-              "pt-12"
-            }
-            style={{ minHeight: "100vh" }}
-          >
+          <div className={"pt-12"} style={{ minHeight: "100vh" }}>
             <div className={" mt-10 "}>
               <p className={" text-white text-center 	text-5xl font-semibold "}>
                 Todos los eventos disponibles en nuestra plataforma
@@ -112,13 +119,14 @@ export default function Cursos() {
                   </div>
                 </div>
               </div>
-              {cursosList.length <= 0 && !isLoading && (
+              {cursosList.length <= 0 && (
                 <h2>Lo sentimos pero no existen eventos disponibles.</h2>
               )}
               <FilterEventoModal
                 show={showModalFilter}
                 updateShowModal={updateShowModal}
                 onFilterEvent={onFilterEvent}
+                categorias={categorias}
               ></FilterEventoModal>
 
               <InfiniteScroll
@@ -133,18 +141,18 @@ export default function Cursos() {
                         className="max-w-[250px] min-h-[350px]"
                         key={curso.id}
                       >
-                          <div
-                        className="w-[250px] h-[300px] relative rounded-lg overflow-hidden shadow-md"
-                        key={curso.id}
-                      >
-                        <GlobalImage 
-                          src={curso?.imagen}
-                          loader={() => curso?.imagen}
-                          layout="fill"
-                          objectFit="cover"
-                        />
-                        <p className="text-xl	">{curso.nombre}</p>
-                      </div>
+                        <div
+                          className="w-[250px] h-[300px] relative rounded-lg overflow-hidden shadow-md"
+                          key={curso.id}
+                        >
+                          <GlobalImage
+                            src={curso?.imagen}
+                            loader={() => curso?.imagen}
+                            layout="fill"
+                            objectFit="cover"
+                          />
+                          <p className="text-xl	">{curso.nombre}</p>
+                        </div>
                         <p className="text-xl	">{curso.nombre}</p>
                       </div>
                     );
@@ -157,5 +165,4 @@ export default function Cursos() {
       </div>
     </>
   );
-
 }
