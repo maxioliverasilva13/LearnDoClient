@@ -4,6 +4,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useLazyFilterByNicknameOrEmailQuery } from "store/services/UserService";
 
+import CreateEvaluacionModal from "./CreateEvaluacionModal";
 import Alert from "components/Popups/Alert";
 
 export default function AddModuloModal({
@@ -12,20 +13,22 @@ export default function AddModuloModal({
   modulos,
   setModulos,
 }) {
-  // const [checkNickname] = useLazyFilterByNicknameOrEmailQuery();
 
-  // const [isQueryLoading, setIsQueryLoading] = useState(false);
-  // const [searchValue, setSearchValue] = useState("");
-
-  const [classes, setClasses] = useState([
-    { nombre: "", video: "", duracion: 0 }, // Línea por defecto
-  ]);
+  const [classes, setClasses] = useState([{ nombre: "", video: "", duracion: 0 },]);
+  const [evaluacion, setEvaluacion] = useState({ nombre: "", maximo_puntuacion: "", preguntas: []});
+  
   const cancelButtonRef = useRef(null);
-
+  
   const [error, setError] = useState({
     show: false,
     message: "",
   });
+
+  const [isEvalModuloOpen, setIsEvalModuloOpen] = useState(false);
+  
+  const handleOpenModal = () => {
+    setIsEvalModuloOpen((current) => !current);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -33,31 +36,9 @@ export default function AddModuloModal({
         show: false,
       });
     }, 5000);
-
+    
     return () => clearTimeout(timer);
   }, [error.show]);
-
-  /*
-  useEffect(() => {
-    if (searchValue.length > 0) {
-      setFilteredUsers([]);
-      setIsQueryLoading(true);
-    }
-
-    clearTimeout(timer);
-    timer = setTimeout(async () => {
-      if (searchValue.length >= 2) {
-        await checkNickname(searchValue).then((res) => {
-          // console.log(res.data);
-          setFilteredUsers(res.data);
-          setIsQueryLoading(false);
-        });
-      }
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [searchValue]);
-  */
 
   const handleSaveModulo = (e) => {
     e.preventDefault();
@@ -89,8 +70,9 @@ export default function AddModuloModal({
       nombre: nombre,
       estado: "aprobado",
       clases: classes,
+      evaluacion: evaluacion,
     };
-    console.log(modulo);
+    // console.log(modulo);
     setModulos((current) => [...current, modulo]);
     setClasses([{ nombre: "", video: "", duracion: 0 }]); // reseteo el array
     setIsOpen(false);
@@ -102,10 +84,18 @@ export default function AddModuloModal({
     updatedClasses[index][name] = value;
     setClasses(updatedClasses);
   };
+  
+  const handleInputVideoChange = (e, index) => {
+    const { name } = e.target;
+    const value = e.target.files[0];
+    const updatedClasses = [...classes];
+    updatedClasses[index][name] = value;
+    setClasses(updatedClasses);
+  };
 
   const handleAddLine = () => {
     setClasses([...classes, { nombre: "", video: "", duracion: 0 }]);
-    console.log(classes);
+    // console.log(classes);
   };
 
   const handleDeleteLine = (index) => {
@@ -113,8 +103,15 @@ export default function AddModuloModal({
     updatedClasses.splice(index, 1);
     setClasses(updatedClasses);
   };
+  
 
   return (
+    <>
+    <CreateEvaluacionModal
+        isOpen={isEvalModuloOpen}
+        setIsOpen={setIsEvalModuloOpen}
+        setEvaluacion={setEvaluacion}       
+      />
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
@@ -153,7 +150,7 @@ export default function AddModuloModal({
                   <div className="text-center flex flex-col gap-2 text-white item-no-scrollbar">
                     <Dialog.Title
                       as="h3"
-                      className="text-base font-semibold leading-6"
+                      className="text-base font-semibold leading-6 mb-2"
                     >
                       Agregar Módulo
                     </Dialog.Title>
@@ -169,6 +166,7 @@ export default function AddModuloModal({
                         className="w-max self-center active:bg-purple-800 text-white font-semibold
                       hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                         // onClick={/* TODO: CREAR la EVALUACIÓN para éste módulo (front+back) */}
+                        onClick={handleOpenModal}
                       >
                         Crear Evaluación
                       </button>
@@ -186,7 +184,7 @@ export default function AddModuloModal({
                       )}
                     </div>
                     <p className="self-start">Clases</p>
-                    <div className="flex flex-col py-1 overflow-y-scroll scroll-smooth h-[260px] max-h-[260px] gap-y-4">
+                    <div className="flex flex-col py-1 overflow-y-scroll scroll-smooth h-[520px] max-h-[520px] gap-y-4">
                       {classes.map((clase, index) => {
                         return (
                           <div
@@ -196,8 +194,10 @@ export default function AddModuloModal({
                             <input
                               type="file"
                               id="video"
+                              accept="video/mp4,video/x-m4v,video/*"
                               name="video"
-                              onChange={(e) => handleInputChange(e, index)}
+                              placeholder="video para la clase"
+                              onChange={(e) => handleInputVideoChange(e, index)}
                               className="border-0 max-w-xs text-white rounded text-sm shadow bg-[#1E1E1E] focus:outline-none focus:ring ring-[#780EFF] ease-linear transition-all duration-150"
                             />
                             <input
@@ -256,5 +256,6 @@ export default function AddModuloModal({
         </div>
       </Dialog>
     </Transition.Root>
+    </>
   );
 }

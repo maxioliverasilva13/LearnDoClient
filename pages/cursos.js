@@ -11,6 +11,8 @@ import Admin from "layouts/Admin.js";
 
 //services
 import { useListarEventosQuery } from "store/services/EventoService";
+import useGlobalSlice from "hooks/useGlobalSlice";
+import GlobalImage from "components/GlobalImage/GlobalImage";
 
 
 
@@ -21,13 +23,13 @@ export default function Cursos() {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [rowsNumbers, setRowsNumbers] = useState(15);
-  const [loading, setLoading] = useState(true);
   const [showModalFilter, setModalFilter] = useState(false);
+  const { handleSetLoading  } = useGlobalSlice();
 
   const [filterData, setFilterData] = useState(null);
   const [busqueda, setBusqueda] = useState("");
 
-  const { data, error, isLoading , refetch} = useListarEventosQuery(page, rowsNumbers, filterData,busqueda);
+  const { data, error, isLoading , refetch} = useListarEventosQuery({page, rowsNumbers, filterData,busqueda});
  
 
   
@@ -42,21 +44,22 @@ export default function Cursos() {
     if (data) {
       const { result } = data;
       setCursosList(result);
-    } 
-
-  }, [page,busqueda,filterData])
-
-
+    }
+  }, [page, busqueda, filterData, data]);
 
   function loadMoreItems() {
     setPage(page + 1);
   }
 
-  function onFilterEvent(filterObj){
-       setModalFilter(false);
-       setCursosList([]);  
-       setFilterData(filterObj);
-       setPage(1);
+  useEffect(() => {
+    handleSetLoading(isLoading)
+  }, [isLoading])
+
+  function onFilterEvent(filterObj) {
+    setModalFilter(false);
+    setCursosList([]);
+    setFilterData(filterObj);
+    setPage(1);
   }
 
   function openModalFilters() {
@@ -96,8 +99,8 @@ export default function Cursos() {
               >
                 <input
                   type="text"
-                  className="bg-transparent border-white border-2 p-1 text-white outline-none	rounded-full no-underline	hover:border-white"
-                  placeholder="buscar"
+                  className="bg-transparent border-white border-2 py-2 px-4 text-white outline-none	rounded-full no-underline	hover:border-white"
+                  placeholder="Buscar"
                   onChange={handleChangeSearch}
                   value={busqueda}
                 />
@@ -112,7 +115,6 @@ export default function Cursos() {
                   </div>
                 </div>
               </div>
-              {isLoading && <Spinner></Spinner>}
               {cursosList.length <= 0 && !isLoading && (
                 <h2>Lo sentimos pero no existen eventos disponibles.</h2>
               )}
@@ -134,10 +136,18 @@ export default function Cursos() {
                         className="max-w-[250px] min-h-[350px]"
                         key={curso.id}
                       >
-                        <img
-                          className="max-w-[250px] min-h-[350px] object-cover rounded-lg	"
-                          src="https://definicion.de/wp-content/uploads/2010/11/curso-1.jpg"
-                        ></img>
+                          <div
+                        className="w-[250px] h-[300px] relative rounded-lg overflow-hidden shadow-md"
+                        key={curso.id}
+                      >
+                        <GlobalImage 
+                          src={curso?.imagen}
+                          loader={() => curso?.imagen}
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                        <p className="text-xl	">{curso.nombre}</p>
+                      </div>
                         <p className="text-xl	">{curso.nombre}</p>
                       </div>
                     );
@@ -152,5 +162,3 @@ export default function Cursos() {
   );
 
 }
-
-Cursos.layout = Admin;

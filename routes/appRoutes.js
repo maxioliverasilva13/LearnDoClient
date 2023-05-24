@@ -5,9 +5,11 @@ const appRoutes = {
     home: () => "/home",
     seminarios: () => "/seminarios",
     cursos: () => "/cursos",
-    profile: () => "/perfil",
     landing: () => "/",
     messages: () => "/messages",
+    profile: () => "/profile",
+    foroPage: (foroId) => `/cursos/${foroId}/foro`,
+    clasePage: (claseId, cursoId) => `/cursos/${cursoId}/clase/${claseId}`,
 }
 
 export default appRoutes;

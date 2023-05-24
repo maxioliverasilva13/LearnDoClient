@@ -76,7 +76,7 @@ export default function Login() {
       <div className="container mx-auto px-4 h-full">
         <div className="flex flex-col content-center items-center justify-center h-full">
           {showAlert ? (
-            <div class="lg:w-auto min-w-[content] w-full">
+            <div className="lg:w-auto min-w-[content] w-full">
             <Alert text=" Usuario o Contraseña incorrectos" color="bg-red-500" show={true} important={true} icon={<i className="fas fa-bell" />}  />
               </div>
           ) : null}

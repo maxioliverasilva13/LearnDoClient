@@ -13,14 +13,14 @@ const apiRoutes = {
     getEventos: () => "/api/eventos/",
     createModulo: () => "/api/modulos/createModulo",
     createColaboraciones: () => "/api/colaboraciones/createColaboraciones",
-    listarCategorias: () => "/api/categorias/",
+    listarCategorias: () => "/api/categorias",
     listarEventosPresenciales: () => "/api/seminarios/presenciales",
     createComment: () => "/api/comentarios",
     createPost: () => "/api/publicaciones",
-    createPost: () => "/api/publicaciones"
-    
-
-    
+    getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso",
+    uploadVideo: () => "/api/videos/upload-video",
+    puntuarCurso: () => "/api/puntuacion/",
+    claseInfo: (claseId, cursoId) => `/api/clases?clase_id=${claseId}&curso_id=${cursoId}`,
 }
 
 export default apiRoutes;
