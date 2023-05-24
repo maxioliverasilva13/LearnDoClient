@@ -20,8 +20,12 @@ export const EventoService = createApi({
   endpoints: (builder) => ({
     listarEventos: builder.query({
       query: (data) => {
+  
         const { page, rowsNumbers, filterData = null, busqueda = "" } = data;
+
+        console.log(filterData)
         let query = `${apiRoutes.listarEventos()}?page=${page}&maxRows=${rowsNumbers}`;
+
         if (filterData) {
           if (filterData.categoriasIds && filterData.categoriasIds.length > 0) {
             var categoriasArrQry = filterData.categoriasIds
@@ -31,11 +35,18 @@ export const EventoService = createApi({
               .join("&");
             query = `${query}${categoriasArrQry}`;
           }
+          if(filterData.tipo){
+            const tipoQuery = filterData.tipo == "Curso" ? "curso" : 
+            filterData.tipo == "SeminarioOnline" ? "seminarioV" : 
+            filterData.tipo == "SeminarioPresencial" ? "seminarioP" : ""; 
+
+            query = `${query}&tipo=${tipoQuery}`;
+          }
         }
         if (busqueda && busqueda.trim().length > 0) {
-          query = `${query}${busqueda}`;
+          query = `${query}&busqueda=${busqueda}`;
+          console.log(query)
         }
-        // console.log(query);
         return query;
       },
       providesTags: ["ListEventos"],
@@ -43,6 +54,20 @@ export const EventoService = createApi({
         const response = value;
         return response;
       },
+    }),
+
+    userIsStudentOrOwner: builder.query({
+      query: ({eventoId}) => {
+        console.log(eventoId)
+        return apiRoutes.userIsStudentOrOwner(eventoId);
+      },
+
+      providesTags: ["userIsStudentOrOwner"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+      invalidatesTags: ["userIsStudentOrOwner"]
     }),
     createEvento: builder.mutation({
       query: (data) => ({
@@ -164,6 +189,7 @@ export const EventoService = createApi({
       },
       invalidatesTags: ["SelectedCursoInfo"],
     }),
+
   }),
 });
 
@@ -177,4 +203,5 @@ export const {
   useGetSeminariosPresencialesQuery,
   useGetCompleteCursoInfoQuery,
   usePuntuarCursoMutation,
+  useUserIsStudentOrOwnerQuery
 } = EventoService;

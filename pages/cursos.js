@@ -11,6 +11,7 @@ import Admin from "layouts/Admin.js";
 
 //services
 import { useListarEventosQuery } from "store/services/EventoService";
+import { useGetCategoriasQuery } from "store/services/CategoriaService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 
@@ -30,7 +31,9 @@ export default function Cursos() {
   const [busqueda, setBusqueda] = useState("");
 
   const { data, error, isLoading , refetch} = useListarEventosQuery({page, rowsNumbers, filterData,busqueda});
- 
+
+  const { data:categorias, error:errorCategorias, isLoading: isLoadingCats } = useGetCategoriasQuery();
+
 
   
   const  updateShowModal = (show)=>{
@@ -38,14 +41,28 @@ export default function Cursos() {
   }
 
 
+ 
+
+
   useEffect(() => {
     refetch();
-
+  
     if (data) {
       const { result } = data;
       setCursosList(result);
     }
-  }, [page, busqueda, filterData, data]);
+  }, [ busqueda, filterData, data]);
+
+  useEffect(() => { 
+    
+    const timeoutId = setTimeout(() => {
+      refetch();
+    }, 250);
+    return () => clearTimeout(timeoutId);
+
+   
+  }, [page]);
+
 
   function loadMoreItems() {
     setPage(page + 1);
@@ -71,6 +88,8 @@ export default function Cursos() {
       setPage(1);
       const text = event.target.value;
       setBusqueda(text);
+
+      
  }
 
  
@@ -115,13 +134,14 @@ export default function Cursos() {
                   </div>
                 </div>
               </div>
-              {cursosList.length <= 0 && !isLoading && (
+              {cursosList.length <= 0  && (
                 <h2>Lo sentimos pero no existen eventos disponibles.</h2>
               )}
               <FilterEventoModal
                 show={showModalFilter}
                 updateShowModal={updateShowModal}
                 onFilterEvent={onFilterEvent}
+                categorias={categorias}
               ></FilterEventoModal>
 
               <InfiniteScroll
