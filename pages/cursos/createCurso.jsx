@@ -257,7 +257,7 @@ export default function CreateCurso() {
           setModules={setModulos}
         />
       )}
-      <div className="w-full py-4 md:px-10 px-4 h-max overflow-auto max-h-screen justify-start item-no-scrollbar">
+      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start item-no-scrollbar">
         <div className="w-full h-auto flex flex-col items-start justify-center">
           <p className="text-5xl text-white px-16 pb-4">Agregar un curso</p>
 
@@ -265,11 +265,11 @@ export default function CreateCurso() {
             <div className="flex flex-col gap-4 w-full sm:w-1/3">
               {/* INICIO columna 1 */}
               <div className="flex flex-col gap-y-4">
-                <div className="flex w-[290px] justify-center h-[300px]">
+                <div className="flex w-full justify-center h-[300px]">
                   <img
                     src={cursoImage}
                     alt="vista previa imagen de perfil"
-                    className="shadow rounded-lg object-cover h-auto max-h-80 w-[500px] align-middle border-none"
+                    className="shadow rounded-lg object-cover h-auto max-h-80 w-full align-middle border-none"
                   />
                 </div>
                 <input

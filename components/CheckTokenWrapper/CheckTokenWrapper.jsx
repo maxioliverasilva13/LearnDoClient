@@ -1,3 +1,4 @@
+import Footer from "components/Footers/Footer";
 import Navbar from "components/Navbars/AdminNavbar";
 import Spinner from "components/Spinner/Spinner";
 import useGlobalSlice from "hooks/useGlobalSlice";
@@ -58,6 +59,7 @@ const CheckTokenWrapper = ({ children }) => {
         {!isPublicPath && <Navbar />}
         <div className="max-h-full flex-grow w-full h-full">
         {children}
+       {!isPublicPath &&  <Footer />}
         </div>
     </div>;
 }

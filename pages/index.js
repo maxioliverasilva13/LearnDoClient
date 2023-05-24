@@ -81,7 +81,7 @@ const recomendados = [
 export default function LandingPage() {
   return (
     <>
-      <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start">
+      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start">
         <div className="w-full h-auto flex flex-col items-start justify-center pt-28 gap-y-28">
 
 

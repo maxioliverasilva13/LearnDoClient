@@ -30,16 +30,10 @@ export default function Cursos() {
   const [busqueda, setBusqueda] = useState("");
 
   const { data, error, isLoading , refetch} = useListarEventosQuery({page, rowsNumbers, filterData,busqueda});
- 
-
   
   const  updateShowModal = (show)=>{
     setModalFilter(show);
   }
-  
-
-
-
   
 
   useEffect(() => {

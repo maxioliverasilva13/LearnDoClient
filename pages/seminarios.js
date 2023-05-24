@@ -78,7 +78,7 @@ export default function Seminarios() {
 
   return (
     <>
-    <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start text-white">
+    <div className="w-full py-4 md:px-10 px-4 h-auto justify-start text-white">
       <div className="w-full h-auto flex flex-col items-center justify-center pt-5">
         <p className="text-3xl font-semibold mb-16">Todos los seminarios disponibles en nuestra plataforma</p>
         

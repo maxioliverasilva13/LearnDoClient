@@ -1,27 +1,51 @@
 import React, { useState, useEffect } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Alert from "components/Popups/Alert";
+import { useCorrejirEvaluacionMutation } from "store/services/EventoService";
 
 // const [evaluacion, setEvaluacion] = useState({ nombre: "", maximo_puntuacion: "", modulo_id: 0, preguntas: []},);
 
-const EvaluationPage = ({ isEditing, setIsOpen, preguntas, setEvaluacion }) => {
+const EvaluationPage = ({
+  isEditing,
+  setIsOpen,
+  preguntas,
+  setEvaluacion,
+  evaluacion,
+}) => {
   const [evaluationName, setEvaluationName] = useState("");
   const [maxPunt, setMaxPunt] = useState("");
-  const [questions, setQuestions] = useState(
-    !preguntas
-      ? [
-          {
-            contenido: "",
-            opciones: [
-              { contenido: "", correcta: true },
-              { contenido: "", correcta: false },
-              { contenido: "", correcta: false },
-              { contenido: "", correcta: false },
-            ],
-          },
-        ]
-      : preguntas
-  );
+
+  const fomratPreguntas = preguntas?.map((pregunta) => {
+    return {
+      id: pregunta?.id,
+      contenido: pregunta?.contenido,
+      opciones: pregunta?.opciones?.map((question) => {
+        return {
+          contenido: question?.contenido,
+          correcta: false,
+        };
+      }),
+    };
+  });
+
+  const [correjirEvaluacion] = useCorrejirEvaluacionMutation();
+  const [questions, setQuestions] = useState([
+    {
+      contenido: "",
+      opciones: [
+        { contenido: "", correcta: true },
+        { contenido: "", correcta: false },
+        { contenido: "", correcta: false },
+        { contenido: "", correcta: false },
+      ],
+    },
+  ]);
+
+  useEffect(() => {
+    if (preguntas) {
+      setQuestions(fomratPreguntas);
+    }
+  }, [preguntas]);
   const [answers, setAnswers] = useState([]);
 
   const [error, setError] = useState({
@@ -57,7 +81,6 @@ const EvaluationPage = ({ isEditing, setIsOpen, preguntas, setEvaluacion }) => {
     const updatedQuestions = [...questions];
     updatedQuestions[questionIndex].opciones[optionIndex].contenido =
       event.target.value;
-    // console.log(event.target.value);
     setQuestions(updatedQuestions);
   };
 
@@ -116,20 +139,23 @@ const EvaluationPage = ({ isEditing, setIsOpen, preguntas, setEvaluacion }) => {
   }
 
   const validateForm = () => {
-    if (evaluationName === "" || maxPunt === "") {
-      setError({
-        show: true,
-        message: "La evaluación debe tener un NOMBRE y una PUNTUACIÓN MÁXIMA.",
-      });
-      return false;
-    }
+    if (isEditing) {
+      if (evaluationName === "" || maxPunt === "") {
+        setError({
+          show: true,
+          message:
+            "La evaluación debe tener un NOMBRE y una PUNTUACIÓN MÁXIMA.",
+        });
+        return false;
+      }
 
-    if (!questions) {
-      setError({
-        show: true,
-        message: "La evaluación debe tener al menos UNA PREGUNTA.",
-      });
-      return false;
+      if (!questions) {
+        setError({
+          show: true,
+          message: "La evaluación debe tener al menos UNA PREGUNTA.",
+        });
+        return false;
+      }
     }
 
     const temp = [...questions];
@@ -149,11 +175,12 @@ const EvaluationPage = ({ isEditing, setIsOpen, preguntas, setEvaluacion }) => {
         });
         return false;
       }
+
       return true;
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!validateForm()) {
       return;
     }
@@ -164,9 +191,42 @@ const EvaluationPage = ({ isEditing, setIsOpen, preguntas, setEvaluacion }) => {
     };
 
     // tambien validar que tenga alguna pregunta en el array
-    setEvaluacion(currentEvaluacion);
-    console.log("preguntas", questions);
-    console.log("respuestas", answers);
+    if (setEvaluacion) {
+      setEvaluacion(currentEvaluacion);
+    }
+    if (!isEditing) {
+      const formatRespuestas = preguntas?.map((item, indexPregunta) => {
+        return {
+          ...item,
+          opcioneCorrecta: item?.opciones?.find((opcion, index) => {
+            return index === answers[indexPregunta]
+          })?.id || null,
+        }
+      })
+      console.log(formatRespuestas)
+      if (formatRespuestas) {
+        const formatRespuestasVacias = formatRespuestas?.filter((respuesta) => {
+          return respuesta?.opcioneCorrecta == null;
+        })
+        if (formatRespuestasVacias?.length > 0) {
+          setError({
+            show: true,
+            message: "Tienes que responder todas las preguntas para enviar el formulario",
+          });
+          return;
+        }
+      }
+      setError({
+        show:false,
+        message: "",
+      });
+      const preparedData = {
+        respuestas: formatRespuestas,
+        evaluacionId: evaluacion?.id,
+      }
+      const response = await correjirEvaluacion(preparedData);
+      console.log("response", response);
+    }
     if (setIsOpen) setIsOpen(false);
   };
 
@@ -175,10 +235,10 @@ const EvaluationPage = ({ isEditing, setIsOpen, preguntas, setEvaluacion }) => {
       <div className="flex flex-col gap-8 w-full max-w-2xl p-4 bg-transparent">
         <h2 className="text-3xl font-bold text-white text-center mb-4">
           {isEditing && "Crear Evaluación"}
-          {!isEditing && "Realizar Evaluación"}
+          {!isEditing && "Realizar Evaluación: " + evaluacion?.nombre}
         </h2>
         <div className="my-2">
-          {error.show && isEditing && (
+          {error.show && (
             <Alert
               show={true}
               setShow={error.show}
@@ -225,65 +285,74 @@ const EvaluationPage = ({ isEditing, setIsOpen, preguntas, setEvaluacion }) => {
 
               <div className="flex justify-center items-center gap-2 sm:gap-4">
                 <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                  {question.opciones.map((
-                    option,
-                    optionIndex // [{ contenido: "", opciones: ["", "", "", ""], correctOptionIndex: 0 }]
-                  ) => (
-                    <div key={optionIndex} className="flex gap-2 items-center">
-                      {isEditing ? (
-                        <input
-                          type="radio"
-                          id={`option-${index}-${optionIndex}`}
-                          name={`question-${index}`}
-                          value={optionIndex}
-                          checked={option.correcta === true}
-                          onChange={(event) =>
-                            handleCorrectOptionChange(event, index, optionIndex)
-                          }
-                          className="accent-green-500"
-                        />
-                      ) : (
-                        <input
-                          type="radio"
-                          id={`option-${index}-${optionIndex}`}
-                          name={`question-${index}`}
-                          checked={answers[index] === optionIndex}
-                          onChange={() =>
-                            handleOptionSelection(index, optionIndex)
-                          }
-                          value={optionIndex}
-                          className="mr-2 accent-green-500"
-                        />
-                      )}
-                      <label htmlFor={`option-${index}-${optionIndex}`}>
+                  {question.opciones.map(
+                    (
+                      option,
+                      optionIndex // [{ contenido: "", opciones: ["", "", "", ""], correctOptionIndex: 0 }]
+                    ) => (
+                      <div
+                        key={optionIndex}
+                        className="flex gap-2 items-center"
+                      >
                         {isEditing ? (
                           <input
-                            type="text"
-                            value={option.contenido}
+                            type="radio"
+                            id={`option-${index}-${optionIndex}`}
+                            name={`question-${index}`}
+                            value={optionIndex}
+                            checked={option.correcta === true}
                             onChange={(event) =>
-                              handleOptionChange(event, index, optionIndex)
+                              handleCorrectOptionChange(
+                                event,
+                                index,
+                                optionIndex
+                              )
                             }
-                            // onClick={() =>
-                            //   handleOptionSelection(index, optionIndex)
-                            // }
-                            placeholder={`Opción ${optionIndex + 1}`}
-                            className="w-full px-4 py-2 border border-white rounded-full bg-transparent text-white text-md"
+                            className="accent-green-500 outline-none"
                           />
                         ) : (
                           <input
-                            type="text"
-                            value={option.contenido}
-                            onClick={() => {
-                              handleOptionSelection(index, optionIndex);
-                            }}
-                            placeholder={`Opción ${optionIndex + 1}`}
-                            className="w-full px-4 py-2 border border-white rounded-full bg-transparent text-white text-md cursor-pointer"
-                            readOnly={true}
+                            type="radio"
+                            id={`option-${index}-${optionIndex}`}
+                            name={`question-${index}`}
+                            checked={answers[index] === optionIndex}
+                            onChange={() =>
+                              handleOptionSelection(index, optionIndex)
+                            }
+                            value={optionIndex}
+                            className="mr-2 accent-green-500 outline-none"
                           />
                         )}
-                      </label>
-                    </div>
-                  ))}
+                        <label htmlFor={`option-${index}-${optionIndex}`}>
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              value={option.contenido}
+                              onChange={(event) =>
+                                handleOptionChange(event, index, optionIndex)
+                              }
+                              // onClick={() =>
+                              //   handleOptionSelection(index, optionIndex)
+                              // }
+                              placeholder={`Opción ${optionIndex + 1}`}
+                              className="w-full px-4 py-2 border border-white rounded-full bg-transparent text-white text-md"
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              value={option.contenido}
+                              onClick={() => {
+                                handleOptionSelection(index, optionIndex);
+                              }}
+                              placeholder={`Opción ${optionIndex + 1}`}
+                              className="w-full px-4 py-2 border border-white rounded-full bg-transparent text-white text-md cursor-pointer"
+                              readOnly={true}
+                            />
+                          )}
+                        </label>
+                      </div>
+                    )
+                  )}
                 </div>
                 {isEditing && (
                   <RiDeleteBin6Line

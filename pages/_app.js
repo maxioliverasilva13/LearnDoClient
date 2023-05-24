@@ -15,6 +15,7 @@ import "../styles/index.css";
 import "../styles/tailwind.css";
 import "react-dropdown/style.css";
 import MessageWrapper from "components/MessageWrapper/MessageWrapper";
+import Footer from "components/Footers/Footer";
 
 // Router.events.on("routeChangeStart", (url) => {
 //   console.log(`Loading: ${url}`);
@@ -92,6 +93,8 @@ export default class MyApp extends App {
               <MessageWrapper>
                 <Layout>
                   <Component {...pageProps} />
+        {/* <Footer /> */}
+
                 </Layout>
               </MessageWrapper>
             </LoadingWrapper>

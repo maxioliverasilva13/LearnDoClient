@@ -164,6 +164,28 @@ export const EventoService = createApi({
       },
       invalidatesTags: ["SelectedCursoInfo"],
     }),
+    getEvaluacionInfo: builder.query({
+      query: ({evaluacionId}) => apiRoutes.evaluacionInfo(evaluacionId),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    correjirEvaluacion: builder.mutation({
+      query: (data) => {
+        return {
+          url: apiRoutes.correjirEvaluacion(),
+          method: "POST",
+          body: data
+        }
+      },
+      invalidatesTags: ['SelectedCursoInfo'],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    
   }),
 });
 
@@ -177,4 +199,6 @@ export const {
   useGetSeminariosPresencialesQuery,
   useGetCompleteCursoInfoQuery,
   usePuntuarCursoMutation,
+  useGetEvaluacionInfoQuery,
+  useCorrejirEvaluacionMutation,
 } = EventoService;

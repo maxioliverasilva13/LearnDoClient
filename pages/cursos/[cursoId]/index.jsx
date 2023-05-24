@@ -1,56 +1,21 @@
 import clsx from "clsx";
 import Progress from "components/Progress/Progress";
 import useGlobalSlice from "hooks/useGlobalSlice";
-import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
 import { useGetCompleteCursoInfoQuery } from "store/services/EventoService";
 import { generateRandomColor } from "utils/color";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 import { formatCursoDescripcion } from "utils/evento";
-import Modal from "components/Modal/modal";
-import StarRating from "components/Rating/star";
 import PuntuarModal from "components/PuntuarModal/PuntuarModal";
 import { AiFillCheckCircle } from "react-icons/ai";
 import Link from "next/link";
 import appRoutes from "routes/appRoutes";
 import NotFoundPage from "components/NotFoundPage/NotFoundPage";
-
-const modulos = [
-  {
-    id: 1,
-    nombre: "Modulo 1 - Introduccion a la programacion",
-    imagen:
-      "https://vilmanunez.com/wp-content/uploads/2016/03/herramientas-y-recursos-para-crear-curso-online.png",
-    clases: [
-      {
-        id: "1",
-        nombre: "Clase 1 - Que es la programacion",
-        duracion: "20min",
-        previewImagen:
-          "https://vilmanunez.com/wp-content/uploads/2016/03/herramientas-y-recursos-para-crear-curso-online.png",
-        descripcion: "Esto es una clase la cual realiza algo ....",
-      },
-    ],
-  },
-  {
-    id: 2,
-    nombre: "Modulo 2 - Variables y funciones",
-    imagen:
-      "https://vilmanunez.com/wp-content/uploads/2016/03/herramientas-y-recursos-para-crear-curso-online.png",
-    clases: [
-      {
-        id: "1",
-        nombre: "Clase 1",
-        duracion: "20min",
-        previewImagen:
-          "https://vilmanunez.com/wp-content/uploads/2016/03/herramientas-y-recursos-para-crear-curso-online.png",
-        descripcion: "Esto es una clase la cual realiza algo ....",
-      },
-    ],
-  },
-];
+import ClaseCard from "components/ClaseCard/ClaseCard";
+import CreateEvaluacionModal from "components/Modals/CreateEvaluacionModal";
+import PuntuacionText from "components/PuntuacionText/PuntuacionText";
 
 const CursoInfo = () => {
   const router = useRouter();
@@ -61,11 +26,12 @@ const CursoInfo = () => {
   const { data, isLoading } = useGetCompleteCursoInfoQuery({ cursoId });
   const { handleSetLoading, userInfo } = useGlobalSlice();
 
+  const [evaluacionToDo, setEvaluacionToDo] = useState(null);
+
   const cursoInfo = data?.curso;
 
   const cursoImage = cursoInfo?.imagen;
   const cursoDescripcion = cursoInfo?.descripcion;
-  const totalClases = 30;
   const profesor = data?.profesor;
   const precio = cursoInfo?.precio;
   const progresoCurso = 40;
@@ -186,7 +152,13 @@ const CursoInfo = () => {
       return <NotFoundPage message="Curso no encontrado" />;
     } else {
       return (
-        <div className="w-full h-full flex flex-col py-20 px-20 overflow-auto">
+        <div className="w-full h-auto px-[6%] py-10">
+          <CreateEvaluacionModal
+            evaluacionId={evaluacionToDo}
+            isOpen={evaluacionToDo !== null}
+            setIsOpen={() => setEvaluacionToDo(null)}
+            isEditing={false}
+          />
           <PuntuarModal
             cursoId={cursoInfo?.id}
             openCalificarModal={openCalificarModal}
@@ -293,51 +265,41 @@ const CursoInfo = () => {
                 {activeModulo &&
                   activeModulo?.clases?.map((clase) => {
                     return (
-                      <Link
+                      <div
                         key={`clase-${clase?.id}`}
-                        href={appRoutes.clasePage(clase?.id, cursoInfo?.id)}
+                        onClick={() =>
+                          router.push(
+                            appRoutes.clasePage(clase?.id, cursoInfo?.id)
+                          )
+                        }
                       >
-                        <div
-                          className={clsx(
-                            "md:w-[90%] cursor-pointer transition-all hover:bg-[#d9d9d94b] relative bg-opacity-50 rounded-[12px] h-[200px] p-4 flex flex-row items-start justify-start"
-                          )}
-                        >
-                          <div className="md:w-[50%] min-w-[50%] h-full relative rounded-lg overflow-hidden">
-                            <video
-                              src={clase?.video}
-                              controls={false}
-                              className="w-full h-full overflow-hidden object-cover"
-                            />
-                            {/* <GlobalImage
-                            src={
-                              "https://vilmanunez.com/wp-content/uploads/2016/03/herramientas-y-recursos-para-crear-curso-online.png"
-                            }
-                            loader={() =>
-                              "https://vilmanunez.com/wp-content/uploads/2016/03/herramientas-y-recursos-para-crear-curso-online.png"
-                            }
-                            className="w-full h-full"
-                            objectFit="cover"
-                            layout="fill"
-                          /> */}
-                          </div>
-                          <div className="mx-5 h-full w-[3px] bg-[#780EFF]" />
-                          <div className="flex-grow h-full flex flex-col items-center justify-between">
-                            <div className="w-full flex flex-col gap-1">
-                              <span className="w-auto text-[16px] text-left max-w-full font-semibold text-white ">
-                                {clase.nombre}
-                              </span>
-                              <span className="w-auto text-[14px] text-left max-w-full font-medium text-white ">
-                                {clase.descripcion}
-                              </span>
-                            </div>
-                            <span className="w-full text-[14px] my-4 text-left max-w-full font-semibold text-white ">
-                              Duracion: {clase.duracion}
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
+                        <ClaseCard clase={clase} />
+                      </div>
                     );
                   })}
+
+                {activeModulo?.evaluacionId && esComprada && (
+                  <div className="w-full flex items-center flex-col gap-2 justify-center">
+                    {activeModulo?.calificacion > 0 && (
+                      <div className="flex flex-row items-center gap-1">
+                        <AiFillCheckCircle className="text-green-500 text-[18px]" />
+                        <span className="text-white font-medium">
+                          Calificacion en este modulo: <PuntuacionText puntuacion={activeModulo?.calificacion} />
+                        </span>
+                      </div>
+                    )}
+                    <span
+                      onClick={() =>
+                        setEvaluacionToDo(activeModulo?.evaluacionId)
+                      }
+                      className="text-[20px] cursor-pointer w-[260px] font-Gotham text-center py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                    >
+                      {activeModulo?.calificacion === 0
+                        ? "Realizar evaluacion"
+                        : "Rehacer evaluacion"}
+                    </span>
+                  </div>
+                )}
                 {(!activeModulo || activeModulo?.clases?.length === 0) && (
                   <div className="my-10 w-full py-4 flex items-center justify-center">
                     <span className="text-white">
@@ -349,7 +311,7 @@ const CursoInfo = () => {
             </div>
           </div>
           {/* Calificaciones */}
-          {data?.puntuaciones && data?.puntuaciones?.lenght > 0 && (
+          {data?.puntuaciones && data?.puntuaciones?.length > 0 && (
             <div className=" mt-[100px] flex flex-col gap-4 items-center justify-center w-full">
               <span className="text-white font-semibold text-[30px]">
                 Puntuaciones

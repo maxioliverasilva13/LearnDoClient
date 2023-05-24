@@ -162,7 +162,7 @@ const agregadosRecientemente = [
 
 const Home = () => {
   return (
-    <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start">
+    <div className="w-full py-4 md:px-10 px-4 h-auto justify-start">
       <SwiperCursos />
 
       <div className="mt-[140px] md:px-20 w-full h-auto flex flex-row items-start justify-center md:gap-x-[40px]">

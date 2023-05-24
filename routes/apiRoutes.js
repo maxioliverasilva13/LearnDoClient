@@ -20,7 +20,9 @@ const apiRoutes = {
     getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso",
     uploadVideo: () => "/api/videos/upload-video",
     puntuarCurso: () => "/api/puntuacion/",
+    evaluacionInfo: (evaluacionId) => `/api/evaluaciones?evaluacionId=${evaluacionId}`,
     claseInfo: (claseId, cursoId) => `/api/clases?clase_id=${claseId}&curso_id=${cursoId}`,
+    correjirEvaluacion: () => "/api/calificacion/",
 }
 
 export default apiRoutes;
