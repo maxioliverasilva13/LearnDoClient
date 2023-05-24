@@ -34,11 +34,7 @@ export default function Cursos() {
   const  updateShowModal = (show)=>{
     setModalFilter(show);
   }
-  
 
-
-
-  
 
   useEffect(() => {
     refetch();
