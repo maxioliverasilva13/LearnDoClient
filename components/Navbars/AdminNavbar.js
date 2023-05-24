@@ -97,7 +97,7 @@ export default function Navbar() {
           <div className="ml-4 relative">
             <div
               onClick={handleToggleExpandMenu}
-              class="flex items-center cursor-pointer text-sm border-2 border-transparent rounded-full "
+              className="flex items-center cursor-pointer text-sm border-2 border-transparent rounded-full "
             >
               <span className="mx-2 font-semibold text-[18px]">
                 {userInfo?.nickname}

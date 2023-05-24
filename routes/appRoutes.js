@@ -9,6 +9,7 @@ const appRoutes = {
     messages: () => "/messages",
     profile: () => "/profile",
     foroPage: (foroId) => `/cursos/${foroId}/foro`,
+    clasePage: (claseId, cursoId) => `/cursos/${cursoId}/clase/${claseId}`,
 }
 
 export default appRoutes;

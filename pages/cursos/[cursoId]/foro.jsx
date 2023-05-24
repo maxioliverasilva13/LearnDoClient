@@ -139,7 +139,7 @@ export default function Foro() {
         <form className="mb-6 w-1/3 bg-[#780EFF] p-10 rounded transition">
           {formHasError && (
             <div
-              class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+              className="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
               role="alert"
             >
               <svg

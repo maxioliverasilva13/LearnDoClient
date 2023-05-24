@@ -10,6 +10,7 @@ import { EventoService } from "./services/EventoService";
 import { CategoriaService } from "./services/CategoriaService";
 import { PublicacionService } from "./services/PublicacionService";
 import { ComentarioService } from "./services/ComentarioService";
+import { ClaseService } from "./services/ClaseService";
 
 const store = configureStore({ 
   reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
    [PublicacionService.reducerPath]: PublicacionService.reducer,
    [ComentarioService.reducerPath]: ComentarioService.reducer,
    [CategoriaService.reducerPath]: CategoriaService.reducer,
+   [ClaseService.reducerPath]: ClaseService.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(   
@@ -30,6 +32,7 @@ const store = configureStore({
         PublicacionService.middleware,
         ComentarioService.middleware,
         CategoriaService.middleware,
+        ClaseService.middleware,
     ),
 });
 

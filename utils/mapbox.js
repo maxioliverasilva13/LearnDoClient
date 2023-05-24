@@ -3,7 +3,7 @@ import { generateRandomColor } from './color';
 
 export const generateNewMarker = ({ lat, lng, map }) => {
     const popUp = new Popup({ closeButton: false, anchor: 'left', })
-        .setHTML(`<div class="popup">Nuevo Seminario <br/>[${lng},  ${lat}]</div>`)
+        .setHTML(`<div className="popup">Nuevo Seminario <br/>[${lng},  ${lat}]</div>`)
 
     const marker = new Marker({ color: '#63df29', scale: 1.5, draggable: true })
         .setLngLat([lng, lat])

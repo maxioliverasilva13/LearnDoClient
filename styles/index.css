@@ -260,3 +260,7 @@ body {
 .moduloContainer:hover::after {
   border-left: 30px solid #d9d9d94b;
 }
+
+.claseGradient {
+  background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+}

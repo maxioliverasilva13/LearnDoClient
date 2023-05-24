@@ -265,11 +265,11 @@ export default function CreateCurso() {
             <div className="flex flex-col gap-4 w-full sm:w-1/3">
               {/* INICIO columna 1 */}
               <div className="flex flex-col gap-y-4">
-                <div className="flex w-full justify-center">
+                <div className="flex w-[290px] justify-center h-[300px]">
                   <img
                     src={cursoImage}
                     alt="vista previa imagen de perfil"
-                    className="shadow rounded-md object-scale-down h-auto max-h-80 w-[500px] align-middle border-none"
+                    className="shadow rounded-lg object-cover h-auto max-h-80 w-[500px] align-middle border-none"
                   />
                 </div>
                 <input

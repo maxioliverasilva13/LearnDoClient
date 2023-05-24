@@ -1,13 +1,11 @@
 import clsx from "clsx";
 import Progress from "components/Progress/Progress";
 import useGlobalSlice from "hooks/useGlobalSlice";
-import Lottie from "lottie-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
 import { useGetCompleteCursoInfoQuery } from "store/services/EventoService";
-import lottieNotFound from "../../../lottie/lottie_not_found.json";
 import { generateRandomColor } from "utils/color";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 import { formatCursoDescripcion } from "utils/evento";
@@ -17,6 +15,7 @@ import PuntuarModal from "components/PuntuarModal/PuntuarModal";
 import { AiFillCheckCircle } from "react-icons/ai";
 import Link from "next/link";
 import appRoutes from "routes/appRoutes";
+import NotFoundPage from "components/NotFoundPage/NotFoundPage";
 
 const modulos = [
   {
@@ -184,16 +183,7 @@ const CursoInfo = () => {
       return null;
     }
     if (!data?.ok) {
-      return (
-        <div className="w-screen h-full flex-grow gap-6 flex flex-col items-center justify-center">
-          <div className="w-[400px] h-[400px]">
-            <Lottie animationData={lottieNotFound} loop={true} />
-            <p className="text-white font-semibold text-[30px] text-center mt-10">
-              Curso no encontrado
-            </p>
-          </div>
-        </div>
-      );
+      return <NotFoundPage message="Curso no encontrado" />;
     } else {
       return (
         <div className="w-full h-full flex flex-col py-20 px-20 overflow-auto">
@@ -303,13 +293,22 @@ const CursoInfo = () => {
                 {activeModulo &&
                   activeModulo?.clases?.map((clase) => {
                     return (
-                      <div
-                        className={clsx(
-                          "md:w-[90%] cursor-pointer bg-transparent transition-all hover:bg-[#d9d9d94b] relative bg-opacity-50 rounded-[12px] h-[200px] p-4 flex flex-row items-start justify-start"
-                        )}
+                      <Link
+                        key={`clase-${clase?.id}`}
+                        href={appRoutes.clasePage(clase?.id, cursoInfo?.id)}
                       >
-                        <div className="md:w-[50%] min-w-[50%] h-full relative rounded-lg overflow-hidden">
-                          <GlobalImage
+                        <div
+                          className={clsx(
+                            "md:w-[90%] cursor-pointer transition-all hover:bg-[#d9d9d94b] relative bg-opacity-50 rounded-[12px] h-[200px] p-4 flex flex-row items-start justify-start"
+                          )}
+                        >
+                          <div className="md:w-[50%] min-w-[50%] h-full relative rounded-lg overflow-hidden">
+                            <video
+                              src={clase?.video}
+                              controls={false}
+                              className="w-full h-full overflow-hidden object-cover"
+                            />
+                            {/* <GlobalImage
                             src={
                               "https://vilmanunez.com/wp-content/uploads/2016/03/herramientas-y-recursos-para-crear-curso-online.png"
                             }
@@ -319,23 +318,24 @@ const CursoInfo = () => {
                             className="w-full h-full"
                             objectFit="cover"
                             layout="fill"
-                          />
-                        </div>
-                        <div className="mx-5 h-full w-[3px] bg-[#780EFF]" />
-                        <div className="flex-grow h-full flex flex-col items-center justify-between">
-                          <div className="w-full flex flex-col gap-1">
-                            <span className="w-auto text-[16px] text-left max-w-full font-semibold text-white ">
-                              {clase.nombre}
-                            </span>
-                            <span className="w-auto text-[14px] text-left max-w-full font-medium text-white ">
-                              {clase.descripcion}
+                          /> */}
+                          </div>
+                          <div className="mx-5 h-full w-[3px] bg-[#780EFF]" />
+                          <div className="flex-grow h-full flex flex-col items-center justify-between">
+                            <div className="w-full flex flex-col gap-1">
+                              <span className="w-auto text-[16px] text-left max-w-full font-semibold text-white ">
+                                {clase.nombre}
+                              </span>
+                              <span className="w-auto text-[14px] text-left max-w-full font-medium text-white ">
+                                {clase.descripcion}
+                              </span>
+                            </div>
+                            <span className="w-full text-[14px] my-4 text-left max-w-full font-semibold text-white ">
+                              Duracion: {clase.duracion}
                             </span>
                           </div>
-                          <span className="w-full text-[14px] my-4 text-left max-w-full font-semibold text-white ">
-                            Duracion: {clase.duracion}
-                          </span>
                         </div>
-                      </div>
+                      </Link>
                     );
                   })}
                 {(!activeModulo || activeModulo?.clases?.length === 0) && (
@@ -349,12 +349,12 @@ const CursoInfo = () => {
             </div>
           </div>
           {/* Calificaciones */}
-          {data?.puntuaciones && (
-            <div className=" mt-[100px] flex flex-col gap-4 items-start justify-start w-full">
+          {data?.puntuaciones && data?.puntuaciones?.lenght > 0 && (
+            <div className=" mt-[100px] flex flex-col gap-4 items-center justify-center w-full">
               <span className="text-white font-semibold text-[30px]">
                 Puntuaciones
               </span>
-              <div className="w-full h-auto gap-x-8 flex px-4 py-6 rounded-lg bg-transparent flex-row items-center justify-center">
+              <div className="w-auto h-auto bg-opacity-20 gap-x-8 flex px-10 py-8 rounded-[18px] bg-gray-50 flex-row items-center justify-center">
                 {data?.puntuaciones?.map((item, index) => {
                   if (index > 2) return null;
                   return (

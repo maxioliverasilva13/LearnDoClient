@@ -40,8 +40,8 @@ export default function Navbar() {
             <BiMessageAlt size={30} />
           </div>
           <div className="ml-4 relative">
-            <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out">
-              <img class="h-8 w-8 rounded-full object-cover" src="https://via.placeholder.com/50" alt="User avatar"></img>
+            <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-500 transition duration-150 ease-in-out">
+              <img className="h-8 w-8 rounded-full object-cover" src="https://via.placeholder.com/50" alt="User avatar"></img>
             </button>
           </div>
         </div>

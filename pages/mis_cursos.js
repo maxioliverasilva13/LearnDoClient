@@ -13,8 +13,8 @@ import 'react-tooltip/dist/react-tooltip.css'
 const BarraDeCarga = ({ porcentajeCarga, ancho, colorFondo }) => {
     return (
         <div className="flex flex-row h-auto w-auto">
-            <div class="ml-11 rounded-full h-2.5 dark:bg-gray-700 border-[1px] border-white mt-2" style={{ width: `${ancho}%` }}>
-                <div class="h-full rounded-l-full" style={{ width: `${porcentajeCarga}%` ,backgroundColor:`${colorFondo}` }}></div>
+            <div className="ml-11 rounded-full h-2.5 dark:bg-gray-700 border-[1px] border-white mt-2" style={{ width: `${ancho}%` }}>
+                <div className="h-full rounded-l-full" style={{ width: `${porcentajeCarga}%` ,backgroundColor:`${colorFondo}` }}></div>
             </div>
             <a className="text-white ml-1">{porcentajeCarga}%</a>
         </div>
