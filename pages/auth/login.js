@@ -58,7 +58,6 @@ export default function Login() {
           const userInfo = response?.data?.user;
           storageToken(token);
           handleSetUserInfo(userInfo);
-          window.location.href = appRoutes.home();
         } else {
           setChecking(false);
           setShowAlert(true);

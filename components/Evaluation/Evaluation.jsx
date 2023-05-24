@@ -203,7 +203,6 @@ const EvaluationPage = ({
           })?.id || null,
         }
       })
-      console.log(formatRespuestas)
       if (formatRespuestas) {
         const formatRespuestasVacias = formatRespuestas?.filter((respuesta) => {
           return respuesta?.opcioneCorrecta == null;
@@ -225,7 +224,6 @@ const EvaluationPage = ({
         evaluacionId: evaluacion?.id,
       }
       const response = await correjirEvaluacion(preparedData);
-      console.log("response", response);
     }
     if (setIsOpen) setIsOpen(false);
   };

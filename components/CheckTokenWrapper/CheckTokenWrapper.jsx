@@ -31,7 +31,8 @@ const CheckTokenWrapper = ({ children }) => {
         if (response?.userInfo) {
             handleSetUserInfo(response?.userInfo);
             if (isAuthPage) {
-                push(appRoutes.home())
+                const type = response?.userInfo?.type;
+                push(type == "organizador" ? appRoutes.dashboard() : appRoutes.home())
             }
         } else {
             if (!isPublicPath) {
@@ -58,7 +59,9 @@ const CheckTokenWrapper = ({ children }) => {
     return <div id="ScrollableContainer" className=" w-full h-full flex flex-col items-start justify-start max-h-screen overflow-auto">
         {!isPublicPath && <Navbar />}
         <div className="max-h-full flex-grow w-full h-full">
+        <div className="min-h-screen">
         {children}
+        </div>
        {!isPublicPath &&  <Footer />}
         </div>
     </div>;

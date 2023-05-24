@@ -5,7 +5,6 @@ import { useRef, useState } from "react";
 const ClaseCard = ({ clase }) => {
   const videoRef = useRef(null);
   const [duration, setDuration] = useState(0);
-  console.log(videoRef?.current?.duration);
 
   const handleSetDuration = () => {
     if (videoRef?.current) {

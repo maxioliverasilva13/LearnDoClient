@@ -10,6 +10,7 @@ const MapaSeminarios = () => {
   const map = useRef(null);
   const { data, isLoading } = useGetSeminariosPresencialesQuery();
   const { handleSetLoading } = useGlobalSlice();
+  console.log("data is", data)
 
   useEffect(() => {
     handleSetLoading(isLoading);

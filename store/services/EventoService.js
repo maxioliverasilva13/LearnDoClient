@@ -128,7 +128,7 @@ export const EventoService = createApi({
       },
     }),
     getSeminariosPresenciales: builder.query({
-      query: () => "/publicaciones/",
+      query: () => apiRoutes.listarEventosPresenciales(),
       providesTags: ["Categorias", "EventosPresenciales"],
       transformResponse(value) {
         const response = value;

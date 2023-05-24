@@ -5,7 +5,6 @@ import { useGetEvaluacionInfoQuery } from "store/services/EventoService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 
 export default function CreateEvaluacionModal({ isOpen, setIsOpen, setEvaluacion, evaluacionId, isEditing = true }) {
-  console.log("evaluacionId", evaluacionId);
 
   const { handleSetLoading } = useGlobalSlice();
   const { data, isLoading } = useGetEvaluacionInfoQuery({

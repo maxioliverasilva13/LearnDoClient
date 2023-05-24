@@ -15,6 +15,7 @@ export default function Navbar() {
   const { noReadsMessages } = useChats();
   const { userInfo } = useGlobalSlice();
   const [expandedMenu, setExpandedmenu] = useState(false);
+  const { rol } = useGlobalSlice();
 
   const hasNoReadsMessages = noReadsMessages?.length > 0;
   const points = 0;
@@ -24,6 +25,57 @@ export default function Navbar() {
     setExpandedmenu(!expandedMenu);
   };
   const { handleLogout } = useGlobalSlice();
+
+  const renderItems = () => {
+    if (rol === "organizador") {
+      return <ul className="flex justify-center ml-[200px]">
+      <li className="px-4">
+        <Link href={appRoutes.dashboard()} className="hover:text-gray-400">
+          Dashboard
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link href={appRoutes.misCursosAdmin()} className="hover:text-gray-400">
+          Mis cursos
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link
+          href={appRoutes.seminarios()}
+          className="hover:text-gray-400"
+        >
+          Seminarios
+        </Link>
+      </li>
+    </ul>
+    } else {
+      return <ul className="flex justify-center ml-[200px]">
+      <li className="px-4">
+        <Link href={appRoutes.home()} className="hover:text-gray-400">
+          Inicio
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link href={appRoutes.cursos()} className="hover:text-gray-400">
+          Cursos
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link
+          href={appRoutes.seminarios()}
+          className="hover:text-gray-400"
+        >
+          Seminarios
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link href="#" className="hover:text-gray-400">
+          Mis cursos
+        </Link>
+      </li>
+    </ul>
+    }
+  }
 
   return (
     <>
@@ -38,32 +90,9 @@ export default function Navbar() {
         </div>
         {/* Navigation */}
         <nav className="flex-grow">
-          <ul className="flex justify-center ml-[200px]">
-            <li className="px-4">
-              <Link href={appRoutes.home()} className="hover:text-gray-400">
-                Inicio
-              </Link>
-            </li>
-            <li className="px-4">
-              <Link href={appRoutes.cursos()} className="hover:text-gray-400">
-                Cursos
-              </Link>
-            </li>
-            <li className="px-4">
-              <Link
-                href={appRoutes.seminarios()}
-                className="hover:text-gray-400"
-              >
-                Seminarios
-              </Link>
-            </li>
-            <li className="px-4">
-              <Link href="#" className="hover:text-gray-400">
-                Mis cursos
-              </Link>
-            </li>
-          </ul>
+          {renderItems()}
         </nav>
+        
         {/* Search bar and user avatar */}
         <div className="flex items-center px-4">
           <div className="relative">

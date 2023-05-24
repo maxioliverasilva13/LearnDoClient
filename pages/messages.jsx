@@ -38,10 +38,10 @@ const Message = () => {
   }
 
   return (
-    <div className="px-12 flex-grow max-h-full pt-[40px] pb-[20px] w-full h-full flex flex-col items-start justify-start">
-      <div className="w-full flex flex-grow h-full flex-row items-start justify-start">
+    <div className="px-12 min-h-screen max-h-full pt-[40px] pb-[20px] w-full flex flex-col items-start justify-start">
+      <div className="w-full flex flex-grow min-h-screen h-full flex-row items-start justify-start">
         {/* Chats List */}
-        <div className="md:w-[400px] w-[300px] p-2 h-full flex flex-col border-r-[4px] border-white">
+        <div className="md:w-[400px] w-[300px] min-h-screen p-2 flex-grow flex flex-col border-r-[4px] border-white">
           <p className="text-white text-[52px] font-bold text-center">
             Chats
           </p>
@@ -58,7 +58,7 @@ const Message = () => {
         {activeChatId ? (
           <Chat />
         ) : (
-          <div className="w-full h-full flex-grow flex flex-col items-center justify-center">
+          <div className="w-full h-full flex-grow min-h-screen flex flex-col items-center justify-center">
             <img
               src="/img/MessageIlustration.png"
               alt="Image"

@@ -16,6 +16,7 @@ import "../styles/tailwind.css";
 import "react-dropdown/style.css";
 import MessageWrapper from "components/MessageWrapper/MessageWrapper";
 import Footer from "components/Footers/Footer";
+import CheckRoutes from "components/CheckRoutes/CheckRoutes";
 
 // Router.events.on("routeChangeStart", (url) => {
 //   console.log(`Loading: ${url}`);
@@ -90,6 +91,7 @@ export default class MyApp extends App {
           </Head>
           <CheckTokenWrapper>
             <LoadingWrapper>
+              <CheckRoutes>
               <MessageWrapper>
                 <Layout>
                   <Component {...pageProps} />
@@ -97,6 +99,7 @@ export default class MyApp extends App {
 
                 </Layout>
               </MessageWrapper>
+              </CheckRoutes>
             </LoadingWrapper>
           </CheckTokenWrapper>
         </React.Fragment>
