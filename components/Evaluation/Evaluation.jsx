@@ -380,10 +380,9 @@ const EvaluationPage = ({
             <button
               className="w-max self-center bg-[#780EFF] active:bg-purple-800 text-white font-semibold
             hover:shadow-md shadow text-md px-5 py-3 rounded-full sm:mr-2 mb-1 ease-linear transition-all duration-150"
-              // onClick={/* TODO: CREAR la EVALUACIÓN para éste módulo (front+back) */}
               onClick={handleSave}
             >
-              Crear Evaluación
+              Guardar Evaluación
             </button>
           </div>
         ) : (

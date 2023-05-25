@@ -105,8 +105,8 @@ export default function CreateCurso() {
     value();
   };
 
-  const handleOpenEditModal = (value, module) => {
-    setSelectedModule(module);
+  const handleOpenEditModal = (value, currModule, index) => {
+    setSelectedModule({modulo: currModule, idx: index});
     value();
   };
 
@@ -171,14 +171,14 @@ export default function CreateCurso() {
   const handleCreateCurso = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
-    // const uploadedImageUrl = await handleUpload(firebaseImage).catch((error) =>
-      // console.log(error)
-    // );
+    const uploadedImageUrl = await handleUpload(firebaseImage).catch((error) =>
+      console.log(error)
+    );
     const cursoData = {
       nombre: formValues?.nombre,
       descripcion: formValues?.descripcion,
-      // imagen: uploadedImageUrl,
-      imagen: "testing",
+      imagen: uploadedImageUrl,
+      // imagen: "testing",
       es_pago: isPaid ? 1 : 0,
       precio: formValues?.precio,
       organizador: userInfo?.id,
@@ -231,7 +231,7 @@ export default function CreateCurso() {
               });
           })
         );
-        // push(appRoutes.cursos());
+        push(appRoutes.cursos());
       })
       .catch((error) => {
         console.error("Error al crear el evento: ", error);
@@ -258,8 +258,8 @@ export default function CreateCurso() {
           setIsOpen={setIsEditModuloOpen}
           currentModule={selectedModule}
           setSelectedModule={setSelectedModule}
-          allModules={modulos}
-          setModules={setModulos}
+          allModulos={modulos}
+          setModulos={setModulos}
         />
       )}
       <div className="w-full py-4 md:px-10 px-4 h-auto justify-start item-no-scrollbar">
@@ -377,7 +377,8 @@ export default function CreateCurso() {
                           className="cursor-pointer"
                           color="white"
                           onClick={() => {
-                            handleOpenEditModal(modals.editModulo, item);
+                            // console.log("All modulos before update: ", modulos)
+                            handleOpenEditModal(modals.editModulo, item, index);
                           }}
                           size={30}
                         />
@@ -459,7 +460,7 @@ export default function CreateCurso() {
               className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mt-4 ease-linear transition-all duration-150"
               onClick={(e) => {
                 handleCreateCurso(e);
-                console.log("modulos: ", modulos);
+                // console.log("modulos: ", modulos);
               }}
             >
               Crear Curso
