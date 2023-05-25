@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import Alert from "components/Popups/Alert";
+import EditEvaluacion from "./CreateEvaluacionModal";
 
 export default function EditModuloModal({
   open,
@@ -11,6 +12,7 @@ export default function EditModuloModal({
   setSelectedModule,
 }) {
   const [classes, setClasses] = useState(currentModule?.clases);
+  const [isEvalModuloOpen, setIsEvalModuloOpen] = useState(false);
   const cancelButtonRef = useRef(null);
 
   const [error, setError] = useState({
@@ -28,31 +30,9 @@ export default function EditModuloModal({
     return () => clearTimeout(timer);
   }, [error.show]);
 
-  /*
-  useEffect(() => {
-    if (searchValue.length > 0) {
-      setFilteredUsers([]);
-      setIsQueryLoading(true);
-    }
-
-    clearTimeout(timer);
-    timer = setTimeout(async () => {
-      if (searchValue.length >= 2) {
-        await checkNickname(searchValue).then((res) => {
-          // console.log(res.data);
-          setFilteredUsers(res.data);
-          setIsQueryLoading(false);
-        });
-      }
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [searchValue]);
-  */
-
   const handleSaveModulo = (e) => {
     e.preventDefault();
-    console.log(currentModule);
+    // console.log(currentModule);
     let temp = [...classes];
     const nombre = document.getElementById("nombreModulo").value;
     if (nombre === "") {
@@ -82,16 +62,16 @@ export default function EditModuloModal({
       estado: "aprobado",
       clases: classes,
     };
-    console.log(modulo);
-    currentModule.clases = classes;
+    // console.log(modulo);
+    // currentModule.clases = classes;
     setSelectedModule(currentModule);
-    // setClasses([{ nombre: "", video: "", duracion: "" }]); // reseteo el array
     setIsOpen(false);
     console.log(currentModule);
   };
 
   const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
+    const { name } = e.target;
+    const value = e.target.files[0];
     const updatedClasses = [...classes];
     updatedClasses[index][name] = value;
     setClasses(updatedClasses);
@@ -109,6 +89,13 @@ export default function EditModuloModal({
   };
 
   return (
+    <>
+    <EditEvaluacion
+      evalData={currentModule.evaluacion}
+      isOpen={isEvalModuloOpen}
+      setIsOpen={setIsEvalModuloOpen}
+      isEditing={true}
+    />
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
@@ -163,7 +150,7 @@ export default function EditModuloModal({
                       <button
                         className="w-max self-center active:bg-purple-800 text-white font-semibold
                       hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                        // onClick={/* TODO: MODIFICAR la EVALUACIÓN de éste módulo (front+back) */}
+                        onClick={() => setIsEvalModuloOpen((current) => !current)}
                       >
                         Modificar Evaluación
                       </button>
@@ -193,6 +180,8 @@ export default function EditModuloModal({
                               type="file"
                               id="video"
                               name="video"
+                              accept="video/mp4,video/x-m4v,video/*"
+                              value={currentModule?.video}
                               onChange={(e) => handleInputChange(e, index)}
                               className="border-0 max-w-xs text-white rounded text-sm shadow bg-[#1E1E1E] focus:outline-none focus:ring ring-[#780EFF] ease-linear transition-all duration-150"
                             />
@@ -253,5 +242,6 @@ export default function EditModuloModal({
         </div>
       </Dialog>
     </Transition.Root>
+    </>
   );
 }

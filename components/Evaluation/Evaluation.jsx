@@ -12,8 +12,8 @@ const EvaluationPage = ({
   setEvaluacion,
   evaluacion,
 }) => {
-  const [evaluationName, setEvaluationName] = useState("");
-  const [maxPunt, setMaxPunt] = useState("");
+  const [evaluationName, setEvaluationName] = useState(evaluacion?.nombre || "");
+  const [maxPunt, setMaxPunt] = useState(evaluacion?.maximo_puntuacion || "");
 
   const fomratPreguntas = preguntas?.map((pregunta) => {
     return {
@@ -22,7 +22,7 @@ const EvaluationPage = ({
       opciones: pregunta?.opciones?.map((question) => {
         return {
           contenido: question?.contenido,
-          correcta: false,
+          correcta: !isEditing ? false : question?.correcta,
         };
       }),
     };
@@ -232,7 +232,7 @@ const EvaluationPage = ({
     <div className="flex justify-center item-no-scrollbar">
       <div className="flex flex-col gap-8 w-full max-w-2xl p-4 bg-transparent">
         <h2 className="text-3xl font-bold text-white text-center mb-4">
-          {isEditing && "Crear Evaluación"}
+          {isEditing && "Crear/Modificar Evaluación"}
           {!isEditing && "Realizar Evaluación: " + evaluacion?.nombre}
         </h2>
         <div className="my-2">
