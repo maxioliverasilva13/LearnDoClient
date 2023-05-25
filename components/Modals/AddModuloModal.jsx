@@ -14,7 +14,7 @@ export default function AddModuloModal({
   setModulos,
 }) {
 
-  const [classes, setClasses] = useState([{ nombre: "", descripcion: "", video: "", duracion: 0 },]);
+  const [classes, setClasses] = useState([{ nombre: "", descripcion: "", video: ""},]);
   const [evaluacion, setEvaluacion] = useState({ nombre: "", maximo_puntuacion: "", preguntas: []});
   
   const cancelButtonRef = useRef(null);
@@ -120,7 +120,7 @@ export default function AddModuloModal({
     };
     // console.log(modulo);
     setModulos((current) => [...current, modulo]);
-    setClasses([{ nombre: "", descripcion: "", video: "", duracion: 0 }]); // reseteo el array
+    setClasses([{ nombre: "", descripcion: "", video: ""}]); // reseteo el array
     setIsOpen(false);
   };
 
@@ -140,7 +140,7 @@ export default function AddModuloModal({
   };
 
   const handleAddLine = () => {
-    setClasses([...classes, { nombre: "", descripcion: "", video: "", duracion: 0 }]);
+    setClasses([...classes, { nombre: "", descripcion: "", video: ""}]);
     // console.log(classes);
   };
 
@@ -165,7 +165,7 @@ export default function AddModuloModal({
         initialFocus={cancelButtonRef}
         onClose={() => {
           setIsOpen((current) => !current);
-          setClasses([{ nombre: "", descripcion: "", video: "", duracion: 0 }]);
+          setClasses([{ nombre: "", descripcion: "", video: ""}]);
         }}
       >
         <Transition.Child

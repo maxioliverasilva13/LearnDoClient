@@ -120,7 +120,7 @@ export default function EditModuloModal({
   };
 
   const handleAddLine = () => {
-    setClasses([...classes, { nombre: "", video: "", duracion: "" }]);
+    setClasses([...classes, { nombre: "", video: "", descripcion: ""}]);
   };
 
   const handleDeleteLine = (index) => {
