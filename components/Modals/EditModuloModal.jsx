@@ -3,14 +3,19 @@ import { Dialog, Transition } from "@headlessui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import Alert from "components/Popups/Alert";
+import EditEvaluacion from "./CreateEvaluacionModal";
 
 export default function EditModuloModal({
   open,
   setIsOpen,
-  currentModule,
+  currentModule, // selected module {modulo: currModule, idx: index}
   setSelectedModule,
+  allModulos,
+  setModulos
 }) {
-  const [classes, setClasses] = useState(currentModule?.clases);
+  const [classes, setClasses] = useState(currentModule?.modulo?.clases);
+  const [isEvalModuloOpen, setIsEvalModuloOpen] = useState(false);
+  const [evaluacionModified, setEvaluacionModified] = useState(currentModule?.modulo?.evaluacion);
   const cancelButtonRef = useRef(null);
 
   const [error, setError] = useState({
@@ -28,31 +33,19 @@ export default function EditModuloModal({
     return () => clearTimeout(timer);
   }, [error.show]);
 
-  /*
-  useEffect(() => {
-    if (searchValue.length > 0) {
-      setFilteredUsers([]);
-      setIsQueryLoading(true);
+  const checkDuplicateNames = () => {
+    const nombresClases = classes.map((clase) => clase.nombre);
+    const nombresClasesUnicos = new Set(nombresClases); // valores únicos
+  
+    if (nombresClasesUnicos.size < nombresClases.length) {
+      return true;
+    } else {
+      return false;
     }
-
-    clearTimeout(timer);
-    timer = setTimeout(async () => {
-      if (searchValue.length >= 2) {
-        await checkNickname(searchValue).then((res) => {
-          // console.log(res.data);
-          setFilteredUsers(res.data);
-          setIsQueryLoading(false);
-        });
-      }
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [searchValue]);
-  */
+  };
 
   const handleSaveModulo = (e) => {
     e.preventDefault();
-    console.log(currentModule);
     let temp = [...classes];
     const nombre = document.getElementById("nombreModulo").value;
     if (nombre === "") {
@@ -69,6 +62,13 @@ export default function EditModuloModal({
       });
       return;
     }
+    if (temp.filter((clase) => clase.descripcion === "").length > 0) {
+      setError({
+        show: true,
+        message: "Todas las clases deben tener una DESCRIPCIÓN.",
+      });
+      return;
+    }
     if (temp.filter((clase) => clase.video === "").length > 0) {
       setError({
         show: true,
@@ -76,18 +76,32 @@ export default function EditModuloModal({
       });
       return;
     }
+    if(checkDuplicateNames()){
+      setError({
+        show: true,
+        message: "El NOMBRE de las clases no puede REPETIRSE.",
+      });
+      return;
+    }
 
     let modulo = {
       nombre: nombre,
       estado: "aprobado",
+      evaluacion: evaluacionModified,
       clases: classes,
     };
-    console.log(modulo);
-    currentModule.clases = classes;
-    setSelectedModule(currentModule);
-    // setClasses([{ nombre: "", video: "", duracion: "" }]); // reseteo el array
+    // primero elimino del estado el modulo basandome en el index y luego lo inserto, para dar la sensación de "modificar".
+    handleRemoveModulo(currentModule.idx);
+    setModulos((current) => [...current, modulo]);
+    setSelectedModule(null);
     setIsOpen(false);
-    console.log(currentModule);
+    // console.log("All modulos after update: ", allModulos);
+  };
+
+  const handleRemoveModulo = (currIndex) => {
+    setModulos(() =>
+      allModulos.filter((modulo, index) => index !== currIndex)
+    );
   };
 
   const handleInputChange = (e, index) => {
@@ -97,9 +111,16 @@ export default function EditModuloModal({
     setClasses(updatedClasses);
   };
 
+  const handleInputVideoChange = (e, index) => {
+    const { name } = e.target;
+    const value = e.target.files[0];
+    const updatedClasses = [...classes];
+    updatedClasses[index][name] = value;
+    setClasses(updatedClasses);
+  };
+
   const handleAddLine = () => {
-    setClasses([...classes, { nombre: "", video: "", duracion: "" }]);
-    console.log(classes);
+    setClasses([...classes, { nombre: "", video: "", descripcion: ""}]);
   };
 
   const handleDeleteLine = (index) => {
@@ -109,6 +130,14 @@ export default function EditModuloModal({
   };
 
   return (
+    <>
+    <EditEvaluacion
+      evalData={currentModule?.modulo?.evaluacion}
+      isOpen={isEvalModuloOpen}
+      setIsOpen={setIsEvalModuloOpen}
+      setEvaluacion={setEvaluacionModified}
+      isEditing={true}
+    />
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
@@ -156,14 +185,14 @@ export default function EditModuloModal({
                         type="text"
                         id="nombreModulo"
                         name="nombreModulo"
-                        defaultValue={currentModule?.nombre}
+                        defaultValue={currentModule?.modulo?.nombre}
                         className="border border-white max-w-md self-center px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
                         placeholder="Nombre para el Módulo"
                       />
                       <button
                         className="w-max self-center active:bg-purple-800 text-white font-semibold
                       hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                        // onClick={/* TODO: MODIFICAR la EVALUACIÓN de éste módulo (front+back) */}
+                        onClick={() => setIsEvalModuloOpen((current) => !current)}
                       >
                         Modificar Evaluación
                       </button>
@@ -182,7 +211,7 @@ export default function EditModuloModal({
                       )}
                     </div>
                     <p className="self-start">Clases</p>
-                    <div className="flex flex-col py-1 overflow-y-scroll scroll-smooth h-[260px] max-h-[260px] gap-y-4">
+                    <div className="flex flex-col py-1 overflow-y-scroll scroll-smooth h-[360px] max-h-[360px] gap-y-4">
                       {classes?.map((clase, index) => {
                         return (
                           <div
@@ -193,19 +222,34 @@ export default function EditModuloModal({
                               type="file"
                               id="video"
                               name="video"
-                              onChange={(e) => handleInputChange(e, index)}
+                              accept="video/mp4,video/x-m4v,video/*"
+                              onChange={(e) => handleInputVideoChange(e, index)}
                               className="border-0 max-w-xs text-white rounded text-sm shadow bg-[#1E1E1E] focus:outline-none focus:ring ring-[#780EFF] ease-linear transition-all duration-150"
                             />
-                            <input
-                              type="text"
-                              id="nombre"
-                              name="nombre"
-                              value={clase.nombre}
-                              onChange={(e) => handleInputChange(e, index)}
-                              className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs text-white placeholder:text-white bg-[#1E1E1E] rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
-                              placeholder="Nombre para la Clase"
-                              autoComplete={"off"}
-                            />
+                            <div className="flex flex-col items-center justify-center gap-2 w-2/3 sm:w-2/4">
+                              <input
+                                type="text"
+                                id="nombre"
+                                name="nombre"
+                                maxLength={80}
+                                value={clase.nombre}
+                                onChange={(e) => handleInputChange(e, index)}
+                                className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs text-white placeholder:text-white bg-[#1E1E1E] rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                                placeholder="Nombre para la Clase"
+                                autoComplete={"off"}
+                              />
+                              <textarea
+                                type="text"
+                                id="descripcion"
+                                name="descripcion"
+                                maxLength={200}
+                                value={clase.descripcion}
+                                onChange={(e) => handleInputChange(e, index)}
+                                className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs max-h-24 min-h-12 text-white placeholder:text-white bg-[#1E1E1E] rounded-3xl text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                                placeholder="Breve descripción"
+                                autoComplete={"off"}
+                              />
+                            </div>
                             <RiDeleteBin6Line
                               className="cursor-pointer"
                               color="white"
@@ -253,5 +297,6 @@ export default function EditModuloModal({
         </div>
       </Dialog>
     </Transition.Root>
+    </>
   );
 }
