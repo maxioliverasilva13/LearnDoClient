@@ -88,4 +88,5 @@ export const {
   useGetCurrentUserQuery,
   useChangeMeInfoMutation,
   useLazyFilterByNicknameOrEmailQuery,
+  useFilterByNicknameOrEmailQuery,
 } = UserService;

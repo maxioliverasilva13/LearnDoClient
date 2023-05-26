@@ -17,6 +17,7 @@ export const EventoService = createApi({
     "EventosPresenciales",
     "SelectedCursoInfo",
     "CursosComprados",
+    "MisCursos",
   ],
   endpoints: (builder) => ({
     listarEventos: builder.query({
@@ -159,6 +160,7 @@ export const EventoService = createApi({
           },
         };
       },
+      invalidatesTags: ["MisCursos"],
       transformResponse(value) {
         const response = value;
         return response;
@@ -188,7 +190,7 @@ export const EventoService = createApi({
     }),
     getCursosComprados: builder.query({
       query: (data) =>  apiRoutes.getCursosComprados(data?.estudianteId),
-      provideTags: ["CursosComprados"],
+      provideTags: ["MisCursos"],
       transformResponse(value) {
         const response = value;
         return response;

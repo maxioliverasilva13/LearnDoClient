@@ -24,17 +24,22 @@ export const ChatsSlice = createSlice({
     addMessage(state, { payload }) {
       const chatId = payload?.chatId;
       const newMessage = payload?.message;
-
-      state.chats = current(state?.chats)?.map((item) => {
-        if (item?.chatId === chatId) {
-          return {
-            ...item,
-            messages: [...item?.messages, newMessage],
-            lastMessage: newMessage,
-          };
-        }
-        return item;
-      });
+      const existsCurrentMessage = current(state?.chats)?.find(
+        (item) => item?.id == newMessage?.id
+      );
+      console.log("existsCurrentMessage", existsCurrentMessage)
+      if (existsCurrentMessage === undefined) {
+        state.chats = current(state?.chats)?.map((item) => {
+          if (item?.chatId === chatId) {
+            return {
+              ...item,
+              messages: [...item?.messages, newMessage],
+              lastMessage: newMessage,
+            };
+          }
+          return item;
+        });
+      }
     },
     changeIsRead(state, { payload }) {
       const chatId = payload?.chatId;
@@ -102,12 +107,12 @@ export const useChatsSlice = () => {
   };
 
   const handleAddTemporalMessage = (data) => {
-    console.log("me llaman 1")
+    console.log("me llaman 1");
     dispatch(ChatsSlice.actions.addTemporalMessage(data));
 
     setTimeout(() => {
-      removeTemporalMessage(data?.id)
-    }, 5000)
+      removeTemporalMessage(data?.id);
+    }, 5000);
   };
 
   return {

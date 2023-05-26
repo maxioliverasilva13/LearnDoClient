@@ -10,7 +10,7 @@ const Modal = ({ isVisible, onClose, children, alto = "auto", ancho = "auto" }) 
     }
 
     return (
-        <div className="fixed appearsAnimation z-[100] inset-0 bg-black-800/200 backdrop-blur-md flex justify-center items-center" id="wrapper" onClick={handleClose}>
+        <div className="fixed appearsAnimation z-[100] inset-0 bg-black-800/200 flex justify-center items-center" id="wrapper" onClick={handleClose}>
             <div className="bg-gray-900 appearsAnimation p-6 rounded-[20px] flex flex-col" style={{ height: alto, width: ancho  }}>
                 <div className="w-full flex justify-end items-start">
                     <button classname="" onClick={() => onClose()}>

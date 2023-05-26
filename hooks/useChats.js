@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
 import { useChatsSlice } from "store/slices/ChatsSlice";
+import useGlobalSlice from "./useGlobalSlice";
 
 const useChats = () => {
   const { chats = [], activeChatId, temporalMessages } = useSelector((state) => state.ChatsSlice);
   const activeChatInfo = chats?.find((item) => item?.chatId === activeChatId);
+  const { userInfo } = useGlobalSlice();
 
   const {
     handleAddChat,
@@ -15,7 +17,7 @@ const useChats = () => {
   } = useChatsSlice();
 
   const noReadsMessages = chats?.filter((item) => {
-    return item?.lastMessage?.isRead === "0";
+    return item?.lastMessage?.isRead === "0" && item?.lastMessage?.user_from_id !== userInfo?.id;
   }) || []
 
   return {

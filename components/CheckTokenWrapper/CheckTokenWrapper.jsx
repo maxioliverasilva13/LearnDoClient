@@ -12,7 +12,7 @@ import { getToken } from "utils/tokenUtils";
 
 
 const CheckTokenWrapper = ({ children }) => {
-    const { userInfo , handleSetUserInfo, handleSetLoading } = useGlobalSlice();
+    const { userInfo , handleSetUserInfo } = useGlobalSlice();
     const { pathname, push } = useRouter();
 
     const isPublicPath = listOfPublicPath.includes(pathname);
