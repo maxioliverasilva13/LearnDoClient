@@ -14,9 +14,10 @@ const appRoutes = {
     cursoPage: (cursoId) => `/cursos/${cursoId ? cursoId : "[cursoId]"}`,
     mapaSeminarios: () => '/mapaSeminarios',
     createCurso: () => '/cursos/createCurso',
-    createSeminario: () => '/cursos/createCurso',
+    createSeminario: () => '/crearSeminario',
     dashboard: () => '/admin/dashboard',
     misCursosAdmin: () => '/admin/cursos',
+    progresoEstudiantes: () => `/admin/progresoEstudiantes`,
 }
 
 export default appRoutes;

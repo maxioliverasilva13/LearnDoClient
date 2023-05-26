@@ -69,7 +69,7 @@ export default function Navbar() {
         </Link>
       </li>
       <li className="px-4">
-        <Link href="#" className="hover:text-gray-400">
+        <Link href={appRoutes.misCursos()} className="hover:text-gray-400">
           Mis cursos
         </Link>
       </li>
@@ -81,7 +81,7 @@ export default function Navbar() {
     <>
       {/* Navbar */}
       <header
-        className="flex sticky top-0 left-0 z-[30] w-full items-center text-white h-16 min-h-[64px]"
+        className="flex sticky top-0 left-0 z-[50] w-full items-center text-white h-16 min-h-[64px]"
         style={{ backgroundColor: "#31174A" }}
       >
         {/* Logo */}

@@ -20,7 +20,8 @@ const organizadorPaths = [
     appRoutes.mapaSeminarios(),
     appRoutes.createCurso(),
     appRoutes.createSeminario(),
-    appRoutes.misCursosAdmin()
+    appRoutes.misCursosAdmin(),
+    appRoutes.progresoEstudiantes(),
 ]
 
 const estudiantesPaths = [
@@ -43,7 +44,6 @@ const CheckRoutes = ({children}) => {
     const role = userInfo?.type;
     const isPublicPath = listOfPublicPath.includes(pathname);
     const [isValidPath, setIsValidPath] = useState(null);
-    console.log(isValidPath)
 
     useEffect(() => {
         if (!isPublicPath) {

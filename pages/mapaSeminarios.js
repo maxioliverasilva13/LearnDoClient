@@ -1,3 +1,4 @@
+import SelectLocationModal from "components/SelectLocationModal/SelectLocationModal";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import mapboxgl from "mapbox-gl";
 import { useEffect, useRef } from "react";
@@ -10,7 +11,6 @@ const MapaSeminarios = () => {
   const map = useRef(null);
   const { data, isLoading } = useGetSeminariosPresencialesQuery();
   const { handleSetLoading } = useGlobalSlice();
-  console.log("data is", data)
 
   useEffect(() => {
     handleSetLoading(isLoading);
@@ -21,7 +21,7 @@ const MapaSeminarios = () => {
   useEffect(() => {
     if (isLoading) return;
     if (map.current) return; // initialize map only once
-    map?.current?.resize();
+    // map?.current?.resize();
     if (!mapContainer.current) return;
     map.current = initMap(
       mapContainer.current,
@@ -39,7 +39,7 @@ const MapaSeminarios = () => {
       map.current = null;
       mapContainer.current = null;
     };
-  }, [mapContainer.current, isLoading]);
+  }, [mapContainer.current, isLoading, mapContainer]);
 
   useEffect(() => {
     if (
@@ -68,10 +68,11 @@ const MapaSeminarios = () => {
         });
       });
     }
-  }, [map.current]);
+  }, [map.current, seminarios]);
 
   return (
     <div className="w-full h-full relative">
+      {/* <SelectLocationModal open  /> */}
       <div className="w-full h-[340px] absolute">
         <div className="w-full h-full relative">
         <img
@@ -88,8 +89,8 @@ const MapaSeminarios = () => {
       <h1 className="text-white font-bold z-[30] mb-[30px] text-[30px]">
           Mapa Seminarios Presenciales
         </h1>
-        <div className="w-full h-full flex-grow rounded-lg overflow-hidden relative">
-          <div className="w-full h-full" ref={mapContainer}></div>
+        <div className="w-full h-[650px] flex-grow rounded-lg overflow-hidden relative">
+          <div className="w-full h-full " ref={mapContainer}></div>
         </div>
       </div>
     </div>
