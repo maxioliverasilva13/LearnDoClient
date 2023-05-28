@@ -14,6 +14,8 @@ import { useListarEventosQuery } from "store/services/EventoService";
 import { useGetCategoriasQuery } from "store/services/CategoriaService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import GlobalImage from "components/GlobalImage/GlobalImage";
+import Link from "next/link";
+import appRoutes from "routes/appRoutes";
 
 export default function Cursos() {
   const [cursosList, setCursosList] = useState([]);
@@ -137,8 +139,9 @@ export default function Cursos() {
                 <div className="flex justify-center gap-10 text-center flex-wrap px-8">
                   {cursosList.map((curso) => {
                     return (
+                      <Link href={appRoutes.cursoPage(curso?.id)}>
                       <div
-                        className="max-w-[250px] min-h-[350px]"
+                        className="max-w-[250px] cursor-pointer min-h-[350px]"
                         key={curso.id}
                       >
                         <div
@@ -155,6 +158,7 @@ export default function Cursos() {
                         </div>
                         <p className="text-xl	">{curso.nombre}</p>
                       </div>
+                      </Link>
                     );
                   })}
                 </div>

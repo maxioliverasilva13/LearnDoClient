@@ -74,7 +74,7 @@ export default function CreateCurso() {
   const { data: categorias } = useGetCategoriasQuery();
   const [selectedCategorias, setSelectedCategorias] = useState([]);
   const optionsCategorias = formatToOptions(categorias);
-
+  
   const [selectedModule, setSelectedModule] = useState(null);
   const [modulos, setModulos] = useState([]);
   const [colaboradores, setColaboradores] = useState([]);
@@ -201,6 +201,7 @@ export default function CreateCurso() {
           };
           createColaboraciones(colabs);
         }
+        console.log(evento)
         await Promise.all(
           modulos?.map((modulo) => {
             let modData = {
@@ -237,6 +238,7 @@ export default function CreateCurso() {
         push(appRoutes.misCursosAdmin());
       })
       .catch((error) => {
+        handleSetLoading(false);
         console.error("Error al crear el evento: ", error);
       });
   };

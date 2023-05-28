@@ -193,7 +193,7 @@ const CursoInfo = () => {
     return (
       <PayPalScriptProvider options={initialOptions}>
         <PayPalButtons
-        className="h-full w-full"
+        className="h-full w-full z-[20]"
         fundingSource="paypal"
         //fundingSource = "paypal.FUNDING.PAYPAL"
           //fundingSource={

@@ -58,9 +58,9 @@ export default function Foro() {
       if(status == 404){
             setForoExist(false);
             return;
-        }  
+        }
     }
-  }, []);
+  }, [data]);
 
   useEffect(()=>{
     if(isStudentOrOwnerRes ){        
@@ -141,6 +141,8 @@ export default function Foro() {
       console.log(e);
     }
   }
+
+  console.log(posts)
 
   return (
     <div className="w-full min-h-screen" id="scrollableDiv">

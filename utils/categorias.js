@@ -1,7 +1,7 @@
 export const formatToOptions = (data) => {
-  if (!data || !data?.categorias) return [];
+  if (!data) return [];
 
-  const filterCategorias = data?.categorias?.map((item) => {
+  const filterCategorias = data?.map((item) => {
     return {
       label: item?.nombre,
       value: item?.id,

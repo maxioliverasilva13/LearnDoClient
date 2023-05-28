@@ -30,7 +30,7 @@ const PuntuarModal = ({ openCalificarModal, setOpenCalificarModal, cursoId }) =>
     const resposne = await puntuarCurso(dataToSend);
 
     if (resposne?.data?.ok) {
-        setSuccess("Evento creado correctamente")
+        setSuccess("Calificacion enviada correctamente")
         setTimeout(() => {
           setOpenCalificarModal(false)
         }, 3000)
