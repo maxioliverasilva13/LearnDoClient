@@ -3,7 +3,7 @@ import Navbar from "components/Navbars/AdminNavbar";
 import Spinner from "components/Spinner/Spinner";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import appRoutes from "routes/appRoutes";
 import { useLazyGetCurrentUserQuery } from "store/services/UserService";
 import { listOfAuthPages, listOfPublicPath } from "utils/pageUtils";
@@ -12,12 +12,12 @@ import { getToken } from "utils/tokenUtils";
 
 
 const CheckTokenWrapper = ({ children }) => {
-    const { userInfo , handleSetUserInfo, handleSetLoading } = useGlobalSlice();
+    const { userInfo , handleSetUserInfo } = useGlobalSlice();
     const { pathname, push } = useRouter();
+    const [isChecking, setIsChecking] = useState(true);
 
     const isPublicPath = listOfPublicPath.includes(pathname);
     const isAuthPage = listOfAuthPages.includes(pathname);
-
     useEffect(() => {
         if (userInfo?.id) {
             initPusher();
@@ -35,6 +35,7 @@ const CheckTokenWrapper = ({ children }) => {
                 push(type == "organizador" ? appRoutes.dashboard() : appRoutes.home())
             }
         } else {
+            setIsChecking(false);
             if (!isPublicPath) {
                 push(appRoutes.login())
             }
@@ -46,13 +47,23 @@ const CheckTokenWrapper = ({ children }) => {
         if (token) {
             handleCheckUserInfo();
         } else {
+            setIsChecking(false);
             if (!isPublicPath) {
                 push(appRoutes.login())
             }
         }
     }, [pathname, userInfo])
 
-    if (isLoading) {
+    useEffect(() => {
+        if (userInfo && !isPublicPath) {
+            setIsChecking(false);
+        }
+        if (userInfo && !userInfo?.type) {
+            push(appRoutes.selectRole())
+        }
+    }, [userInfo, isPublicPath])
+
+    if (isLoading || isChecking) {
         return <Spinner />
     }
 

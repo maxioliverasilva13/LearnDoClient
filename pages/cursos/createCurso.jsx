@@ -64,13 +64,14 @@ export default function CreateCurso() {
   });
 
   const { push } = useRouter();
+  const { handleSetLoading } = useGlobalSlice();
 
   // Services
   const [createEvento] = useCreateEventoMutation();
   const [createModulo] = useCreateModuloMutation();
   const [createColaboraciones] = useCreateColaboracionesMutation();
   const [uploadVideo] = useUploadVideoMutation();
-  const { data: categorias, isLoading } = useGetCategoriasQuery();
+  const { data: categorias } = useGetCategoriasQuery();
   const [selectedCategorias, setSelectedCategorias] = useState([]);
   const optionsCategorias = formatToOptions(categorias);
 
@@ -94,13 +95,19 @@ export default function CreateCurso() {
       current.filter((colaborador) => colaborador.id !== user.id)
     );
   };
+  
+  const handleRemoveModulo = (currIndex) => {
+    setModulos((current) =>
+      current.filter((modulo, index) => index !== currIndex)
+    );
+  };
 
   const handleOpenModal = (value) => {
     value();
   };
 
-  const handleOpenEditModal = (value, module) => {
-    setSelectedModule(module);
+  const handleOpenEditModal = (value, currModule, index) => {
+    setSelectedModule({modulo: currModule, idx: index});
     value();
   };
 
@@ -168,12 +175,11 @@ export default function CreateCurso() {
     const uploadedImageUrl = await handleUpload(firebaseImage).catch((error) =>
       console.log(error)
     );
-    // console.log("categorias: ", selectedCategorias);
     const cursoData = {
       nombre: formValues?.nombre,
       descripcion: formValues?.descripcion,
       imagen: uploadedImageUrl,
-      //imagen: "test",
+      // imagen: "testing",
       es_pago: isPaid ? 1 : 0,
       precio: formValues?.precio,
       organizador: userInfo?.id,
@@ -182,6 +188,7 @@ export default function CreateCurso() {
       tipo: "curso",
     };
 
+    handleSetLoading(true);
     await createEvento(cursoData)
       .unwrap()
       .then(async (response) => {
@@ -226,7 +233,8 @@ export default function CreateCurso() {
               });
           })
         );
-        // push(appRoutes.cursos());
+        handleSetLoading(false);
+        push(appRoutes.misCursosAdmin());
       })
       .catch((error) => {
         console.error("Error al crear el evento: ", error);
@@ -253,8 +261,8 @@ export default function CreateCurso() {
           setIsOpen={setIsEditModuloOpen}
           currentModule={selectedModule}
           setSelectedModule={setSelectedModule}
-          allModules={modulos}
-          setModules={setModulos}
+          allModulos={modulos}
+          setModulos={setModulos}
         />
       )}
       <div className="w-full py-4 md:px-10 px-4 h-auto justify-start item-no-scrollbar">
@@ -276,6 +284,7 @@ export default function CreateCurso() {
                   type="file"
                   id="foto"
                   name="image"
+                  accept="image/*"
                   onChange={handleFileChange}
                   className="border-0 px-6 py-3 text-white bg-[#780EFF] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 />
@@ -367,14 +376,25 @@ export default function CreateCurso() {
                       className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <p>{item.nombre}</p>
-                      <FiEdit3
-                        className="cursor-pointer"
-                        color="white"
-                        onClick={() => {
-                          handleOpenEditModal(modals.editModulo, item);
-                        }}
-                        size={30}
-                      />
+                      <div className="flex gap-4">
+                        <FiEdit3
+                          className="cursor-pointer"
+                          color="white"
+                          onClick={() => {
+                            // console.log("All modulos before update: ", modulos)
+                            handleOpenEditModal(modals.editModulo, item, index);
+                          }}
+                          size={30}
+                        />
+                        <RiDeleteBin6Line
+                          className="cursor-pointer"
+                          color="white"
+                          size={30}
+                          onClick={(e) => {
+                            handleRemoveModulo(index);
+                          }}
+                        />
+                      </div>
                     </div>
                   );
                 })}
@@ -441,10 +461,10 @@ export default function CreateCurso() {
           <div className="flex justify-center w-full">
             <button
               type="submit"
-              className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mb-1 ease-linear transition-all duration-150"
+              className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mt-4 ease-linear transition-all duration-150"
               onClick={(e) => {
                 handleCreateCurso(e);
-                console.log("modulos: ", modulos);
+                // console.log("modulos: ", modulos);
               }}
             >
               Crear Curso

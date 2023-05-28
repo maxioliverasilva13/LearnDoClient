@@ -12,9 +12,10 @@ export default function AddModuloModal({
   setIsOpen,
   modulos,
   setModulos,
+  estaSugiriendo = false,
 }) {
 
-  const [classes, setClasses] = useState([{ nombre: "", video: "", duracion: 0 },]);
+  const [classes, setClasses] = useState([{ nombre: "", descripcion: "", video: ""},]);
   const [evaluacion, setEvaluacion] = useState({ nombre: "", maximo_puntuacion: "", preguntas: []});
   
   const cancelButtonRef = useRef(null);
@@ -40,6 +41,31 @@ export default function AddModuloModal({
     return () => clearTimeout(timer);
   }, [error.show]);
 
+  const isEvaluacionUnchanged = () => {
+    const estadoInicial = { nombre: "", maximo_puntuacion: "", preguntas: [] };
+  
+    if (
+      evaluacion.nombre === estadoInicial.nombre &&
+      evaluacion.maximo_puntuacion === estadoInicial.maximo_puntuacion &&
+      JSON.stringify(evaluacion.preguntas) === JSON.stringify(estadoInicial.preguntas)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const checkDuplicateNames = () => {
+    const nombresClases = classes.map((clase) => clase.nombre);
+    const nombresClasesUnicos = new Set(nombresClases); // valores únicos
+  
+    if (nombresClasesUnicos.size < nombresClases.length) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const handleSaveModulo = (e) => {
     e.preventDefault();
     let temp = [...classes];
@@ -58,10 +84,31 @@ export default function AddModuloModal({
       });
       return;
     }
+    if (temp.filter((clase) => clase.descripcion === "").length > 0) {
+      setError({
+        show: true,
+        message: "Todas las clases deben tener una DESCRIPCIÓN.",
+      });
+      return;
+    }
     if (temp.filter((clase) => clase.video === "").length > 0) {
       setError({
         show: true,
         message: "Todas las clases deben tener un VIDEO.",
+      });
+      return;
+    }
+    if (!estaSugiriendo && isEvaluacionUnchanged()) {
+      setError({
+        show: true,
+        message: "El MÓDULO debe tener una EVALUACIÓN.",
+      });
+      return;
+    }
+    if(checkDuplicateNames()){
+      setError({
+        show: true,
+        message: "El NOMBRE de las clases no puede REPETIRSE.",
       });
       return;
     }
@@ -74,7 +121,7 @@ export default function AddModuloModal({
     };
     // console.log(modulo);
     setModulos((current) => [...current, modulo]);
-    setClasses([{ nombre: "", video: "", duracion: 0 }]); // reseteo el array
+    setClasses([{ nombre: "", descripcion: "", video: ""}]); // reseteo el array
     setIsOpen(false);
   };
 
@@ -94,7 +141,7 @@ export default function AddModuloModal({
   };
 
   const handleAddLine = () => {
-    setClasses([...classes, { nombre: "", video: "", duracion: 0 }]);
+    setClasses([...classes, { nombre: "", descripcion: "", video: ""}]);
     // console.log(classes);
   };
 
@@ -115,11 +162,11 @@ export default function AddModuloModal({
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-10"
+        className="relative z-50"
         initialFocus={cancelButtonRef}
         onClose={() => {
           setIsOpen((current) => !current);
-          setClasses([{ nombre: "", video: "", duracion: 0 }]);
+          setClasses([{ nombre: "", descripcion: "", video: ""}]);
         }}
       >
         <Transition.Child
@@ -162,14 +209,15 @@ export default function AddModuloModal({
                         className="border border-white max-w-md self-center px-6 py-3 text-white placeholder:text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
                         placeholder="Nombre para el Módulo"
                       />
-                      <button
-                        className="w-max self-center active:bg-purple-800 text-white font-semibold
-                      hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                        // onClick={/* TODO: CREAR la EVALUACIÓN para éste módulo (front+back) */}
-                        onClick={handleOpenModal}
-                      >
-                        Crear Evaluación
-                      </button>
+                      {!estaSugiriendo && 
+                        <button
+                          className="w-max self-center active:bg-purple-800 text-white font-semibold
+                        hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                          onClick={handleOpenModal}
+                        >
+                          Crear Evaluación
+                        </button>
+                      }
                     </div>
                     <div className="my-2">
                       {error.show && (
@@ -200,16 +248,30 @@ export default function AddModuloModal({
                               onChange={(e) => handleInputVideoChange(e, index)}
                               className="border-0 max-w-xs text-white rounded text-sm shadow bg-[#1E1E1E] focus:outline-none focus:ring ring-[#780EFF] ease-linear transition-all duration-150"
                             />
-                            <input
-                              type="text"
-                              id="nombre"
-                              name="nombre"
-                              value={clase.nombre}
-                              onChange={(e) => handleInputChange(e, index)}
-                              className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs text-white placeholder:text-white bg-[#1E1E1E] rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
-                              placeholder="Nombre para la Clase"
-                              autoComplete={"off"}
-                            />
+                            <div className="flex flex-col items-center justify-center gap-2 w-2/3 sm:w-2/4">
+                              <input
+                                type="text"
+                                id="nombre"
+                                name="nombre"
+                                maxLength={80}
+                                value={clase.nombre}
+                                onChange={(e) => handleInputChange(e, index)}
+                                className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs text-white placeholder:text-white bg-[#1E1E1E] rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                                placeholder="Nombre para la Clase"
+                                autoComplete={"off"}
+                              />
+                              <textarea
+                                type="text"
+                                id="descripcion"
+                                name="descripcion"
+                                maxLength={200}
+                                value={clase.descripcion}
+                                onChange={(e) => handleInputChange(e, index)}
+                                className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs max-h-24 min-h-12 text-white placeholder:text-white bg-[#1E1E1E] rounded-3xl text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                                placeholder="Breve descripción"
+                                autoComplete={"off"}
+                              />
+                            </div>
                             <RiDeleteBin6Line
                               className="cursor-pointer"
                               color="white"

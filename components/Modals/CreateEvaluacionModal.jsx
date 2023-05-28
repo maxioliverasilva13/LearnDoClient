@@ -4,7 +4,7 @@ import EvaluationPage from "components/Evaluation/Evaluation";
 import { useGetEvaluacionInfoQuery } from "store/services/EventoService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 
-export default function CreateEvaluacionModal({ isOpen, setIsOpen, setEvaluacion, evaluacionId, isEditing = true }) {
+export default function CreateEvaluacionModal({ isOpen, setIsOpen, setEvaluacion, evaluacionId, evalData, isEditing = true }) {
 
   const { handleSetLoading } = useGlobalSlice();
   const { data, isLoading } = useGetEvaluacionInfoQuery({
@@ -15,8 +15,12 @@ export default function CreateEvaluacionModal({ isOpen, setIsOpen, setEvaluacion
   }
   )
 
-  const preguntas = data?.preguntas;
-  const evaluacion = data?.evaluacion;
+  let preguntas = evalData?.preguntas;
+  let evaluacion = evalData;
+  if(evaluacionId){
+    evaluacion = data?.evaluacion;
+    preguntas = data?.preguntas;
+  }
 
   useEffect(() => {
       if (evaluacionId) {
@@ -26,7 +30,7 @@ export default function CreateEvaluacionModal({ isOpen, setIsOpen, setEvaluacion
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-30" onClose={setIsOpen}>
+      <Dialog as="div" className="relative z-50" onClose={setIsOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

@@ -3,8 +3,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Alert from "components/Popups/Alert";
 import { useCorrejirEvaluacionMutation } from "store/services/EventoService";
 
-// const [evaluacion, setEvaluacion] = useState({ nombre: "", maximo_puntuacion: "", modulo_id: 0, preguntas: []},);
-
 const EvaluationPage = ({
   isEditing,
   setIsOpen,
@@ -12,8 +10,7 @@ const EvaluationPage = ({
   setEvaluacion,
   evaluacion,
 }) => {
-  const [evaluationName, setEvaluationName] = useState("");
-  const [maxPunt, setMaxPunt] = useState("");
+  const [evaluationName, setEvaluationName] = useState(evaluacion?.nombre || "");
 
   const fomratPreguntas = preguntas?.map((pregunta) => {
     return {
@@ -22,7 +19,7 @@ const EvaluationPage = ({
       opciones: pregunta?.opciones?.map((question) => {
         return {
           contenido: question?.contenido,
-          correcta: false,
+          correcta: !isEditing ? false : question?.correcta,
         };
       }),
     };
@@ -65,10 +62,6 @@ const EvaluationPage = ({
 
   const handleEvaluationNameChange = (event) => {
     setEvaluationName(event.target.value);
-  };
-
-  const handleMaxPuntChange = (event) => {
-    setMaxPunt(event.target.value);
   };
 
   const handleQuestionChange = (event, index) => {
@@ -140,11 +133,11 @@ const EvaluationPage = ({
 
   const validateForm = () => {
     if (isEditing) {
-      if (evaluationName === "" || maxPunt === "") {
+      if (evaluationName === "") {
         setError({
           show: true,
           message:
-            "La evaluación debe tener un NOMBRE y una PUNTUACIÓN MÁXIMA.",
+            "La evaluación debe tener un NOMBRE.",
         });
         return false;
       }
@@ -186,7 +179,6 @@ const EvaluationPage = ({
     }
     const currentEvaluacion = {
       nombre: evaluationName,
-      maximo_puntuacion: maxPunt,
       preguntas: questions,
     };
 
@@ -232,7 +224,7 @@ const EvaluationPage = ({
     <div className="flex justify-center item-no-scrollbar">
       <div className="flex flex-col gap-8 w-full max-w-2xl p-4 bg-transparent">
         <h2 className="text-3xl font-bold text-white text-center mb-4">
-          {isEditing && "Crear Evaluación"}
+          {isEditing && "Crear/Modificar Evaluación"}
           {!isEditing && "Realizar Evaluación: " + evaluacion?.nombre}
         </h2>
         <div className="my-2">
@@ -248,22 +240,13 @@ const EvaluationPage = ({
           )}
         </div>
         {isEditing && (
-          <>
-            <input
-              type="text"
-              value={evaluationName}
-              onChange={handleEvaluationNameChange}
-              placeholder="Nombre de la evaluación"
-              className="w-full px-5 py-3 border border-white rounded-full text-white bg-transparent text-md"
-            />
-            <input
-              type="number"
-              value={maxPunt}
-              onChange={handleMaxPuntChange}
-              placeholder="Puntuación máxima"
-              className="w-full px-5 py-3 border border-white rounded-full mb-4 text-white bg-transparent text-md"
-            />
-          </>
+          <input
+            type="text"
+            value={evaluationName}
+            onChange={handleEvaluationNameChange}
+            placeholder="Nombre de la evaluación"
+            className="w-full px-5 py-3 border border-white rounded-full text-white bg-transparent text-md"
+          />
         )}
         <div className="flex flex-col p-1 overflow-y-scroll scroll-smooth h-[260px] max-h-[260px] gap-y-8">
           {questions.map((question, index) => (
@@ -380,10 +363,9 @@ const EvaluationPage = ({
             <button
               className="w-max self-center bg-[#780EFF] active:bg-purple-800 text-white font-semibold
             hover:shadow-md shadow text-md px-5 py-3 rounded-full sm:mr-2 mb-1 ease-linear transition-all duration-150"
-              // onClick={/* TODO: CREAR la EVALUACIÓN para éste módulo (front+back) */}
               onClick={handleSave}
             >
-              Crear Evaluación
+              Guardar Evaluación
             </button>
           </div>
         ) : (

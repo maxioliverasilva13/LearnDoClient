@@ -80,7 +80,7 @@ export default function Cursos() {
         <div className="w-full">
           <div
             className={
-              "bg-gradient-to-b from-[#780eff]  via-[#5B23A2] to-[#000] pt-12"
+              "pt-12"
             }
             style={{ minHeight: "100vh" }}
           >

@@ -18,7 +18,7 @@ import {
 } from "store/services/UserService";
 import VerifyAccount from "components/VerifyAccount/VerifyAccount";
 import appRoutes from "routes/appRoutes";
-
+import { rolOptions } from "utils/rol";
 let timer = null;
 
 const availableTypes = {
@@ -27,17 +27,6 @@ const availableTypes = {
   checking: "Checking",
   nothing: "nothing",
 };
-
-const rolOptions = [
-  {
-    label: "Organizador",
-    value: "organizador",
-  },
-  {
-    label: "Estudiante",
-    value: "estudiante",
-  },
-];
 
 export default function Register() {
   const [profileImage, setProfileImage] = React.useState(null);

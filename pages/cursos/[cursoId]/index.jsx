@@ -16,6 +16,7 @@ import NotFoundPage from "components/NotFoundPage/NotFoundPage";
 import ClaseCard from "components/ClaseCard/ClaseCard";
 import CreateEvaluacionModal from "components/Modals/CreateEvaluacionModal";
 import PuntuacionText from "components/PuntuacionText/PuntuacionText";
+import Stars from "components/Stars/Stars";
 import { PayPalScriptProvider, loadScript } from "@paypal/react-paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import Modal from "components/Modal/modal"
@@ -281,7 +282,7 @@ const CursoInfo = () => {
                 {formatCursoDescripcion(cursoDescripcion)}
               </span>
               <div className="flex my-[30px] w-full italic text-white font-semibold text-sm flex-col items-start justify-start gap-4">
-                {renderStars(stars, 20, true, true)}
+                <Stars stars={stars} size={20} needsCount={true} justifyStart={true} countStars={countStars} />
                 <p>Total Clases:{getCantClases()}</p>
                 <p>Modalidad: Virtual</p>
                 <p>Profesor: {profesor}</p>
@@ -441,7 +442,7 @@ const CursoInfo = () => {
                           layout="fill"
                         />
                       </div>
-                      {renderStars(item?.puntuacion, 20, false)}
+                      <Stars stars={item?.puntuacion} size={20} needsCount={false} />
                       <span className="text-white font-normal max-w-full max-h-[100px] overflow-hidden break-words ">
                         {item?.descripcion}
                       </span>
