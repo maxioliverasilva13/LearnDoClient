@@ -18,9 +18,13 @@ import CreateEvaluacionModal from "components/Modals/CreateEvaluacionModal";
 import PuntuacionText from "components/PuntuacionText/PuntuacionText";
 import { PayPalScriptProvider, loadScript } from "@paypal/react-paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import Modal from "components/Modal/modal"
+import ReactDOM from 'react-dom';
 import { useComprareventoMutation } from "store/services/EventoService";
+import Modal from "components/Modal/modal"
 import { FaRegCheckCircle } from "react-icons/fa";
+import { any } from "prop-types";
+
+
 
 const CursoInfo = () => {
   const router = useRouter();
@@ -52,28 +56,14 @@ const CursoInfo = () => {
 
   const esComprada = data?.comprado;
 
-  useEffect(() => {
-    handleSetLoading(isLoading);
-  }, [isLoading]);
-
-  const [valuesPay, setValuePay] = useState({
+  const [valuesPay] = useState({
     userId: userInfo?.id,
-    monto: cursoInfo?.precio,
     metodoPago: "paypal",
+    monto: precio,
     eventoId: cursoId,
   })
-  const [handlePay] = useComprareventoMutation();
 
-  useEffect(() => {
-    if (cursoInfo) {
-      setValuePay({
-        userId: userInfo?.id,
-        monto: cursoInfo?.precio,
-        metodoPago: "paypal",
-        eventoId: cursoInfo.id,
-      })
-    }
-  }, [cursoInfo, userInfo])
+  const [handlePay] = useComprareventoMutation();
 
   const pagar = async (values) => {
     const response = await handlePay(values);
@@ -83,6 +73,10 @@ const CursoInfo = () => {
   }
 
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    handleSetLoading(isLoading);
+  }, [isLoading]);
 
   //   useGetCompleteCursoInfoQuery
   const renderStars = (
@@ -114,29 +108,24 @@ const CursoInfo = () => {
     );
   };
 
-  const item = 1;
-  const Categorias = useMemo(() => {
+    const renderCategorias = () => {
     if (!data?.categorias || data?.categorias?.length === 0) {
       return null;
     }
-    return (
-      <div className="w-full h-auto flex flex-col items-start justify-center gap-y-4">
-        <span className="text-white font-semibold text-[20px]">Categorias</span>
+    return <div className="w-full h-auto flex flex-col items-start justify-center gap-y-4">
+      <span className="text-white font-semibold text-[20px]">Categorias</span>
 
-        <div className="w-full h-auto flex flex-row items-center justify-start flex-wrap gap-2">
-          {data?.categorias?.map((categoria) => {
-            return (
-              <span
-                className={`text-white font-medium px-4 py-2 text-[18px] rounded-lg bg-[#${generateRandomColor()}]`}
-              >
-                {categoria?.nombre}
-              </span>
-            );
-          })}
-        </div>
+      <div className="w-full h-auto flex flex-row items-center justify-start flex-wrap gap-2">
+        {
+          data?.categorias?.map((categoria) => {
+            return <span className={`text-white font-medium px-4 py-2 text-[18px] rounded-lg bg-[#${generateRandomColor()}]`}>{categoria?.nombre}</span>
+          })
+        }
+
+
       </div>
-    );
-  }, [data?.categorias]);
+    </div>
+  }
 
   const getCantClases = () => {
     var cantClases = 0;
@@ -177,6 +166,8 @@ const CursoInfo = () => {
   const activeModulo =
     data?.modulos?.find((item) => item?.id === activeModuloId) || null;
 
+
+
   const PayPalButtonsWrapper = () => {
     const PAYPAL_CLIENT_ID = "ARMjbBZs3Nm__CVEJeKlu6ePlR_XQFuSYPuqFkiPMRPLZpVNeeji9C_Cf1Mit_wj912tqCp7zymLcEY3";
     const initialOptions = {
@@ -185,26 +176,9 @@ const CursoInfo = () => {
       intent: "capture",
     };
 
-    const handleReload = () => {
-      window.location.reload();
-    };
-
     return (
       <PayPalScriptProvider options={initialOptions}>
         <PayPalButtons
-        className="h-full w-full"
-        fundingSource="paypal"
-        //fundingSource = "paypal.FUNDING.PAYPAL"
-          //fundingSource={
-          //  {
-          //  paypal.FUNDING.PAYPAL
-          //  }
-          //}
-          style={
-            {
-              shape:"pill"
-            }
-          }
           createOrder={(data, actions) => {
             return actions.order.create({
               purchase_units: [
@@ -218,12 +192,11 @@ const CursoInfo = () => {
           }}
           onApprove={async (data, actions) => {
             pagar(valuesPay);
-            //console.log("cvalues " + userInfo.nombre)
-            //console.log("cvalues " + valuesPay.userId)
-            //console.log("cvalues " + valuesPay.eventoId)
-            //console.log("cvalues " + valuesPay.metodoPago)
-            //console.log("cvalues " + valuesPay.monto)
-            //console.log("cvalues " + cursoInfo.precio)
+            console.log("cvalues " + userInfo.nombre)
+            console.log("cvalues " + valuesPay.userId)
+            console.log("cvalues " + valuesPay.eventoId)
+            console.log("cvalues " + valuesPay.metodoPago)
+            console.log("cvalues " + valuesPay.monto)
             setShowModal(true);
             return
             //return actions.order.capture().then((details) => {
@@ -276,7 +249,7 @@ const CursoInfo = () => {
               </span>
             </div>
 
-            <div className="w-auto max-w-[400px] flex flex-col items-center justify-start">
+            <div className="w-full max-w-[600px] flex flex-col items-center justify-start">
               <span className="text-white italic font-normal text-[28px] leading-[30px]">
                 {formatCursoDescripcion(cursoDescripcion)}
               </span>
@@ -299,34 +272,18 @@ const CursoInfo = () => {
                   </span>
                 </Link>
               ) : (
-                <div className="w-full flex flex-row items-start justify-center gap-[60px]">
+                <div className="w-4/4 flex flex-row items-start justify-center gap-[60px]">
                   <span className="text-white font-semibold text-[20px]">
                     USD${precio}
                   </span>
                   <PayPalButtonsWrapper />
-                  <Modal isVisible={showModal} onClose={() => setShowModal(false)} alto={"30%"} ancho={"40%"}>
-                    <div className="flex flex-col items-center justify-center">
-                      <FaRegCheckCircle size={50} color="lime"></FaRegCheckCircle>
-                      <a className="text-2xl text-white mt-8">¡Pago realizado!</a>
-                      <a className="text-2xm text-white mb-8">Disfruta de tu curso</a>
-                      <button className="h-10 w-32 mb-8 rounded-full text-white" style={{ backgroundColor: '#780EFF' }}
-                        onClick={() => {
-                          setShowModal(false)
-                          handleReload()
-                          //pagar(valuesPay);
-                        }}
-                        onClose={() => {
-                          setShowModal(false)
-                          handleReload()
-                        }}>Aceptar</button>
-                    </div>
-                  </Modal>
                 </div>
               )}
             </div>
           </div>
+
           {esComprada && renderEstudianteProgress()}
-          {Categorias}
+          {renderCategorias}
 
           <div className="w-full mt-[50px] flex h-auto flex-row items-start justify-start">
             <div className="flex flex-col flex-grow w-full">
@@ -442,16 +399,29 @@ const CursoInfo = () => {
                         />
                       </div>
                       {renderStars(item?.puntuacion, 20, false)}
-                      <span className="text-white font-normal max-w-full max-h-[100px] overflow-hidden break-words ">
-                        {item?.descripcion}
-                      </span>
+                      <span className="text-white font-normal max-w-full max-h-[100px] overflow-hidden break-words ">{item?.descripcion}</span>
                     </div>
                   );
                 })}
               </div>
             </div>
           )}
-
+          <Modal isVisible={showModal} onClose={() => setShowModal(false)} alto={25} ancho={20}>
+            <div className="flex flex-col items-center justify-center">
+              <FaRegCheckCircle size={50} color="lime"></FaRegCheckCircle>
+              <a className="text-2xl text-white">¡Pago realizado!</a>
+              <a className="text-2xm text-white mb-4">Disfruta de tu curso</a>
+              <button className="h-10 w-32 mb-8 rounded-full text-white" style={{ backgroundColor: '#780EFF' }}
+                onClick={() => {
+                  //setShowModal(false)
+                  //pagar(valuesPay);
+                }}
+                onClose={() => {
+                  setShowModal(false)
+                  handleReload()
+                }}>Aceptar</button>
+            </div>
+          </Modal>
         </div>
       );
     }

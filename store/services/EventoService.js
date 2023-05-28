@@ -186,6 +186,22 @@ export const EventoService = createApi({
       },
     }),
     
+    comprarevento: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.comprarEvento()}`,
+        method: "POST",
+        body: {
+          uid: data?.userId,
+          monto: data.monto,
+          metodoPago: data.metodoPago,
+          eventoId: data?.eventoId,
+        },
+      }),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -201,4 +217,5 @@ export const {
   usePuntuarCursoMutation,
   useGetEvaluacionInfoQuery,
   useCorrejirEvaluacionMutation,
+  useComprareventoMutation,
 } = EventoService;
