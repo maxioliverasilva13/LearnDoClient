@@ -36,6 +36,7 @@ const estudiantesPaths = [
     appRoutes.mapaSeminarios(),
     appRoutes.seminarios(),
     appRoutes.cursos(),
+    appRoutes.cursoSugerir(),
 ]
 
 const CheckRoutes = ({children}) => {

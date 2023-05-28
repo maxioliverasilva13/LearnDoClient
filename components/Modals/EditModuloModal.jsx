@@ -11,7 +11,8 @@ export default function EditModuloModal({
   currentModule, // selected module {modulo: currModule, idx: index}
   setSelectedModule,
   allModulos,
-  setModulos
+  setModulos,
+  estaSugiriendo = false,
 }) {
   const [classes, setClasses] = useState(currentModule?.modulo?.clases);
   const [isEvalModuloOpen, setIsEvalModuloOpen] = useState(false);
@@ -131,13 +132,15 @@ export default function EditModuloModal({
 
   return (
     <>
-    <EditEvaluacion
-      evalData={currentModule?.modulo?.evaluacion}
-      isOpen={isEvalModuloOpen}
-      setIsOpen={setIsEvalModuloOpen}
-      setEvaluacion={setEvaluacionModified}
-      isEditing={true}
-    />
+    {!estaSugiriendo && 
+      <EditEvaluacion
+        evalData={currentModule?.modulo?.evaluacion}
+        isOpen={isEvalModuloOpen}
+        setIsOpen={setIsEvalModuloOpen}
+        setEvaluacion={setEvaluacionModified}
+        isEditing={true}
+      />
+    }
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
@@ -189,13 +192,15 @@ export default function EditModuloModal({
                         className="border border-white max-w-md self-center px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
                         placeholder="Nombre para el Módulo"
                       />
-                      <button
-                        className="w-max self-center active:bg-purple-800 text-white font-semibold
-                      hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                        onClick={() => setIsEvalModuloOpen((current) => !current)}
-                      >
-                        Modificar Evaluación
-                      </button>
+                      { !estaSugiriendo &&
+                          <button
+                            className="w-max self-center active:bg-purple-800 text-white font-semibold
+                          hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                            onClick={() => setIsEvalModuloOpen((current) => !current)}
+                          >
+                            Modificar Evaluación
+                          </button>
+                      }
                     </div>
 
                     <div className="my-2">
