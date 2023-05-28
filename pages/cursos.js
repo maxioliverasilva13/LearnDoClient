@@ -105,7 +105,7 @@ export default function Cursos() {
             }
             style={{ minHeight: "100vh" }}
           >
-            <div className={" mt-10 "}>
+          <div className={" mt-10 "}>
               <p className={" text-white text-center 	text-5xl font-semibold "}>
                 Todos los eventos disponibles en nuestra plataforma
               </p>

@@ -68,6 +68,11 @@ export const UserService = createApi({
         body: data
       }),
 
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+
     }),
     filterByNicknameOrEmail: builder.query({
       query: (value) => `${apiRoutes.filterByNicknameOrEmail()}?value=${value}`,

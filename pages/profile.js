@@ -66,18 +66,21 @@ export default function Profile() {
   };
 
   async function onSave(){
+    alert("Hola")
     setLoading(true);
     try{
       if(avatarImported){ 
+         console.log(avatarImported);
          const urlResult = await uploadFile(avatarImported);
+         console.log(urlResult);
+         setUserAvatar(urlResult);
       }
-
       const body = {
-          ...userData,
-         imagen : userAvatar
-      }
+        imagen: userAvatar,
+        ...userData
+      } 
       const response = await handleChangeMeInfo(body);
-     
+         
       setLoading(false);
     }catch(e){
       setLoading(false);
@@ -99,11 +102,9 @@ export default function Profile() {
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                       <div className="relative">
-                        <img
-                          alt="..."
-                          src={userAvatar}
-                          className="shadow-xl rounded-full h-auto align-middle border-none  -m-16 -ml-20 lg:-ml-16 max-w-150-px max-h-150-px object-cover	"
-                        />  
+                      <img className="rounded-full w-36 h-36 object-cover  relative mb-10 mt-5"  src={userAvatar} alt="Extra large avatar"/>
+
+                       
                             
                       </div>
                       
@@ -112,7 +113,7 @@ export default function Profile() {
                     <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
                       <div className="py-6 px-3 mt-32 sm:mt-0">
                       <button
-                          onClick={onSave}
+                          onClick={()=> onSave()}
                           className="bg-[#8526ff] transition delay-150 duration-150 hover:bg-white hover:text-black rounded font-medium   p-4 rounded-full focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 uppercase hover:shadow-md"
                           type="button"
                         >
