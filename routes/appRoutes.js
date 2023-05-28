@@ -18,6 +18,7 @@ const appRoutes = {
     dashboard: () => '/admin/dashboard',
     misCursosAdmin: () => '/admin/cursos',
     progresoEstudiantes: () => `/admin/progresoEstudiantes`,
+    selectRole: () => `/selectrole`,
 }
 
 export default appRoutes;

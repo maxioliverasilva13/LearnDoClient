@@ -8,10 +8,7 @@ export default function Auth({ children }) {
       <main>
         <section className="flex items-center relative w-full h-full min-h-screen">
           <div
-            className="absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full"
-            style={{
-              backgroundImage: "url('/img/register_bg_2.png')",
-            }}
+            className="absolute top-0 w-full h-full bg-no-repeat bg-full"
           ></div>
           {children}
           {/* <FooterSmall absolute /> */}

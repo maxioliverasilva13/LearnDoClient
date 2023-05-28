@@ -81,13 +81,11 @@ export default function Navbar() {
     <>
       {/* Navbar */}
       <header
-        className="flex sticky top-0 left-0 z-[50] w-full items-center text-white h-16 min-h-[64px]"
-        style={{ backgroundColor: "#31174A" }}
+        className="flex bg-[#7b479e] sticky top-0 left-0 z-[50] w-full items-center text-white h-16 min-h-[64px]"
       >
         {/* Logo */}
         <div className="px-4">
-          <span className="text-lg font-bold">learndo</span>
-        </div>
+        <span className="select-none font-bold text-[20px]">Learn<span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span></span>        </div>
         {/* Navigation */}
         <nav className="flex-grow">
           {renderItems()}
@@ -128,7 +126,7 @@ export default function Navbar() {
               onClick={handleToggleExpandMenu}
               className="flex items-center cursor-pointer text-sm border-2 border-transparent rounded-full "
             >
-              <span className="mx-2 font-semibold text-[18px]">
+              <span className="mx-2 font-semibold text-[18px] max-w-[150px] overflow-hidden truncate">
                 {userInfo?.nickname}
               </span>
               <div className="w-8 h-8 relative rounded-full">
