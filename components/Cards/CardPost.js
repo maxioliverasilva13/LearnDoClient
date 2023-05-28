@@ -71,6 +71,7 @@ export default function CardPost({post, openModalDeletePost,openModalDeleteComme
                 contenido : inputComment
             }
             const response = await createComment(body);
+            console.log(response);
             const { data  } = response;
             setComments([data,...comments]);
             setSubmitNewComment(false);
