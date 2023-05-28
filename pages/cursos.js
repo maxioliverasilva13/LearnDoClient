@@ -16,6 +16,8 @@ import useGlobalSlice from "hooks/useGlobalSlice";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 import Link from "next/link";
 import appRoutes from "routes/appRoutes";
+import { fomratColorCurso, formatTitle } from "utils/evento";
+import clsx from "clsx";
 
 export default function Cursos() {
   const [cursosList, setCursosList] = useState([]);
@@ -148,13 +150,17 @@ export default function Cursos() {
                           className="w-[250px] h-[300px] relative rounded-lg overflow-hidden shadow-md"
                           key={curso.id}
                         >
+                          <div className={clsx("w-min  absolute z-[20] left-0 top-4 px-4 py-1 font-semibold text-white max-w-full truncate rounded-r-md ",
+                            `bg-[${fomratColorCurso(curso?.tipo)}]`
+                          )}>
+                            {formatTitle(curso?.tipo)}
+                          </div>
                           <GlobalImage
                             src={curso?.imagen}
                             loader={() => curso?.imagen}
                             layout="fill"
                             objectFit="cover"
                           />
-                          <p className="text-xl	">{curso.nombre}</p>
                         </div>
                         <p className="text-xl	">{curso.nombre}</p>
                       </div>
