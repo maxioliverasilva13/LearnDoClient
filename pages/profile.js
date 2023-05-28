@@ -60,22 +60,24 @@ export default function Profile() {
   async function onSave() {
     try {
       if (avatarImported) {
+        console.log(avatarImported);
         const urlResult = await uploadFile(avatarImported);
+        console.log(urlResult);
+        setUserAvatar(urlResult);
       }
-
       const body = {
-        ...userData,
         imagen: userAvatar,
+        ...userData,
       };
       const response = await handleChangeMeInfo(body);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
   return (
     <>
       <main
-        className={
-          "h-auto py-10 flex items-center justify-center text-white"
-        }
+        className={"h-auto py-10 flex items-center justify-center text-white"}
       >
         <section className={"relative block "}></section>
         <section className={" relative py-16 bg-blueGray-200}"}>
@@ -88,7 +90,7 @@ export default function Profile() {
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full px-4 lg:order-2 flex justify-center">
                       <div className="relative w-[250px] h-[250px]">
-                        <GlobalImage 
+                        <GlobalImage
                           src={userAvatar}
                           loader={() => userAvatar}
                           layout="fill"
@@ -235,16 +237,16 @@ export default function Profile() {
                     </div>
                   </div>
                   <div className="w-full px-4 lg:text-center ">
-                      <div className="py-6 px-3 mt-32 sm:mt-0">
-                        <button
-                          onClick={onSave}
-                          className="bg-[#8526ff] transition delay-150 duration-150 hover:bg-white hover:text-black rounded font-medium   p-4 rounded-full focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 uppercase hover:shadow-md"
-                          type="button"
-                        >
-                          Guardar cambios
-                        </button>
-                      </div>
+                    <div className="py-6 px-3 mt-32 sm:mt-0">
+                      <button
+                        onClick={() => onSave()}
+                        className="bg-[#8526ff] transition delay-150 duration-150 hover:bg-white hover:text-black rounded font-medium   p-4 rounded-full focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 uppercase hover:shadow-md"
+                        type="button"
+                      >
+                        Guardar cambios
+                      </button>
                     </div>
+                  </div>
                 </div>
               </div>
             </div>
