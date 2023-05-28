@@ -41,10 +41,10 @@ const PuntuarModal = ({ openCalificarModal, setOpenCalificarModal, cursoId }) =>
     <Modal
       isVisible={openCalificarModal}
       onClose={() => setOpenCalificarModal(false)}
-      className="flex flex-row justify-center"
+      className="flex flex-row justify-center" 
       ancho={"500px"}
     >
-      <form onSubmit={handleSubmit} className="w-full h-auto">
+      <form onSubmit={handleSubmit} className="w-full h-auto flex flex-col items-center justify-center">
        <div className="w-full my-4">
        {error && (
           <Alert

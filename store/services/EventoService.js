@@ -170,7 +170,7 @@ export const EventoService = createApi({
       invalidatesTags: ["SelectedCursoInfo"],
     }),
     getEvaluacionInfo: builder.query({
-      query: ({evaluacionId}) => apiRoutes.evaluacionInfo(evaluacionId),
+      query: ({ evaluacionId }) => apiRoutes.evaluacionInfo(evaluacionId),
       transformResponse(value) {
         const response = value;
         return response;
@@ -181,17 +181,17 @@ export const EventoService = createApi({
         return {
           url: apiRoutes.correjirEvaluacion(),
           method: "POST",
-          body: data
-        }
+          body: data,
+        };
       },
-      invalidatesTags: ['SelectedCursoInfo'],
+      invalidatesTags: ["SelectedCursoInfo"],
       transformResponse(value) {
         const response = value;
         return response;
       },
     }),
     getCursosComprados: builder.query({
-      query: (data) =>  apiRoutes.getCursosComprados(data?.estudianteId),
+      query: (data) => apiRoutes.getCursosComprados(data?.estudianteId),
       provideTags: ["MisCursos"],
       transformResponse(value) {
         const response = value;
@@ -199,7 +199,7 @@ export const EventoService = createApi({
       },
     }),
     getCursoAndClases: builder.query({
-      query: ({cursoId}) =>  apiRoutes.getCursoAndClases(cursoId),
+      query: ({ cursoId }) => apiRoutes.getCursoAndClases(cursoId),
       provideTags: ["SelectedCursoInfo"],
       transformResponse(value) {
         const response = value;
@@ -217,13 +217,25 @@ export const EventoService = createApi({
             curso_id: data?.curso_id,
             estudiante_id: data?.estudiante_id,
           },
-        }
+        };
       },
-      invalidatesTags: ['ListSugerencias'],
+      invalidatesTags: ["ListSugerencias"],
       transformResponse(value) {
         const response = value;
         return response;
       },
+    }),
+    comprarevento: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.comprarEvento()}`,
+        method: "POST",
+        body: {
+          uid: data?.userId,
+          monto: data.monto,
+          metodoPago: data.metodoPago,
+          eventoId: data?.eventoId,
+        },
+      }),
     }),
   }),
 });
@@ -243,4 +255,5 @@ export const {
   useGetCursosCompradosQuery,
   useGetCursoAndClasesQuery,
   useCreateSugerenciaMutation,
+  useComprareventoMutation,
 } = EventoService;
