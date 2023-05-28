@@ -3,8 +3,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Alert from "components/Popups/Alert";
 import { useCorrejirEvaluacionMutation } from "store/services/EventoService";
 
-// const [evaluacion, setEvaluacion] = useState({ nombre: "", maximo_puntuacion: "", modulo_id: 0, preguntas: []},);
-
 const EvaluationPage = ({
   isEditing,
   setIsOpen,
@@ -13,7 +11,6 @@ const EvaluationPage = ({
   evaluacion,
 }) => {
   const [evaluationName, setEvaluationName] = useState(evaluacion?.nombre || "");
-  const [maxPunt, setMaxPunt] = useState(evaluacion?.maximo_puntuacion || "");
 
   const fomratPreguntas = preguntas?.map((pregunta) => {
     return {
@@ -65,10 +62,6 @@ const EvaluationPage = ({
 
   const handleEvaluationNameChange = (event) => {
     setEvaluationName(event.target.value);
-  };
-
-  const handleMaxPuntChange = (event) => {
-    setMaxPunt(event.target.value);
   };
 
   const handleQuestionChange = (event, index) => {
@@ -140,11 +133,11 @@ const EvaluationPage = ({
 
   const validateForm = () => {
     if (isEditing) {
-      if (evaluationName === "" || maxPunt === "") {
+      if (evaluationName === "") {
         setError({
           show: true,
           message:
-            "La evaluación debe tener un NOMBRE y una PUNTUACIÓN MÁXIMA.",
+            "La evaluación debe tener un NOMBRE.",
         });
         return false;
       }
@@ -186,7 +179,6 @@ const EvaluationPage = ({
     }
     const currentEvaluacion = {
       nombre: evaluationName,
-      maximo_puntuacion: maxPunt,
       preguntas: questions,
     };
 
@@ -248,22 +240,13 @@ const EvaluationPage = ({
           )}
         </div>
         {isEditing && (
-          <>
-            <input
-              type="text"
-              value={evaluationName}
-              onChange={handleEvaluationNameChange}
-              placeholder="Nombre de la evaluación"
-              className="w-full px-5 py-3 border border-white rounded-full text-white bg-transparent text-md"
-            />
-            <input
-              type="number"
-              value={maxPunt}
-              onChange={handleMaxPuntChange}
-              placeholder="Puntuación máxima"
-              className="w-full px-5 py-3 border border-white rounded-full mb-4 text-white bg-transparent text-md"
-            />
-          </>
+          <input
+            type="text"
+            value={evaluationName}
+            onChange={handleEvaluationNameChange}
+            placeholder="Nombre de la evaluación"
+            className="w-full px-5 py-3 border border-white rounded-full text-white bg-transparent text-md"
+          />
         )}
         <div className="flex flex-col p-1 overflow-y-scroll scroll-smooth h-[260px] max-h-[260px] gap-y-8">
           {questions.map((question, index) => (

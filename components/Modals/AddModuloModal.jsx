@@ -12,6 +12,7 @@ export default function AddModuloModal({
   setIsOpen,
   modulos,
   setModulos,
+  estaSugiriendo = false,
 }) {
 
   const [classes, setClasses] = useState([{ nombre: "", descripcion: "", video: ""},]);
@@ -97,7 +98,7 @@ export default function AddModuloModal({
       });
       return;
     }
-    if (isEvaluacionUnchanged()) {
+    if (!estaSugiriendo && isEvaluacionUnchanged()) {
       setError({
         show: true,
         message: "El MÓDULO debe tener una EVALUACIÓN.",
@@ -208,13 +209,15 @@ export default function AddModuloModal({
                         className="border border-white max-w-md self-center px-6 py-3 text-white placeholder:text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
                         placeholder="Nombre para el Módulo"
                       />
-                      <button
-                        className="w-max self-center active:bg-purple-800 text-white font-semibold
-                      hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                        onClick={handleOpenModal}
-                      >
-                        Crear Evaluación
-                      </button>
+                      {!estaSugiriendo && 
+                        <button
+                          className="w-max self-center active:bg-purple-800 text-white font-semibold
+                        hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                          onClick={handleOpenModal}
+                        >
+                          Crear Evaluación
+                        </button>
+                      }
                     </div>
                     <div className="my-2">
                       {error.show && (

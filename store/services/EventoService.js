@@ -18,6 +18,7 @@ export const EventoService = createApi({
     "SelectedCursoInfo",
     "CursosComprados",
     "MisCursos",
+    "ListSugerencias",
   ],
   endpoints: (builder) => ({
     listarEventos: builder.query({
@@ -88,6 +89,7 @@ export const EventoService = createApi({
         method: "POST",
         body: {
           curso_id: data?.curso_id,
+          sugerencia_id: data?.sugerencia_id,
           nombre: data?.nombre,
           clases: data?.clases,
           evaluacion: data?.evaluacion,
@@ -196,6 +198,33 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getCursoAndClases: builder.query({
+      query: ({cursoId}) =>  apiRoutes.getCursoAndClases(cursoId),
+      provideTags: ["SelectedCursoInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    createSugerencia: builder.mutation({
+      query: (data) => {
+        return {
+          url: apiRoutes.createSugerencia(),
+          method: "POST",
+          body: {
+            contenido: data?.contenido,
+            estado: data?.estado,
+            curso_id: data?.curso_id,
+            estudiante_id: data?.estudiante_id,
+          },
+        }
+      },
+      invalidatesTags: ['ListSugerencias'],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -212,4 +241,6 @@ export const {
   useGetEvaluacionInfoQuery,
   useCorrejirEvaluacionMutation,
   useGetCursosCompradosQuery,
+  useGetCursoAndClasesQuery,
+  useCreateSugerenciaMutation,
 } = EventoService;

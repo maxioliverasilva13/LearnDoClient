@@ -38,6 +38,7 @@ const estudiantesPaths = [
     appRoutes.seminarios(),
     appRoutes.cursos(),
     appRoutes.selectRole(),
+    appRoutes.cursoSugerir(),
 ]
 
 const CheckRoutes = ({children}) => {
