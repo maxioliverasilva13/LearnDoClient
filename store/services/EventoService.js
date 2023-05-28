@@ -261,6 +261,10 @@ export const EventoService = createApi({
           eventoId: data?.eventoId,
         },
       }),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
     }),
   }),
 });
