@@ -64,13 +64,14 @@ export default function CreateCurso() {
   });
 
   const { push } = useRouter();
+  const { handleSetLoading } = useGlobalSlice();
 
   // Services
   const [createEvento] = useCreateEventoMutation();
   const [createModulo] = useCreateModuloMutation();
   const [createColaboraciones] = useCreateColaboracionesMutation();
   const [uploadVideo] = useUploadVideoMutation();
-  const { data: categorias, isLoading } = useGetCategoriasQuery();
+  const { data: categorias } = useGetCategoriasQuery();
   const [selectedCategorias, setSelectedCategorias] = useState([]);
   const optionsCategorias = formatToOptions(categorias);
 
@@ -187,6 +188,7 @@ export default function CreateCurso() {
       tipo: "curso",
     };
 
+    handleSetLoading(true);
     await createEvento(cursoData)
       .unwrap()
       .then(async (response) => {
@@ -231,7 +233,8 @@ export default function CreateCurso() {
               });
           })
         );
-        push(appRoutes.cursos());
+        handleSetLoading(false);
+        push(appRoutes.misCursosAdmin());
       })
       .catch((error) => {
         console.error("Error al crear el evento: ", error);
@@ -281,6 +284,7 @@ export default function CreateCurso() {
                   type="file"
                   id="foto"
                   name="image"
+                  accept="image/*"
                   onChange={handleFileChange}
                   className="border-0 px-6 py-3 text-white bg-[#780EFF] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                 />

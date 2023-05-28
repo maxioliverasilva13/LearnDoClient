@@ -27,6 +27,8 @@ const apiRoutes = {
     getCursosComprados: (estudianteId) => `/api/cursos/getCursosComprados?estudianteId=${estudianteId}`,
     changeUserRole: () => `/api/auth/changeRole`,
 
+    getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
+    createSugerencia: () => `/api/sugerencias/createSugerencia`,
 }
 
 export default apiRoutes;
