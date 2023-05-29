@@ -50,8 +50,8 @@ const Tarjeta = ({
   console.log(starts)
   return (
     <div
-      className="h-72 w-4/5 flex flex-row gap-5 justify-start items-center rounded-[12px] px-8"
-      style={{ backgroundColor: "#780EFF" }}
+      className="h-72 w-4/5 flex bg-slate-900 bg-opacity-50 flex-row gap-5 justify-start items-center rounded-[12px] px-8"
+      // style={{ backgroundColor: "#780EFF" }}
     >
       <div className="h-48 w-48 min-w-[192px] rounded-md relative">
         <GlobalImage

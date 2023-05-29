@@ -143,7 +143,7 @@ export default function Cursos() {
                     return (
                       <Link href={appRoutes.cursoPage(curso?.id)}>
                       <div
-                        className="max-w-[250px] cursor-pointer min-h-[350px]"
+                        className="max-w-[250px] transition-all transform hover:scale-105 cursor-pointer min-h-[350px]"
                         key={curso.id}
                       >
                         <div

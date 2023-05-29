@@ -261,6 +261,7 @@ export const EventoService = createApi({
           eventoId: data?.eventoId,
         },
       }),
+      invalidatesTags: ["SelectedCursoInfo"],
       transformResponse(value) {
         const response = value;
         return response;

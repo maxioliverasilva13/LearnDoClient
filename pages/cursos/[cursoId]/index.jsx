@@ -218,7 +218,7 @@ const CursoInfo = () => {
             });
           }}
           onApprove={async (data, actions) => {
-            pagar(valuesPay);
+            await pagar(valuesPay);
             //console.log("cvalues " + userInfo.nombre)
             //console.log("cvalues " + valuesPay.userId)
             //console.log("cvalues " + valuesPay.eventoId)
