@@ -22,6 +22,7 @@ const organizadorPaths = [
     appRoutes.createSeminario(),
     appRoutes.misCursosAdmin(),
     appRoutes.progresoEstudiantes(),
+    appRoutes.selectRole(),
 ]
 
 const estudiantesPaths = [
@@ -36,15 +37,17 @@ const estudiantesPaths = [
     appRoutes.mapaSeminarios(),
     appRoutes.seminarios(),
     appRoutes.cursos(),
+    appRoutes.selectRole(),
     appRoutes.cursoSugerir(),
 ]
 
 const CheckRoutes = ({children}) => {
-    const { pathname } = useRouter();
+    const { pathname, push } = useRouter();
     const { userInfo } = useGlobalSlice();
     const role = userInfo?.type;
     const isPublicPath = listOfPublicPath.includes(pathname);
     const [isValidPath, setIsValidPath] = useState(null);
+    const isInRolePage = appRoutes.selectRole() === pathname;
 
     useEffect(() => {
         if (!isPublicPath) {
@@ -55,19 +58,39 @@ const CheckRoutes = ({children}) => {
                 if (role === roles.organizador) {
                     setIsValidPath(organizadorPaths?.includes(pathname))
                 }
+            } else {
+                if (!isInRolePage) push(appRoutes.selectRole())
             }
         }
        
     }, [pathname, isPublicPath, role])
 
-    if (isValidPath === null && !isPublicPath) {
-        return <Spinner />
+    useEffect(() => {
+        if (role && isInRolePage) {
+            if (role === roles.estudiante) {
+                push(appRoutes.home())
+            }
+            if (role === roles.organizador) {
+                push(appRoutes.dashboard())
+            }
+        }
+    }, [role, isInRolePage])
+    
+    if (!isInRolePage) {
+        if (isValidPath === null && !isPublicPath) {
+            return <Spinner />
+        }
+        if (isValidPath === false) {
+            return <NotFoundPage />
+        }
     }
-    if (isValidPath === false) {
-        return <NotFoundPage />
+
+    if (role && isInRolePage) {
+        return null;
     }
+  
     return <div>
-        {children}
+        {typeof window !== "undefined" && children}
     </div>
 }
 

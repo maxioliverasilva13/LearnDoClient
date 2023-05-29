@@ -11,6 +11,7 @@ import clsx from "clsx";
 import useChats from "hooks/useChats";
 import { useRouter } from "next/router";
 import appRoutes from "routes/appRoutes";
+import NoResults from "components/NotFoundPage/NoResults";
 
 let timer = 0;
 let timer2 = 0;
@@ -89,6 +90,9 @@ const NewMessage = ({ handleClose }) => {
         <LottieLoading />
       ) : (
         <div className="w-full flex flex-col items-center justify-start gap-2">
+          {
+            results?.length === 0 && !isLoading && !isSearching && <NoResults message="Sin resultados" />
+          }
           {results?.map((user) => {
             return (
               <div

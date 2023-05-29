@@ -57,7 +57,7 @@ const MapaSeminarios = () => {
           html: `
             <div class="w-[200px] h-auto rounded-[20px] gap-y-[4px] flex flex-col">
                 <div class="w-full flex flex-row items-center justify-start gap-2">
-                <img src="${item?.imagen}" class="w-full h-[60px] object-cover rounded-lg shadow-md border border-black" />
+                <img src="${item?.imagen}" class="w-full h-[60px] object-cover rounded-lg shadow-md border border-white" />
                 </div>
             <span class="text-gray-800 max-w-full truncate font-semibold text-[16px]">${item?.nombre}</span>
             <span class="text-gray-800 font-semibold text-[14px]">Fecha: ${item?.fecha}</span>

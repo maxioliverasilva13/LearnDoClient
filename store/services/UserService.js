@@ -76,6 +76,39 @@ export const UserService = createApi({
         return response;
       },
     }),
+    signUpWithExternalService: builder.mutation({
+      query: (data) => ({
+        url: apiRoutes.signUpWithExternalService(),
+        method: "POST",
+        body: {
+          nombre: data?.nombre || "",
+          nickname: data?.nickname || "",
+          email : data?.email,
+          biografia: data?.biografia || "",
+          imagen: data?.imagen || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+          uid: data?.uid || "",
+      }
+      }),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    changeUserRole: builder.mutation({
+      query: (data) => ({
+        url: apiRoutes.changeUserRole(),
+        method: "PUT",
+        body: {
+          uid: data?.uid || "",
+          role: data?.role || "estudiante",
+      }
+      }),
+      invalidatesTags: ["UserInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -89,4 +122,6 @@ export const {
   useChangeMeInfoMutation,
   useLazyFilterByNicknameOrEmailQuery,
   useFilterByNicknameOrEmailQuery,
+  useSignUpWithExternalServiceMutation,
+  useChangeUserRoleMutation,
 } = UserService;

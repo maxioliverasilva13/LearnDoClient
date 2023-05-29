@@ -2,6 +2,7 @@ const apiRoutes = {
     signIn: () => "/api/auth/login",
     activate: () => "/api/auth/activate",
     signUp: () => "/api/auth/signup",
+    signUpWithExternalService: () => "/api/auth/signupWithOauth",
     checkNickname: () => "/api/usuarios/checkNickname",
     me: () => "/api/auth/me",
     getMessages: () => "/api/messages/",
@@ -24,6 +25,7 @@ const apiRoutes = {
     claseInfo: (claseId, cursoId) => `/api/clases?clase_id=${claseId}&curso_id=${cursoId}`,
     correjirEvaluacion: () => "/api/calificacion/",
     getCursosComprados: (estudianteId) => `/api/cursos/getCursosComprados?estudianteId=${estudianteId}`,
+    changeUserRole: () => `/api/auth/changeRole`,
     getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
     createSugerencia: () => `/api/sugerencias/createSugerencia`,
 }

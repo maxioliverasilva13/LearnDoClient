@@ -3,7 +3,6 @@ import useGlobalSlice from "hooks/useGlobalSlice";
 
 const LoadingWrapper = ({ children }) => {
     const { isLoading } = useGlobalSlice();
-
   return (
     <>
       {isLoading && <Spinner />}
