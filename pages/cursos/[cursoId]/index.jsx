@@ -17,6 +17,11 @@ import ClaseCard from "components/ClaseCard/ClaseCard";
 import CreateEvaluacionModal from "components/Modals/CreateEvaluacionModal";
 import PuntuacionText from "components/PuntuacionText/PuntuacionText";
 import Stars from "components/Stars/Stars";
+import { PayPalScriptProvider, loadScript } from "@paypal/react-paypal-js";
+import { PayPalButtons } from "@paypal/react-paypal-js";
+import Modal from "components/Modal/modal"
+import { useComprareventoMutation } from "store/services/EventoService";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 const CursoInfo = () => {
   const router = useRouter();
@@ -51,6 +56,64 @@ const CursoInfo = () => {
   useEffect(() => {
     handleSetLoading(isLoading);
   }, [isLoading]);
+
+  const [valuesPay, setValuePay] = useState({
+    userId: userInfo?.id,
+    monto: cursoInfo?.precio,
+    metodoPago: "paypal",
+    eventoId: cursoId,
+  })
+  const [handlePay] = useComprareventoMutation();
+
+  useEffect(() => {
+    if (cursoInfo) {
+      setValuePay({
+        userId: userInfo?.id,
+        monto: cursoInfo?.precio,
+        metodoPago: "paypal",
+        eventoId: cursoInfo.id,
+      })
+    }
+  }, [cursoInfo, userInfo])
+
+  const pagar = async (values) => {
+    const response = await handlePay(values);
+    if (response?.data?.statusCode === 200) {
+      console.log("esta funcando re bien")
+    }
+  }
+
+  const [showModal, setShowModal] = useState(false);
+
+  //   useGetCompleteCursoInfoQuery
+  const renderStars = (
+    stars,
+    size = 20,
+    needsCount = true,
+    justifyStart = false
+  ) => {
+    return (
+      <div
+        className={clsx(
+          "w-full h-auto flex flex-row gap-1 items-center",
+          justifyStart ? "justify-start" : "justify-center"
+        )}
+      >
+        {Array.from(Array(5).keys()).map((value) => {
+          const isChecked = value < stars;
+          return (
+            <BsFillStarFill
+              className={clsx(
+                `mr-1 text-[${size}px]`,
+                isChecked ? "text-yellow-500" : "text-white"
+              )}
+            />
+          );
+        })}
+        {needsCount && <span className="text-white">({countStars})</span>}
+      </div>
+    );
+  };
 
   const item = 1;
   const Categorias = useMemo(() => {
@@ -115,6 +178,69 @@ const CursoInfo = () => {
   const activeModulo =
     data?.modulos?.find((item) => item?.id === activeModuloId) || null;
 
+  const PayPalButtonsWrapper = () => {
+    const PAYPAL_CLIENT_ID = "ARMjbBZs3Nm__CVEJeKlu6ePlR_XQFuSYPuqFkiPMRPLZpVNeeji9C_Cf1Mit_wj912tqCp7zymLcEY3";
+    const initialOptions = {
+      "client-id": PAYPAL_CLIENT_ID,
+      currency: "USD",
+      intent: "capture",
+    };
+
+    const handleReload = () => {
+      window.location.reload();
+    };
+
+    return (
+      <PayPalScriptProvider options={initialOptions}>
+        <PayPalButtons
+        className="h-full w-full z-[20]"
+        fundingSource="paypal"
+        //fundingSource = "paypal.FUNDING.PAYPAL"
+          //fundingSource={
+          //  {
+          //  paypal.FUNDING.PAYPAL
+          //  }
+          //}
+          style={
+            {
+              shape:"pill"
+            }
+          }
+          createOrder={(data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: {
+                    value: precio,
+                  },
+                },
+              ],
+            });
+          }}
+          onApprove={async (data, actions) => {
+            await pagar(valuesPay);
+            //console.log("cvalues " + userInfo.nombre)
+            //console.log("cvalues " + valuesPay.userId)
+            //console.log("cvalues " + valuesPay.eventoId)
+            //console.log("cvalues " + valuesPay.metodoPago)
+            //console.log("cvalues " + valuesPay.monto)
+            //console.log("cvalues " + cursoInfo.precio)
+            setShowModal(true);
+            return
+            //return actions.order.capture().then((details) => {
+            //  
+            //  setShowModal(true)
+            //});
+          }}
+        />
+      </PayPalScriptProvider>
+    );
+  };
+
+  const handleReload = () => {
+    window.location.reload();
+  };
+
   const renderContent = () => {
     if (isLoading) {
       return null;
@@ -174,13 +300,28 @@ const CursoInfo = () => {
                   </span>
                 </Link>
               ) : (
-                <div className="w-full flex flex-row items-center justify-center gap-[60px]">
+                <div className="w-full flex flex-row items-start justify-center gap-[60px]">
                   <span className="text-white font-semibold text-[20px]">
                     USD${precio}
                   </span>
-                  <button className="text-[20px] px-6 py-4 text-white rounded-full border-0 bg-[#780EFF]">
-                    Comprar
-                  </button>
+                  <PayPalButtonsWrapper />
+                  <Modal isVisible={showModal} onClose={() => setShowModal(false)} alto={"30%"} ancho={"40%"}>
+                    <div className="flex flex-col items-center justify-center">
+                      <FaRegCheckCircle size={50} color="lime"></FaRegCheckCircle>
+                      <a className="text-2xl text-white mt-8">¡Pago realizado!</a>
+                      <a className="text-2xm text-white mb-8">Disfruta de tu curso</a>
+                      <button className="h-10 w-32 mb-8 rounded-full text-white" style={{ backgroundColor: '#780EFF' }}
+                        onClick={() => {
+                          setShowModal(false)
+                          handleReload()
+                          //pagar(valuesPay);
+                        }}
+                        onClose={() => {
+                          setShowModal(false)
+                          handleReload()
+                        }}>Aceptar</button>
+                    </div>
+                  </Modal>
                 </div>
               )}
             </div>
@@ -311,6 +452,7 @@ const CursoInfo = () => {
               </div>
             </div>
           )}
+
         </div>
       );
     }

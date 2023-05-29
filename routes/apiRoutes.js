@@ -22,12 +22,15 @@ const apiRoutes = {
     uploadVideo: () => "/api/videos/upload-video",
     puntuarCurso: () => "/api/puntuacion/",
     evaluacionInfo: (evaluacionId) => `/api/evaluaciones?evaluacionId=${evaluacionId}`,
+    userIsStudentOrOwner: (eventoId) => `/api/eventos/${eventoId}/userIsStudentOrOwner`,
     claseInfo: (claseId, cursoId) => `/api/clases?clase_id=${claseId}&curso_id=${cursoId}`,
     correjirEvaluacion: () => "/api/calificacion/",
+    getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso",
     getCursosComprados: (estudianteId) => `/api/cursos/getCursosComprados?estudianteId=${estudianteId}`,
     changeUserRole: () => `/api/auth/changeRole`,
     getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
     createSugerencia: () => `/api/sugerencias/createSugerencia`,
+    comprarEvento: () => "/api/eventos/comprarEvento"
 }
 
 export default apiRoutes;

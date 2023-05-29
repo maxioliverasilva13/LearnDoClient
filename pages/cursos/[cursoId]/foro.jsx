@@ -3,26 +3,34 @@ import React, { useEffect, useState, useRef } from "react";
 
 import CardPost from "components/Cards/CardPost";
 import ConfirmModal from "components/Modals/ConfirmModal";
+import appRoutes from "routes/appRoutes";
 
 import {
   useListarPublicacionesByForoIdQuery,
   useCreatePostMutation,
   useDeletePostMutation,
 } from "store/services/PublicacionService";
+
 import { useDeleteCommentMutation } from "store/services/ComentarioService";
+
+
+import { useUserIsStudentOrOwnerQuery } from "store/services/EventoService";
+import NotFoundPage from "components/NotFoundPage/NotFoundPage";
+
 
 export default function Foro() {
   const router = useRouter();
   const { cursoId: curso_id } = router.query;
   const [foroId, setCursoId] = useState(curso_id);
-  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
+  const [foroExist, setForoExist]= useState(true);
 
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
   const [submitNewPost, setSubmitNewPost] = useState(false);
   const [formHasError, setFormHasError] = useState(false);
+  const [userIsStudentOrOwner,setUserIsStudentOrOwner] = useState(true);
 
   const [createPost] = useCreatePostMutation();
   const [deletePost] = useDeletePostMutation();
@@ -30,6 +38,10 @@ export default function Foro() {
 
   const { data, error, isLoading, refetch } =
     useListarPublicacionesByForoIdQuery({ foroId: foroId });
+
+   const { data: isStudentOrOwnerRes  } =
+    useUserIsStudentOrOwnerQuery({ eventoId: foroId });
+    
   const [hasMore, setHasMore] = useState(true);
   const [validationsMessage, setValidationsMessage] = useState([]);
 
@@ -38,17 +50,26 @@ export default function Foro() {
 
   useEffect(() => {
     if (data) {
+      
       setPosts(data);
-      setLoading(false);
     }
     if (error) {
-      console.log(error);
+      const { status } = error;
+      if(status == 404){
+            setForoExist(false);
+            return;
+        }
     }
-  }, []);
+  }, [data]);
 
-  function loadMoreItems() {
-    setPage(page + 1);
-  }
+  useEffect(()=>{
+    if(isStudentOrOwnerRes ){        
+        const { result  } = isStudentOrOwnerRes; //code is 200
+        setUserIsStudentOrOwner(result);
+    }
+  },[isStudentOrOwnerRes])
+
+ 
 
   async function onCreatePost() {
     setSubmitNewPost(true);
@@ -65,7 +86,6 @@ export default function Foro() {
         foroId: foroId,
       };
       const response = await createPost(body);
-      console.log(response);
       const { data } = response;
       const postsData = [...posts];
       postsData.unshift(data);
@@ -122,6 +142,8 @@ export default function Foro() {
     }
   }
 
+  console.log(posts)
+
   return (
     <div className="w-full min-h-screen" id="scrollableDiv">
       <ConfirmModal
@@ -130,8 +152,44 @@ export default function Foro() {
         confirmModal={onConfirmModalDeletePost}
         text="Seguro deseas eliminar la publicacion?"
       />
+      {
+        (!foroExist || !userIsStudentOrOwner)&& (
+          <div className="mt-10">
+                     <NotFoundPage></NotFoundPage>
+                     {
+                      !foroExist && ( 
 
-      <div className="w-1/3 py-16">
+                        <div className="flex flex-col items-center">
+                        <h1 className="flex justify-center text-white text-xl">El foro no existe </h1>
+
+                          <button className="bg-[#780EFF] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" onClick={()=> window.location.href = appRoutes.home()}>
+                            Ir al inicio
+                          </button>
+                      </div>
+                      ) 
+                      
+                     }
+                     
+                     {
+                      !userIsStudentOrOwner && 
+                      <div className="flex flex-col items-center">
+                        <h1 className="flex justify-center text-white text-xl">Para acceder al foro necesitas obtener el curso </h1>
+
+                        <button className="bg-[#780EFF] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">
+                          Ir al curso
+                        </button>
+                      </div>
+                     }
+                    
+          </div>
+
+        
+        )
+      }
+      { 
+          (foroExist && userIsStudentOrOwner) && (
+              <div>
+                 <div className="w-1/3 py-16">
         <h1 className="text-white text-5xl text-center">Foro del curso</h1>
       </div>
 
@@ -242,6 +300,10 @@ export default function Foro() {
           ></CardPost>
         ))}
       </div>
+              </div>
+          )
+      }
+     
     </div>
   );
 }

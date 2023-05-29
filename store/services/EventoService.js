@@ -23,8 +23,12 @@ export const EventoService = createApi({
   endpoints: (builder) => ({
     listarEventos: builder.query({
       query: (data) => {
+  
         const { page, rowsNumbers, filterData = null, busqueda = "" } = data;
+
+        console.log(filterData)
         let query = `${apiRoutes.listarEventos()}?page=${page}&maxRows=${rowsNumbers}`;
+
         if (filterData) {
           if (filterData.categoriasIds && filterData.categoriasIds.length > 0) {
             var categoriasArrQry = filterData.categoriasIds
@@ -34,11 +38,18 @@ export const EventoService = createApi({
               .join("&");
             query = `${query}${categoriasArrQry}`;
           }
+          if(filterData.tipo){
+            const tipoQuery = filterData.tipo == "Curso" ? "curso" : 
+            filterData.tipo == "SeminarioOnline" ? "seminarioV" : 
+            filterData.tipo == "SeminarioPresencial" ? "seminarioP" : ""; 
+
+            query = `${query}&tipo=${tipoQuery}`;
+          }
         }
         if (busqueda && busqueda.trim().length > 0) {
-          query = `${query}${busqueda}`;
+          query = `${query}&busqueda=${busqueda}`;
+          console.log(query)
         }
-        // console.log(query);
         return query;
       },
       providesTags: ["ListEventos"],
@@ -46,6 +57,20 @@ export const EventoService = createApi({
         const response = value;
         return response;
       },
+    }),
+
+    userIsStudentOrOwner: builder.query({
+      query: ({eventoId}) => {
+        console.log(eventoId)
+        return apiRoutes.userIsStudentOrOwner(eventoId);
+      },
+
+      providesTags: ["userIsStudentOrOwner"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+      invalidatesTags: ["userIsStudentOrOwner"]
     }),
     createEvento: builder.mutation({
       query: (data) => ({
@@ -170,7 +195,7 @@ export const EventoService = createApi({
       invalidatesTags: ["SelectedCursoInfo"],
     }),
     getEvaluacionInfo: builder.query({
-      query: ({evaluacionId}) => apiRoutes.evaluacionInfo(evaluacionId),
+      query: ({ evaluacionId }) => apiRoutes.evaluacionInfo(evaluacionId),
       transformResponse(value) {
         const response = value;
         return response;
@@ -181,17 +206,17 @@ export const EventoService = createApi({
         return {
           url: apiRoutes.correjirEvaluacion(),
           method: "POST",
-          body: data
-        }
+          body: data,
+        };
       },
-      invalidatesTags: ['SelectedCursoInfo'],
+      invalidatesTags: ["SelectedCursoInfo"],
       transformResponse(value) {
         const response = value;
         return response;
       },
     }),
     getCursosComprados: builder.query({
-      query: (data) =>  apiRoutes.getCursosComprados(data?.estudianteId),
+      query: (data) => apiRoutes.getCursosComprados(data?.estudianteId),
       provideTags: ["MisCursos"],
       transformResponse(value) {
         const response = value;
@@ -199,7 +224,7 @@ export const EventoService = createApi({
       },
     }),
     getCursoAndClases: builder.query({
-      query: ({cursoId}) =>  apiRoutes.getCursoAndClases(cursoId),
+      query: ({ cursoId }) => apiRoutes.getCursoAndClases(cursoId),
       provideTags: ["SelectedCursoInfo"],
       transformResponse(value) {
         const response = value;
@@ -217,9 +242,26 @@ export const EventoService = createApi({
             curso_id: data?.curso_id,
             estudiante_id: data?.estudiante_id,
           },
-        }
+        };
       },
-      invalidatesTags: ['ListSugerencias'],
+      invalidatesTags: ["ListSugerencias"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    comprarevento: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.comprarEvento()}`,
+        method: "POST",
+        body: {
+          uid: data?.userId,
+          monto: data.monto,
+          metodoPago: data.metodoPago,
+          eventoId: data?.eventoId,
+        },
+      }),
+      invalidatesTags: ["SelectedCursoInfo"],
       transformResponse(value) {
         const response = value;
         return response;
@@ -243,4 +285,6 @@ export const {
   useGetCursosCompradosQuery,
   useGetCursoAndClasesQuery,
   useCreateSugerenciaMutation,
+  useComprareventoMutation,
+  useUserIsStudentOrOwnerQuery
 } = EventoService;

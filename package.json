@@ -8,6 +8,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.3",
     "@headlessui/react": "^1.7.14",
+    "@paypal/react-paypal-js": "^7.8.3",
     "@popperjs/core": "2.9.1",
     "@reduxjs/toolkit": "^1.9.5",
     "@tailwindcss/forms": "0.2.1",

@@ -42,7 +42,7 @@ body {
   box-sizing: border-box;
   width: 100%!important;
   height: 100vh!important;
-  background: linear-gradient(180deg, #760eff83 0%, #5a23a26f 26.04%, #0000003b 100%)!important;
+  background: linear-gradient(180deg, #760eff83 0%, #5a23a26f 60.04%, #5a23a247 100%)!important;
 /* background-color: #760eff43; */
 }
 

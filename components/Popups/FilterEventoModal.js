@@ -1,17 +1,28 @@
 import React, {useState} from "react";
+import { useEffect } from "react";
 import Select from 'react-select'
 
-const FilterEventoModal = ({ show, updateShowModal,onFilterEvent}) => {
+const FilterEventoModal = ({ show, updateShowModal,onFilterEvent,categorias}) => {
+  const [categoriasOptions, setCategoriasOptions] = useState([]);
+
+  
   const [categoriasSelected, setCategoriasSelected] = useState();
   const [tipoOptionSelected, setTipoSelected] = useState();
-
-
-  const categoriasOptions = [
-    { value: 1, label: 'Software'  },
-    { value: 2, label: 'Cocina'  },
-    { value: 3, label: 'Mindfulness'  },
   
-  ];
+  useEffect(()=>{
+    if(categorias){
+      const categoriasOpt =  categorias.map(item =>{
+       return {
+         value: item.id,
+         label: item.nombre
+       }
+      });
+      setCategoriasOptions(categoriasOpt)
+   }
+  
+  },categorias)
+
+
 
   const tiposOptions = [
     { value: null, label: 'Todos'  },
@@ -19,6 +30,8 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent}) => {
     { value: "SeminarioOnline", label: 'Seminario Online'  },
     { value: "SeminarioPresencial", label: 'Seminario Presencial'  },
   ];
+
+ 
 
   const customStyles = {
     option: (provided, state) => ({
