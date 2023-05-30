@@ -30,7 +30,7 @@ const BarraDeCarga = ({ porcentajeCarga, ancho, colorFondo }) => {
           }}
         ></div>
       </div>
-      <a className="text-white ml-1">{porcentajeCarga}%</a>
+      <p className="text-white ml-1">{porcentajeCarga}%</p>
     </div>
   );
 };
@@ -138,7 +138,6 @@ const Tarjeta = ({
 };
 
 export default function MisCursos() {
-  const [showModal, setShowModal] = useState(false);
   const { userInfo, handleSetLoading } = useGlobalSlice();
   const uid = userInfo?.id;
   const { data, isLoading } = useGetEventosAdminQuery(
@@ -160,10 +159,22 @@ export default function MisCursos() {
   return (
     <>
       <main className="miscursos_page lg:px-10 px-5 py-10 w-full h-full flex flex-col gap-4 items-center min-h-screen">
-        <div className="w-full flex flex-col justify-center mb-8">
-          <a className="ml-20 text-5xl text-white font-medium">
+        <div className="w-full flex flex-col justify-center">
+          <p className="ml-20 text-5xl text-white font-medium">
             Mis Eventos (Admin)
-          </a>
+          </p>
+        </div>
+        <div className="w-full flex md:px-36 gap-5">
+          <Link href={appRoutes.createCurso()}>
+            <span className="bg-indigo-700 shadow-md cursor-pointer transition-all transform hover:scale-105 my-2 px-6 py-2 w-max text-xl text-white block rounded-full ">
+              Crear Curso
+            </span>
+          </Link>
+          <Link href={appRoutes.createSeminario()}>
+            <span className="bg-indigo-700 shadow-md cursor-pointer transition-all transform hover:scale-110 my-2 px-6 py-2 w-max text-xl text-white block rounded-full ">
+              Crear Seminario
+            </span>
+          </Link>
         </div>
         {cursos?.length === 0 &&
           !isLoading &&
