@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Alert from "components/Popups/Alert";
-import { useCorrejirEvaluacionMutation } from "store/services/EventoService";
+import {
+  useCorrejirEvaluacionMutation,
+  useDeletePreguntaMutation,
+} from "store/services/EventoService";
+import useGlobalSlice from "hooks/useGlobalSlice";
 
 const EvaluationPage = ({
   isEditing,
@@ -10,14 +14,19 @@ const EvaluationPage = ({
   setEvaluacion,
   evaluacion,
 }) => {
-  const [evaluationName, setEvaluationName] = useState(evaluacion?.nombre || "");
+  const [evaluationName, setEvaluationName] = useState(
+    evaluacion?.nombre || ""
+  );
 
   const fomratPreguntas = preguntas?.map((pregunta) => {
     return {
-      id: pregunta?.id,
+      preguntaId: pregunta?.preguntaId || pregunta?.id,
+      id: pregunta?.preguntaId || pregunta?.id,
       contenido: pregunta?.contenido,
       opciones: pregunta?.opciones?.map((question) => {
         return {
+          id: question?.opcionId,
+          opcionId: question?.opcionId,
           contenido: question?.contenido,
           correcta: !isEditing ? false : question?.correcta,
         };
@@ -25,7 +34,18 @@ const EvaluationPage = ({
     };
   });
 
-  const [correjirEvaluacion] = useCorrejirEvaluacionMutation();
+  const [correjirEvaluacion, { isLoading: isLoadingCorrecion }] =
+    useCorrejirEvaluacionMutation();
+  const [deletePregunta, { isLoading: isLoadingDeletePregunta }] =
+    useDeletePreguntaMutation();
+
+  const { handleSetLoading } = useGlobalSlice();
+
+  const isLoading = isLoadingDeletePregunta || isLoadingCorrecion;
+  useEffect(() => {
+    handleSetLoading(isLoading);
+  }, [isLoading]);
+
   const [questions, setQuestions] = useState([
     {
       contenido: "",
@@ -108,10 +128,22 @@ const EvaluationPage = ({
     ]);
   };
 
-  const handleRemoveQuestion = (index) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions.splice(index, 1);
-    setQuestions(updatedQuestions);
+  const handleRemoveQuestion = async (index) => {
+    const preguntaId = questions[index]?.preguntaId;
+    if (preguntaId) {
+      const response = await deletePregunta({ preguntaId: preguntaId });
+      if (response?.data?.ok) {
+        const updatedQuestions = [...questions];
+        updatedQuestions.splice(index, 1);
+        setQuestions(updatedQuestions);
+      } else {
+        console.log("error al borrar pregunta");
+      }
+    } else {
+      const updatedQuestions = [...questions];
+      updatedQuestions.splice(index, 1);
+      setQuestions(updatedQuestions);
+    }
   };
 
   // ultimo change
@@ -136,8 +168,7 @@ const EvaluationPage = ({
       if (evaluationName === "") {
         setError({
           show: true,
-          message:
-            "La evaluación debe tener un NOMBRE.",
+          message: "La evaluación debe tener un NOMBRE.",
         });
         return false;
       }
@@ -178,6 +209,7 @@ const EvaluationPage = ({
       return;
     }
     const currentEvaluacion = {
+      id: evaluacion?.id,
       nombre: evaluationName,
       preguntas: questions,
     };
@@ -190,31 +222,33 @@ const EvaluationPage = ({
       const formatRespuestas = preguntas?.map((item, indexPregunta) => {
         return {
           ...item,
-          opcioneCorrecta: item?.opciones?.find((opcion, index) => {
-            return index === answers[indexPregunta]
-          })?.id || null,
-        }
-      })
+          opcioneCorrecta:
+            item?.opciones?.find((opcion, index) => {
+              return index === answers[indexPregunta];
+            })?.id || null,
+        };
+      });
       if (formatRespuestas) {
         const formatRespuestasVacias = formatRespuestas?.filter((respuesta) => {
           return respuesta?.opcioneCorrecta == null;
-        })
+        });
         if (formatRespuestasVacias?.length > 0) {
           setError({
             show: true,
-            message: "Tienes que responder todas las preguntas para enviar el formulario",
+            message:
+              "Tienes que responder todas las preguntas para enviar el formulario",
           });
           return;
         }
       }
       setError({
-        show:false,
+        show: false,
         message: "",
       });
       const preparedData = {
         respuestas: formatRespuestas,
         evaluacionId: evaluacion?.id,
-      }
+      };
       const response = await correjirEvaluacion(preparedData);
     }
     if (setIsOpen) setIsOpen(false);

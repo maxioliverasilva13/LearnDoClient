@@ -13,6 +13,7 @@ const appRoutes = {
     foroPage: (foroId) => `/cursos/${foroId ? foroId : "[cursoId]"}/foro`,
     clasePage: (claseId, cursoId) => `/cursos/${cursoId ? [cursoId] : "[cursoId]"}/clase/${claseId ? claseId : "[claseId]"}`,
     cursoPage: (cursoId) => `/cursos/${cursoId ? cursoId : "[cursoId]"}`,
+    editCurso: (cursoId) => `/cursos/editCurso/${cursoId ? cursoId : "[id]"}`,
     cursoSugerir: (cursoId) => `/cursos/sugerir/${cursoId ? cursoId : "[cursoId]"}`,
     mapaSeminarios: () => '/mapaSeminarios',
     createCurso: () => '/cursos/createCurso',

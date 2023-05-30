@@ -24,6 +24,7 @@ const useForm = (initialValues) => {
         formValues,
         handleChangeValue,
         handleChangeValueMultipleValues,
+        setFormValues,
     }
 }
 

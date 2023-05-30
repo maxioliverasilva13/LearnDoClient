@@ -13,7 +13,11 @@ const apiRoutes = {
     filterByNicknameOrEmail: () => "/api/usuarios/filterByNicknameOrEmail",
     getEventos: () => "/api/eventos/",
     createModulo: () => "/api/modulos/createModulo",
+    deletemodulo: (moduloId) => `/api/modulos/${moduloId}`,
+    deleteClase: (claseId) => `/api/clases/${claseId}`,
+    deletePregunta: (pregId) => `/api/preguntas/${pregId}`,
     createColaboraciones: () => "/api/colaboraciones/createColaboraciones",
+    deleteColaboracion: () => "/api/colaboraciones",
     listarCategorias: () => "/api/categorias",
     listarEventosPresenciales: () => "/api/seminarios/presenciales",
     createComment: () => "/api/comentarios",
@@ -27,11 +31,14 @@ const apiRoutes = {
     correjirEvaluacion: () => "/api/calificacion/",
     getCursosComprados: (estudianteId) => `/api/cursos/getCursosComprados?estudianteId=${estudianteId}`,
     changeUserRole: () => `/api/auth/changeRole`,
-    getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
     createSugerencia: () => `/api/sugerencias/createSugerencia`,
     comprarEvento: () => "/api/eventos/comprarEvento",
     isUserColaborador: () => `/api/colaboraciones/isUserColaborador`,
     getEventosAdmin: (organizadorId) => `/api/eventos/getEventosAdmin?organizadorId=${organizadorId}`,
+    changeStatusSugerencia: () => `/api/sugerencias/changeStatus`,
+    getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
+    updateCursoInfo: () => '/api/cursos/updateCursoInfo',
+    updateAllOfModulo: () => '/api/modulos/updateAllOfModulo',
 }
 
 export default apiRoutes;
