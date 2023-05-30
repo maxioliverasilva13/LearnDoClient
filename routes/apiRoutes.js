@@ -39,6 +39,7 @@ const apiRoutes = {
     getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
     updateCursoInfo: () => '/api/cursos/updateCursoInfo',
     updateAllOfModulo: () => '/api/modulos/updateAllOfModulo',
+    getCompleteInfoSeminario: () => "/api/seminarios/getCompleteInfoSeminario",
 }
 
 export default apiRoutes;

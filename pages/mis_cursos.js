@@ -120,7 +120,7 @@ export default function MisCursos() {
     <>
       <main className="miscursos_page lg:px-10 px-5 py-10 w-full h-full flex flex-col gap-4 items-center min-h-screen">
         <div className="w-full flex flex-col justify-center mb-8">
-          <a className="ml-20 text-5xl text-white font-medium">Mis Cursos</a>
+          <a className="ml-20 text-5xl text-white font-medium">Mis Eventos</a>
         </div>
         {
           cursos?.length === 0 && !isLoading ? <NoResults message={"No se encontraron cursos"} />:
