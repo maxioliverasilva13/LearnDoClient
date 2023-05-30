@@ -81,11 +81,11 @@ export default function EditCurso() {
             Sugerencias
           </span>
           
-          <div className="flex w-full h-auto gap-4 flex-row items-center justify-start flex-wrap">
+          <div className="flex w-full h-auto gap-4 flex-row items-center justify-center sm:justify-start flex-wrap">
           {sugerencias?.map((item) => {
             return (
-              <div className="w-[450px] h-[450px] bg-black transition-all bg-opacity-50 rounded-lg py-4 px-6 flex flex-row items-start justify-center">
-                <div className="flex flex-col w-full gap-4 items-start justify-start">
+              <div className="w-[450px] max-w-[450px] h-[450px] bg-black transition-all bg-opacity-50 rounded-lg py-4 px-6 flex flex-row items-start justify-center">
+                <div className="flex flex-col max-w-[250px] w-full gap-4 items-start justify-start">
                   <span className="text-white font-medium text-[20px]">
                     Colaborador:
                   </span>
