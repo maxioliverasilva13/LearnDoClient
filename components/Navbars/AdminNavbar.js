@@ -28,7 +28,7 @@ export default function Navbar() {
 
   const renderItems = () => {
     if (rol === "organizador") {
-      return <ul className="flex justify-center ml-[200px]">
+      return <ul className="flex justify-center items-center">
       <li className="px-4">
         <Link href={appRoutes.dashboard()} className="hover:text-gray-400">
           Dashboard
@@ -36,7 +36,7 @@ export default function Navbar() {
       </li>
       <li className="px-4">
         <Link href={appRoutes.misCursosAdmin()} className="hover:text-gray-400">
-          Mis cursos
+          Mis Eventos
         </Link>
       </li>
       <li className="px-4">
@@ -70,7 +70,7 @@ export default function Navbar() {
       </li>
       <li className="px-4">
         <Link href={appRoutes.misCursos()} className="hover:text-gray-400">
-          Mis cursos
+          Mis Eventos
         </Link>
       </li>
     </ul>
@@ -81,13 +81,13 @@ export default function Navbar() {
     <>
       {/* Navbar */}
       <header
-        className="flex bg-[#7b479e] sticky top-0 left-0 z-[50] w-full items-center text-white h-16 min-h-[64px]"
+        className="flex bg-[#7b479e] sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px]"
       >
         {/* Logo */}
         <div className="px-4">
         <span className="select-none font-bold text-[20px]">Learn<span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span></span>        </div>
         {/* Navigation */}
-        <nav className="flex-grow">
+        <nav className="">
           {renderItems()}
         </nav>
         

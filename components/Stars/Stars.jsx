@@ -15,10 +15,11 @@ const Stars = ({
         justifyStart ? "justify-start" : "justify-center"
       )}
     >
-      {Array.from(Array(5).keys()).map((value) => {
+      {Array.from(Array(5).keys()).map((value, index) => {
         const isChecked = value < stars;
         return (
           <BsFillStarFill
+            key={index}
             className={clsx(
               `mr-1 text-[${size}px]`,
               isChecked ? "text-yellow-500" : "text-white"
