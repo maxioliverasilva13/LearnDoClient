@@ -16,6 +16,7 @@ export const EventoService = createApi({
     "ListEventos",
     "EventosPresenciales",
     "SelectedCursoInfo",
+    "SelectedSeminarioInfo",
     "CursosComprados",
     "MisCursos",
     "MisEventosAdmin",
@@ -320,12 +321,12 @@ export const EventoService = createApi({
         method: "POST",
         body: {
           uid: data?.userId,
-          monto: data.monto,
-          metodoPago: data.metodoPago,
+          monto: data?.monto,
+          metodoPago: data?.metodoPago,
           eventoId: data?.eventoId,
         },
       }),
-      invalidatesTags: ["SelectedCursoInfo"],
+      invalidatesTags: ["SelectedCursoInfo", "SelectedSeminarioInfo"],
       transformResponse(value) {
         const response = value;
         return response;
@@ -365,6 +366,15 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getCompleteSeminarioInfo: builder.query({
+      query: ({ seminarioId }) =>
+        `${apiRoutes.getCompleteInfoSeminario()}?seminarioId=${seminarioId}`,
+      providesTags: ["SelectedSeminarioInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -394,4 +404,5 @@ export const {
   useDeleteClaseMutation,
   useDeletePreguntaMutation,
   useUpdateStatusSugerenciaMutation,
+  useGetCompleteSeminarioInfoQuery
 } = EventoService;

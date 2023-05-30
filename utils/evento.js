@@ -36,7 +36,7 @@ export const formatTitle = (tipoCurso) => {
 }
 
 export const fomratColorCurso = (tipoCurso) => {
-    console.log(tipoCurso)
+    // console.log(tipoCurso)
     if (tipoCurso == EventosType.curso) {
         return "#780EFF";
     }

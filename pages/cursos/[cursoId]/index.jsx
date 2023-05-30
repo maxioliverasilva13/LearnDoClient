@@ -263,12 +263,12 @@ const CursoInfo = () => {
           />
           <div className="w-full h-auto md:gap-[50px] flex flex-row items-start justify-center">
             <div className="flex flex-col gap-2">
-              <div className="w-[660px] h-[320px] rounded-lg relative overflow-hidden">
+              <div className="w-[520px] h-[350px] rounded-lg relative overflow-hidden">
                 <GlobalImage
                   src={cursoImage}
                   loader={() => cursoImage}
                   className="w-full h-full"
-                  objectFit="cover"
+                  objectFit="object-scale-down"
                   layout="fill"
                 />
               </div>
@@ -304,12 +304,14 @@ const CursoInfo = () => {
                   <span className="text-white font-semibold text-[20px]">
                     USD${precio}
                   </span>
-                  <PayPalButtonsWrapper />
+                  { (userInfo?.id !== cursoInfo.organizador_id) && (cursoInfo?.es_pago === 1) && 
+                    <PayPalButtonsWrapper />
+                  }
                   <Modal isVisible={showModal} onClose={() => setShowModal(false)} alto={"30%"} ancho={"40%"}>
                     <div className="flex flex-col items-center justify-center">
                       <FaRegCheckCircle size={50} color="lime"></FaRegCheckCircle>
-                      <a className="text-2xl text-white mt-8">¡Pago realizado!</a>
-                      <a className="text-2xm text-white mb-8">Disfruta de tu curso</a>
+                      <p className="text-2xl text-white mt-8">¡Pago realizado!</p>
+                      <p className="text-2xm text-white mb-8">Disfruta de tu curso</p>
                       <button className="h-10 w-32 mb-8 rounded-full text-white" style={{ backgroundColor: '#780EFF' }}
                         onClick={() => {
                           setShowModal(false)

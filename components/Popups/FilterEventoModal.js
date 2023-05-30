@@ -20,7 +20,7 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent,categorias}) =>
       setCategoriasOptions(categoriasOpt)
    }
   
-  },categorias)
+  },[categorias])
 
 
 
