@@ -90,7 +90,7 @@ export const EventoService = createApi({
         const response = value;
         return response;
       },
-      invalidatesTags: ["ListEventos"],
+      invalidatesTags: ["ListEventos", "MisEventosAdmin"],
     }),
     updateCursoInfo: builder.mutation({
       query: (data) => ({
@@ -123,7 +123,7 @@ export const EventoService = createApi({
           body: data,
         };
       },
-      invalidatesTags: ["ListEventos"],
+      invalidatesTags: ["ListEventos", "MisEventosAdmin"],
       transformResponse(value) {
         const response = value;
         return response;
@@ -333,7 +333,7 @@ export const EventoService = createApi({
     }),
     getEventosAdmin: builder.query({
       query: (data) => apiRoutes.getEventosAdmin(data?.organizadorId),
-      provideTags: ["MisEventosAdmin"],
+      providesTags: ["MisEventosAdmin"],
       transformResponse(value) {
         const response = value;
         return response;

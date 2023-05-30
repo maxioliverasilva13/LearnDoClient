@@ -22,7 +22,6 @@ const appRoutes = {
     misCursosAdmin: () => '/admin/cursos',
     progresoEstudiantes: () => `/admin/progresoEstudiantes`,
     selectRole: () => `/selectrole`,
-    editCurso: () => `/cursos/#`, // solo a modo de ejemplo, borrar esta línea en el merge con el edit. 
 }
 
 export default appRoutes;
