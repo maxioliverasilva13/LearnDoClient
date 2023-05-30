@@ -85,7 +85,17 @@ export default function Navbar() {
       >
         {/* Logo */}
         <div className="px-4">
-        <span className="select-none font-bold text-[20px]">Learn<span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span></span>        </div>
+          {userInfo?.type === 'estudiante' &&
+            <Link href={appRoutes.home()}>
+              <span className="select-none font-bold cursor-pointer text-[20px]">Learn<span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span></span>
+            </Link>
+          }
+          {userInfo?.type === 'organizador' &&
+            <Link href={appRoutes.dashboard()}>
+              <span className="select-none font-bold cursor-pointer text-[20px]">Learn<span className="px-1 py-2 bg-[#760eff83] rounded-lg">Do</span></span>
+            </Link>
+          }
+        </div>
         {/* Navigation */}
         <nav className="">
           {renderItems()}
