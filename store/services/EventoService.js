@@ -343,7 +343,7 @@ export const EventoService = createApi({
     isUserColaborador: builder.mutation({
       query: (data) => {
         return {
-          url: apiRoutes.createSugerencia(),
+          url: apiRoutes.isUserColaborador(),
           method: "POST",
           body: {
             user_id: data?.user_id,
