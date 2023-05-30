@@ -18,6 +18,7 @@ export const EventoService = createApi({
     "SelectedCursoInfo",
     "CursosComprados",
     "MisCursos",
+    "MisEventosAdmin",
     "ListSugerencias",
   ],
   endpoints: (builder) => ({
@@ -330,6 +331,26 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getEventosAdmin: builder.query({
+      query: (data) => apiRoutes.getEventosAdmin(data?.organizadorId),
+      provideTags: ["MisEventosAdmin"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    isUserColaborador: builder.mutation({
+      query: (data) => {
+        return {
+          url: apiRoutes.createSugerencia(),
+          method: "POST",
+          body: {
+            user_id: data?.user_id,
+            evento_id: data?.evento_id,
+          },
+        };
+      },
+    }),
     updateAllInfoOfModulo: builder.mutation({
       query: (data) => ({
         url: `${apiRoutes.updateAllOfModulo()}`,
@@ -364,6 +385,8 @@ export const {
   useCreateSugerenciaMutation,
   useComprareventoMutation,
   useUserIsStudentOrOwnerQuery,
+  useIsUserColaboradorMutation,
+  useGetEventosAdminQuery,
   useUpdateCursoInfoMutation,
   useUpdateAllInfoOfModuloMutation,
   useDeleteColaboracionMutation,

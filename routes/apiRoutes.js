@@ -29,14 +29,14 @@ const apiRoutes = {
     userIsStudentOrOwner: (eventoId) => `/api/eventos/${eventoId}/userIsStudentOrOwner`,
     claseInfo: (claseId, cursoId) => `/api/clases?clase_id=${claseId}&curso_id=${cursoId}`,
     correjirEvaluacion: () => "/api/calificacion/",
-    getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso",
     getCursosComprados: (estudianteId) => `/api/cursos/getCursosComprados?estudianteId=${estudianteId}`,
     changeUserRole: () => `/api/auth/changeRole`,
-    changeStatusSugerencia: () => `/api/sugerencias/changeStatus`,
-
-    getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
     createSugerencia: () => `/api/sugerencias/createSugerencia`,
     comprarEvento: () => "/api/eventos/comprarEvento",
+    isUserColaborador: () => `/api/colaboraciones/isUserColaborador`,
+    getEventosAdmin: (organizadorId) => `/api/eventos/getEventosAdmin?organizadorId=${organizadorId}`,
+    changeStatusSugerencia: () => `/api/sugerencias/changeStatus`,
+    getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
     updateCursoInfo: () => '/api/cursos/updateCursoInfo',
     updateAllOfModulo: () => '/api/modulos/updateAllOfModulo',
 }
