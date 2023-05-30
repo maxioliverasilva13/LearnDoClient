@@ -14,6 +14,10 @@ import {
   useCreateModuloMutation,
   useCreateColaboracionesMutation,
   useUploadVideoMutation,
+  useUpdateCursoInfoMutation,
+  useUpdateAllInfoOfModuloMutation,
+  useDeleteColaboracionMutation,
+  useDeleteModuloMutation,
 } from "store/services/EventoService";
 
 import MultiSelect from "components/MultiSelect/MultiSelect";
@@ -24,8 +28,15 @@ import ColaboradoresModal from "components/Modals/ColaboradoresModal";
 import AddModuloModal from "components/Modals/AddModuloModal";
 import EditModuloModal from "components/Modals/EditModuloModal";
 import appRoutes from "routes/appRoutes";
+import GlobalImage from "components/GlobalImage/GlobalImage";
 
-export default function CreateCurso() {
+export default function CreateCurso({
+  cursoInfo,
+  colaboradoresOfCurso,
+  categoriasOfCurso,
+  modulosOfCurso,
+  isEdit = false,
+}) {
   // Modals
   const [isColaboradoresOpen, setIsColaboradoresOpen] = useState(false);
   const [isCreateModuloOpen, setIsCreateModuloOpen] = useState(false);
@@ -36,15 +47,36 @@ export default function CreateCurso() {
     colaboradores: () => setIsColaboradoresOpen((current) => !current),
   };
 
-  const [cursoImage, setCursoImage] = React.useState("/img/img-1-1000x600.jpg"); // imagen a mostrar
+  const [updateCursoInfo, { isLoading: isLoadingGetInfo }] =
+    useUpdateCursoInfoMutation();
+  const [deleteModuloInfo, { isLoading: isLoadingDeleteModulo }] =
+    useDeleteModuloMutation();
+  const [deleteColaboracion, { isLoading: isLoadingColaboracion }] =
+    useDeleteColaboracionMutation();
+  const [updateModulo, { isLoading: isLoadingUpdateModulo }] =
+    useUpdateAllInfoOfModuloMutation();
+
+  const isLoading =
+    isLoadingGetInfo ||
+    isLoadingColaboracion ||
+    isLoadingUpdateModulo ||
+    isLoadingDeleteModulo;
+
+  const [cursoImage, setCursoImage] = React.useState(
+    cursoInfo?.imagen || "/img/img-1-1000x600.jpg"
+  ); // imagen a mostrar
   const [firebaseImage, setFirebaseImage] = useState(null);
   const { handleUpload, imageError, imageUrl } = useUploadImage();
   const [isPaid, setIsPaid] = useState(true);
-  const { userInfo } = useGlobalSlice();
+  const { userInfo, handleSetLoading } = useGlobalSlice();
   const [error, setError] = useState({
     show: false,
     message: "",
   });
+
+  useEffect(() => {
+    handleSetLoading(isLoading);
+  }, [isLoading]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -56,15 +88,32 @@ export default function CreateCurso() {
     return () => clearTimeout(timer);
   }, [error.show]);
 
-  const { formValues, handleChangeValue } = useForm({
-    nombre: "",
-    descripcion: "",
-    precio: "",
-    porcentaje_aprobacion: "",
+  const { formValues, handleChangeValue, setFormValues } = useForm({
+    nombre: cursoInfo?.nombre || "",
+    descripcion: cursoInfo?.descripcion || "",
+    precio: `${cursoInfo?.precio}` || "",
+    porcentaje_aprobacion: cursoInfo?.porcentaje_aprobacion || "",
   });
 
+  useEffect(() => {
+    if (cursoInfo) {
+      setFormValues({
+        nombre: cursoInfo?.nombre || "",
+        descripcion: cursoInfo?.descripcion || "",
+        precio: `${cursoInfo?.precio}` || "",
+        porcentaje_aprobacion: `${cursoInfo?.porcentaje_aprobacion}` || "",
+      });
+      setCursoImage(cursoInfo?.imagen);
+    }
+  }, [cursoInfo]);
+
+  useEffect(() => {
+    if (modulosOfCurso) {
+      setModulos(modulosOfCurso);
+    }
+  }, [modulosOfCurso]);
+
   const { push } = useRouter();
-  const { handleSetLoading } = useGlobalSlice();
 
   // Services
   const [createEvento] = useCreateEventoMutation();
@@ -74,10 +123,29 @@ export default function CreateCurso() {
   const { data: categorias } = useGetCategoriasQuery();
   const [selectedCategorias, setSelectedCategorias] = useState([]);
   const optionsCategorias = formatToOptions(categorias);
-  
+
   const [selectedModule, setSelectedModule] = useState(null);
   const [modulos, setModulos] = useState([]);
   const [colaboradores, setColaboradores] = useState([]);
+
+  useEffect(() => {
+    if (colaboradoresOfCurso && colaboradoresOfCurso?.length > 0) {
+      setColaboradores(colaboradoresOfCurso);
+    }
+  }, [colaboradoresOfCurso]);
+
+  useEffect(() => {
+    if (categoriasOfCurso) {
+      setSelectedCategorias(
+        categoriasOfCurso?.map((item) => {
+          return {
+            label: item?.nombre,
+            value: item?.id,
+          };
+        })
+      );
+    }
+  }, [categoriasOfCurso]);
 
   const handleFileChange = (event) => {
     setFirebaseImage(event.target.files[0]);
@@ -90,16 +158,42 @@ export default function CreateCurso() {
     setIsPaid((current) => !current);
   };
 
-  const handleRemoveCollaborator = (user) => {
-    setColaboradores((current) =>
-      current.filter((colaborador) => colaborador.id !== user.id)
-    );
+  const handleRemoveCollaborator = async (user) => {
+    if (isEdit) {
+      const prepareData = {
+        evento_id: cursoInfo?.id,
+        user_id: user?.id,
+      };
+      const response = await deleteColaboracion(prepareData);
+      if (response?.data?.ok) {
+        setColaboradores((current) =>
+          current.filter((colaborador) => colaborador.id !== user.id)
+        );
+      }
+    } else {
+      setColaboradores((current) =>
+        current.filter((colaborador) => colaborador.id !== user.id)
+      );
+    }
   };
-  
-  const handleRemoveModulo = (currIndex) => {
-    setModulos((current) =>
-      current.filter((modulo, index) => index !== currIndex)
-    );
+
+  const handleRemoveModulo = async (currIndex) => {
+    const moduloToDelete = modulos[currIndex]?.moduloId;
+    if (isEdit && moduloToDelete) {
+      const prepareData = {
+        moduloId: moduloToDelete,
+      };
+      const response = await deleteModuloInfo(prepareData);
+      if (response?.data?.ok) {
+        setModulos((current) =>
+          current.filter((modulo, index) => index !== currIndex)
+        );
+      }
+    } else {
+      setModulos((current) =>
+        current.filter((modulo, index) => index !== currIndex)
+      );
+    }
   };
 
   const handleOpenModal = (value) => {
@@ -107,7 +201,7 @@ export default function CreateCurso() {
   };
 
   const handleOpenEditModal = (value, currModule, index) => {
-    setSelectedModule({modulo: currModule, idx: index});
+    setSelectedModule({ modulo: currModule, idx: index });
     value();
   };
 
@@ -126,15 +220,15 @@ export default function CreateCurso() {
       });
       return false;
     }
-    if (formValues.porcentaje_aprobacion.trim() === "") {
+    if (formValues.porcentaje_aprobacion?.trim() === "") {
       setError({
         show: true,
         message: "Por favor ingrese el PORCENTAJE de APROBACIÓN para el curso.",
       });
       return false;
     } else if (
-      formValues.porcentaje_aprobacion.trim() < 1 ||
-      formValues.porcentaje_aprobacion.trim() > 100
+      formValues.porcentaje_aprobacion?.trim() < 1 ||
+      formValues.porcentaje_aprobacion?.trim() > 100
     ) {
       setError({
         show: true,
@@ -169,6 +263,105 @@ export default function CreateCurso() {
     return true;
   };
 
+  const handleEditCurso = async (e) => {
+    e.preventDefault();
+    if (!validateInputs()) return;
+    let uploadedImageUrl = null;
+    if (firebaseImage) {
+      uploadedImageUrl = await handleUpload(firebaseImage).catch((error) =>
+        console.log(error)
+      );
+    }
+    const updatedCursoInfo = {
+      cursoId: cursoInfo?.id,
+      nombre: formValues?.nombre,
+      descripcion: formValues?.descripcion,
+      imagen: uploadedImageUrl ? uploadedImageUrl : cursoImage,
+      es_pago: isPaid ? 1 : 0,
+      precio: formValues?.precio,
+      organizador: userInfo?.id,
+      porcentaje_aprobacion: formValues?.porcentaje_aprobacion,
+      categorias: selectedCategorias?.map((item) => item?.value),
+    };
+    
+    await updateCursoInfo(updatedCursoInfo);
+
+    const colaboradoresNews = colaboradores?.filter(
+      (item) => item?.isNew === true
+    );
+    if (colaboradoresNews?.length > 0) {
+      const colabs = {
+        evento_id: cursoInfo?.id,
+        colaboradores: colaboradoresNews,
+      };
+      createColaboraciones(colabs);
+    }
+
+    const modulosToCreate = modulos?.filter(
+      (modulo) => modulo?.moduloId == undefined && modulo?.moduloId == null
+    );
+    const modulosToUpdate = modulos?.filter(
+      (modulo) => modulo?.moduloId !== undefined && modulo?.moduloId !== null
+    );
+
+    if (modulosToUpdate?.length > 0) {
+      const response = await updateModulo(modulosToUpdate);
+      const clasesToAddVideo = response?.data?.clases;
+      if (clasesToAddVideo?.length > 0) {
+        await Promise.all(
+          clasesToAddVideo.map((clase) => {
+            const modulo = modulosToUpdate?.find(
+              (mod) => mod?.moduloId == clase?.modulo_id
+            );
+            return uploadVideo({
+              id_clase: clase.id,
+              video: modulo?.clases?.find(
+                (item) => item?.nombre === clase.nombre
+              )?.video,
+            });
+          })
+        );
+      }
+    }
+
+    if (modulosToCreate?.length > 0) {
+      await Promise.all(
+        modulosToCreate?.map(async (modulo) => {
+          let modData = {
+            nombre: modulo?.nombre,
+            clases: modulo?.clases,
+            evaluacion: modulo?.evaluacion,
+            curso_id: cursoInfo?.id,
+            estado: "aprobado",
+          };
+          return createModulo(modData)
+            .unwrap()
+            .then(async (response) => {
+              const clases = response?.clases;
+              if (clases?.length > 0) {
+                await Promise.all(
+                  clases.map((clase) => {
+                    return uploadVideo({
+                      id_clase: clase.id,
+                      video: modulo?.clases?.find(
+                        (item) => item?.nombre === clase.nombre
+                      )?.video,
+                    });
+                  })
+                );
+              }
+            })
+            .catch((error) => {
+              console.error(
+                "Error al crear el modulo " + modulo?.nombre + ": ",
+                error
+              );
+            });
+        })
+      );
+    }
+  };
+
   const handleCreateCurso = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
@@ -201,7 +394,6 @@ export default function CreateCurso() {
           };
           createColaboraciones(colabs);
         }
-        console.log(evento)
         await Promise.all(
           modulos?.map((modulo) => {
             let modData = {
@@ -432,7 +624,16 @@ export default function CreateCurso() {
                       key={index}
                       className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
                     >
-                      <p>{colaborador.nombre}</p>
+                      <div className="w-[30px] mr-2 h-[30px] overflow-hidden rounded-full relative">
+                        <GlobalImage
+                          src={colaborador?.imagen}
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      </div>
+                      <p className="truncate max-w-full flex-grow overflow-hidden text-left">
+                        {colaborador.nombre}
+                      </p>
                       <RiDeleteBin6Line
                         className="cursor-pointer"
                         color="white"
@@ -465,11 +666,15 @@ export default function CreateCurso() {
               type="submit"
               className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mt-4 ease-linear transition-all duration-150"
               onClick={(e) => {
-                handleCreateCurso(e);
+                if (isEdit) {
+                  handleEditCurso(e);
+                } else {
+                  handleCreateCurso(e);
+                }
                 // console.log("modulos: ", modulos);
               }}
             >
-              Crear Curso
+              {isEdit ? "Guardar curso" : "Crear Curso"}
             </button>
           </div>
         </div>

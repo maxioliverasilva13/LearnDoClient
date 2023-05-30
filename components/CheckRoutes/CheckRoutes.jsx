@@ -23,6 +23,7 @@ const organizadorPaths = [
     appRoutes.misCursosAdmin(),
     appRoutes.progresoEstudiantes(),
     appRoutes.selectRole(),
+    appRoutes.editCurso(),
 ]
 
 const estudiantesPaths = [
