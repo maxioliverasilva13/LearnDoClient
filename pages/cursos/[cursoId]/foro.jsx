@@ -58,9 +58,13 @@ export default function Foro() {
       if(status == 404){
             setForoExist(false);
             return;
+<<<<<<< HEAD
         }  
+=======
+        }
+>>>>>>> 665c7e01ae6541fbacbabfa63a1df5928b5bcb86
     }
-  }, []);
+  }, [data]);
 
   useEffect(()=>{
     if(isStudentOrOwnerRes ){        
@@ -141,6 +145,8 @@ export default function Foro() {
       console.log(e);
     }
   }
+
+  console.log(posts)
 
   return (
     <div className="w-full min-h-screen" id="scrollableDiv">

@@ -11,6 +11,8 @@ import { CategoriaService } from "./services/CategoriaService";
 import { PublicacionService } from "./services/PublicacionService";
 import { ComentarioService } from "./services/ComentarioService";
 import { ClaseService } from "./services/ClaseService";
+import { CertificadoService } from "./services/CertificadoService";
+import { CursoService } from "./services/CursoService";
 
 const store = configureStore({ 
   reducer: {
@@ -23,6 +25,9 @@ const store = configureStore({
    [ComentarioService.reducerPath]: ComentarioService.reducer,
    [CategoriaService.reducerPath]: CategoriaService.reducer,
    [ClaseService.reducerPath]: ClaseService.reducer,
+   [CertificadoService.reducerPath]: CertificadoService.reducer,
+   [CursoService.reducerPath] : CursoService.reducer
+
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(   
@@ -33,6 +38,8 @@ const store = configureStore({
         ComentarioService.middleware,
         CategoriaService.middleware,
         ClaseService.middleware,
+        CertificadoService.middleware,
+        CursoService.middleware
     ),
 });
 

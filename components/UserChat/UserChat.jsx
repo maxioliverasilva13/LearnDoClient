@@ -14,6 +14,9 @@ const UserChat = ({
 }) => {
   const ref = useRef();
   const getLastMessage = () => {
+    if (!lastMessage) {
+      return "";
+    }
     let firstPart = isMyLastMessage ? "Tu:" : `${userName?.split(0, 10)}:`;
     return firstPart + lastMessage?.contenido;
   };
@@ -25,7 +28,7 @@ const UserChat = ({
     handleSetChatId(chatId);
   };
 
-  const isReadLastMessage = MessageIsRead(lastMessage, userInfo?.id);
+  const isReadLastMessage = !lastMessage ? true : MessageIsRead(lastMessage, userInfo?.id);
 
   return (
     <div

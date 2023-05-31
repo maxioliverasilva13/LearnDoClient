@@ -37,11 +37,11 @@ const ClaseInfo = () => {
         <div className="w-auto p-4 text-white font-semibold text-[24px]">
           Curso: {data?.cursoName}
         </div>
-        <div className="h-[853px] z-[20] top-[30%] absolute w-full flex flex-col justify-start items-center mb-7">
+        <div className="h-[853px] W-FULL z-[20] top-[30%] absolute w-full flex flex-col justify-start items-center mb-7">
           <span className="ml-[44px] text-4xl text-white font-semibold">
             {data?.moduloName} : {claseInfo?.nombre}
           </span>
-          <div className="h-[400px] w-[800px] mt-4">
+          <div className="h-[600px] w-[80%] mt-4">
             {
               claseInfo && <ReactPlayer
               style={{

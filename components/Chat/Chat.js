@@ -122,7 +122,7 @@ const Chat = () => {
       <div
         id="ScrollChats"
         ref={refChat}
-        className="w-full px-4 py-4 chat gap-y-8 h-full flex-grow flex flex-col max-h-full overflow-auto"
+        className="w-full px-4 py-4 chat gap-y-8 flex-grow flex h-full marker: flex-col max-h-full overflow-auto"
       >
         {activeChatInfo?.messages?.map((message) => {
           return (
@@ -138,7 +138,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="w-full h-full max-h-full transition-all flex flex-col items-start justify-start flex-grow max-h-full overflow-auto">
+    <div className="w-full min-h-screen max-h-screen transition-all flex flex-col items-start justify-start flex-grow overflow-auto">
       <div className="w-full shadow-md h-auto transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5">
         <div className="w-[90px] transition-all h-[90px] relative max-w-[90px] max-h-[90px]">
           <Image

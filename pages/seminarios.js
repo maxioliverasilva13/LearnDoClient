@@ -3,11 +3,13 @@ import Sort from "components/Sort/Sort";
 import { RxMagnifyingGlass } from "react-icons/rx";
 import { TfiMapAlt } from "react-icons/tfi";
 import SeminarioListing from "components/SeminariosListing/SeminariosListing";
+import Link from "next/link";
+import appRoutes from "routes/appRoutes";
 
 const sortOptions = [
-  { name: 'Todos los Seminarios', href: '#', current: true },
-  { name: 'Presenciales', href: '#', current: false },
-  { name: 'Virtuales', href: '#', current: false },
+  { name: "Todos los Seminarios", href: "#", current: true },
+  { name: "Presenciales", href: "#", current: false },
+  { name: "Virtuales", href: "#", current: false },
 ];
 
 const seminarios = [
@@ -72,53 +74,58 @@ const seminarios = [
 export default function Seminarios() {
   const [searchValue, setSearchValue] = React.useState("");
 
-  const handleSearch = event => {
+  const handleSearch = (event) => {
     setSearchValue(event.target.value);
   };
 
   return (
     <>
-    <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start text-white">
-      <div className="w-full h-auto flex flex-col items-center justify-center pt-5">
-        <p className="text-3xl font-semibold mb-16">Todos los seminarios disponibles en nuestra plataforma</p>
-        
-        <div className="w-full flex items-center justify-between md:px-32">
+      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start text-white">
+        <div className="w-full h-auto flex flex-col items-center justify-center pt-5">
+          <p className="text-3xl font-semibold mb-16">
+            Todos los seminarios disponibles en nuestra plataforma
+          </p>
 
-          <div className="min-w-[140px] w-1/3">
-            <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <RxMagnifyingGlass className="h-5 w-5 text-white" aria-hidden="true" />
+          <div className="w-full flex items-center justify-between md:px-32">
+            <div className="min-w-[140px] w-1/3">
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <RxMagnifyingGlass
+                    className="h-5 w-5 text-white"
+                    aria-hidden="true"
+                  />
+                </div>
+                <input
+                  id="search"
+                  name="search"
+                  className="block w-full rounded-full border bg-inherit py-1.5 pl-10 pr-3 text-gray-300 placeholder:text-white sm:text-sm hover:shadow-md shadow text-normal"
+                  placeholder="Buscar"
+                  onChange={handleSearch}
+                  value={searchValue}
+                  type="search"
+                />
               </div>
-              <input
-                id="search"
-                name="search"
-                className="block w-full rounded-full border bg-inherit py-1.5 pl-10 pr-3 text-gray-300 placeholder:text-white sm:text-sm hover:shadow-md shadow text-normal"
-                placeholder="Buscar"
-                onChange={handleSearch}
-                value={searchValue}
-                type="search"
-              />
+            </div>
+            <div className="flex gap-8">
+              <Link href={appRoutes.mapaSeminarios()}>
+                <div className="inline-flex cursor-pointer gap-x-3 text-white border rounded-full px-3 py-1">
+                  <TfiMapAlt
+                    className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-white"
+                    aria-hidden="true"
+                  />
+                  Ver Ubicaciones
+                </div>
+              </Link>
+              <Sort sortOptions={sortOptions} />
             </div>
           </div>
-          <div className="flex gap-8">
-            <a 
-            className="inline-flex gap-x-3 text-white border rounded-full px-3 py-1"
-            href="/seminarios#">
-              <TfiMapAlt
-                  className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-white"
-                  aria-hidden="true"
-              />
-              Ver Ubicaciones
-            </a>
-            <Sort sortOptions={sortOptions}/>
+
+          <div className="w-full">
+            <SeminarioListing seminarios={seminarios} />{" "}
+            {/* Pasar el estado de searchValue para ir filtrando en real-time */}
           </div>
         </div>
-
-        <div className="w-full">
-          <SeminarioListing seminarios={seminarios} /> {/* Pasar el estado de searchValue para ir filtrando en real-time */}
-        </div>
       </div>
-    </div>
     </>
   );
 }

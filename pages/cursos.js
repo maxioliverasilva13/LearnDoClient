@@ -1,4 +1,4 @@
-import React , { useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,35 +14,35 @@ import { useListarEventosQuery } from "store/services/EventoService";
 import { useGetCategoriasQuery } from "store/services/CategoriaService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import GlobalImage from "components/GlobalImage/GlobalImage";
+import Link from "next/link";
+import appRoutes from "routes/appRoutes";
+import { fomratColorCurso, formatTitle } from "utils/evento";
+import clsx from "clsx";
 
-
-
-
-export default function Cursos() {  
-
-  const [cursosList, setCursosList] = useState([]);   
+export default function Cursos() {
+  const [cursosList, setCursosList] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [rowsNumbers, setRowsNumbers] = useState(15);
   const [showModalFilter, setModalFilter] = useState(false);
-  const { handleSetLoading  } = useGlobalSlice();
+  const { handleSetLoading } = useGlobalSlice();
 
   const [filterData, setFilterData] = useState(null);
   const [busqueda, setBusqueda] = useState("");
 
   const { data, error, isLoading , refetch} = useListarEventosQuery({page, rowsNumbers, filterData,busqueda});
 
-  const { data:categorias, error:errorCategorias, isLoading: isLoadingCats } = useGetCategoriasQuery();
 
 
-  
-  const  updateShowModal = (show)=>{
+  const {
+    data: categorias,
+    error: errorCategorias,
+    isLoading: isLoadingCats,
+  } = useGetCategoriasQuery();
+
+  const updateShowModal = (show) => {
     setModalFilter(show);
-  }
-
-
- 
-
+  };
 
   useEffect(() => {
     refetch();
@@ -51,26 +51,22 @@ export default function Cursos() {
       const { result } = data;
       setCursosList(result);
     }
-  }, [ busqueda, filterData, data]);
+  }, [busqueda, filterData, data]);
 
-  useEffect(() => { 
-    
+  useEffect(() => {
     const timeoutId = setTimeout(() => {
       refetch();
     }, 250);
     return () => clearTimeout(timeoutId);
-
-   
   }, [page]);
-
 
   function loadMoreItems() {
     setPage(page + 1);
   }
 
   useEffect(() => {
-    handleSetLoading(isLoading)
-  }, [isLoading])
+    handleSetLoading(isLoading);
+  }, [isLoading]);
 
   function onFilterEvent(filterObj) {
     setModalFilter(false);
@@ -83,29 +79,19 @@ export default function Cursos() {
     setModalFilter(true);
   }
 
- function handleChangeSearch(event){
-      setCursosList([]);   
-      setPage(1);
-      const text = event.target.value;
-      setBusqueda(text);
-
-      
- }
-
- 
+  function handleChangeSearch(event) {
+    setCursosList([]);
+    setPage(1);
+    const text = event.target.value;
+    setBusqueda(text);
+  }
 
   return (
     <>
       <div className="flex flex-wrap bg text-white relative">
-
         <div className="w-full">
-          <div
-            className={
-              "bg-gradient-to-b from-[#780eff]  via-[#5B23A2] to-[#000] pt-12"
-            }
-            style={{ minHeight: "100vh" }}
-          >
-          <div className={" mt-10 "}>
+          <div className={"pt-12"} style={{ minHeight: "100vh" }}>
+            <div className={" mt-10 "}>
               <p className={" text-white text-center 	text-5xl font-semibold "}>
                 Todos los eventos disponibles en nuestra plataforma
               </p>
@@ -134,7 +120,7 @@ export default function Cursos() {
                   </div>
                 </div>
               </div>
-              {cursosList.length <= 0  && (
+              {cursosList.length <= 0 && (
                 <h2>Lo sentimos pero no existen eventos disponibles.</h2>
               )}
               <FilterEventoModal
@@ -152,24 +138,30 @@ export default function Cursos() {
                 <div className="flex justify-center gap-10 text-center flex-wrap px-8">
                   {cursosList.map((curso) => {
                     return (
+                      <Link href={appRoutes.cursoPage(curso?.id)}>
                       <div
-                        className="max-w-[250px] min-h-[350px]"
+                        className="max-w-[250px] transition-all transform hover:scale-105 cursor-pointer min-h-[350px]"
                         key={curso.id}
                       >
-                          <div
-                        className="w-[250px] h-[300px] relative rounded-lg overflow-hidden shadow-md"
-                        key={curso.id}
-                      >
-                        <GlobalImage 
-                          src={curso?.imagen}
-                          loader={() => curso?.imagen}
-                          layout="fill"
-                          objectFit="cover"
-                        />
+                        <div
+                          className="w-[250px] h-[300px] relative rounded-lg overflow-hidden shadow-md"
+                          key={curso.id}
+                        >
+                          <div className={clsx("w-min  absolute z-[20] left-0 top-4 px-4 py-1 font-semibold text-white max-w-full truncate rounded-r-md ",
+                            `bg-[${fomratColorCurso(curso?.tipo)}]`
+                          )}>
+                            {formatTitle(curso?.tipo)}
+                          </div>
+                          <GlobalImage
+                            src={curso?.imagen}
+                            loader={() => curso?.imagen}
+                            layout="fill"
+                            objectFit="cover"
+                          />
+                        </div>
                         <p className="text-xl	">{curso.nombre}</p>
                       </div>
-                        <p className="text-xl	">{curso.nombre}</p>
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>
@@ -180,5 +172,4 @@ export default function Cursos() {
       </div>
     </>
   );
-
 }

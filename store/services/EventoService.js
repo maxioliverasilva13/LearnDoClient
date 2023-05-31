@@ -16,6 +16,9 @@ export const EventoService = createApi({
     "ListEventos",
     "EventosPresenciales",
     "SelectedCursoInfo",
+    "CursosComprados",
+    "MisCursos",
+    "ListSugerencias",
   ],
   endpoints: (builder) => ({
     listarEventos: builder.query({
@@ -111,6 +114,7 @@ export const EventoService = createApi({
         method: "POST",
         body: {
           curso_id: data?.curso_id,
+          sugerencia_id: data?.sugerencia_id,
           nombre: data?.nombre,
           clases: data?.clases,
           evaluacion: data?.evaluacion,
@@ -153,7 +157,7 @@ export const EventoService = createApi({
       },
     }),
     getSeminariosPresenciales: builder.query({
-      query: () => "/publicaciones/",
+      query: () => apiRoutes.listarEventosPresenciales(),
       providesTags: ["Categorias", "EventosPresenciales"],
       transformResponse(value) {
         const response = value;
@@ -165,7 +169,6 @@ export const EventoService = createApi({
         `${apiRoutes.getCompleteCursoInfo()}?cursoId=${cursoId}`,
       providesTags: ["SelectedCursoInfo"],
       transformResponse(value) {
-        console.log(value);
         const response = value;
         return response;
       },
@@ -183,13 +186,86 @@ export const EventoService = createApi({
           },
         };
       },
+      invalidatesTags: ["MisCursos"],
       transformResponse(value) {
         const response = value;
         return response;
       },
       invalidatesTags: ["SelectedCursoInfo"],
     }),
-
+    getEvaluacionInfo: builder.query({
+      query: ({ evaluacionId }) => apiRoutes.evaluacionInfo(evaluacionId),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    correjirEvaluacion: builder.mutation({
+      query: (data) => {
+        return {
+          url: apiRoutes.correjirEvaluacion(),
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["SelectedCursoInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    getEventosComprados: builder.query({
+      query: (data) => apiRoutes.getEventosComprados(),
+      provideTags: ["MisEventos"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    getCursoAndClases: builder.query({
+      query: ({ cursoId }) => apiRoutes.getCursoAndClases(cursoId),
+      provideTags: ["SelectedCursoInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    createSugerencia: builder.mutation({
+      query: (data) => {
+        return {
+          url: apiRoutes.createSugerencia(),
+          method: "POST",
+          body: {
+            contenido: data?.contenido,
+            estado: data?.estado,
+            curso_id: data?.curso_id,
+            estudiante_id: data?.estudiante_id,
+          },
+        };
+      },
+      invalidatesTags: ["ListSugerencias"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    comprarevento: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.comprarEvento()}`,
+        method: "POST",
+        body: {
+          uid: data?.userId,
+          monto: data.monto,
+          metodoPago: data.metodoPago,
+          eventoId: data?.eventoId,
+        },
+      }),
+      invalidatesTags: ["SelectedCursoInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -203,5 +279,11 @@ export const {
   useGetSeminariosPresencialesQuery,
   useGetCompleteCursoInfoQuery,
   usePuntuarCursoMutation,
+  useGetEvaluacionInfoQuery,
+  useCorrejirEvaluacionMutation,
+  useGetEventosCompradosQuery,
+  useGetCursoAndClasesQuery,
+  useCreateSugerenciaMutation,
+  useComprareventoMutation,
   useUserIsStudentOrOwnerQuery
 } = EventoService;

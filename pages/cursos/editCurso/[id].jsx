@@ -236,7 +236,7 @@ export default function EditCurso() {
           setModules={setModulos}
         />
       )}
-      <div className="w-full py-4 md:px-10 px-4 h-screen overflow-auto max-h-screen justify-start item-no-scrollbar">
+      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start item-no-scrollbar">
         <div className="w-full h-auto flex flex-col items-start justify-center">
           <p className="text-5xl text-white px-16 py-4">Modificar curso</p>
 

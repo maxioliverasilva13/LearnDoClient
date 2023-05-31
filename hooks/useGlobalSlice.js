@@ -7,6 +7,7 @@ import { clearToken } from "utils/tokenUtils";
 const useGlobalSlice = () => {
     const { userInfo, isLoading } = useSelector((state) => state.GlobalSlice);
     const { push } = useRouter()
+    const rol = userInfo?.type;
     
     const {
         handleSetUserInfo,
@@ -15,7 +16,7 @@ const useGlobalSlice = () => {
     
     const handleLogout = () => {
         clearToken();
-        window.location.href = appRoutes.login();
+        window.location.href = appRoutes.landing();
     }
     
     return {
@@ -24,6 +25,7 @@ const useGlobalSlice = () => {
         handleSetLoading,
         handleSetUserInfo,
         handleLogout,
+        rol,
     }
 }   
 

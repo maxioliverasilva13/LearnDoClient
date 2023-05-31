@@ -15,6 +15,7 @@ export default function Navbar() {
   const { noReadsMessages } = useChats();
   const { userInfo } = useGlobalSlice();
   const [expandedMenu, setExpandedmenu] = useState(false);
+  const { rol } = useGlobalSlice();
 
   const hasNoReadsMessages = noReadsMessages?.length > 0;
   const points = 0;
@@ -25,45 +26,71 @@ export default function Navbar() {
   };
   const { handleLogout } = useGlobalSlice();
 
+  const renderItems = () => {
+    if (rol === "organizador") {
+      return <ul className="flex justify-center ml-[200px]">
+      <li className="px-4">
+        <Link href={appRoutes.dashboard()} className="hover:text-gray-400">
+          Dashboard
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link href={appRoutes.misCursosAdmin()} className="hover:text-gray-400">
+          Mis cursos
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link
+          href={appRoutes.seminarios()}
+          className="hover:text-gray-400"
+        >
+          Seminarios
+        </Link>
+      </li>
+    </ul>
+    } else {
+      return <ul className="flex justify-center ml-[200px]">
+      <li className="px-4">
+        <Link href={appRoutes.home()} className="hover:text-gray-400">
+          Inicio
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link href={appRoutes.cursos()} className="hover:text-gray-400">
+          Cursos
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link
+          href={appRoutes.seminarios()}
+          className="hover:text-gray-400"
+        >
+          Seminarios
+        </Link>
+      </li>
+      <li className="px-4">
+        <Link href={appRoutes.misCursos()} className="hover:text-gray-400">
+          Mis cursos
+        </Link>
+      </li>
+    </ul>
+    }
+  }
+
   return (
     <>
       {/* Navbar */}
       <header
-        className="flex sticky top-0 left-0 z-[30] w-full items-center text-white h-16 min-h-[64px]"
-        style={{ backgroundColor: "#31174A" }}
+        className="flex bg-[#7b479e] sticky top-0 left-0 z-[50] w-full items-center text-white h-16 min-h-[64px]"
       >
         {/* Logo */}
         <div className="px-4">
-          <span className="text-lg font-bold">learndo</span>
-        </div>
+        <span className="select-none font-bold text-[20px]">Learn<span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span></span>        </div>
         {/* Navigation */}
         <nav className="flex-grow">
-          <ul className="flex justify-center ml-[200px]">
-            <li className="px-4">
-              <Link href={appRoutes.home()} className="hover:text-gray-400">
-                Inicio
-              </Link>
-            </li>
-            <li className="px-4">
-              <Link href={appRoutes.cursos()} className="hover:text-gray-400">
-                Cursos
-              </Link>
-            </li>
-            <li className="px-4">
-              <Link
-                href={appRoutes.seminarios()}
-                className="hover:text-gray-400"
-              >
-                Seminarios
-              </Link>
-            </li>
-            <li className="px-4">
-              <Link href="#" className="hover:text-gray-400">
-                Mis cursos
-              </Link>
-            </li>
-          </ul>
+          {renderItems()}
         </nav>
+        
         {/* Search bar and user avatar */}
         <div className="flex items-center px-4">
           <div className="relative">
@@ -99,7 +126,7 @@ export default function Navbar() {
               onClick={handleToggleExpandMenu}
               className="flex items-center cursor-pointer text-sm border-2 border-transparent rounded-full "
             >
-              <span className="mx-2 font-semibold text-[18px]">
+              <span className="mx-2 font-semibold text-[18px] max-w-[150px] overflow-hidden truncate">
                 {userInfo?.nickname}
               </span>
               <div className="w-8 h-8 relative rounded-full">

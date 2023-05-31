@@ -7,9 +7,19 @@ const appRoutes = {
     cursos: () => "/cursos",
     landing: () => "/",
     messages: () => "/messages",
+    misCursos: () => "/mis_cursos",
     profile: () => "/profile",
-    foroPage: (foroId) => `/cursos/${foroId}/foro`,
-    clasePage: (claseId, cursoId) => `/cursos/${cursoId}/clase/${claseId}`,
+    foroPage: (foroId) => `/cursos/${foroId ? foroId : "[cursoId]"}/foro`,
+    clasePage: (claseId, cursoId) => `/cursos/${cursoId ? [cursoId] : "[cursoId]"}/clase/${claseId ? claseId : "[claseId]"}`,
+    cursoPage: (cursoId) => `/cursos/${cursoId ? cursoId : "[cursoId]"}`,
+    cursoSugerir: (cursoId) => `/cursos/sugerir/${cursoId ? cursoId : "[cursoId]"}`,
+    mapaSeminarios: () => '/mapaSeminarios',
+    createCurso: () => '/cursos/createCurso',
+    createSeminario: () => '/crearSeminario',
+    dashboard: () => '/admin/dashboard',
+    misCursosAdmin: () => '/admin/cursos',
+    progresoEstudiantes: () => `/admin/progresoEstudiantes`,
+    selectRole: () => `/selectrole`,
 }
 
 export default appRoutes;
