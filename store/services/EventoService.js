@@ -16,8 +16,10 @@ export const EventoService = createApi({
     "ListEventos",
     "EventosPresenciales",
     "SelectedCursoInfo",
+    "SelectedSeminarioInfo",
     "CursosComprados",
     "MisCursos",
+    "MisEventosAdmin",
     "ListSugerencias",
   ],
   endpoints: (builder) => ({
@@ -26,7 +28,6 @@ export const EventoService = createApi({
   
         const { page, rowsNumbers, filterData = null, busqueda = "" } = data;
 
-        console.log(filterData)
         let query = `${apiRoutes.listarEventos()}?page=${page}&maxRows=${rowsNumbers}`;
 
         if (filterData) {
@@ -48,7 +49,6 @@ export const EventoService = createApi({
         }
         if (busqueda && busqueda.trim().length > 0) {
           query = `${query}&busqueda=${busqueda}`;
-          console.log(query)
         }
         return query;
       },
@@ -61,7 +61,6 @@ export const EventoService = createApi({
 
     userIsStudentOrOwner: builder.query({
       query: ({eventoId}) => {
-        console.log(eventoId)
         return apiRoutes.userIsStudentOrOwner(eventoId);
       },
 
@@ -92,7 +91,30 @@ export const EventoService = createApi({
         const response = value;
         return response;
       },
-      invalidatesTags: ["ListEventos"],
+      invalidatesTags: ["ListEventos", "MisEventosAdmin"],
+    }),
+    updateCursoInfo: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.updateCursoInfo()}`,
+        method: "PUT",
+        body: data,
+      }),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+      invalidatesTags: ["ListEventos", "SelectedCursoInfo"],
+    }),
+    updateStatusSugerencia: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.changeStatusSugerencia()}`,
+        method: "PUT",
+        body: {
+          sugerencia_id: data?.sugerencia_id,
+          estado: data?.status,
+        },
+      }),
+      invalidatesTags: ["SelectedCursoInfo"],
     }),
     crearSeminario: builder.mutation({
       query: (data) => {
@@ -102,7 +124,7 @@ export const EventoService = createApi({
           body: data,
         };
       },
-      invalidatesTags: ["ListEventos"],
+      invalidatesTags: ["ListEventos", "MisEventosAdmin"],
       transformResponse(value) {
         const response = value;
         return response;
@@ -121,6 +143,36 @@ export const EventoService = createApi({
           estado: data?.estado,
         },
       }),
+      invalidatesTags: ["SelectedCursoInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    deleteModulo: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.deletemodulo(data?.moduloId)}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SelectedCursoInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    deletePregunta: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.deletePregunta(data?.preguntaId)}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SelectedCursoInfo"],
+    }),
+    deleteClase: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.deleteClase(data?.claseId)}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SelectedCursoInfo"],
       transformResponse(value) {
         const response = value;
         return response;
@@ -133,6 +185,20 @@ export const EventoService = createApi({
         body: {
           evento_id: data?.evento_id,
           colaboradores: data?.colaboradores,
+        },
+      }),
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    deleteColaboracion: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.deleteColaboracion()}`,
+        method: "DELETE",
+        body: {
+          evento_id: data?.evento_id,
+          user_id: data?.user_id,
         },
       }),
       transformResponse(value) {
@@ -165,8 +231,8 @@ export const EventoService = createApi({
       },
     }),
     getCompleteCursoInfo: builder.query({
-      query: ({ cursoId }) =>
-        `${apiRoutes.getCompleteCursoInfo()}?cursoId=${cursoId}`,
+      query: ({ cursoId, withDetails = false }) =>
+        `${apiRoutes.getCompleteCursoInfo()}?cursoId=${cursoId}&withDetails=${withDetails}`,
       providesTags: ["SelectedCursoInfo"],
       transformResponse(value) {
         const response = value;
@@ -255,12 +321,55 @@ export const EventoService = createApi({
         method: "POST",
         body: {
           uid: data?.userId,
-          monto: data.monto,
-          metodoPago: data.metodoPago,
+          monto: data?.monto,
+          metodoPago: data?.metodoPago,
           eventoId: data?.eventoId,
         },
       }),
+      invalidatesTags: ["SelectedCursoInfo", "SelectedSeminarioInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    getEventosAdmin: builder.query({
+      query: (data) => apiRoutes.getEventosAdmin(data?.organizadorId),
+      providesTags: ["MisEventosAdmin"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    isUserColaborador: builder.mutation({
+      query: (data) => {
+        return {
+          url: apiRoutes.isUserColaborador(),
+          method: "POST",
+          body: {
+            user_id: data?.user_id,
+            evento_id: data?.evento_id,
+          },
+        };
+      },
+    }),
+    updateAllInfoOfModulo: builder.mutation({
+      query: (data) => ({
+        url: `${apiRoutes.updateAllOfModulo()}`,
+        method: "PUT",
+        body: {
+          modulos: data,
+        },
+      }),
       invalidatesTags: ["SelectedCursoInfo"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    getCompleteSeminarioInfo: builder.query({
+      query: ({ seminarioId }) =>
+        `${apiRoutes.getCompleteInfoSeminario()}?seminarioId=${seminarioId}`,
+      providesTags: ["SelectedSeminarioInfo"],
       transformResponse(value) {
         const response = value;
         return response;
@@ -285,5 +394,15 @@ export const {
   useGetCursoAndClasesQuery,
   useCreateSugerenciaMutation,
   useComprareventoMutation,
-  useUserIsStudentOrOwnerQuery
+  useUserIsStudentOrOwnerQuery,
+  useIsUserColaboradorMutation,
+  useGetEventosAdminQuery,
+  useUpdateCursoInfoMutation,
+  useUpdateAllInfoOfModuloMutation,
+  useDeleteColaboracionMutation,
+  useDeleteModuloMutation,
+  useDeleteClaseMutation,
+  useDeletePreguntaMutation,
+  useUpdateStatusSugerenciaMutation,
+  useGetCompleteSeminarioInfoQuery
 } = EventoService;

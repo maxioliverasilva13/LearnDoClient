@@ -6,10 +6,22 @@ export const EventosType = {
     seminarioP: "seminarioP",
 }
 
+export const SugerenciaType = {
+    aprobado: "aprobado",
+    rechazado: "rechazado",
+    pendiente: "pendiente",
+}
+
 const seminariosTipo = {
     seminarioP: "Seminario Presencial",
     seminarioV: "Seminario Virtual",
     curso: "Curso",
+}
+
+export const SugerenciaText = {
+    aprobado: "Aprobada",
+    rechazado: "Rechazada",
+    pendiente: "Pendiente",
 }
 
 export const formatCursoDescripcion = (descripcion = "") => {
@@ -24,7 +36,7 @@ export const formatTitle = (tipoCurso) => {
 }
 
 export const fomratColorCurso = (tipoCurso) => {
-    console.log(tipoCurso)
+    // console.log(tipoCurso)
     if (tipoCurso == EventosType.curso) {
         return "#780EFF";
     }
@@ -36,3 +48,20 @@ export const fomratColorCurso = (tipoCurso) => {
     }
 }
 
+
+
+export const formatSugerenciaColor = (tipoSugerencia) => {
+    if (tipoSugerencia == SugerenciaType.rechazado) {
+        return "red-500";
+    }
+    if (tipoSugerencia == SugerenciaType.pendiente) {
+        return "yellow-500";
+    }
+    if (tipoSugerencia == SugerenciaType.aprobado) {
+        return "green-500";
+    }
+}
+
+export const formatSugerenciaText = (tipoSugerencia) => {
+    return SugerenciaText[tipoSugerencia];
+}

@@ -1,22 +1,23 @@
 import React, { useState, Fragment, useEffect } from "react";
 
-import Navbar from "components/Navbars/AdminNavbar.js";
-
 import { BsDownload } from "react-icons/bs";
 
 import { Tooltip } from "react-tooltip";
 
 import "react-tooltip/dist/react-tooltip.css";
-import { useGetEventosCompradosQuery } from "store/services/EventoService";
+import { useGetEventosCompradosQuery} from "store/services/EventoService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import NoResults from "components/NotFoundPage/NoResults";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 import Stars from "components/Stars/Stars";
 import Link from "next/link";
 import appRoutes from "routes/appRoutes";
+import clsx from "clsx";
+import { fomratColorCurso, formatTitle } from "utils/evento";
+import { generateColorProggress } from "utils/color";
 
 
-const BarraDeCarga = ({ porcentajeCarga, ancho, colorFondo }) => {
+const BarraDeCarga = ({ porcentajeCarga, ancho, colorFondo, colorPorcentaje }) => {
   return (
     <div className="flex flex-row h-auto w-auto">
       <div
@@ -25,6 +26,7 @@ const BarraDeCarga = ({ porcentajeCarga, ancho, colorFondo }) => {
       >
         <div
           className="h-full rounded-l-full"
+          
           style={{
             width: `${porcentajeCarga}%`,
             backgroundColor: `${colorFondo}`,
@@ -42,7 +44,8 @@ const Tarjeta = ({
   nombreCurso,
   descripcionCurso,
   porcentajeCurso,
-  certificadoCurso,
+  porcentaje_aprobacion,
+  certificateID,
   estudiantesCount = 0,
   stars,
   countPuntuaciones,
@@ -51,8 +54,9 @@ const Tarjeta = ({
   precio,
   countEstudiantes,
 }) => {
-  console.log(stars);
-  console.log(tipo);
+  
+  const bgProgressClass = generateColorProggress(porcentaje_aprobacion, porcentajeCurso);
+
   return (
     <div
       className="md:h-72 w-4/5 flex flex-col md:flex-row bg-slate-900 bg-opacity-50 gap-5 justify-start items-center rounded-[12px] p-8"
@@ -105,11 +109,11 @@ const Tarjeta = ({
             </span>
           </>
         )}
-        {/* <BarraDeCarga
+        { <BarraDeCarga
           porcentajeCarga={porcentajeCurso}
           ancho={40}
-          colorFondo={"white"}
-        ></BarraDeCarga> */}
+          colorFondo={bgProgressClass}
+        ></BarraDeCarga> }
         <div className="flex flex-col sm:flex-row sm:gap-2 w-full">
           {tipo === "curso" && (
             <>
@@ -118,11 +122,7 @@ const Tarjeta = ({
                   Ver curso
                 </span>
               </Link>
-              <Link href={appRoutes.editCurso(eventoId)}>
-                <span className="bg-indigo-700 shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
-                  Editar curso
-                </span>
-              </Link>
+              
             </>
           )}
           {(tipo === "seminarioP" || tipo === "seminarioV") && (
@@ -133,6 +133,24 @@ const Tarjeta = ({
             </Link>
           )}
         </div>
+
+      </div>
+      <div>
+
+        {
+          certificateID && (
+            <button
+            data-tooltip-id="my-tooltip"
+            data-tooltip-content="Descargar Certificado"
+            data-tooltip-place="top"
+          >
+            <BsDownload size={30} color="white"></BsDownload>
+          </button>
+          )
+        }
+
+       
+        <Tooltip id="my-tooltip" clickable />
       </div>
     </div>
   );
@@ -141,17 +159,10 @@ const Tarjeta = ({
 export default function MisCursos() {
   const { userInfo, handleSetLoading } = useGlobalSlice();
   const uid = userInfo?.id;
-  const { data, isLoading } = useGetEventosAdminQuery(
-    {
-      organizadorId: uid,
-    },
-    {
-      skip: !uid,
-    }
-  );
-  const cursos = data?.cursos || [];
-  const seminariosP = data?.seminariosP || [];
-  const seminariosV = data?.seminariosV || [];
+  const { data, isLoading } = useGetEventosCompradosQuery();
+  const eventos = data?.eventos || [];
+
+  
 
   useEffect(() => {
     handleSetLoading(isLoading);
@@ -162,63 +173,28 @@ export default function MisCursos() {
       <main className="miscursos_page lg:px-10 px-5 py-10 w-full h-full flex flex-col gap-4 items-center min-h-screen">
         <div className="w-full flex flex-col justify-center">
           <p className="ml-20 text-5xl text-white font-medium">
-            Mis Eventos (Admin)
+            Mis Eventos
           </p>
         </div>
-        <div className="w-full flex md:px-36 gap-5">
-          <Link href={appRoutes.createCurso()}>
-            <span className="bg-indigo-700 shadow-md cursor-pointer transition-all transform hover:scale-105 my-2 px-6 py-2 w-max text-xl text-white block rounded-full ">
-              Crear Curso
-            </span>
-          </Link>
-          <Link href={appRoutes.createSeminario()}>
-            <span className="bg-indigo-700 shadow-md cursor-pointer transition-all transform hover:scale-110 my-2 px-6 py-2 w-max text-xl text-white block rounded-full ">
-              Crear Seminario
-            </span>
-          </Link>
-        </div>
-        {cursos?.length === 0 &&
+        
+        {eventos?.length === 0 &&
           !isLoading &&
-          seminariosV?.length === 0 &&
-          !isLoading &&
-          seminariosP?.length === 0 &&
-          !isLoading && <NoResults message={"No se encontraron eventos."} />}
-        {cursos?.map((curso, index) => {
+        <NoResults message={"No se encontraron eventos."} />}
+
+        {eventos?.map((evento, index) => {
           return (
             <Tarjeta
               key={index}
-              nombreCurso={curso?.nombre}
-              descripcionCurso={curso?.descripcion}
-              porcentajeCurso={"10"}
-              imagenCurso={curso?.imagen}
-              {...curso}
+              nombreCurso={evento?.nombre}
+              descripcionCurso={evento?.descripcion}
+              porcentajeCurso={evento?.porcentajeCurso}
+              imagenCurso={evento?.imagen}
+              
+              {...evento}
             ></Tarjeta>
           );
         })}
-        {seminariosP?.map((seminarioP, index) => {
-          return (
-            <Tarjeta
-              key={index}
-              nombreCurso={seminarioP?.nombre}
-              descripcionCurso={seminarioP?.descripcion}
-              porcentajeCurso={"10"}
-              imagenCurso={seminarioP?.imagen}
-              {...seminarioP}
-            ></Tarjeta>
-          );
-        })}
-        {seminariosV?.map((seminarioV, index) => {
-          return (
-            <Tarjeta
-              key={index}
-              nombreCurso={seminarioV?.nombre}
-              descripcionCurso={seminarioV?.descripcion}
-              porcentajeCurso={"10"}
-              imagenCurso={seminarioV?.imagen}
-              {...seminarioV}
-            ></Tarjeta>
-          );
-        })}
+      
       </main>
     </>
   );

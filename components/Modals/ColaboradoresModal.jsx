@@ -4,6 +4,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useLazyFilterByNicknameOrEmailQuery } from "store/services/UserService";
 import useGlobalSlice from "hooks/useGlobalSlice";
+import GlobalImage from "components/GlobalImage/GlobalImage";
 
 let timer = null;
 
@@ -54,7 +55,10 @@ export default function ColaboradoresModal({
       console.log("Ya existe dentro de los colaboradores.");
       return;
     }
-    setColaboradores((current) => [...current, user]);
+    setColaboradores((current) => [...current, {
+      ...user,
+      isNew: true
+    }]);
   };
 
   const handleRemoveCollaborator = (user) => {
@@ -126,9 +130,17 @@ export default function ColaboradoresModal({
                             key={index}
                             className="flex flex-col sm:flex-row w-full py-2 px-6 bg-[#780EFF] rounded-full justify-between items-center"
                           >
-                            <p className="truncate">
+                            <div className="w-[30px] mr-2 h-[30px] overflow-hidden rounded-full relative">
+                            <GlobalImage 
+                              src={filteredUser?.imagen}
+                              layout="fill"
+                              objectFit="cover"
+                            />
+                            </div>
+                            <p className="truncate text-left w-full flex-grow">
                               {filteredUser.nickname} {filteredUser.email}
                             </p>
+                            
                             <AiOutlinePlus
                               className="cursor-pointer"
                               color="white"
@@ -151,7 +163,14 @@ export default function ColaboradoresModal({
                             key={index}
                             className="flex flex-col sm:flex-row w-full py-2 px-6 bg-[#780EFF] rounded-full justify-between items-center"
                           >
-                            <p className="truncate">{colaborador.nombre}</p>
+                            <div className="w-[30px] mr-2 h-[30px] overflow-hidden rounded-full relative">
+                            <GlobalImage 
+                              src={colaborador?.imagen}
+                              layout="fill"
+                              objectFit="cover"
+                            />
+                            </div>
+                            <p className="truncate flex-grow w-full text-left">{colaborador.nombre}</p>
                             <RiDeleteBin6Line
                               className="cursor-pointer"
                               color="white"
