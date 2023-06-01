@@ -12,6 +12,7 @@ import {
   useCreateModuloMutation,
   useUploadVideoMutation,
   useGetCursoAndClasesQuery,
+  useIsUserColaboradorMutation,
 } from "store/services/EventoService";
 
 // Modals
@@ -51,6 +52,7 @@ export default function SugerirModulo() {
 
   const { push } = useRouter();
   const router = useRouter();
+  const [userCanCollab, setUserCanCollab]= useState(null);
 
   // console.log("Curso id: ", router?.query?.cursoId);
   const cursoId = router?.query?.cursoId;
@@ -62,6 +64,31 @@ export default function SugerirModulo() {
       skip: !cursoId,
     }
   );
+  
+  const [canUserCollab, {isLoading: iscollabloading}] = useIsUserColaboradorMutation(
+    {
+      skip: !cursoId,
+    }
+  );
+
+  const handleCheckCollab = async () => {
+    const response = await canUserCollab({
+      evento_id: cursoId,
+      user_id: userInfo?.id,
+    },)
+    console.log("response is", response)
+    if (response?.data?.ok) {
+      setUserCanCollab(true);
+    } else {
+      setUserCanCollab(false);
+    }
+  }
+
+  useEffect(() => {
+    if (cursoId) {
+      handleCheckCollab();
+    }
+  }, [cursoId])
 
   useEffect(() => {
     handleSetLoading(isLoading);
@@ -72,7 +99,10 @@ export default function SugerirModulo() {
   const [selectedModule, setSelectedModule] = useState(null);
   const [modulos, setModulos] = useState([]);
   const [comentario, setComentario] = useState("");
-  if (data?.ok === false) {
+  if (userCanCollab === null) {
+    return null;
+  }
+  if (data?.ok === false || (!userCanCollab && !iscollabloading)) {
     return <NotFoundPage message="Curso no encontrado" />;
   }
 

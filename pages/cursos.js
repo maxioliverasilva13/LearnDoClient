@@ -86,6 +86,18 @@ export default function Cursos() {
     setBusqueda(text);
   }
 
+  const handleRouteSelection = (tipo, eventId) => {
+    if (tipo === 'curso'){
+      return appRoutes.cursoPage(eventId);
+    }
+    if (tipo === 'seminarioP'){
+      return appRoutes.seminarioPage(eventId);
+    }
+    if (tipo === 'seminarioV'){
+      return appRoutes.seminarioPage(eventId);
+    }
+  }
+
   return (
     <>
       <div className="flex flex-wrap bg text-white relative">
@@ -136,9 +148,9 @@ export default function Cursos() {
                 hasMore={hasMore}
               >
                 <div className="flex justify-center gap-10 text-center flex-wrap px-8">
-                  {cursosList.map((curso) => {
+                  {cursosList.map((curso, index) => {
                     return (
-                      <Link href={appRoutes.cursoPage(curso?.id)}>
+                      <Link href={handleRouteSelection(curso.tipo, curso?.id)} key={index}>
                       <div
                         className="max-w-[250px] transition-all transform hover:scale-105 cursor-pointer min-h-[350px]"
                         key={curso.id}

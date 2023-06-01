@@ -23,6 +23,9 @@ const organizadorPaths = [
     appRoutes.misCursosAdmin(),
     appRoutes.progresoEstudiantes(),
     appRoutes.selectRole(),
+    appRoutes.editCurso(),
+    appRoutes.cursoPage(),
+    appRoutes.seminarioPage(),
 ]
 
 const estudiantesPaths = [
@@ -39,6 +42,7 @@ const estudiantesPaths = [
     appRoutes.cursos(),
     appRoutes.selectRole(),
     appRoutes.cursoSugerir(),
+    appRoutes.seminarioPage(),
 ]
 
 const CheckRoutes = ({children}) => {
