@@ -34,6 +34,7 @@ const CheckTokenWrapper = ({ children }) => {
                 const type = response?.userInfo?.type;
                 push(type == "organizador" ? appRoutes.dashboard() : appRoutes.home())
             }
+            setIsChecking(false);
         } else {
             setIsChecking(false);
             if (!isPublicPath) {

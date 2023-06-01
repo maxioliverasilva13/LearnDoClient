@@ -159,7 +159,7 @@ const Chat = () => {
           onChange={(e) => handleChangeValue("message", e?.target?.value)}
           value={formValues.message}
           placeholder="Escribe un mensaje..."
-          className="w-full flex-grow outline-none px-4 h-[60px] text-white bg-transparent border border-white rounded-full"
+          className="w-full placeholder-white flex-grow outline-none px-4 h-[60px] text-white bg-transparent border border-white rounded-full"
         />
        
        <button type="submit" className="outline-none border-none bg-transparent">

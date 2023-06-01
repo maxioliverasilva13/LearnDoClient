@@ -375,6 +375,13 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getProgresoEstudiantes: builder.query({
+      query: (data) => `${apiRoutes.getProgresoEstudiantes()}?userId=${data?.userId}&cursoId=${data?.cursoId}`,
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -404,5 +411,6 @@ export const {
   useDeleteClaseMutation,
   useDeletePreguntaMutation,
   useUpdateStatusSugerenciaMutation,
-  useGetCompleteSeminarioInfoQuery
+  useGetCompleteSeminarioInfoQuery,
+  useGetProgresoEstudiantesQuery,
 } = EventoService;

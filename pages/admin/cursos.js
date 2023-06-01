@@ -122,6 +122,11 @@ const Tarjeta = ({
                   Editar curso
                 </span>
               </Link>
+              <Link href={appRoutes.progresoEstudiantes(eventoId)}>
+                <span className="bg-indigo-700 shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
+                  Progreso Estudiantes
+                </span>
+              </Link>
             </>
           )}
           {(tipo === "seminarioP" || tipo === "seminarioV") && (

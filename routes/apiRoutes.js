@@ -40,6 +40,8 @@ const apiRoutes = {
     updateCursoInfo: () => '/api/cursos/updateCursoInfo',
     updateAllOfModulo: () => '/api/modulos/updateAllOfModulo',
     getCompleteInfoSeminario: () => "/api/seminarios/getCompleteInfoSeminario",
+    getProgresoEstudiantes: () => "/api/cursos/getProgresoEstudiantes",
+    findUserById: () => "/api/usuarios/userInfoById",
 }
 
 export default apiRoutes;

@@ -1,3 +1,4 @@
+import GlobalImage from "components/GlobalImage/GlobalImage";
 import Image from "next/image";
 
 const UserProgress = ({ userImage, userName, aprobacion, porcentage }) => {
@@ -19,7 +20,7 @@ const UserProgress = ({ userImage, userName, aprobacion, porcentage }) => {
     <div className="w-full h-auto flex flex-row items-center justify-between">
       <div className="w-auto h-auto flex flex-row items-center gap-4">
         <div className="w-[64px] relative rounded-full border border-white h-[64px] max-w-[64px] max-h-[64px]">
-          <Image
+          <GlobalImage
             src={userImage}
             loader={() => userImage}
             layout="fill"

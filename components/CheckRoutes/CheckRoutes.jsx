@@ -13,7 +13,6 @@ const roles = {
 
 const organizadorPaths = [
     appRoutes.dashboard(),
-    appRoutes.landing(),
     appRoutes.messages(),
     appRoutes.profile(),
     appRoutes.foroPage(),
@@ -26,6 +25,7 @@ const organizadorPaths = [
     appRoutes.editCurso(),
     appRoutes.cursoPage(),
     appRoutes.seminarioPage(),
+    appRoutes.progresoEstudiantes(),
 ]
 
 const estudiantesPaths = [

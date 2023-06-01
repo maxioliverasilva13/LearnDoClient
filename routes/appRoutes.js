@@ -20,7 +20,7 @@ const appRoutes = {
     createSeminario: () => '/crearSeminario',
     dashboard: () => '/admin/dashboard',
     misCursosAdmin: () => '/admin/cursos',
-    progresoEstudiantes: () => `/admin/progresoEstudiantes`,
+    progresoEstudiantes: (cursoId) => `/admin/progresoEstudiantes/${cursoId ? [cursoId] : "[cursoId]"}`,
     selectRole: () => `/selectrole`,
 }
 

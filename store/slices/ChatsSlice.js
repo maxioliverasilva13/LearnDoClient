@@ -4,8 +4,10 @@ import { useDispatch } from "react-redux";
 const initialState = {
   chats: [],
   isLoading: false,
-  activeChatId: null,
+  activeChatId: 0,
   temporalMessages: [],
+  activeChat: 0,
+
 };
 
 export const ChatsSlice = createSlice({
@@ -16,10 +18,16 @@ export const ChatsSlice = createSlice({
       state.chats = payload;
     },
     addChat(state, { payload }) {
-      state.chats.push(payload);
+      const exists = state.chats?.find((chat) => chat?.chatId === payload?.chatId);
+      if (!exists) {
+        state.chats.push(payload);
+      }
+      console.log("yes 1");
+      console.log(payload?.chatId)
+      state.activeChat = payload?.chatId;
     },
     setChatId(state, { payload }) {
-      state.activeChatId = payload;
+      state.activeChat = payload;
     },
     addMessage(state, { payload }) {
       const chatId = payload?.chatId;
