@@ -82,7 +82,6 @@ export default class MyApp extends App {
             />
             <title>LearnDo</title>
             <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet"/>
-            <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
             <link
               href="https://fonts.cdnfonts.com/css/gotham"
               rel="stylesheet"

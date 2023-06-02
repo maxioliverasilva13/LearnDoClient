@@ -42,6 +42,7 @@ const apiRoutes = {
     getCompleteInfoSeminario: () => "/api/seminarios/getCompleteInfoSeminario",
     getProgresoEstudiantes: () => "/api/cursos/getProgresoEstudiantes",
     findUserById: () => "/api/usuarios/userInfoById",
+    listarTendencias: () => "/api/eventos/listarTendencias",
 }
 
 export default apiRoutes;

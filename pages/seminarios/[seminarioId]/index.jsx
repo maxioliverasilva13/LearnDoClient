@@ -69,10 +69,11 @@ const SeminarioInfo = () => {
         <span className="text-white font-semibold text-[20px]">Categorias</span>
 
         <div className="w-full h-auto flex flex-row items-center justify-start flex-wrap gap-2">
-          {data?.categorias?.map((categoria) => {
+          {data?.categorias?.map((categoria, index) => {
             return (
               <span
                 className={`text-white font-medium px-4 py-2 text-[18px] rounded-lg bg-[#${generateRandomColor()}]`}
+                key={index}
               >
                 {categoria?.nombre}
               </span>
@@ -219,7 +220,7 @@ const SeminarioInfo = () => {
                       onClick={() => {
                         setShowModal(false);
                         // handleReload();
-                        pagar(valuesPay);
+                        // pagar(valuesPay);
                       }}
                       onClose={() => {
                         setShowModal(false);
