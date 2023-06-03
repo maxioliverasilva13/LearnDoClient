@@ -18,7 +18,8 @@ export default function Navbar() {
   const { rol } = useGlobalSlice();
 
   const hasNoReadsMessages = noReadsMessages?.length > 0;
-  const points = 0;
+  const points = userInfo?.creditos_number || 0;
+  
   const router = useRouter();
 
   const handleToggleExpandMenu = () => {

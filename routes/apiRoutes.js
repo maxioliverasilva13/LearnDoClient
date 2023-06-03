@@ -42,6 +42,10 @@ const apiRoutes = {
     getCompleteInfoSeminario: () => "/api/seminarios/getCompleteInfoSeminario",
     getProgresoEstudiantes: () => "/api/cursos/getProgresoEstudiantes",
     findUserById: () => "/api/usuarios/userInfoById",
+    usarCupon: () => "/api/cupon/usarCupon",
+    validarCupon: () => "/api/cupon/validarCupon",
+    crearCupon: () => "/api/cupon/generateCupon",
+    
 }
 
 export default apiRoutes;

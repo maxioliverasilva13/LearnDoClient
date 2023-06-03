@@ -324,6 +324,7 @@ export const EventoService = createApi({
           monto: data?.monto,
           metodoPago: data?.metodoPago,
           eventoId: data?.eventoId,
+          useDiscount: data?.useDiscount,
         },
       }),
       invalidatesTags: ["SelectedCursoInfo", "SelectedSeminarioInfo"],
