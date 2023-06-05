@@ -109,10 +109,8 @@ const CursoInfo = () => {
 
   const pagar = async (values) => {
     const response = await handlePay(values);
-    console.log("response is", response)
     if (response?.data?.ok == true) {
       if (useDiscount) {
-        console.log("si")
         handleSetUserInfo({
           ...userInfo, 
           creditos_number: userInfo.creditos_number - 10,
@@ -319,7 +317,7 @@ const CursoInfo = () => {
                 </Link>
               ) : (
                 <div className="w-full appearsAnimation h-auto flex flex-col gap-4">
-                  {isValid === false && cuponToken && (
+                  {isValid === false && cuponToken && !esComprada && (
                     <div className="w-full flex flex-row items-center justify-start gap-2">
                       <AiOutlineInfoCircle
                         color="rgb(220 38 38 / var(--tw-text-opacity))"
@@ -330,7 +328,7 @@ const CursoInfo = () => {
                       </span>
                     </div>
                   )}
-                  {canUseDiscount && <div className="w-full appearsAnimation">
+                  {canUseDiscount && !esComprada && !cuponToken && <div className="w-full my-4 appearsAnimation">
                     <button onClick={() => setUseDiscount(!useDiscount)} className="text-white appearsAnimation transition-all cursor-pointer px-4 py-2 bg-indigo-500 rounded-[20px] shadow-md">{useDiscount && "No"} Usar 10 puntos</button>
                   </div>}
                   <div className="w-full appearsAnimation flex flex-row items-start justify-center gap-[60px]">
@@ -346,7 +344,7 @@ const CursoInfo = () => {
                       >
                         USD${precio}
                       </span>
-                      {(isValid || useDiscount) && <DealsCard price={precio} />}
+                      {(isValid || useDiscount) && !esComprada && <DealsCard price={precio} />}
                     </span>
                     {userInfo?.id !== cursoInfo.organizador_id &&
                       cursoInfo?.es_pago === 1 && <PayPalButtonsWrapper />}

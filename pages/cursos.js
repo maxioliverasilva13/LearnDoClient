@@ -119,7 +119,7 @@ export default function Cursos() {
               >
                 <input
                   type="text"
-                  className="bg-transparent border-white border-2 py-2 px-4 text-white outline-none	rounded-full no-underline	hover:border-white"
+                  className="bg-transparent placeholder-white border-white border-2 py-2 px-4 text-white outline-none	rounded-full no-underline	hover:border-white"
                   placeholder="Buscar"
                   onChange={handleChangeSearch}
                   value={busqueda}

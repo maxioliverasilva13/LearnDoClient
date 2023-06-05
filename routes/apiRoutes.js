@@ -45,7 +45,6 @@ const apiRoutes = {
     usarCupon: () => "/api/cupon/usarCupon",
     validarCupon: () => "/api/cupon/validarCupon",
     crearCupon: () => "/api/cupon/generateCupon",
-    
 }
 
 export default apiRoutes;
