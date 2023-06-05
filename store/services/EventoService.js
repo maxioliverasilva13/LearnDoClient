@@ -415,4 +415,5 @@ export const {
   useUpdateStatusSugerenciaMutation,
   useGetCompleteSeminarioInfoQuery,
   useGetProgresoEstudiantesQuery,
+  useLazyGetEventosAdminQuery
 } = EventoService;

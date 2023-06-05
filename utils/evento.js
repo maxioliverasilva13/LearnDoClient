@@ -1,3 +1,4 @@
+import appRoutes from "routes/appRoutes"
 
 
 export const EventosType = {
@@ -65,3 +66,15 @@ export const formatSugerenciaColor = (tipoSugerencia) => {
 export const formatSugerenciaText = (tipoSugerencia) => {
     return SugerenciaText[tipoSugerencia];
 }
+
+export const handleRedirectByTipo = (tipo, eventId) => {
+    if (tipo === 'curso'){
+      return appRoutes.cursoPage(eventId);
+    }
+    if (tipo === 'seminarioP'){
+      return appRoutes.seminarioPage(eventId);
+    }
+    if (tipo === 'seminarioV'){
+      return appRoutes.seminarioPage(eventId);
+    }
+  }

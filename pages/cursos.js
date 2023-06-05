@@ -16,8 +16,9 @@ import useGlobalSlice from "hooks/useGlobalSlice";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 import Link from "next/link";
 import appRoutes from "routes/appRoutes";
-import { fomratColorCurso, formatTitle } from "utils/evento";
+import { fomratColorCurso, formatTitle, handleRedirectByTipo } from "utils/evento";
 import clsx from "clsx";
+import EventoCard from "components/EventoCard/EventoCard";
 
 export default function Cursos() {
   const [cursosList, setCursosList] = useState([]);
@@ -89,18 +90,6 @@ export default function Cursos() {
     setBusqueda(text);
   }
 
-  const handleRouteSelection = (tipo, eventId) => {
-    if (tipo === 'curso'){
-      return appRoutes.cursoPage(eventId);
-    }
-    if (tipo === 'seminarioP'){
-      return appRoutes.seminarioPage(eventId);
-    }
-    if (tipo === 'seminarioV'){
-      return appRoutes.seminarioPage(eventId);
-    }
-  }
-
   return (
     <>
       <div className="flex flex-wrap bg text-white relative">
@@ -149,34 +138,12 @@ export default function Cursos() {
                 dataLength={cursosList.length}
                 next={loadMoreItems}
                 hasMore={hasMore}
+                className="w-full"
               >
-                <div className="flex justify-center gap-10 text-center flex-wrap px-8">
+                <div className="flex w-full h-auto justify-center gap-10 text-center flex-wrap px-8">
                   {cursosList.map((curso, index) => {
                     return (
-                      <Link href={handleRouteSelection(curso.tipo, curso?.id)} key={index}>
-                      <div
-                        className="max-w-[250px] transition-all transform hover:scale-105 cursor-pointer min-h-[350px]"
-                        key={curso.id}
-                      >
-                        <div
-                          className="w-[250px] h-[300px] relative rounded-lg overflow-hidden shadow-md"
-                          key={curso.id}
-                        >
-                          <div className={clsx("w-min  absolute z-[20] left-0 top-4 px-4 py-1 font-semibold text-white max-w-full truncate rounded-r-md ",
-                            `bg-[${fomratColorCurso(curso?.tipo)}]`
-                          )}>
-                            {formatTitle(curso?.tipo)}
-                          </div>
-                          <GlobalImage
-                            src={curso?.imagen}
-                            loader={() => curso?.imagen}
-                            layout="fill"
-                            objectFit="cover"
-                          />
-                        </div>
-                        <p className="text-xl	">{curso.nombre}</p>
-                      </div>
-                      </Link>
+                      <EventoCard curso={curso} index={index} />
                     );
                   })}
                 </div>
