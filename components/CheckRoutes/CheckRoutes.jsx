@@ -26,6 +26,8 @@ const organizadorPaths = [
     appRoutes.editCurso(),
     appRoutes.cursoPage(),
     appRoutes.seminarioPage(),
+    appRoutes.zoom(),
+
 ]
 
 const estudiantesPaths = [
@@ -43,6 +45,8 @@ const estudiantesPaths = [
     appRoutes.selectRole(),
     appRoutes.cursoSugerir(),
     appRoutes.seminarioPage(),
+    appRoutes.zoom(),
+
 ]
 
 const CheckRoutes = ({children}) => {

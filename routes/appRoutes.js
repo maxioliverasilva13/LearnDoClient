@@ -22,6 +22,8 @@ const appRoutes = {
     misCursosAdmin: () => '/admin/cursos',
     progresoEstudiantes: () => `/admin/progresoEstudiantes`,
     selectRole: () => `/selectrole`,
+    zoom: () => `/zoom`,
+
 }
 
 export default appRoutes;
