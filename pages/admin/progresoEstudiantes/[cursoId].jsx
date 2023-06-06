@@ -165,6 +165,7 @@ const ProgresoEstudiantes = () => {
                   userName={item?.userInfo?.nombre}
                   userImage={item?.userInfo?.imagen}
                   porcentage={item?.progreso?.avgCalifications || 0}
+                  userId={item?.id}
                   key={`UserProgress-${index}`}
                 />
               );
