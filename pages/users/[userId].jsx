@@ -1,5 +1,6 @@
 import CardProfile from "components/Cards/CardProfile";
 import EventoCard from "components/EventoCard/EventoCard";
+import NoResults from "components/NotFoundPage/NoResults";
 import NotFoundPage from "components/NotFoundPage/NotFoundPage";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import { useRouter } from "next/router";
@@ -30,17 +31,13 @@ const UserId = () => {
   const handleLoadEventos = async (userInfo) => {
     if (userInfo?.type === "organizador") {
       const response = await eventosAdmin({
-          organizadorId: userId,
+        organizadorId: userId,
       });
       const cursos = response?.data?.cursos || [];
       const seminariosP = response?.data?.seminariosP || [];
       const seminariosV = response?.data?.seminariosV || [];
-      const allEventos = [
-        ...cursos,
-        ...seminariosP,
-        ...seminariosV
-      ]
-      setEventos(allEventos)
+      const allEventos = [...cursos, ...seminariosP, ...seminariosV];
+      setEventos(allEventos);
     } else {
       const response = await eventosComprados({
         estudianteId: userInfo?.id,
@@ -74,11 +71,13 @@ const UserId = () => {
             : "Eventos comprados"}
         </span>
 
-        <div className="w-full my-4 h-auto flex flex-row items-center justify-center flex-wrap gap-6">
+        <div className="w-full my-4 mb-10 h-auto flex flex-row items-center justify-center flex-wrap gap-6">
+          {eventos?.length === 0 && !isLoading && (
+            <NoResults message="No se encontraron eventos" />
+          )}
           {eventos?.map((evento, index) => {
-            return <EventoCard curso={evento} index={index} />
-          } )}
-
+            return <EventoCard curso={evento} index={index} />;
+          })}
         </div>
       </div>
     </div>

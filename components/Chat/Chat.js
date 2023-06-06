@@ -1,11 +1,14 @@
 import clsx from "clsx";
+import GlobalImage from "components/GlobalImage/GlobalImage";
 import useChats from "hooks/useChats";
 import useForm from "hooks/useForm";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import moment from "moment";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { AiOutlineSend } from "react-icons/ai";
+import appRoutes from "routes/appRoutes";
 import {
   useChangeIsReadMutation,
   useCreateMessageMutation,
@@ -96,7 +99,6 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    
     // refChat?.current?.addEventListener("scroll", handleUserInteracts);
     // refChat?.current?.addEventListener("keydown", handleUserInteracts);
     refChat?.current?.addEventListener("mouseover", handleUserInteracts);
@@ -139,36 +141,41 @@ const Chat = () => {
 
   return (
     <div className="w-full min-h-screen max-h-screen transition-all flex flex-col items-start justify-start flex-grow overflow-auto">
-      <div className="w-full shadow-md h-auto transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5">
-        <div className="w-[90px] transition-all h-[90px] relative max-w-[90px] max-h-[90px]">
-          <Image
-            src={activeChatInfo?.userImage}
-            loader={() => activeChatInfo?.userImage}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-full transition-all w-full h-full"
-          />
+      <Link href={appRoutes.userInfoPage(activeChatInfo?.chatId)}>
+        <div className="w-full cursor-pointer shadow-md h-auto transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5">
+          <div className="w-[90px] transition-all h-[90px] relative max-w-[90px] max-h-[90px]">
+            <GlobalImage
+              src={activeChatInfo?.userImage}
+              loader={() => activeChatInfo?.userImage}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-full transition-all w-full h-full"
+            />
+          </div>
+          <p className="text-white transition-all text-[46px] font-semibold">
+            {activeChatInfo?.userName}
+          </p>
         </div>
-        <p className="text-white transition-all text-[46px] font-semibold">
-          {activeChatInfo?.userName}
-        </p>
-      </div>
+      </Link>
+
       {renderMessages()}
-      <form onSubmit={handleMessageNew} className="w-full p-4 h-auto flex items-center gap-2 justify-start">
+      <form
+        onSubmit={handleMessageNew}
+        className="w-full p-4 h-auto flex items-center gap-2 justify-start"
+      >
         <input
           onChange={(e) => handleChangeValue("message", e?.target?.value)}
           value={formValues.message}
           placeholder="Escribe un mensaje..."
           className="w-full placeholder-white flex-grow outline-none px-4 h-[60px] text-white bg-transparent border border-white rounded-full"
         />
-       
-       <button type="submit" className="outline-none border-none bg-transparent">
-       <AiOutlineSend
-          className="cursor-pointer"
-          color="white"
-          size={50}
-        />
-       </button>
+
+        <button
+          type="submit"
+          className="outline-none border-none bg-transparent"
+        >
+          <AiOutlineSend className="cursor-pointer" color="white" size={50} />
+        </button>
       </form>
     </div>
   );

@@ -30,6 +30,7 @@ import {
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import DealsCard from "components/DealsCard/DealsCard";
 import { handleGeetDisccount } from "utils/cupon";
+import UserCard from "components/UserCard/UserCard";
 
 const CursoInfo = () => {
   const router = useRouter();
@@ -301,7 +302,7 @@ const CursoInfo = () => {
                 />
                 <p>Total Clases:{getCantClases()}</p>
                 <p>Modalidad: Virtual</p>
-                <p>Profesor: {profesor}</p>
+                <UserCard user={profesor} isProfesor />
               </div>
               {esComprada ? (
                 <Link
@@ -499,7 +500,8 @@ const CursoInfo = () => {
                 {data?.puntuaciones?.map((item, index) => {
                   if (index > 2) return null;
                   return (
-                    <div className="w-[160px] gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
+                    <Link href={appRoutes.userInfoPage(item?.estudiante_id)} key={`puntuacionItem-${index}`}>
+                    <div className="w-[160px] cursor-pointer gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
                       <div className="min-h-[130px] w-[130px] h-[130px] relative rounded-full overflow-hidden">
                         <GlobalImage
                           src={item?.userImage}
@@ -518,6 +520,7 @@ const CursoInfo = () => {
                         {item?.descripcion}
                       </span>
                     </div>
+                    </Link>
                   );
                 })}
               </div>
