@@ -37,9 +37,20 @@ const apiRoutes = {
     getCertificatePDF: (id) => `/api/certificaciones/${id}/getCertificationPDF`,
     createCertificate: () => `/api/certificaciones/`,
     canGetCertificate: (cursoId) => `/api/cursos/${cursoId}/canGetCertificate`,
-    getEventosComprados: ()=> `/api/eventos/getMyEventos`
-
-
+    getEventosComprados: ()=> `/api/eventos/getMyEventos`,
+    isUserColaborador: () => `/api/colaboraciones/isUserColaborador`,
+    getEventosAdmin: (organizadorId) => `/api/eventos/getEventosAdmin?organizadorId=${organizadorId}`,
+    changeStatusSugerencia: () => `/api/sugerencias/changeStatus`,
+    getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
+    updateCursoInfo: () => '/api/cursos/updateCursoInfo',
+    updateAllOfModulo: () => '/api/modulos/updateAllOfModulo',
+    getCompleteInfoSeminario: () => "/api/seminarios/getCompleteInfoSeminario",
+    getProgresoEstudiantes: () => "/api/cursos/getProgresoEstudiantes",
+    findUserById: () => "/api/usuarios/userInfoById",
+    listarTendencias: () => "/api/eventos/listarTendencias",
+    usarCupon: () => "/api/cupon/usarCupon",
+    validarCupon: () => "/api/cupon/validarCupon",
+    crearCupon: () => "/api/cupon/generateCupon", 
 }
 
 export default apiRoutes;

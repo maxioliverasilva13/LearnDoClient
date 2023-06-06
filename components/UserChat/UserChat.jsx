@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import GlobalImage from "components/GlobalImage/GlobalImage";
 import useChats from "hooks/useChats";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import Image from "next/image";
@@ -45,7 +46,7 @@ const UserChat = ({
         )}
       ></div>
       <div className="w-[90px] max-h-[90px] min-w-[90px] min-h-[90px] relative max-w-[90px] h-[90px] rounded-full overflow-hidden">
-        <Image
+        <GlobalImage
           src={userImage}
           loader={() => userImage}
           layout="fill"

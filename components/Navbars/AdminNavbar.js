@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { BiMessageAlt } from "react-icons/bi";
 import { MdOutlineStars } from "react-icons/md";
@@ -10,16 +10,27 @@ import appRoutes from "routes/appRoutes";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 import { useRouter } from "next/router";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { Dialog } from "@headlessui/react";
+import { RxCross1 } from "react-icons/rx";
 
 export default function Navbar() {
   const { noReadsMessages } = useChats();
   const { userInfo } = useGlobalSlice();
   const [expandedMenu, setExpandedmenu] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const { rol } = useGlobalSlice();
 
   const hasNoReadsMessages = noReadsMessages?.length > 0;
-  const points = 0;
+  const points = userInfo?.creditos_number || 0;
+  
   const router = useRouter();
+
+  useEffect(() => {
+    // cerrar el navbar mobile al detectar cambio de ruta
+    setMobileMenuOpen(false);
+  }, [router]);
 
   const handleToggleExpandMenu = () => {
     setExpandedmenu(!expandedMenu);
@@ -28,81 +39,90 @@ export default function Navbar() {
 
   const renderItems = () => {
     if (rol === "organizador") {
-      return <ul className="flex justify-center items-center">
-      <li className="px-4">
-        <Link href={appRoutes.dashboard()} className="hover:text-gray-400">
-          Dashboard
-        </Link>
-      </li>
-      <li className="px-4">
-        <Link href={appRoutes.misCursosAdmin()} className="hover:text-gray-400">
-          Mis Eventos
-        </Link>
-      </li>
-      <li className="px-4">
-        <Link
-          href={appRoutes.seminarios()}
-          className="hover:text-gray-400"
-        >
-          Seminarios
-        </Link>
-      </li>
-    </ul>
+      return (
+        <ul className="flex flex-col gap-y-5 lg:flex-row justify-center items-center">
+          <li className="px-4">
+            <Link href={appRoutes.dashboard()} className="hover:text-gray-400">
+              Dashboard
+            </Link>
+          </li>
+          <li className="px-4">
+            <Link
+              href={appRoutes.misCursosAdmin()}
+              className="hover:text-gray-400"
+            >
+              Mis Eventos
+            </Link>
+          </li>
+        </ul>
+      );
     } else {
-      return <ul className="flex justify-center ml-[200px]">
-      <li className="px-4">
-        <Link href={appRoutes.home()} className="hover:text-gray-400">
-          Inicio
-        </Link>
-      </li>
-      <li className="px-4">
-        <Link href={appRoutes.cursos()} className="hover:text-gray-400">
-          Cursos
-        </Link>
-      </li>
-      <li className="px-4">
-        <Link
-          href={appRoutes.seminarios()}
-          className="hover:text-gray-400"
-        >
-          Seminarios
-        </Link>
-      </li>
-      <li className="px-4">
-        <Link href={appRoutes.misCursos()} className="hover:text-gray-400">
-          Mis Eventos
-        </Link>
-      </li>
-    </ul>
+      return (
+        <ul className="flex justify-center ml-[200px]">
+          <li className="px-4">
+            <Link href={appRoutes.home()} className="hover:text-gray-400">
+              Inicio
+            </Link>
+          </li>
+          <li className="px-4">
+            <Link href={appRoutes.cursos()} className="hover:text-gray-400">
+              Cursos
+            </Link>
+          </li>
+          <li className="px-4">
+            <Link href={appRoutes.misCursos()} className="hover:text-gray-400">
+              Mis Eventos
+            </Link>
+          </li>
+        </ul>
+      );
     }
-  }
+  };
 
   return (
     <>
       {/* Navbar */}
-      <header
-        className="flex bg-[#7b479e] sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px]"
-      >
+      <header className="flex bg-[#7b479e] sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px]">
         {/* Logo */}
         <div className="px-4">
-          {userInfo?.type === 'estudiante' &&
+          {userInfo?.type === "estudiante" && (
             <Link href={appRoutes.home()}>
-              <span className="select-none font-bold cursor-pointer text-[20px]">Learn<span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span></span>
+              <span className="select-none font-bold cursor-pointer text-[20px]">
+                Learn
+                <span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span>
+              </span>
             </Link>
-          }
-          {userInfo?.type === 'organizador' &&
+          )}
+          {userInfo?.type === "organizador" && (
             <Link href={appRoutes.dashboard()}>
-              <span className="select-none font-bold cursor-pointer text-[20px]">Learn<span className="px-1 py-2 bg-[#760eff83] rounded-lg">Do</span></span>
+              <span className="select-none font-bold cursor-pointer text-[20px]">
+                Learn
+                <span className="px-1 py-2 bg-[#760eff83] rounded-lg">Do</span>
+              </span>
             </Link>
-          }
+          )}
         </div>
+        <div className="flex lg:hidden mr-5">
+          <button
+            type="button"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            onClick={() => setMobileMenuOpen((current) => !current)}
+          >
+            <span className="sr-only">Open main menu</span>
+            <RxHamburgerMenu
+              className="h-6 w-6"
+              aria-hidden="true"
+              color="white"
+              size={12}
+            />
+          </button>
+        </div>
+
         {/* Navigation */}
-        <nav className="">
-          {renderItems()}
-        </nav>
-        
+        <nav className="hidden lg:flex">{renderItems()}</nav>
+
         {/* Search bar and user avatar */}
-        <div className="flex items-center px-4">
+        <div className="hidden lg:flex items-center px-4">
           <div className="relative">
             <input
               type="text"
@@ -170,6 +190,34 @@ export default function Navbar() {
           </div>
         </div>
       </header>
+      <Dialog
+        as="div"
+        className="lg:hidden"
+        open={mobileMenuOpen}
+        onClose={setMobileMenuOpen}
+      >
+        <div className="fixed inset-0" />
+        <Dialog.Panel className="text-white fixed inset-y-0 right-[17px] z-10 w-full overflow-y-auto bg-slate-800 px-6 py-16 sm:max-w-xs sm:ring-1 sm:ring-gray-900/10">
+          <div className="flex items-center justify-end">
+            <button
+              type="button"
+              className=" rounded-md text-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span className="sr-only">Close menu</span>
+              <RxCross1
+                className="h-6 w-6 mt-2 text-white"
+                aria-hidden="true"
+              />
+            </button>
+          </div>
+          <div className="mt-6 flow-root">
+            <div className="-my-6 divide-y divide-gray-500/10">
+              <div className="space-y-2 py-6">{renderItems()}</div>
+            </div>
+          </div>
+        </Dialog.Panel>
+      </Dialog>
       {/* End Navbar */}
     </>
   );

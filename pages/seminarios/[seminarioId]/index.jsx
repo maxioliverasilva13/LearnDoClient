@@ -15,22 +15,57 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import Modal from "components/Modal/modal";
 import { FaRegCheckCircle } from "react-icons/fa";
+import {
+  useLazyUsarCuponQuery,
+  useValidarCuponQuery,
+} from "store/services/CuponService";
+import ShareButton from "components/ShareButton/ShareButton";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import DealsCard from "components/DealsCard/DealsCard";
+import clsx from "clsx";
+import { handleGeetDisccount } from "utils/cupon";
 
 const SeminarioInfo = () => {
   const router = useRouter();
   const { query } = router;
   const seminarioId = query?.seminarioId;
 
-  const { data, isLoading } = useGetCompleteSeminarioInfoQuery({ seminarioId });
-  const { handleSetLoading, userInfo } = useGlobalSlice();
-
-  const seminarioInfo = data?.seminario;
+  const { data, isLoading } = useGetCompleteSeminarioInfoQuery({
+    seminarioId,
+  });
+  const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
   const esComprado = data?.comprado;
 
+  const [canUseDiscount, setCanUseDiscount] = useState(false);
+  const myCreditsNumber = userInfo?.creditos_number;
+
   useEffect(() => {
-    handleSetLoading(isLoading);
-  }, [isLoading]);
+    if (myCreditsNumber >= 10) {
+      setCanUseDiscount(true);
+    }
+  }, [myCreditsNumber]);
+
+  const cuponToken = query?.token;
+  const { data: tokenValidateResponse, isLoading: isLoadingValidateToken } =
+    useValidarCuponQuery(
+      { token: cuponToken, cursoId: seminarioId },
+      {
+        skip: !cuponToken || !seminarioId || isLoading || esComprado,
+      }
+    );
+  const [usarCupon, { isLoading: isLoadingUsingCupon }] =
+    useLazyUsarCuponQuery();
+
+  const isValidCupon = tokenValidateResponse?.esValido == true;
+
+  const seminarioInfo = data?.seminario;
+
+  useEffect(() => {
+    handleSetLoading(
+      isLoading || isLoadingValidateToken || isLoadingUsingCupon
+    );
+  }, [isLoading, isLoadingValidateToken, isLoadingUsingCupon]);
 
   const [valuesPay, setValuePay] = useState({
     userId: userInfo?.id,
@@ -40,11 +75,13 @@ const SeminarioInfo = () => {
   });
   const [handlePay] = useComprareventoMutation();
 
+  const [useDiscount, setUseDiscount] = useState(false);
+
   useEffect(() => {
     if (seminarioInfo) {
       setValuePay({
         userId: userInfo?.id,
-        monto: seminarioInfo?.precio,
+        monto: seminarioInfo?.precio || 0,
         metodoPago: "paypal",
         eventoId: seminarioInfo.id,
       });
@@ -52,9 +89,18 @@ const SeminarioInfo = () => {
   }, [seminarioInfo, userInfo]);
 
   const pagar = async (values) => {
-    const response = await handlePay(values);
-    if (response?.data?.statusCode === 200) {
-      console.log("esta funcando re bien");
+    const response = await handlePay({
+      ...values,
+      useDiscount: useDiscount,
+    });
+    if (response?.data?.ok == true) {
+      if (useDiscount) {
+        handleSetUserInfo({
+          ...userInfo,
+          creditos_number: userInfo.creditos_number - 10,
+        });
+        // handleUpdateUserInfo
+      }
     }
   };
 
@@ -69,10 +115,11 @@ const SeminarioInfo = () => {
         <span className="text-white font-semibold text-[20px]">Categorias</span>
 
         <div className="w-full h-auto flex flex-row items-center justify-start flex-wrap gap-2">
-          {data?.categorias?.map((categoria) => {
+          {data?.categorias?.map((categoria, index) => {
             return (
               <span
                 className={`text-white font-medium px-4 py-2 text-[18px] rounded-lg bg-[#${generateRandomColor()}]`}
+                key={index}
               >
                 {categoria?.nombre}
               </span>
@@ -106,7 +153,10 @@ const SeminarioInfo = () => {
               purchase_units: [
                 {
                   amount: {
-                    value: seminarioInfo?.precio,
+                    value:
+                      (cuponToken && isValidCupon) || useDiscount
+                        ? handleGeetDisccount(seminarioInfo?.precio)
+                        : seminarioInfo?.precio,
                   },
                 },
               ],
@@ -114,6 +164,9 @@ const SeminarioInfo = () => {
           }}
           onApprove={async (data, actions) => {
             await pagar(valuesPay);
+            await usarCupon({
+              token: cuponToken,
+            });
             setShowModal(true);
             return;
           }}
@@ -142,7 +195,7 @@ const SeminarioInfo = () => {
                   src={seminarioInfo?.imagen}
                   loader={() => seminarioInfo?.imagen}
                   className="w-full h-full"
-                  objectFit="object-scale-down"
+                  objectFit="cover"
                   layout="fill"
                 />
               </div>
@@ -159,21 +212,57 @@ const SeminarioInfo = () => {
                 <p>Modalidad: Virtual</p>
                 <p>Profesor: {data?.profesor}</p>
                 <p>URL acceso: {seminarioInfo?.link}</p>
+
+                {isValidCupon === false && cuponToken && !esComprado && (
+                  <div className="w-full flex flex-row items-center justify-start gap-2">
+                    <AiOutlineInfoCircle
+                      color="rgb(220 38 38 / var(--tw-text-opacity))"
+                      size={25}
+                    />
+                    <span className="text-red-600 font-medium">
+                      Cupon Invalido
+                    </span>
+                  </div>
+                )}
               </div>
+              {canUseDiscount && !esComprado && !cuponToken && (
+                <div className="w-full my-4 appearsAnimation">
+                  <button
+                    onClick={() => setUseDiscount(!useDiscount)}
+                    className="text-white appearsAnimation transition-all cursor-pointer px-4 py-2 bg-indigo-500 rounded-[20px] shadow-md"
+                  >
+                    {useDiscount && "No"} Usar 10 puntos
+                  </button>
+                </div>
+              )}
               <div className="w-full flex items-center gap-6">
-                <div className="flex items-center self-start">
-                  {seminarioInfo?.es_pago === 1 ? (
-                    <span className="text-white font-semibold text-[20px]">
-                      USD${seminarioInfo?.precio}
-                    </span>
-                  ) : (
-                    <span className="text-white font-semibold text-[20px]">
-                      Gratuito
-                    </span>
-                  )}
+                <div className="flex items-center h-full">
+                  {!esComprado &&
+                    (seminarioInfo?.es_pago === 1 ? (
+                      <span
+                        className={clsx(
+                          "text-white font-semibold text-[20px]",
+                          (isValidCupon || useDiscount) && "line-through"
+                        )}
+                      >
+                        USD${seminarioInfo?.precio}
+                      </span>
+                    ) : (
+                      <span className="text-white font-semibold text-[20px]">
+                        Gratuito
+                      </span>
+                    ))}
                 </div>
                 <div className="h-max">
-                  {(esComprado || seminarioInfo.es_pago === 0) &&
+                  {!esComprado && seminarioInfo?.es_pago === 0 && (
+                    <span
+                      onClick={() => pagar(valuesPay)}
+                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                    >
+                      Comprar
+                    </span>
+                  )}
+                  {esComprado &&
                     // si es presencial botón de ver ubi, sino boton con el link a la página.
                     (seminarioInfo.tipo === "seminarioP" ? (
                       <Link
@@ -185,10 +274,11 @@ const SeminarioInfo = () => {
                         </span>
                       </Link>
                     ) : (
-                      <a className="cursor-pointer" href={`https://` + seminarioInfo.link}>
-                        <span
-                          className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
-                        >
+                      <a
+                        className="cursor-pointer"
+                        href={`https://` + seminarioInfo.link}
+                      >
+                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
                           Acceder a la página
                         </span>
                       </a>
@@ -200,6 +290,12 @@ const SeminarioInfo = () => {
                     seminarioInfo?.es_pago === 1 && <PayPalButtonsWrapper />}
                 </div>
               </div>
+              <div className="w-full h-auto flex items-center justify-start">
+                {(isValidCupon || useDiscount) && !esComprado && (
+                  <DealsCard price={seminarioInfo?.precio} />
+                )}
+              </div>
+
               <div className="w-full flex h-max flex-row flex-wrap items-start justify-center gap-5">
                 <Modal
                   isVisible={showModal}
@@ -219,7 +315,7 @@ const SeminarioInfo = () => {
                       onClick={() => {
                         setShowModal(false);
                         // handleReload();
-                        pagar(valuesPay);
+                        // pagar(valuesPay);
                       }}
                       onClose={() => {
                         setShowModal(false);
@@ -231,6 +327,11 @@ const SeminarioInfo = () => {
                   </div>
                 </Modal>
               </div>
+              {esComprado && (
+                <div className="w-full h-auto mt-6 flex items-center justify-start">
+                  <ShareButton eventoId={seminarioInfo?.id} />
+                </div>
+              )}
             </div>
           </div>
           {Categorias}

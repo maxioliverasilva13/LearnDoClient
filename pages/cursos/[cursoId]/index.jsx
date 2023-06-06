@@ -21,12 +21,21 @@ import PuntuacionText from "components/PuntuacionText/PuntuacionText";
 import Stars from "components/Stars/Stars";
 import { PayPalScriptProvider, loadScript } from "@paypal/react-paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import Modal from "components/Modal/modal"
+import Modal from "components/Modal/modal";
 import { useComprareventoMutation } from "store/services/EventoService";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { useCreateCertificateMutation } from "store/services/CertificadoService";
 
 import { useCanGetCertificateQuery } from "store/services/CursoService";
+import ShareButton from "components/ShareButton/ShareButton";
+import {
+  useLazyUsarCuponQuery,
+  useValidarCuponQuery,
+} from "store/services/CuponService";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import DealsCard from "components/DealsCard/DealsCard";
+import { handleGeetDisccount } from "utils/cupon";
+import UserCard from "components/UserCard/UserCard";
 
 const CursoInfo = () => {
   const router = useRouter();
@@ -37,6 +46,10 @@ const CursoInfo = () => {
   const { data, isLoading } = useGetCompleteCursoInfoQuery({ cursoId });
   const { data: canGetCertData } = useCanGetCertificateQuery({ cursoId });
   const { handleSetLoading, userInfo } = useGlobalSlice();
+
+  const myCreditsNumber = userInfo?.creditos_number;
+  const [canUseDiscount, setCanUseDiscount] = useState(false);
+  const [useDiscount, setUseDiscount] = useState(false);
 
   const [evaluacionToDo, setEvaluacionToDo] = useState(null);
 
@@ -50,6 +63,7 @@ const CursoInfo = () => {
   const [canGetCertificate, setCanGetCertificate] = useState(false);
   const cursoNombre = cursoInfo?.nombre;
   const [activeModuloId, setActiveModulo] = useState(null);
+  const cuponToken = query?.token;
 
 
   const [certificateID, setCertificateID] = useState(data?.certificateID);
@@ -65,9 +79,22 @@ const CursoInfo = () => {
   const [gettingCertificate, setGettingCertificate] = useState(null);
 
 
+  const { data: tokenValidateResponse, isLoading: isLoadingValidateToken } =
+    useValidarCuponQuery(
+      { token: cuponToken, cursoId: cursoId },
+      {
+        skip: !cuponToken || !cursoId || isLoading || esComprada,
+      }
+    );
+  const [usarCupon, { isLoading: isLoadingUsingCupon }] =
+    useLazyUsarCuponQuery();
+
+  const isValid = tokenValidateResponse?.esValido == true;
   useEffect(() => {
-    handleSetLoading(isLoading);
-  }, [isLoading]);
+    handleSetLoading(
+      isLoading || isLoadingValidateToken || isLoadingPay || isLoadingUsingCupon
+    );
+  }, [isLoading, isLoadingValidateToken, isLoadingPay, isLoadingUsingCupon]);
 
   useEffect(()=>{   
       if(data?.certificateID){  
@@ -80,8 +107,14 @@ const CursoInfo = () => {
     monto: cursoInfo?.precio,
     metodoPago: "paypal",
     eventoId: cursoId,
-  })
-  const [handlePay] = useComprareventoMutation();
+  });
+  const [handlePay, { isLoading: isLoadingPay }] = useComprareventoMutation();
+
+  useEffect(() => {
+    if (myCreditsNumber >= 10) {
+      setCanUseDiscount(true);
+    }
+  }, [myCreditsNumber]);
 
   const [createCertificate] = useCreateCertificateMutation();
 
@@ -92,9 +125,9 @@ const CursoInfo = () => {
         monto: cursoInfo?.precio,
         metodoPago: "paypal",
         eventoId: cursoInfo.id,
-      })
+      });
     }
-  }, [cursoInfo, userInfo])
+  }, [cursoInfo, userInfo]);
 
   useEffect(() => {
     if (canGetCertData) {
@@ -105,10 +138,16 @@ const CursoInfo = () => {
 
   const pagar = async (values) => {
     const response = await handlePay(values);
-    if (response?.data?.statusCode === 200) {
-      console.log("esta funcando re bien")
+    if (response?.data?.ok == true) {
+      if (useDiscount) {
+        handleSetUserInfo({
+          ...userInfo, 
+          creditos_number: userInfo.creditos_number - 10,
+        })
+      // handleUpdateUserInfo
+      }
     }
-  }
+  };
 
   const [showModal, setShowModal] = useState(false);
 
@@ -263,21 +302,18 @@ const CursoInfo = () => {
     data?.modulos?.find((item) => item?.id === activeModuloId) || null;
 
   const PayPalButtonsWrapper = () => {
-    const PAYPAL_CLIENT_ID = "ARMjbBZs3Nm__CVEJeKlu6ePlR_XQFuSYPuqFkiPMRPLZpVNeeji9C_Cf1Mit_wj912tqCp7zymLcEY3";
+    const PAYPAL_CLIENT_ID =
+      "ARMjbBZs3Nm__CVEJeKlu6ePlR_XQFuSYPuqFkiPMRPLZpVNeeji9C_Cf1Mit_wj912tqCp7zymLcEY3";
     const initialOptions = {
       "client-id": PAYPAL_CLIENT_ID,
       currency: "USD",
       intent: "capture",
     };
 
-    const handleReload = () => {
-      window.location.reload();
-    };
-
     return (
-      <PayPalScriptProvider options={initialOptions}>
+      <PayPalScriptProvider className="appearsAnimation" options={initialOptions}>
         <PayPalButtons
-          className="h-full w-full z-[20]"
+          className="h-full appearsAnimation w-full z-[20]"
           fundingSource="paypal"
           //fundingSource = "paypal.FUNDING.PAYPAL"
           //fundingSource={
@@ -285,24 +321,31 @@ const CursoInfo = () => {
           //  paypal.FUNDING.PAYPAL
           //  }
           //}
-          style={
-            {
-              shape: "pill"
-            }
-          }
+          style={{
+            shape: "pill",
+          }}
           createOrder={(data, actions) => {
             return actions.order.create({
               purchase_units: [
                 {
                   amount: {
-                    value: precio,
+                    value:
+                      (cuponToken && isValid) || useDiscount
+                        ? handleGeetDisccount(precio)
+                        : precio,
                   },
                 },
               ],
             });
           }}
           onApprove={async (data, actions) => {
-            await pagar(valuesPay);
+            await pagar({
+              ...valuesPay,
+              useDiscount: useDiscount 
+            });
+            await usarCupon({
+              token: cuponToken,
+            });
             //console.log("cvalues " + userInfo.nombre)
             //console.log("cvalues " + valuesPay.userId)
             //console.log("cvalues " + valuesPay.eventoId)
@@ -310,9 +353,9 @@ const CursoInfo = () => {
             //console.log("cvalues " + valuesPay.monto)
             //console.log("cvalues " + cursoInfo.precio)
             setShowModal(true);
-            return
+            return;
             //return actions.order.capture().then((details) => {
-            //  
+            //
             //  setShowModal(true)
             //});
           }}
@@ -329,7 +372,7 @@ const CursoInfo = () => {
   };
 
   const renderContent = () => {
-    if (isLoading) {
+    if (isLoading || isLoadingValidateToken) {
       return null;
     }
     if (!data?.ok) {
@@ -348,7 +391,7 @@ const CursoInfo = () => {
             openCalificarModal={openCalificarModal}
             setOpenCalificarModal={setOpenCalificarModal}
           />
-          <div className="w-full h-auto md:gap-[50px] flex flex-row items-start justify-center">
+          <div className="w-full appearsAnimation h-auto md:gap-[50px] flex flex-row items-start justify-center">
             <div className="flex flex-col gap-2">
               <div className="w-[520px] h-[350px] rounded-lg relative overflow-hidden">
                 <GlobalImage
@@ -359,20 +402,26 @@ const CursoInfo = () => {
                   layout="fill"
                 />
               </div>
-              <span className="text-white font-semibold text-[28px]">
+              <span className="text-white appearsAnimation font-semibold text-[28px]">
                 {cursoNombre}
               </span>
             </div>
 
-            <div className="w-auto max-w-[400px] flex flex-col items-center justify-start">
+            <div className="w-[400px] appearsAnimation max-w-[400px] flex flex-col items-center justify-start">
               <span className="text-white italic font-normal text-[28px] leading-[30px]">
                 {formatCursoDescripcion(cursoDescripcion)}
               </span>
-              <div className="flex my-[30px] w-full italic text-white font-semibold text-sm flex-col items-start justify-start gap-4">
-                <Stars stars={stars} size={20} needsCount={true} justifyStart={true} countStars={countStars} />
+              <div className="flex appearsAnimation my-[30px] w-full italic text-white font-semibold text-sm flex-col items-start justify-start gap-4">
+                <Stars
+                  stars={stars}
+                  size={20}
+                  needsCount={true}
+                  justifyStart={true}
+                  countStars={countStars}
+                />
                 <p>Total Clases:{getCantClases()}</p>
                 <p>Modalidad: Virtual</p>
-                <p>Profesor: {profesor}</p>
+                <UserCard user={profesor} isProfesor />
               </div>
               {esComprada ? (
                 <div className="flex justify-between">
@@ -397,32 +446,78 @@ const CursoInfo = () => {
 
 
               ) : (
-                <div className="w-full flex flex-row items-start justify-center gap-[60px]">
-                  <span className="text-white font-semibold text-[20px]">
-                    USD${precio}
-                  </span>
-                  { (userInfo?.id !== cursoInfo.organizador_id) && (cursoInfo?.es_pago === 1) && 
-                    <PayPalButtonsWrapper />
-                  }
-                  <Modal isVisible={showModal} onClose={() => setShowModal(false)} alto={"30%"} ancho={"40%"}>
-                    <div className="flex flex-col items-center justify-center">
-                      <FaRegCheckCircle size={50} color="lime"></FaRegCheckCircle>
-                      <p className="text-2xl text-white mt-8">¡Pago realizado!</p>
-                      <p className="text-2xm text-white mb-8">Disfruta de tu curso</p>
-                      <button className="h-10 w-32 mb-8 rounded-full text-white" style={{ backgroundColor: '#780EFF' }}
-                        onClick={() => {
-                          setShowModal(false)
-                          handleReload()
-                          //pagar(valuesPay);
-                        }}
-                        onClose={() => {
-                          setShowModal(false)
-                          handleReload()
-                        }}>Aceptar</button>
+                <div className="w-full appearsAnimation h-auto flex flex-col gap-4">
+                  {isValid === false && cuponToken && !esComprada && (
+                    <div className="w-full flex flex-row items-center justify-start gap-2">
+                      <AiOutlineInfoCircle
+                        color="rgb(220 38 38 / var(--tw-text-opacity))"
+                        size={25}
+                      />
+                      <span className="text-red-600 font-medium">
+                        Cupon Invalido
+                      </span>
                     </div>
-                  </Modal>
+                  )}
+                  {canUseDiscount && !esComprada && !cuponToken && <div className="w-full my-4 appearsAnimation">
+                    <button onClick={() => setUseDiscount(!useDiscount)} className="text-white appearsAnimation transition-all cursor-pointer px-4 py-2 bg-indigo-500 rounded-[20px] shadow-md">{useDiscount && "No"} Usar 10 puntos</button>
+                  </div>}
+                  <div className="w-full appearsAnimation flex flex-row items-start justify-center gap-[60px]">
+                    <span
+                      className={clsx(
+                        "text-white font-semibold flex flex-col gap-1 text-[20px]"
+                      )}
+                    >
+                      <span
+                        className={clsx(
+                          cuponToken && isValid && "line-through"
+                        )}
+                      >
+                        USD${precio}
+                      </span>
+                      {(isValid || useDiscount) && !esComprada && <DealsCard price={precio} />}
+                    </span>
+                    {userInfo?.id !== cursoInfo.organizador_id &&
+                      cursoInfo?.es_pago === 1 && <PayPalButtonsWrapper />}
+                    <Modal
+                      isVisible={showModal}
+                      onClose={() => setShowModal(false)}
+                      alto={"30%"}
+                      ancho={"40%"}
+                    >
+                      <div className="flex flex-col items-center justify-center">
+                        <FaRegCheckCircle
+                          size={50}
+                          color="lime"
+                        ></FaRegCheckCircle>
+                        <p className="text-2xl text-white mt-8">
+                          ¡Pago realizado!
+                        </p>
+                        <p className="text-2xm text-white mb-8">
+                          Disfruta de tu curso
+                        </p>
+                        <button
+                          className="h-10 w-32 mb-8 rounded-full text-white"
+                          style={{ backgroundColor: "#780EFF" }}
+                          onClick={() => {
+                            setShowModal(false);
+                            handleReload();
+                            //pagar(valuesPay);
+                          }}
+                          onClose={() => {
+                            setShowModal(false);
+                            handleReload();
+                          }}
+                        >
+                          Aceptar
+                        </button>
+                      </div>
+                    </Modal>
+                  </div>
                 </div>
               )}
+              {esComprada && <div className="w-full h-auto items-center mt-4 justify-start">
+                <ShareButton eventoId={cursoInfo?.id} />
+              </div>}
             </div>
           </div>
           {esComprada && renderEstudianteProgress()}
@@ -495,7 +590,10 @@ const CursoInfo = () => {
                       <div className="flex flex-row items-center gap-1">
                         <AiFillCheckCircle className="text-green-500 text-[18px]" />
                         <span className="text-white font-medium">
-                          Calificacion en este modulo: <PuntuacionText puntuacion={activeModulo?.calificacion} />
+                          Calificacion en este modulo:{" "}
+                          <PuntuacionText
+                            puntuacion={activeModulo?.calificacion}
+                          />
                         </span>
                       </div>
                     )}
@@ -531,7 +629,8 @@ const CursoInfo = () => {
                 {data?.puntuaciones?.map((item, index) => {
                   if (index > 2) return null;
                   return (
-                    <div className="w-[160px] gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
+                    <Link href={appRoutes.userInfoPage(item?.estudiante_id)} key={`puntuacionItem-${index}`}>
+                    <div className="w-[160px] cursor-pointer gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
                       <div className="min-h-[130px] w-[130px] h-[130px] relative rounded-full overflow-hidden">
                         <GlobalImage
                           src={item?.userImage}
@@ -541,17 +640,21 @@ const CursoInfo = () => {
                           layout="fill"
                         />
                       </div>
-                      <Stars stars={item?.puntuacion} size={20} needsCount={false} />
+                      <Stars
+                        stars={item?.puntuacion}
+                        size={20}
+                        needsCount={false}
+                      />
                       <span className="text-white font-normal max-w-full max-h-[100px] overflow-hidden break-words ">
                         {item?.descripcion}
                       </span>
                     </div>
+                    </Link>
                   );
                 })}
               </div>
             </div>
           )}
-
         </div>
       );
     }

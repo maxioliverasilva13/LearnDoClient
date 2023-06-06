@@ -3,9 +3,11 @@ import { useChatsSlice } from "store/slices/ChatsSlice";
 import useGlobalSlice from "./useGlobalSlice";
 
 const useChats = () => {
-  const { chats = [], activeChatId, temporalMessages } = useSelector((state) => state.ChatsSlice);
-  const activeChatInfo = chats?.find((item) => item?.chatId === activeChatId);
+  const { chats = [], activeChat, temporalMessages } = useSelector((state) => state.ChatsSlice);
+  const activeChatInfo = chats?.find((item) => item?.chatId === activeChat);
   const { userInfo } = useGlobalSlice();
+
+  const activeChatId = activeChat;
 
   const {
     handleAddChat,

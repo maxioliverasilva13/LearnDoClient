@@ -324,6 +324,7 @@ export const EventoService = createApi({
           monto: data?.monto,
           metodoPago: data?.metodoPago,
           eventoId: data?.eventoId,
+          useDiscount: data?.useDiscount || false,
         },
       }),
       invalidatesTags: ["SelectedCursoInfo", "SelectedSeminarioInfo"],
@@ -375,6 +376,20 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getProgresoEstudiantes: builder.query({
+      query: (data) => `${apiRoutes.getProgresoEstudiantes()}?userId=${data?.userId}&cursoId=${data?.cursoId}`,
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
+    getTendencias: builder.query({
+      query: (data) => `${apiRoutes.listarTendencias()}`,
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -390,11 +405,15 @@ export const {
   usePuntuarCursoMutation,
   useGetEvaluacionInfoQuery,
   useCorrejirEvaluacionMutation,
+<<<<<<< HEAD
   useGetEventosCompradosQuery,
+=======
+  useGetCursosCompradosQuery,
+  useLazyGetCursosCompradosQuery,
+>>>>>>> 626f1d2f29f4466779efc665e5180394e93fbfa2
   useGetCursoAndClasesQuery,
   useCreateSugerenciaMutation,
   useComprareventoMutation,
-  useUserIsStudentOrOwnerQuery,
   useIsUserColaboradorMutation,
   useGetEventosAdminQuery,
   useUpdateCursoInfoMutation,
@@ -404,5 +423,9 @@ export const {
   useDeleteClaseMutation,
   useDeletePreguntaMutation,
   useUpdateStatusSugerenciaMutation,
-  useGetCompleteSeminarioInfoQuery
+  useGetCompleteSeminarioInfoQuery,
+  useGetProgresoEstudiantesQuery,
+  useGetTendenciasQuery,
+  useLazyGetEventosAdminQuery,
+  useUserIsStudentOrOwnerQuery
 } = EventoService;

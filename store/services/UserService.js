@@ -81,6 +81,13 @@ export const UserService = createApi({
         return response;
       },
     }),
+    findUserById: builder.query({
+      query: (data) => `${apiRoutes.findUserById()}?uid=${data?.uid}`,
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
     signUpWithExternalService: builder.mutation({
       query: (data) => ({
         url: apiRoutes.signUpWithExternalService(),
@@ -129,4 +136,5 @@ export const {
   useFilterByNicknameOrEmailQuery,
   useSignUpWithExternalServiceMutation,
   useChangeUserRoleMutation,
+  useFindUserByIdQuery,
 } = UserService;

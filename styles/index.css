@@ -122,6 +122,10 @@ body {
   }
 }
 
+.infinite-scroll-component__outerdiv {
+  width: 100%!important;
+}
+
 .appearsAnimation {
   transition: all .3s linear;
   animation: opacityAppears .3s ease;
