@@ -196,26 +196,9 @@ export default function Profile() {
                           required
                         />
                       </div>
-
-                      <div>
-                        <input
-                          value={userData?.apellido}
-                          onChange={(e) =>
-                            setUserData((prev) => {
-                              return {
-                                ...prev,
-                                apellido: e.target.value,
-                              };
-                            })
-                          }
-                          type="text"
-                          id="first_name"
-                          className="min-w-[500px] bg-transparent  text-white border-2  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="Apellido"
-                          required
-                        />
-                      </div>
-
+  
+                     
+  
                       <div>
                         <input
                           value={userData?.telefono}

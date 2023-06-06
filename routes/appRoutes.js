@@ -24,6 +24,7 @@ const appRoutes = {
     progresoEstudiantes: (cursoId) => `/admin/progresoEstudiantes/${cursoId ? [cursoId] : "[cursoId]"}`,
     selectRole: () => `/selectrole`,
     userInfoPage: (uid) => `/users/${uid ? uid : "[userId]"}`,
+    zoom: () => `/zoom`,
 
 }
 

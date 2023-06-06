@@ -53,9 +53,12 @@ export default function Cursos() {
     setModalFilter(show);
   };
 
+ 
+
+
   useEffect(() => {
     refetch();
-
+  
     if (data) {
       const { result } = data;
       setCursosList(result);
