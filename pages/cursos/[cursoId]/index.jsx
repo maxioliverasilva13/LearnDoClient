@@ -25,6 +25,7 @@ import Modal from "components/Modal/modal"
 import { useComprareventoMutation } from "store/services/EventoService";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { useCreateCertificateMutation } from "store/services/CertificadoService";
+
 import { useCanGetCertificateQuery } from "store/services/CursoService";
 
 const CursoInfo = () => {
@@ -68,8 +69,8 @@ const CursoInfo = () => {
     handleSetLoading(isLoading);
   }, [isLoading]);
 
-  useEffect(()=>{
-      if(data?.certificateID){
+  useEffect(()=>{   
+      if(data?.certificateID){  
           setCertificateID(data.certificateID);
       }
   }, [data])
