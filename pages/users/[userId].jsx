@@ -39,9 +39,7 @@ const UserId = () => {
       const allEventos = [...cursos, ...seminariosP, ...seminariosV];
       setEventos(allEventos);
     } else {
-      const response = await eventosComprados({
-        estudianteId: userInfo?.id,
-      });
+      const response = await eventosComprados(userInfo?.id);
       const eventos = response?.data?.eventos;
       setEventos(eventos || []);
     }

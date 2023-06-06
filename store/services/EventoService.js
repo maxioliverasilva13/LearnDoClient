@@ -281,7 +281,7 @@ export const EventoService = createApi({
       },
     }),
     getEventosComprados: builder.query({
-      query: (data) => apiRoutes.getEventosComprados(),
+      query: (data) => `${apiRoutes.getEventosComprados()}${data && `?uid=${data}`}`,
       provideTags: ["MisEventos"],
       transformResponse(value) {
         const response = value;
