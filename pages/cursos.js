@@ -36,12 +36,9 @@ export default function Cursos() {
   const [filterData, setFilterData] = useState(null);
   const [busqueda, setBusqueda] = useState("");
 
-  const { data, error, isLoading, refetch } = useListarEventosQuery({
-    page,
-    rowsNumbers,
-    filterData,
-    busqueda,
-  });
+  const { data, error, isLoading , refetch} = useListarEventosQuery({page, rowsNumbers, filterData,busqueda});
+
+
 
   const {
     data: categorias,

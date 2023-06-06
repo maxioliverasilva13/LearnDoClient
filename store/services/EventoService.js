@@ -280,9 +280,9 @@ export const EventoService = createApi({
         return response;
       },
     }),
-    getCursosComprados: builder.query({
-      query: (data) => apiRoutes.getCursosComprados(data?.estudianteId),
-      provideTags: ["MisCursos"],
+    getEventosComprados: builder.query({
+      query: (data) => apiRoutes.getEventosComprados(),
+      provideTags: ["MisEventos"],
       transformResponse(value) {
         const response = value;
         return response;
@@ -405,6 +405,7 @@ export const {
   usePuntuarCursoMutation,
   useGetEvaluacionInfoQuery,
   useCorrejirEvaluacionMutation,
+  useGetEventosCompradosQuery,
   useGetCursosCompradosQuery,
   useLazyGetCursosCompradosQuery,
   useGetCursoAndClasesQuery,

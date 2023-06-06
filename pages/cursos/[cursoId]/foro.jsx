@@ -58,7 +58,7 @@ export default function Foro() {
       if(status == 404){
             setForoExist(false);
             return;
-        }
+        }  
     }
   }, [data]);
 

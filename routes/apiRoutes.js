@@ -29,10 +29,15 @@ const apiRoutes = {
     userIsStudentOrOwner: (eventoId) => `/api/eventos/${eventoId}/userIsStudentOrOwner`,
     claseInfo: (claseId, cursoId) => `/api/clases?clase_id=${claseId}&curso_id=${cursoId}`,
     correjirEvaluacion: () => "/api/calificacion/",
-    getCursosComprados: (estudianteId) => `/api/cursos/getCursosComprados?estudianteId=${estudianteId}`,
+    getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso",
     changeUserRole: () => `/api/auth/changeRole`,
+    getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
     createSugerencia: () => `/api/sugerencias/createSugerencia`,
     comprarEvento: () => "/api/eventos/comprarEvento",
+    getCertificatePDF: (id) => `/api/certificaciones/${id}/getCertificationPDF`,
+    createCertificate: () => `/api/certificaciones/`,
+    canGetCertificate: (cursoId) => `/api/cursos/${cursoId}/canGetCertificate`,
+    getEventosComprados: ()=> `/api/eventos/getMyEventos`,
     isUserColaborador: () => `/api/colaboraciones/isUserColaborador`,
     getEventosAdmin: (organizadorId) => `/api/eventos/getEventosAdmin?organizadorId=${organizadorId}`,
     changeStatusSugerencia: () => `/api/sugerencias/changeStatus`,
@@ -45,7 +50,7 @@ const apiRoutes = {
     listarTendencias: () => "/api/eventos/listarTendencias",
     usarCupon: () => "/api/cupon/usarCupon",
     validarCupon: () => "/api/cupon/validarCupon",
-    crearCupon: () => "/api/cupon/generateCupon",
+    crearCupon: () => "/api/cupon/generateCupon", 
 }
 
 export default apiRoutes;

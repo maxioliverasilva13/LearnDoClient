@@ -60,9 +60,7 @@ export default function Profile() {
   async function onSave() {
     try {
       if (avatarImported) {
-        console.log(avatarImported);
         const urlResult = await uploadFile(avatarImported);
-        console.log(urlResult);
         setUserAvatar(urlResult);
       }
       const body = {

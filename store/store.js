@@ -11,6 +11,8 @@ import { CategoriaService } from "./services/CategoriaService";
 import { PublicacionService } from "./services/PublicacionService";
 import { ComentarioService } from "./services/ComentarioService";
 import { ClaseService } from "./services/ClaseService";
+import { CertificadoService } from "./services/CertificadoService";
+import { CursoService } from "./services/CursoService";
 import { CuponService } from "./services/CuponService";
 
 const store = configureStore({ 
@@ -24,6 +26,9 @@ const store = configureStore({
    [ComentarioService.reducerPath]: ComentarioService.reducer,
    [CategoriaService.reducerPath]: CategoriaService.reducer,
    [ClaseService.reducerPath]: ClaseService.reducer,
+   [CertificadoService.reducerPath]: CertificadoService.reducer,
+   [CursoService.reducerPath] : CursoService.reducer,
+
    [CuponService.reducerPath]: CuponService.reducer,
    
   },
@@ -36,6 +41,8 @@ const store = configureStore({
         ComentarioService.middleware,
         CategoriaService.middleware,
         ClaseService.middleware,
+        CertificadoService.middleware,
+        CursoService.middleware,
         CuponService.middleware,
     ),
 });
