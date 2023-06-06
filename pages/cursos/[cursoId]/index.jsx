@@ -45,7 +45,7 @@ const CursoInfo = () => {
 
   const { data, isLoading } = useGetCompleteCursoInfoQuery({ cursoId });
   const { data: canGetCertData } = useCanGetCertificateQuery({ cursoId });
-  const { handleSetLoading, userInfo } = useGlobalSlice();
+  const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
   const myCreditsNumber = userInfo?.creditos_number;
   const [canUseDiscount, setCanUseDiscount] = useState(false);
@@ -65,7 +65,6 @@ const CursoInfo = () => {
   const [activeModuloId, setActiveModulo] = useState(null);
   const cuponToken = query?.token;
 
-
   const [certificateID, setCertificateID] = useState(data?.certificateID);
 
   const stars = data?.stars;
@@ -77,7 +76,7 @@ const CursoInfo = () => {
 
   const esComprada = data?.comprado;
   const [gettingCertificate, setGettingCertificate] = useState(null);
-
+  const [showModal, setShowModal] = useState(false);
 
   const { data: tokenValidateResponse, isLoading: isLoadingValidateToken } =
     useValidarCuponQuery(
@@ -96,11 +95,11 @@ const CursoInfo = () => {
     );
   }, [isLoading, isLoadingValidateToken, isLoadingPay, isLoadingUsingCupon]);
 
-  useEffect(()=>{   
-      if(data?.certificateID){  
-          setCertificateID(data.certificateID);
-      }
-  }, [data])
+  useEffect(() => {
+    if (data?.certificateID) {
+      setCertificateID(data.certificateID);
+    }
+  }, [data]);
 
   const [valuesPay, setValuePay] = useState({
     userId: userInfo?.id,
@@ -132,24 +131,24 @@ const CursoInfo = () => {
   useEffect(() => {
     if (canGetCertData) {
       setCanGetCertificate(canGetCertData.isApproved);
-      setProgresoCurso(canGetCertData.avgCalifications)
+      setProgresoCurso(canGetCertData.avgCalifications);
     }
   }, canGetCertData);
 
   const pagar = async (values) => {
     const response = await handlePay(values);
     if (response?.data?.ok == true) {
+      setShowModal(true);
+
       if (useDiscount) {
         handleSetUserInfo({
-          ...userInfo, 
+          ...userInfo,
           creditos_number: userInfo.creditos_number - 10,
-        })
-      // handleUpdateUserInfo
+        });
+        // handleUpdateUserInfo
       }
     }
   };
-
-  const [showModal, setShowModal] = useState(false);
 
   //   useGetCompleteCursoInfoQuery
   const renderStars = (
@@ -183,7 +182,7 @@ const CursoInfo = () => {
 
   const getCertificate = () => {
     setGettingCertificate(true);
-    createCertificate({ curso_id: cursoId }).then(response => {
+    createCertificate({ curso_id: cursoId }).then((response) => {
       const { data } = response;
       const { id } = data;
       const certificateDowloadURl = `http://localhost:8000/api/certificaciones/${id}/getCertificationPDF`;
@@ -191,7 +190,7 @@ const CursoInfo = () => {
       setCertificateID(id);
       setGettingCertificate(false);
     });
-  }
+  };
 
   const item = 1;
   const Categorias = useMemo(() => {
@@ -226,9 +225,8 @@ const CursoInfo = () => {
     return cantClases;
   };
 
-  
-  const downloadCertificate = ()=>{
-    if(!certificateID){
+  const downloadCertificate = () => {
+    if (!certificateID) {
       return;
     }
     const certificateDowloadURl = `http://localhost:8000/api/certificaciones/${certificateID}/getCertificationPDF`;
@@ -242,43 +240,86 @@ const CursoInfo = () => {
           <div className="w-auto h-auto flex text-white gap-4 flex-row items-center justify-start">
             <span>Progreso</span>
             <div className="md:w-[420px] h-[20px]">
-              <Progress porcentage={progresoCurso} color={generateColorProggress(cursoInfo.porcentaje_aprobacion , progresoCurso)} />
+              <Progress
+                porcentage={progresoCurso}
+                color={generateColorProggress(
+                  cursoInfo.porcentaje_aprobacion,
+                  progresoCurso
+                )}
+              />
             </div>
           </div>
-          { 
-            !certificateID ? (
-              <button type="button" onClick={() => getCertificate()} className={canGetCertificate ? 'flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]' : 'flex items-center w-full font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed'} disabled={gettingCertificate || !canGetCertificate}>
-                Obtener Certificado
-                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+          {!certificateID ? (
+            <button
+              type="button"
+              onClick={() => getCertificate()}
+              className={
+                canGetCertificate
+                  ? "flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                  : "flex items-center w-full font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed"
+              }
+              disabled={gettingCertificate || !canGetCertificate}
+            >
+              Obtener Certificado
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="ml-2 w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"
+                />
+              </svg>
+              {gettingCertificate && (
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-[#780EFF] fill-[#780EFF]"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="currentFill"
+                  />
                 </svg>
-                {
-                  gettingCertificate && (
-                    <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-[#780EFF] fill-[#780EFF]" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                      <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                    </svg>
-                  )
-                }
-
-              </button>
-            ): <button type="button" onClick={() => downloadCertificate()} className={'flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]' }>
-                Descargar certificado
-                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-           
-
-          </button>
-
-
-          }
-
-
+              )}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => downloadCertificate()}
+              className={
+                "flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+              }
+            >
+              Descargar certificado
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="ml-2 w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                />
+              </svg>
+            </button>
+          )}
         </div>
-
-
-
 
         {isAlreadyPuntuado ? (
           <div className="w-auto h-auto flex flex-row items-center gap-2 justify-center">
@@ -311,7 +352,10 @@ const CursoInfo = () => {
     };
 
     return (
-      <PayPalScriptProvider className="appearsAnimation" options={initialOptions}>
+      <PayPalScriptProvider
+        className="appearsAnimation"
+        options={initialOptions}
+      >
         <PayPalButtons
           className="h-full appearsAnimation w-full z-[20]"
           fundingSource="paypal"
@@ -341,7 +385,7 @@ const CursoInfo = () => {
           onApprove={async (data, actions) => {
             await pagar({
               ...valuesPay,
-              useDiscount: useDiscount 
+              useDiscount: useDiscount,
             });
             await usarCupon({
               token: cuponToken,
@@ -352,7 +396,6 @@ const CursoInfo = () => {
             //console.log("cvalues " + valuesPay.metodoPago)
             //console.log("cvalues " + valuesPay.monto)
             //console.log("cvalues " + cursoInfo.precio)
-            setShowModal(true);
             return;
             //return actions.order.capture().then((details) => {
             //
@@ -361,10 +404,7 @@ const CursoInfo = () => {
           }}
         />
       </PayPalScriptProvider>
-
     );
-
-
   };
 
   const handleReload = () => {
@@ -391,6 +431,31 @@ const CursoInfo = () => {
             openCalificarModal={openCalificarModal}
             setOpenCalificarModal={setOpenCalificarModal}
           />
+          <Modal
+            isVisible={showModal}
+            onClose={() => setShowModal(false)}
+            alto={"auto"}
+            ancho={"400px"}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <FaRegCheckCircle size={50} color="lime"></FaRegCheckCircle>
+              <p className="text-2xl text-white mt-8">¡Pago realizado!</p>
+              <p className="text-2xm text-white mb-8">Disfruta de tu curso</p>
+              <button
+                className="h-10 w-32 mb-8 rounded-full text-white"
+                style={{ backgroundColor: "#780EFF" }}
+                onClick={() => {
+                  setShowModal(false);
+                  //pagar(valuesPay);
+                }}
+                onClose={() => {
+                  setShowModal(false);
+                }}
+              >
+                Aceptar
+              </button>
+            </div>
+          </Modal>
           <div className="w-full appearsAnimation h-auto md:gap-[50px] flex flex-row items-start justify-center">
             <div className="flex flex-col gap-2">
               <div className="w-[520px] h-[350px] rounded-lg relative overflow-hidden">
@@ -435,16 +500,8 @@ const CursoInfo = () => {
                     >
                       Ir al foro
                     </span>
-
-
-
                   </Link>
-
                 </div>
-
-
-
-
               ) : (
                 <div className="w-full appearsAnimation h-auto flex flex-col gap-4">
                   {isValid === false && cuponToken && !esComprada && (
@@ -458,66 +515,63 @@ const CursoInfo = () => {
                       </span>
                     </div>
                   )}
-                  {canUseDiscount && !esComprada && !cuponToken && <div className="w-full my-4 appearsAnimation">
-                    <button onClick={() => setUseDiscount(!useDiscount)} className="text-white appearsAnimation transition-all cursor-pointer px-4 py-2 bg-indigo-500 rounded-[20px] shadow-md">{useDiscount && "No"} Usar 10 puntos</button>
-                  </div>}
+                  {canUseDiscount &&
+                    !esComprada &&
+                    !cuponToken &&
+                    cursoInfo?.es_pago === 1 && (
+                      <div className="w-full my-4 appearsAnimation">
+                        <button
+                          onClick={() => setUseDiscount(!useDiscount)}
+                          className="text-white appearsAnimation transition-all cursor-pointer px-4 py-2 bg-indigo-500 rounded-[20px] shadow-md"
+                        >
+                          {useDiscount && "No"} Usar 10 puntos
+                        </button>
+                      </div>
+                    )}
                   <div className="w-full appearsAnimation flex flex-row items-start justify-center gap-[60px]">
                     <span
                       className={clsx(
                         "text-white font-semibold flex flex-col gap-1 text-[20px]"
                       )}
                     >
-                      <span
-                        className={clsx(
-                          cuponToken && isValid && "line-through"
-                        )}
-                      >
-                        USD${precio}
-                      </span>
-                      {(isValid || useDiscount) && !esComprada && <DealsCard price={precio} />}
+                      {cursoInfo?.es_pago === 1 ? (
+                        <span
+                          className={clsx(
+                            cuponToken && isValid && "line-through"
+                          )}
+                        >
+                          USD${precio}
+                        </span>
+                      ) : (
+                        <div className="w-full h-auto flex flex-row items-center justify-start gap-4">
+                          <span>Gratuito</span>
+                          <span
+                            onClick={async () => {
+                              await pagar({
+                                ...valuesPay,
+                              });
+                            }}
+                            className="text-[20px] min-w-[300px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                          >
+                            Obtener
+                          </span>
+                        </div>
+                      )}
+
+                      {(isValid || useDiscount) && !esComprada && (
+                        <DealsCard price={precio} />
+                      )}
                     </span>
                     {userInfo?.id !== cursoInfo.organizador_id &&
                       cursoInfo?.es_pago === 1 && <PayPalButtonsWrapper />}
-                    <Modal
-                      isVisible={showModal}
-                      onClose={() => setShowModal(false)}
-                      alto={"30%"}
-                      ancho={"40%"}
-                    >
-                      <div className="flex flex-col items-center justify-center">
-                        <FaRegCheckCircle
-                          size={50}
-                          color="lime"
-                        ></FaRegCheckCircle>
-                        <p className="text-2xl text-white mt-8">
-                          ¡Pago realizado!
-                        </p>
-                        <p className="text-2xm text-white mb-8">
-                          Disfruta de tu curso
-                        </p>
-                        <button
-                          className="h-10 w-32 mb-8 rounded-full text-white"
-                          style={{ backgroundColor: "#780EFF" }}
-                          onClick={() => {
-                            setShowModal(false);
-                            handleReload();
-                            //pagar(valuesPay);
-                          }}
-                          onClose={() => {
-                            setShowModal(false);
-                            handleReload();
-                          }}
-                        >
-                          Aceptar
-                        </button>
-                      </div>
-                    </Modal>
                   </div>
                 </div>
               )}
-              {esComprada && <div className="w-full h-auto items-center mt-4 justify-start">
-                <ShareButton eventoId={cursoInfo?.id} />
-              </div>}
+              {esComprada && (
+                <div className="w-full h-auto items-center mt-4 justify-start">
+                  <ShareButton eventoId={cursoInfo?.id} />
+                </div>
+              )}
             </div>
           </div>
           {esComprada && renderEstudianteProgress()}
@@ -629,26 +683,29 @@ const CursoInfo = () => {
                 {data?.puntuaciones?.map((item, index) => {
                   if (index > 2) return null;
                   return (
-                    <Link href={appRoutes.userInfoPage(item?.estudiante_id)} key={`puntuacionItem-${index}`}>
-                    <div className="w-[160px] cursor-pointer gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
-                      <div className="min-h-[130px] w-[130px] h-[130px] relative rounded-full overflow-hidden">
-                        <GlobalImage
-                          src={item?.userImage}
-                          loader={() => item?.userImage}
-                          className="w-full h-full"
-                          objectFit="cover"
-                          layout="fill"
+                    <Link
+                      href={appRoutes.userInfoPage(item?.estudiante_id)}
+                      key={`puntuacionItem-${index}`}
+                    >
+                      <div className="w-[160px] cursor-pointer gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
+                        <div className="min-h-[130px] w-[130px] h-[130px] relative rounded-full overflow-hidden">
+                          <GlobalImage
+                            src={item?.userImage}
+                            loader={() => item?.userImage}
+                            className="w-full h-full"
+                            objectFit="cover"
+                            layout="fill"
+                          />
+                        </div>
+                        <Stars
+                          stars={item?.puntuacion}
+                          size={20}
+                          needsCount={false}
                         />
+                        <span className="text-white font-normal max-w-full max-h-[100px] overflow-hidden break-words ">
+                          {item?.descripcion}
+                        </span>
                       </div>
-                      <Stars
-                        stars={item?.puntuacion}
-                        size={20}
-                        needsCount={false}
-                      />
-                      <span className="text-white font-normal max-w-full max-h-[100px] overflow-hidden break-words ">
-                        {item?.descripcion}
-                      </span>
-                    </div>
                     </Link>
                   );
                 })}

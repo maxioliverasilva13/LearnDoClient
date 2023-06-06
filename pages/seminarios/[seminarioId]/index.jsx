@@ -225,7 +225,7 @@ const SeminarioInfo = () => {
                   </div>
                 )}
               </div>
-              {canUseDiscount && !esComprado && !cuponToken && (
+              {canUseDiscount && !esComprado && !cuponToken && seminarioInfo?.es_pago === 1 && (
                 <div className="w-full my-4 appearsAnimation">
                   <button
                     onClick={() => setUseDiscount(!useDiscount)}

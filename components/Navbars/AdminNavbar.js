@@ -163,7 +163,7 @@ export default function Navbar() {
                         key={`userCard-${usuario?.id}`}
                       >
                         <div className="flex w-full rounded-lg transition-all hover:bg-gray-100 p-2 cursor-pointer flex-row gap-2 items-center justify-start">
-                          <div className="relative overflow-hidden w-[50px] h-[50px]">
+                          <div className="relative overflow-hidden min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px]">
                             <GlobalImage
                               src={usuario?.imagen}
                               layout="fill"
@@ -171,9 +171,14 @@ export default function Navbar() {
                               className="rounded-full"
                             />
                           </div>
-                          <span className="text-gray-900 font-medium flex-grow max-w-full truncate">
+                         <div className="w-full h-auto flex-grow max-w-full overflow-hidden flex flex-col items-start justify-center gap-1">
+                         <span className="text-gray-900 font-medium flex-grow max-w-full truncate">
                             {usuario?.nickname}
                           </span>
+                          <span className="text-gray-900 text-sm font-medium flex-grow max-w-full truncate">
+                            {usuario?.type === "estudiante" ? "Estudiante" : "Organizador"}
+                          </span>
+                         </div>
                           <BiLinkExternal size={25} color="black" />
                         </div>
                       </div>
