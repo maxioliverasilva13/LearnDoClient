@@ -424,5 +424,7 @@ export const {
   useGetProgresoEstudiantesQuery,
   useGetTendenciasQuery,
   useLazyGetEventosAdminQuery,
-  useUserIsStudentOrOwnerQuery
+  useUserIsStudentOrOwnerQuery,
+  useCanGetCertificateQuery,
+  useLazyGetEventosCompradosQuery
 } = EventoService;

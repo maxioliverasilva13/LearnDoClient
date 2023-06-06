@@ -6,8 +6,8 @@ import useGlobalSlice from "hooks/useGlobalSlice";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
-  useLazyGetCursosCompradosQuery,
   useLazyGetEventosAdminQuery,
+  useLazyGetEventosCompradosQuery,
 } from "store/services/EventoService";
 import { useFindUserByIdQuery } from "store/services/UserService";
 
@@ -20,7 +20,7 @@ const UserId = () => {
   const { handleSetLoading } = useGlobalSlice();
   const [eventos, setEventos] = useState([]);
   const [eventosComprados, { isLoading: isLoadingComprados }] =
-    useLazyGetCursosCompradosQuery();
+  useLazyGetEventosCompradosQuery();
   const [eventosAdmin, { isLoading: isLoadingEventosAdmin }] =
     useLazyGetEventosAdminQuery();
 
@@ -42,8 +42,8 @@ const UserId = () => {
       const response = await eventosComprados({
         estudianteId: userInfo?.id,
       });
-      const cursos = response?.data?.cursos;
-      console.log("response is", cursos);
+      const eventos = response?.data?.eventos;
+      setEventos(eventos || []);
     }
   };
 
