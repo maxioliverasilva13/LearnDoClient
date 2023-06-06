@@ -1,7 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
+import appRoutes from "routes/appRoutes";
 
-const SeminarioItem = ({ imagen, nombre }) => {
+const SeminarioItem = ({ imagen, nombre, id }) => {
   return (
+    <Link href={appRoutes.seminarioPage(id)}>
     <div className="min-w-[500px] w-[500px] transition-all transform hover:scale-110 h-auto overflow-hidden flex flex-col items-start justify-center relative gap-y-4">
       <div className="w-full relative h-[270px] overflow-hidden rounded-[12px] gap-y-5 shadow-md">
         <div className="w-full h-full absolute cursoOverlay z-[2] " />
@@ -17,6 +20,7 @@ const SeminarioItem = ({ imagen, nombre }) => {
         {nombre}
       </p>
     </div>
+    </Link>
   );
 };
 

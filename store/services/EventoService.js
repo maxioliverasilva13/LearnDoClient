@@ -383,6 +383,13 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getTendencias: builder.query({
+      query: (data) => `${apiRoutes.listarTendencias()}`,
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -414,6 +421,7 @@ export const {
   useUpdateStatusSugerenciaMutation,
   useGetCompleteSeminarioInfoQuery,
   useGetProgresoEstudiantesQuery,
+  useGetTendenciasQuery,
   useLazyGetEventosAdminQuery,
   useUserIsStudentOrOwnerQuery
 } = EventoService;
