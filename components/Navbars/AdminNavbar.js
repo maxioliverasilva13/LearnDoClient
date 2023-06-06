@@ -54,11 +54,6 @@ export default function Navbar() {
               Mis Eventos
             </Link>
           </li>
-          <li className="px-4">
-            <Link href={appRoutes.seminarios()} className="hover:text-gray-400">
-              Seminarios
-            </Link>
-          </li>
         </ul>
       );
     } else {
@@ -72,11 +67,6 @@ export default function Navbar() {
           <li className="px-4">
             <Link href={appRoutes.cursos()} className="hover:text-gray-400">
               Cursos
-            </Link>
-          </li>
-          <li className="px-4">
-            <Link href={appRoutes.seminarios()} className="hover:text-gray-400">
-              Seminarios
             </Link>
           </li>
           <li className="px-4">

@@ -16,9 +16,14 @@ import useGlobalSlice from "hooks/useGlobalSlice";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 import Link from "next/link";
 import appRoutes from "routes/appRoutes";
-import { fomratColorCurso, formatTitle, handleRedirectByTipo } from "utils/evento";
+import {
+  fomratColorCurso,
+  formatTitle,
+  handleRedirectByTipo,
+} from "utils/evento";
 import clsx from "clsx";
 import EventoCard from "components/EventoCard/EventoCard";
+import { TfiMapAlt } from "react-icons/tfi";
 
 export default function Cursos() {
   const [cursosList, setCursosList] = useState([]);
@@ -48,12 +53,9 @@ export default function Cursos() {
     setModalFilter(show);
   };
 
- 
-
-
   useEffect(() => {
     refetch();
-  
+
     if (data) {
       const { result } = data;
       setCursosList(result);
@@ -97,13 +99,8 @@ export default function Cursos() {
     <>
       <div className="flex flex-wrap bg text-white relative">
         <div className="w-full">
-          <div
-            className={
-              "bg-gradient-to-b from-[#780eff]  via-[#5B23A2] to-[#000] pt-12"
-            }
-            style={{ minHeight: "100vh" }}
-          >
-          <div className={" mt-10 "}>
+          <div className={"pt-12"} style={{ minHeight: "100vh" }}>
+            <div className={" mt-10 "}>
               <p className={" text-white text-center 	text-5xl font-semibold "}>
                 Todos los eventos disponibles en nuestra plataforma
               </p>
@@ -123,6 +120,15 @@ export default function Cursos() {
                 />
 
                 <div className={"flex items-center gap-5"}>
+                  <Link href={appRoutes.mapaSeminarios()}>
+                    <div className="inline-flex cursor-pointer gap-x-3 text-white border rounded-full px-3 py-1">
+                      <TfiMapAlt
+                        className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-white"
+                        aria-hidden="true"
+                      />
+                      Ver Ubicaciones
+                    </div>
+                  </Link>
                   <div
                     className={"flex items-center"}
                     onClick={openModalFilters}
@@ -148,11 +154,9 @@ export default function Cursos() {
                 hasMore={hasMore}
                 className="w-full"
               >
-                <div className="flex w-full h-auto justify-center gap-10 text-center flex-wrap px-8">
+                <div className="flex p-5 w-full h-auto justify-center gap-10 text-center flex-wrap px-8">
                   {cursosList.map((curso, index) => {
-                    return (
-                      <EventoCard curso={curso} index={index} />
-                    );
+                    return <EventoCard curso={curso} index={index} />;
                   })}
                 </div>
               </InfiniteScroll>

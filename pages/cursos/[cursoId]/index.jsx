@@ -92,7 +92,7 @@ const CursoInfo = () => {
   const [handlePay, { isLoading: isLoadingPay }] = useComprareventoMutation();
 
   useEffect(() => {
-    if (myCreditsNumber > 10) {
+    if (myCreditsNumber >= 10) {
       setCanUseDiscount(true);
     }
   }, [myCreditsNumber]);
@@ -386,9 +386,9 @@ const CursoInfo = () => {
                   </div>
                 </div>
               )}
-              <div className="w-full h-auto items-center mt-4 justify-start">
+              {esComprada && <div className="w-full h-auto items-center mt-4 justify-start">
                 <ShareButton eventoId={cursoInfo?.id} />
-              </div>
+              </div>}
             </div>
           </div>
           {esComprada && renderEstudianteProgress()}
