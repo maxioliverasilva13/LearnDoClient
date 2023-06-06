@@ -8,6 +8,7 @@ const appRoutes = {
     cursos: () => "/cursos",
     landing: () => "/",
     messages: () => "/messages",
+    messageWithId: (uid) => `/messages?uid=${uid}`,
     misCursos: () => "/mis_cursos",
     profile: () => "/profile",
     foroPage: (foroId) => `/cursos/${foroId ? foroId : "[cursoId]"}/foro`,
@@ -22,6 +23,8 @@ const appRoutes = {
     misCursosAdmin: () => '/admin/cursos',
     progresoEstudiantes: (cursoId) => `/admin/progresoEstudiantes/${cursoId ? [cursoId] : "[cursoId]"}`,
     selectRole: () => `/selectrole`,
+    userInfoPage: (uid) => `/users/${uid ? uid : "[userId]"}`,
+
 }
 
 export default appRoutes;

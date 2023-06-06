@@ -115,7 +115,6 @@ export const useChatsSlice = () => {
   };
 
   const handleAddTemporalMessage = (data) => {
-    console.log("me llaman 1");
     dispatch(ChatsSlice.actions.addTemporalMessage(data));
 
     setTimeout(() => {

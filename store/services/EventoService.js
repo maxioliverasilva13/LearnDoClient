@@ -324,6 +324,7 @@ export const EventoService = createApi({
           monto: data?.monto,
           metodoPago: data?.metodoPago,
           eventoId: data?.eventoId,
+          useDiscount: data?.useDiscount || false,
         },
       }),
       invalidatesTags: ["SelectedCursoInfo", "SelectedSeminarioInfo"],
@@ -405,10 +406,10 @@ export const {
   useGetEvaluacionInfoQuery,
   useCorrejirEvaluacionMutation,
   useGetCursosCompradosQuery,
+  useLazyGetCursosCompradosQuery,
   useGetCursoAndClasesQuery,
   useCreateSugerenciaMutation,
   useComprareventoMutation,
-  useUserIsStudentOrOwnerQuery,
   useIsUserColaboradorMutation,
   useGetEventosAdminQuery,
   useUpdateCursoInfoMutation,
@@ -421,4 +422,6 @@ export const {
   useGetCompleteSeminarioInfoQuery,
   useGetProgresoEstudiantesQuery,
   useGetTendenciasQuery,
+  useLazyGetEventosAdminQuery,
+  useUserIsStudentOrOwnerQuery
 } = EventoService;
