@@ -11,12 +11,9 @@ import { CategoriaService } from "./services/CategoriaService";
 import { PublicacionService } from "./services/PublicacionService";
 import { ComentarioService } from "./services/ComentarioService";
 import { ClaseService } from "./services/ClaseService";
-<<<<<<< HEAD
 import { CertificadoService } from "./services/CertificadoService";
 import { CursoService } from "./services/CursoService";
-=======
 import { CuponService } from "./services/CuponService";
->>>>>>> 626f1d2f29f4466779efc665e5180394e93fbfa2
 
 const store = configureStore({ 
   reducer: {
@@ -29,14 +26,11 @@ const store = configureStore({
    [ComentarioService.reducerPath]: ComentarioService.reducer,
    [CategoriaService.reducerPath]: CategoriaService.reducer,
    [ClaseService.reducerPath]: ClaseService.reducer,
-<<<<<<< HEAD
    [CertificadoService.reducerPath]: CertificadoService.reducer,
-   [CursoService.reducerPath] : CursoService.reducer
+   [CursoService.reducerPath] : CursoService.reducer,
 
-=======
    [CuponService.reducerPath]: CuponService.reducer,
    
->>>>>>> 626f1d2f29f4466779efc665e5180394e93fbfa2
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(   
@@ -47,12 +41,9 @@ const store = configureStore({
         ComentarioService.middleware,
         CategoriaService.middleware,
         ClaseService.middleware,
-<<<<<<< HEAD
         CertificadoService.middleware,
-        CursoService.middleware
-=======
+        CursoService.middleware,
         CuponService.middleware,
->>>>>>> 626f1d2f29f4466779efc665e5180394e93fbfa2
     ),
 });
 

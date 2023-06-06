@@ -405,12 +405,9 @@ export const {
   usePuntuarCursoMutation,
   useGetEvaluacionInfoQuery,
   useCorrejirEvaluacionMutation,
-<<<<<<< HEAD
   useGetEventosCompradosQuery,
-=======
   useGetCursosCompradosQuery,
   useLazyGetCursosCompradosQuery,
->>>>>>> 626f1d2f29f4466779efc665e5180394e93fbfa2
   useGetCursoAndClasesQuery,
   useCreateSugerenciaMutation,
   useComprareventoMutation,

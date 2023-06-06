@@ -25,11 +25,8 @@ const organizadorPaths = [
     appRoutes.editCurso(),
     appRoutes.cursoPage(),
     appRoutes.seminarioPage(),
-<<<<<<< HEAD
-=======
     appRoutes.progresoEstudiantes(),
     appRoutes.userInfoPage(),
->>>>>>> 626f1d2f29f4466779efc665e5180394e93fbfa2
     appRoutes.zoom(),
 
 ]
@@ -49,10 +46,7 @@ const estudiantesPaths = [
     appRoutes.selectRole(),
     appRoutes.cursoSugerir(),
     appRoutes.seminarioPage(),
-<<<<<<< HEAD
-=======
     appRoutes.userInfoPage(),
->>>>>>> 626f1d2f29f4466779efc665e5180394e93fbfa2
     appRoutes.zoom(),
 
 ]
