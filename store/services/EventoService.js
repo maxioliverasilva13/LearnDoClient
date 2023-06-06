@@ -403,7 +403,6 @@ export const {
   useGetCursoAndClasesQuery,
   useCreateSugerenciaMutation,
   useComprareventoMutation,
-  useUserIsStudentOrOwnerQuery,
   useIsUserColaboradorMutation,
   useGetEventosAdminQuery,
   useUpdateCursoInfoMutation,
@@ -415,5 +414,6 @@ export const {
   useUpdateStatusSugerenciaMutation,
   useGetCompleteSeminarioInfoQuery,
   useGetProgresoEstudiantesQuery,
-  useLazyGetEventosAdminQuery
+  useLazyGetEventosAdminQuery,
+  useUserIsStudentOrOwnerQuery
 } = EventoService;

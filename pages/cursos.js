@@ -48,9 +48,12 @@ export default function Cursos() {
     setModalFilter(show);
   };
 
+ 
+
+
   useEffect(() => {
     refetch();
-
+  
     if (data) {
       const { result } = data;
       setCursosList(result);
@@ -94,8 +97,13 @@ export default function Cursos() {
     <>
       <div className="flex flex-wrap bg text-white relative">
         <div className="w-full">
-          <div className={"pt-12"} style={{ minHeight: "100vh" }}>
-            <div className={" mt-10 "}>
+          <div
+            className={
+              "bg-gradient-to-b from-[#780eff]  via-[#5B23A2] to-[#000] pt-12"
+            }
+            style={{ minHeight: "100vh" }}
+          >
+          <div className={" mt-10 "}>
               <p className={" text-white text-center 	text-5xl font-semibold "}>
                 Todos los eventos disponibles en nuestra plataforma
               </p>
