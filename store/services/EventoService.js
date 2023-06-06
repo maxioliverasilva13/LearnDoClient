@@ -390,6 +390,13 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getEventoInfo: builder.query({
+      query: (eventoId) => `${apiRoutes.getEventoInfo(eventoId)}`,
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -426,5 +433,6 @@ export const {
   useLazyGetEventosAdminQuery,
   useUserIsStudentOrOwnerQuery,
   useCanGetCertificateQuery,
-  useLazyGetEventosCompradosQuery
+  useLazyGetEventosCompradosQuery,
+  useGetEventoInfoQuery,
 } = EventoService;

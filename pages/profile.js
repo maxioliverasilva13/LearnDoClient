@@ -25,7 +25,9 @@ export default function Profile() {
   useEffect(() => {
     if (data) {
       const { userInfo } = data;
-      const { imagen, ...datos } = userInfo;
+      const { ...datos } = userInfo;
+      const imagen = userInfo?.imagen;
+
       setUserData(datos);
       setUserAvatar(imagen);
     }
