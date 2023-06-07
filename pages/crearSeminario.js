@@ -11,11 +11,15 @@ import useUploadImage from "hooks/useUploadImage";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
+import { toast } from "react-toastify";
 import { useGetCategoriasQuery } from "store/services/CategoriaService";
 import { useCrearSeminarioMutation } from "store/services/EventoService";
 import { formatToOptions } from "utils/categorias";
 import { EventosType } from "utils/evento";
 import { scrollTop } from "utils/pageUtils";
+import ZoomIcon from "../public/img/ZoomIcon.png";
+import GlobalImage from "components/GlobalImage/GlobalImage";
+
 
 const CrearSeminario = () => {
   const { formValues, handleChangeValue, handleChangeValueMultipleValues } =
@@ -94,6 +98,14 @@ const CrearSeminario = () => {
     }
   };
 
+  useEffect(() => {
+    if (error) {
+      toast.error("Completa todos los campos correctamente", {
+        theme: "colored",
+      });
+    }
+  }, [error]);
+
   const handleSubmit = async (e) => {
     e?.preventDefault();
 
@@ -107,7 +119,10 @@ const CrearSeminario = () => {
         !formValues?.hora ||
         formValues?.duracion === 0 ||
         !formValues?.link ||
-        (!checkedGratis && formValues?.precio === 0)
+        (!checkedGratis && formValues?.precio === 0) ||
+        !/^https:\/\/[\w-]*\.?zoom.us\/(j|my)\/[\d\w?=-]+/.test(
+          formValues?.link || ""
+        )
       ) {
         setError({
           type: "required",
@@ -118,7 +133,11 @@ const CrearSeminario = () => {
             descripcion: !formValues?.descripcion,
             fecha: !formValues?.fecha,
             hora: !formValues?.hora,
-            link: !formValues?.link,
+            link:
+              !formValues?.link ||
+              !/^https:\/\/[\w-]*\.?zoom.us\/(j|my)\/[\d\w?=-]+/.test(
+                formValues?.link || ""
+              ),
             precio: !checkedGratis && formValues?.precio === 0,
             capacidad: !formValues?.capacidad || formValues?.capacidad === 0,
             duracion: formValues?.duracion === 0,
@@ -285,26 +304,36 @@ const CrearSeminario = () => {
             />
           )}
         </div>
-        <div className="w-full flex h-[40px] items-center justify-start gap-4">
+
+        <div className="w-full flex h-[40px] items-start justify-start flex-col gap-4">
           <CheckBox setValue={setCheckedOnline} label="Online" />
           {checkedOnline && (
-            <InputText
+            <div className="w-full h-auto flex flex-row items-center justify-start gap-2">
+              <div className="w-[40px] h-[40px] relative min-w-[40px] min-h-[40px]">
+                <GlobalImage className="rounded-full" src={ZoomIcon?.src} layout="fill" objectFit="cover" />
+              </div>
+              <InputText
               hasError={getValidationError("link")}
               onChange={(e) => handleChangeValue("link", e?.target?.value)}
               value={formValues?.link}
-              placeholder="Link"
+              placeholder="Zoom Link"
             />
+            </div>
+          
           )}
         </div>
+        <div className={clsx("w-full", checkedOnline && "mt-10")}>
         <InputText
           label={"Capacidad"}
           hasError={getValidationError("capacidad")}
           value={formValues?.capacidad}
           onChange={(e) => handleChangeValue("capacidad", e?.target?.value)}
-          className="appearsAnimation w-full text-white outline-none placeholder-white px-4 py-2 h-[40px] bg-transparent rounded-full border border-white"
+          className="appearsAnimation w-full transition-all  text-white outline-none placeholder-white px-4 py-2 h-[40px] bg-transparent rounded-full border border-white"
           placeholder="Capacidad"
           type="number"
         />
+        </div>
+     
         {!checkedOnline && (
           <button
             onClick={() => setOpenSelectLocation(true)}
