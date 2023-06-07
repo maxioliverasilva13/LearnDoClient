@@ -96,7 +96,7 @@ export default class MyApp extends App {
               <CheckRoutes>
               <MessageWrapper>
                 <Layout>
-                  <Component {...pageProps} />
+                  {typeof window !== "undefiend" && <Component {...pageProps} />}
         {/* <Footer /> */}
 
                 </Layout>
