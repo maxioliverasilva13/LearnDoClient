@@ -5,7 +5,7 @@ import { useGlobalActions } from "store/slices/GlobalSlice";
 import { clearToken } from "utils/tokenUtils";
 
 const useGlobalSlice = () => {
-    const { userInfo, isLoading } = useSelector((state) => state.GlobalSlice);
+    const { userInfo, isLoading, error } = useSelector((state) => state.GlobalSlice);
     const { push } = useRouter()
     const rol = userInfo?.type;
     
@@ -26,6 +26,7 @@ const useGlobalSlice = () => {
         handleSetUserInfo,
         handleLogout,
         rol,
+        error,
     }
 }   
 

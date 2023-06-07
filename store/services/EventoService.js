@@ -1,15 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import apiRoutes from "routes/apiRoutes";
 import { prepareHeaders } from "../../utils/prepareHeaders";
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8000",
-  prepareHeaders,
-});
+import baseQueryWithError from "store/baseQueryWithError";
 
 export const EventoService = createApi({
   reducerPath: "EventoService",
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithError,
   tagTypes: [
     "Eventos",
     "EventoInfo",

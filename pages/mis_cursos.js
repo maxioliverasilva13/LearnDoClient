@@ -97,7 +97,7 @@ const Tarjeta = ({
         <span className=" text-base font-medium text-white w-full">
           {descripcionCurso}
         </span>
-        { (
+        {es_pago === 1 && (
           <>
             {tipo === "curso" && (
               <span className=" text-base font-medium text-white w-full">

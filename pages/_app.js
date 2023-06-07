@@ -17,6 +17,9 @@ import "react-dropdown/style.css";
 import MessageWrapper from "components/MessageWrapper/MessageWrapper";
 import Footer from "components/Footers/Footer";
 import CheckRoutes from "components/CheckRoutes/CheckRoutes";
+import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // Router.events.on("routeChangeStart", (url) => {
 //   console.log(`Loading: ${url}`);

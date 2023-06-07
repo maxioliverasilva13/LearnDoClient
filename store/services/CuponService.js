@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import apiRoutes from "routes/apiRoutes";
 import { prepareHeaders } from "../../utils/prepareHeaders";
+import baseQueryWithError from "store/baseQueryWithError";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8000",
@@ -9,7 +10,7 @@ const baseQuery = fetchBaseQuery({
 
 export const CuponService = createApi({
   reducerPath: "CuponService",
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithError,
   tagTypes: ["CuponInfo"],
   endpoints: (builder) => ({
     createCupon: builder.mutation({

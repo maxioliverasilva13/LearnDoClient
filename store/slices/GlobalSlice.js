@@ -5,6 +5,7 @@ import { clearToken } from "utils/tokenUtils";
 const initialState = {
   userInfo: null,
   isLoading: false,
+  error: null,
 };
 
 export const GlobalSlice = createSlice({
@@ -17,6 +18,9 @@ export const GlobalSlice = createSlice({
     setIsLoading(state, { payload }) {
       state.isLoading = payload;
     },
+    setError(state, {payload}) {
+      state.error = payload;
+    }
   },
   extraReducers: {},
 });
@@ -32,9 +36,14 @@ export const useGlobalActions = () => {
     dispatch(GlobalSlice.actions.setIsLoading(isLoading));
   };
 
+  const handleSetError = (error) => {
+    dispatch(GlobalSlice.actions.setError(error));
+  };
+
   return {
     handleSetUserInfo,
     handleSetLoading,
+    handleSetError,
   };
 };
 
