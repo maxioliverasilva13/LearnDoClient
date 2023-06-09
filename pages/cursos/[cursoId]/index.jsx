@@ -29,7 +29,7 @@ import { useCreateCertificateMutation } from "store/services/CertificadoService"
 import { useCanGetCertificateQuery } from "store/services/CursoService";
 import ShareButton from "components/ShareButton/ShareButton";
 import ShareProgress from "components/ShareProgress/ShareProgress";
-
+import CardGananciasAcumuladas from "components/Cards/CardGananciasAcumuladas";
 
 
 
@@ -103,10 +103,10 @@ const CursoInfo = () => {
     );
   }, [isLoading, isLoadingValidateToken, isLoadingPay, isLoadingUsingCupon]);
 
-  useEffect(()=>{   
-      if(data?.certificateID){  
-          setCertificateID(data.certificateID);
-      }
+  useEffect(() => {
+    if (data?.certificateID) {
+      setCertificateID(data.certificateID);
+    }
   }, [data])
 
   const [valuesPay, setValuePay] = useState({
@@ -148,10 +148,10 @@ const CursoInfo = () => {
     if (response?.data?.ok == true) {
       if (useDiscount) {
         handleSetUserInfo({
-          ...userInfo, 
+          ...userInfo,
           creditos_number: userInfo.creditos_number - 10,
         })
-      // handleUpdateUserInfo
+        // handleUpdateUserInfo
       }
     }
   };
@@ -234,9 +234,9 @@ const CursoInfo = () => {
     return cantClases;
   };
 
-  
-  const downloadCertificate = ()=>{
-    if(!certificateID){
+
+  const downloadCertificate = () => {
+    if (!certificateID) {
       return;
     }
     const certificateDowloadURl = `http://localhost:8000/api/certificaciones/${certificateID}/getCertificationPDF`;
@@ -250,8 +250,8 @@ const CursoInfo = () => {
           <div className="w-auto h-auto flex text-white gap-4 flex-row items-center justify-start">
             <span>Progreso</span>
             <div className="md:w-[420px] h-[20px]">
-              <Progress porcentage={progresoCurso} color={generateColorProggress(cursoInfo.porcentaje_aprobacion , progresoCurso)} />
-              
+              <Progress porcentage={progresoCurso} color={generateColorProggress(cursoInfo.porcentaje_aprobacion, progresoCurso)} />
+
               <ShareProgress nombreUsuario={userInfo?.nombre} progress={progresoCurso} courseName={cursoInfo?.nombre} averageApprove={cursoInfo?.porcentaje_aprobacion}></ShareProgress>
 
             </div>
@@ -259,10 +259,10 @@ const CursoInfo = () => {
 
           <div className="flex flex-col text-white justify-center items-center">
 
-           
-            
+
+
           </div>
-          { 
+          {
             !certificateID ? (
               <button type="button" onClick={() => getCertificate()} className={canGetCertificate ? 'flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]' : 'flex items-center w-full font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed'} disabled={gettingCertificate || !canGetCertificate}>
                 Obtener Certificado
@@ -279,14 +279,14 @@ const CursoInfo = () => {
                 }
 
               </button>
-            ): <button type="button" onClick={() => downloadCertificate()} className={'flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]' }>
-                Descargar certificado
-                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-           
+            ) : <button type="button" onClick={() => downloadCertificate()} className={'flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]'}>
+              Descargar certificado
+              <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
 
-          </button>
+
+            </button>
 
 
           }
@@ -358,7 +358,7 @@ const CursoInfo = () => {
           onApprove={async (data, actions) => {
             await pagar({
               ...valuesPay,
-              useDiscount: useDiscount 
+              useDiscount: useDiscount
             });
             await usarCupon({
               token: cuponToken,
@@ -422,6 +422,14 @@ const CursoInfo = () => {
               <span className="text-white appearsAnimation font-semibold text-[28px]">
                 {cursoNombre}
               </span>
+
+              {
+                userInfo?.id == cursoInfo.organizador_id && (
+                  <CardGananciasAcumuladas gananciasAcumuladas={cursoInfo.ganancias_acumuladas}></CardGananciasAcumuladas>
+                 
+                )
+              }
+
             </div>
 
             <div className="w-[400px] appearsAnimation max-w-[400px] flex flex-col items-center justify-start">
@@ -647,25 +655,25 @@ const CursoInfo = () => {
                   if (index > 2) return null;
                   return (
                     <Link href={appRoutes.userInfoPage(item?.estudiante_id)} key={`puntuacionItem-${index}`}>
-                    <div className="w-[160px] cursor-pointer gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
-                      <div className="min-h-[130px] w-[130px] h-[130px] relative rounded-full overflow-hidden">
-                        <GlobalImage
-                          src={item?.userImage}
-                          loader={() => item?.userImage}
-                          className="w-full h-full"
-                          objectFit="cover"
-                          layout="fill"
+                      <div className="w-[160px] cursor-pointer gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
+                        <div className="min-h-[130px] w-[130px] h-[130px] relative rounded-full overflow-hidden">
+                          <GlobalImage
+                            src={item?.userImage}
+                            loader={() => item?.userImage}
+                            className="w-full h-full"
+                            objectFit="cover"
+                            layout="fill"
+                          />
+                        </div>
+                        <Stars
+                          stars={item?.puntuacion}
+                          size={20}
+                          needsCount={false}
                         />
+                        <span className="text-white font-normal max-w-full max-h-[100px] overflow-hidden break-words ">
+                          {item?.descripcion}
+                        </span>
                       </div>
-                      <Stars
-                        stars={item?.puntuacion}
-                        size={20}
-                        needsCount={false}
-                      />
-                      <span className="text-white font-normal max-w-full max-h-[100px] overflow-hidden break-words ">
-                        {item?.descripcion}
-                      </span>
-                    </div>
                     </Link>
                   );
                 })}

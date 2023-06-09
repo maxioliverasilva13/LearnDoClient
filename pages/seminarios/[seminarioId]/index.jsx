@@ -24,6 +24,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import DealsCard from "components/DealsCard/DealsCard";
 import clsx from "clsx";
 import { handleGeetDisccount } from "utils/cupon";
+import CardGananciasAcumuladas from "components/Cards/CardGananciasAcumuladas";
 
 const SeminarioInfo = () => {
   const router = useRouter();
@@ -202,6 +203,12 @@ const SeminarioInfo = () => {
               <span className="text-white font-semibold text-[28px]">
                 {seminarioInfo?.nombre}
               </span>
+
+              {
+                userInfo?.id == seminarioInfo.organizador_id && (
+                  <CardGananciasAcumuladas gananciasAcumuladas={seminarioInfo.ganancias_acumuladas}></CardGananciasAcumuladas>
+                )
+              }
             </div>
 
             <div className="w-full md:max-w-[500px] flex flex-col md:items-center justify-start">
