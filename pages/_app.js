@@ -6,7 +6,7 @@ import Head from "next/head";
  
 // import PageChange from "components/PageChange/PageChange.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "styles/tailwind.css";
+// import "styles/tailwind.css";
 import { Provider } from "react-redux";
 import store from "store/store";
 import CheckTokenWrapper from "components/CheckTokenWrapper/CheckTokenWrapper";

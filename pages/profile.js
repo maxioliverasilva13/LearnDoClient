@@ -9,6 +9,8 @@ import Alert from "components/Popups/Alert";
 import storage from "firebaseConfig";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import GlobalImage from "components/GlobalImage/GlobalImage";
+import { useGlobalActions } from "store/slices/GlobalSlice";
+import useGlobalSlice from "hooks/useGlobalSlice";
 
 export default function Profile() {
   const [userData, setUserData] = useState(null);
@@ -19,8 +21,17 @@ export default function Profile() {
 
   const [handleChangeMeInfo, { isLoading: changingInfo }] =
     useChangeMeInfoMutation();
+  const { handleSetLoading, userInfo } = useGlobalSlice();
   const { data, error, isLoading: isLoadingInfo } = useGetCurrentUserQuery();
-  const isLoading = changingInfo || isLoadingInfo;
+  const [isLoadingUpload, setIsLoadingUpload] = useState(false);
+  const isLoading = changingInfo || isLoadingInfo || isLoadingUpload;
+
+
+  useEffect(() => {
+    if (userInfo?.imagen) {
+      setUserAvatar(userInfo?.imagen)
+    }
+  },[userInfo])
 
   useEffect(() => {
     if (data) {
@@ -37,6 +48,10 @@ export default function Profile() {
     }
   }, []);
 
+  useEffect(() => {
+    handleSetLoading(isLoading)
+  }, [isLoading])
+
   function handleClickFile() {
     inputRef.current.click();
   }
@@ -49,6 +64,7 @@ export default function Profile() {
   }
 
   const uploadFile = async (file) => {
+    setIsLoadingUpload(true);
     const fileName = file.name;
     const extension = fileName.split(".").pop();
     if (extension != "png" && extension != "jpg" && extension != "jpeg") {
@@ -56,18 +72,21 @@ export default function Profile() {
     const storageRef = ref(storage, `/profileImages/${Date.now() + fileName}`);
     const uploadTask = await uploadBytes(storageRef, file);
     const url = await getDownloadURL(storageRef);
+    setIsLoadingUpload(false)
     return url;
   };
 
   async function onSave() {
     try {
+      let userAvatare = null;
       if (avatarImported) {
         const urlResult = await uploadFile(avatarImported);
         setUserAvatar(urlResult);
+        userAvatare = urlResult;
       }
       const body = {
-        imagen: userAvatar,
         ...userData,
+        imagen: userAvatare,
       };
       const response = await handleChangeMeInfo(body);
     } catch (e) {
@@ -80,12 +99,9 @@ export default function Profile() {
         className={"h-auto py-10 flex items-center justify-center text-white"}
       >
         <section className={"relative block "}></section>
-        <section className={" relative py-16 bg-blueGray-200}"}>
-          {isLoading ? (
-            <Spinner></Spinner>
-          ) : (
-            <div className="container mx-auto px-4">
-              <div className="relative flex flex-col min-w-0 break-words bg-[#2d2e2e] w-full mb-6 shadow-xl rounded-lg  border-4	">
+        <section className={"sm:px-0 relative py-16 md:w-[700px] w-full!"}>
+            <div className="mx-auto px-4">
+              <div className="relative flex flex-col min-w-0 break-words bg-black bg-opacity-50 md:w-auto mb-6 shadow-xl rounded-lg ">
                 <div className="px-6">
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full px-4 lg:order-2 flex justify-center">
@@ -150,35 +166,29 @@ export default function Profile() {
                     </div>
                   </div>
 
-                  <div className="text-center mt-12 p-16">
+                  <div className="text-center mt-12 md:p-16 p-4">
                     <div
                       className="flex justify-center gap-5 flex-wrap
                     "
                     >
-                      <div>
                         <input
                           value={userData?.nickname}
                           disabled
                           type="text"
                           id="first_name"
-                          className="min-w-[500px] bg-transparent text-white border-2   text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="md:min-w-[500px] bg-transparent text-white border-2   text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Nickname"
                           required
                         />
-                      </div>
-                      <div>
                         <input
                           disabled
                           value={userData?.email}
                           type="text"
                           id="first_name"
-                          className="min-w-[500px] bg-transparent text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="md:min-w-[500px] bg-transparent text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Correo"
                           required
                         />
-                      </div>
-
-                      <div>
                         <input
                           value={userData?.nombre}
                           onChange={(e) =>
@@ -191,15 +201,10 @@ export default function Profile() {
                           }
                           type="text"
                           id="first_name"
-                          className="min-w-[500px] bg-transparent  text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="md:min-w-[500px] bg-transparent  text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Nombre"
                           required
                         />
-                      </div>
-  
-                     
-  
-                      <div>
                         <input
                           value={userData?.telefono}
                           onChange={(e) =>
@@ -212,18 +217,17 @@ export default function Profile() {
                           }
                           type="text"
                           id="first_name"
-                          className="min-w-[500px] bg-transparent  text-white border-2  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="md:min-w-[500px] bg-transparent  text-white border-2  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Telefono"
                           required
                         />
-                      </div>
                     </div>
                   </div>
                   <div className="w-full px-4 lg:text-center ">
-                    <div className="py-6 px-3 mt-32 sm:mt-0">
+                    <div className="py-6 px-3 md:mt-32 mt-10 sm:mt-0 flex flex-row items-center justify-center w-auto">
                       <button
                         onClick={() => onSave()}
-                        className="bg-[#8526ff] transition delay-150 duration-150 hover:bg-white hover:text-black rounded font-medium   p-4 rounded-full focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 uppercase hover:shadow-md"
+                        className="bg-[#8526ff] transition delay-150 duration-150 hover:bg-white hover:text-black rounded font-medium   p-4 rounded-full focus:outline-none ease-linear transition-all duration-150 uppercase hover:shadow-md m-auto"
                         type="button"
                       >
                         Guardar cambios
@@ -233,8 +237,6 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-          )}
-
           {}
         </section>
       </main>

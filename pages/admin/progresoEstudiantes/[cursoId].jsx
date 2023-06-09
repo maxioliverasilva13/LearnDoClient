@@ -143,7 +143,7 @@ const ProgresoEstudiantes = () => {
           <p className="text-white font-semibold text-[40px]">{cursoName}</p>
         </div>
       </div>
-      <div className="flex flex-col items-start justify-start md:pt-[20px] pb-5 md:px-[80px]">
+      <div className="flex flex-col items-start justify-start md:pt-[20px] pb-5 md:px-[80px] px-5">
         <h1 className="text-white font-semibold pb-10 text-[30px]">
           Progreso Estudiantes
         </h1>
@@ -153,8 +153,8 @@ const ProgresoEstudiantes = () => {
         ) : (
           <div className="w-full h-auto flex flex-col items-start justify-start gap-6 border-white border rounded-[10px] p-[32px] bg-transparent flex-grow max-h-full overflow-auto">
             <div className="w-full flex h-auto items-center justify-between">
-              <p className="text-white font-semibold text-[18px]">Estudiante</p>
-              <p className="text-white font-semibold text-[18px] pr-10">
+              <p className="text-white md:block hidden font-semibold text-[18px]">Estudiante</p>
+              <p className="text-white md:block hidden font-semibold text-[18px] pr-10">
                 Progreso
               </p>
             </div>

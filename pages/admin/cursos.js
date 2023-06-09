@@ -73,9 +73,9 @@ const Tarjeta = ({
           layout="fill"
         />
       </div>
-      <div className="w-full flex-grow h-auto flex flex-col justify-center md:justify-start">
+      <div className="w-full flex flex-grow h-auto flex-col justify-center md:justify-start items-center">
         {tipo === "curso" && (
-          <div className="mb-4">
+          <div className="mb-4 w-full md:w-auto">
             <Stars
               stars={stars}
               countStars={countPuntuaciones}
@@ -86,20 +86,20 @@ const Tarjeta = ({
           </div>
         )}
 
-        <span className=" w-full max-w-full truncate overflow-hidden text-2xl text-white mb-4">
+        <span className=" w-full md:w-auto max-w-full truncate overflow-hidden text-2xl text-white mb-4">
           {nombreCurso}
         </span>
-        <span className=" text-base font-medium text-white w-full">
+        <span className=" text-base font-medium text-white w-full md:w-auto">
           {descripcionCurso}
         </span>
         {es_pago === 1 && (
           <>
             {tipo === "curso" && (
-              <span className=" text-base font-medium text-white w-full">
+              <span className=" text-base font-medium text-white w-full md:w-auto">
                 Estudiantes: {countEstudiantes}
               </span>
             )}
-            <span className=" text-base font-medium text-white w-full">
+            <span className=" text-base font-medium text-white w-full md:w-auto">
               US$ {precio}
             </span>
           </>
@@ -109,7 +109,7 @@ const Tarjeta = ({
           ancho={40}
           colorFondo={"white"}
         ></BarraDeCarga> */}
-        <div className="flex flex-col sm:flex-row sm:gap-2 w-full">
+        <div className="flex md:flex-row flex-col md:gap-2 md:justify-start justify-center items-center md:mt-0 mt-5 w-full">
           {tipo === "curso" && (
             <>
               <Link href={appRoutes.cursoPage(eventoId)}>
@@ -165,11 +165,11 @@ export default function MisCursos() {
     <>
       <main className="miscursos_page lg:px-10 px-5 py-10 w-full h-full flex flex-col gap-4 items-center min-h-screen">
         <div className="w-full flex flex-col justify-center">
-          <p className="ml-20 text-5xl text-white font-medium">
+          <p className="m-auto text-5xl text-white font-medium">
             Mis Eventos (Admin)
           </p>
         </div>
-        <div className="w-full flex md:px-36 gap-5">
+        <div className="w-full flex md:px-36 md:justify-start justify-center gap-5">
           <Link href={appRoutes.createCurso()}>
             <span className="bg-indigo-700 shadow-md cursor-pointer transition-all transform hover:scale-105 my-2 px-6 py-2 w-max text-xl text-white block rounded-full ">
               Crear Curso

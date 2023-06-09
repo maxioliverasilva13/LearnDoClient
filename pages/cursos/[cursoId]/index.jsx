@@ -37,6 +37,9 @@ import DealsCard from "components/DealsCard/DealsCard";
 import { handleGeetDisccount } from "utils/cupon";
 import UserCard from "components/UserCard/UserCard";
 
+import { isMobile } from "react-device-detect";
+import MobileModulo from "components/MobileModulo/MobileModulo";
+
 const CursoInfo = () => {
   const router = useRouter();
   const { query } = router;
@@ -235,11 +238,11 @@ const CursoInfo = () => {
 
   const renderEstudianteProgress = () => {
     return (
-      <div className="w-full md: px-[150px]  my-10 flex flex-row items-center justify-between ">
-        <div className="flex gap-5 items-center">
-          <div className="w-auto h-auto flex text-white gap-4 flex-row items-center justify-start">
+      <div className="w-full lg:px-[150px] px-5  my-10 gap-5 flex lg:flex-row flex-col items-center justify-between ">
+        <div className="flex lg:flex-row flex-col gap-5 items-center">
+          <div className="w-auto h-auto flex text-white md:flex-row flex-col gap-5 items-center justify-start">
             <span>Progreso</span>
-            <div className="md:w-[420px] h-[20px]">
+            <div className="md:w-[420px] w-[300px] h-[20px]">
               <Progress
                 porcentage={progresoCurso}
                 color={generateColorProggress(
@@ -255,8 +258,8 @@ const CursoInfo = () => {
               onClick={() => getCertificate()}
               className={
                 canGetCertificate
-                  ? "flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
-                  : "flex items-center w-full font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed"
+                  ? "flex w-min items-center font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                  : "flex w-min items-center font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed"
               }
               disabled={gettingCertificate || !canGetCertificate}
             >
@@ -299,7 +302,7 @@ const CursoInfo = () => {
               type="button"
               onClick={() => downloadCertificate()}
               className={
-                "flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                "flex items-center w- font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
               }
             >
               Descargar certificado
@@ -456,14 +459,14 @@ const CursoInfo = () => {
               </button>
             </div>
           </Modal>
-          <div className="w-full appearsAnimation h-auto md:gap-[50px] flex flex-row items-start justify-center">
-            <div className="flex flex-col gap-2">
-              <div className="w-[520px] h-[350px] rounded-lg relative overflow-hidden">
+          <div className="w-full appearsAnimation h-auto md:gap-[50px] flex lg:flex-row flex-col lg:items-start items-center justify-center">
+            <div className="flex lg:w-auto w-full flex-col lg:items-start items-center lg:mb-0 mb-5 gap-2">
+              <div className="md:w-[520px] md:min-w-[520px] max-w-[520px] w-full h-[350px] rounded-[20px] relative overflow-hidden">
                 <GlobalImage
                   src={cursoImage}
                   loader={() => cursoImage}
                   className="w-full h-full"
-                  objectFit="object-scale-down"
+                  objectFit="cover"
                   layout="fill"
                 />
               </div>
@@ -568,7 +571,7 @@ const CursoInfo = () => {
                 </div>
               )}
               {esComprada && (
-                <div className="w-full h-auto items-center mt-4 justify-start">
+                <div className="lg:w-full w-auto h-auto items-center mt-4 justify-start">
                   <ShareButton eventoId={cursoInfo?.id} />
                 </div>
               )}
@@ -577,101 +580,16 @@ const CursoInfo = () => {
           {esComprada && renderEstudianteProgress()}
           {Categorias}
 
-          <div className="w-full mt-[50px] flex h-auto flex-row items-start justify-start">
-            <div className="flex flex-col flex-grow w-full">
-              <span className="w-auto mb-6 text-[30px] font-semibold text-white pl-3 border-l-4 border-[#780EFF]">
-                Modulos
-              </span>
-
-              <div className="w-full h-auto flex flex-col itesm-start justify-start gap-y-[30px]">
-                {data?.modulos &&
-                  data.modulos?.map((modulo) => {
-                    const isActiveModule = modulo?.id === activeModuloId;
-                    return (
-                      <div
-                        onClick={() => setActiveModulo(modulo?.id)}
-                        className={clsx(
-                          "md:w-[90%] cursor-pointer relative bg-opacity-50 rounded-[12px] h-[120px] p-4 flex flex-row items-start justify-start",
-                          isActiveModule
-                            ? "moduloContainerActive"
-                            : "moduloContainer"
-                        )}
-                      >
-                        <div className="border-b-[4px] border-[#780EFF] flex-grow h-full flex flex-col items-center justify-start">
-                          <span className="w-auto text-[18px] text-center max-w-full font-semibold text-white ">
-                            {modulo.nombre}
-                          </span>
-                          <span className="w-auto text-[14px] my-4 text-center max-w-full font-semibold text-white ">
-                            Clases:{modulo.clases?.length}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                {data?.modulos?.length === 0 && (
-                  <div className="my-10 w-full py-4 flex items-center justify-center">
-                    <span className="text-white">
-                      No se encontraron modulos para este curso
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col flex-grow w-full">
-              <span className="w-auto mb-6 text-[30px] font-semibold text-white pl-3 border-l-4 border-[#780EFF]">
-                Clases
-              </span>
-              <div className="w-full h-auto flex flex-col itesm-start justify-start gap-y-[30px]">
-                {activeModulo &&
-                  activeModulo?.clases?.map((clase) => {
-                    return (
-                      <div
-                        key={`clase-${clase?.id}`}
-                        onClick={() =>
-                          router.push(
-                            appRoutes.clasePage(clase?.id, cursoInfo?.id)
-                          )
-                        }
-                      >
-                        <ClaseCard clase={clase} />
-                      </div>
-                    );
-                  })}
-
-                {activeModulo?.evaluacionId && esComprada && (
-                  <div className="w-full flex items-center flex-col gap-2 justify-center">
-                    {activeModulo?.calificacion > 0 && (
-                      <div className="flex flex-row items-center gap-1">
-                        <AiFillCheckCircle className="text-green-500 text-[18px]" />
-                        <span className="text-white font-medium">
-                          Calificacion en este modulo:{" "}
-                          <PuntuacionText
-                            puntuacion={activeModulo?.calificacion}
-                          />
-                        </span>
-                      </div>
-                    )}
-                    <span
-                      onClick={() =>
-                        setEvaluacionToDo(activeModulo?.evaluacionId)
-                      }
-                      className="text-[20px] cursor-pointer w-[260px] font-Gotham text-center py-3 text-white rounded-full border-0 bg-[#780EFF]"
-                    >
-                      {activeModulo?.calificacion === 0
-                        ? "Realizar evaluacion"
-                        : "Rehacer evaluacion"}
-                    </span>
-                  </div>
-                )}
-                {(!activeModulo || activeModulo?.clases?.length === 0) && (
-                  <div className="my-10 w-full py-4 flex items-center justify-center">
-                    <span className="text-white">
-                      No se encontraron clases para este modulo
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className="w-full mt-5  h-auto flex flex-col gap-2 items-center overflow-auto justify-start">
+            {data?.modulos?.map((item) => {
+              return (
+                <MobileModulo
+                  esComprada={esComprada}
+                  cursoId={cursoId}
+                  {...item}
+                />
+              );
+            })}
           </div>
           {/* Calificaciones */}
           {data?.puntuaciones && data?.puntuaciones?.length > 0 && (
@@ -679,7 +597,7 @@ const CursoInfo = () => {
               <span className="text-white font-semibold text-[30px]">
                 Puntuaciones
               </span>
-              <div className="w-auto h-auto bg-opacity-20 gap-x-8 flex px-10 py-8 rounded-[18px] bg-gray-50 flex-row items-center justify-center">
+              <div className="w-auto h-auto bg-opacity-20 gap-x-8 flex px-10 py-8 rounded-[18px] bg-gray-50 flex-row items-center justify-center flex-wrap">
                 {data?.puntuaciones?.map((item, index) => {
                   if (index > 2) return null;
                   return (

@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, { useState } from "react";
 import { RxCrossCircled } from 'react-icons/rx';
 
@@ -11,7 +12,9 @@ const Modal = ({ isVisible, onClose, children, alto = "auto", ancho = "auto" }) 
 
     return (
         <div className="fixed appearsAnimation z-[100] inset-0 bg-black-800/200 backdrop-blur-md flex justify-center items-center" id="wrapper" onClick={handleClose}>
-            <div className="bg-gray-900 appearsAnimation p-4 rounded-[20px] flex flex-col" style={{ height: alto, width: ancho  }}>
+            <div className={clsx("bg-gray-900 appearsAnimation p-4 py-5 rounded-[20px] flex flex-col",
+            `md:h-[${alto}] md:w-[${ancho}] w-[90%] h-auto`
+            )}>
                 <div className="w-full flex justify-end items-start">
                     <button className="" onClick={() => onClose()}>
                         <RxCrossCircled size={30} color="white">

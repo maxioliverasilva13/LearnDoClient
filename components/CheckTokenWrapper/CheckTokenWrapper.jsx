@@ -11,6 +11,7 @@ import { listOfAuthPages, listOfPublicPath } from "utils/pageUtils";
 import { initPusher } from "utils/pusher";
 import { getToken } from "utils/tokenUtils";
 import "react-toastify/dist/ReactToastify.min.css";
+import clsx from "clsx";
 
 const CheckTokenWrapper = ({ children }) => {
   const { userInfo, handleSetUserInfo } = useGlobalSlice();
@@ -24,6 +25,7 @@ const CheckTokenWrapper = ({ children }) => {
       initPusher();
     }
   }, [userInfo]);
+  const isMessagePage = pathname === appRoutes.messages();
 
   const [loadCurrentUser, { isLoading }] = useLazyGetCurrentUserQuery();
 
@@ -91,8 +93,8 @@ const CheckTokenWrapper = ({ children }) => {
         transition={Slide}
       />
       <div className="max-h-full flex-grow w-full h-full">
-        <div className="min-h-screen">{children}</div>
-        {!isPublicPath && <Footer />}
+        <div className={clsx(!isMessagePage ? "min-h-screen": "h-full")}>{children}</div>
+        {!isPublicPath && !isMessagePage && <Footer />}
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ import { generateColorProggress } from "utils/color";
 
 const BarraDeCarga = ({ porcentajeCarga, ancho, colorFondo, colorPorcentaje }) => {
   return (
-    <div className="flex flex-row h-auto w-auto">
+    <div className="flex lg:flex-row flex-col gap-2 items-center justify-center lg:justify-start h-auto lg:w-full w-[100%]">
       <div
         className="rounded-full h-2.5 dark:bg-gray-700 border-[1px] border-white mt-2"
         style={{ width: `${ancho}%` }}
@@ -59,7 +59,7 @@ const Tarjeta = ({
 
   return (
     <div
-      className="md:h-72 w-4/5 flex flex-col md:flex-row bg-slate-900 bg-opacity-50 gap-5 justify-start items-center rounded-[12px] p-8"
+      className="lg:h-72 w-4/5 flex flex-col lg:flex-row bg-slate-900 bg-opacity-50 gap-5 justify-start items-center rounded-[12px] p-8"
       // style={{ backgroundColor: "#780EFF" }}
     >
       <div className="h-48 w-48 min-h-48 min-w-[192px] rounded-md relative">
@@ -78,9 +78,9 @@ const Tarjeta = ({
           layout="fill"
         />
       </div>
-      <div className="w-full flex-grow h-auto flex flex-col justify-center md:justify-start">
+      <div className="w-full flex-grow h-auto flex flex-col justify-center lg:justify-start lg:items-start items-center">
         {tipo === "curso" && (
-          <div className="mb-4">
+          <div className="mb-4 w-auto">
             <Stars
               stars={stars}
               countStars={countPuntuaciones}
@@ -91,20 +91,20 @@ const Tarjeta = ({
           </div>
         )}
 
-        <span className=" w-full max-w-full truncate overflow-hidden text-2xl text-white mb-4">
+        <span className="lg:w-full truncate overflow-hidden text-2xl text-white mb-4">
           {nombreCurso}
         </span>
-        <span className=" text-base font-medium text-white w-full">
+        <span className=" text-base font-medium text-white lg:w-full">
           {descripcionCurso}
         </span>
         {es_pago === 1 && (
           <>
             {tipo === "curso" && (
-              <span className=" text-base font-medium text-white w-full">
+              <span className=" text-base font-medium text-white lg:w-full">
                 Estudiantes: {countEstudiantes}
               </span>
             )}
-            <span className=" text-base font-medium text-white w-full">
+            <span className=" text-base font-medium text-white lg:w-full">
               USD$ {precio}
             </span>
           </>
@@ -114,7 +114,7 @@ const Tarjeta = ({
           ancho={40}
           colorFondo={bgProgressClass}
         ></BarraDeCarga> }
-        <div className="flex flex-col sm:flex-row sm:gap-2 w-full">
+        <div className="flex flex-col lg:flex-row lg:items-start items-center sm:gap-2 w-full">
           {tipo === "curso" && (
             <>
               <Link href={appRoutes.cursoPage(eventoId)}>
@@ -172,7 +172,7 @@ export default function MisCursos() {
     <>
       <main className="miscursos_page lg:px-10 px-5 py-10 w-full h-full flex flex-col gap-4 items-center min-h-screen">
         <div className="w-full flex flex-col justify-center">
-          <p className="ml-20 text-5xl text-white font-medium">
+          <p className="m-auto text-5xl text-white font-medium">
             Mis Eventos
           </p>
         </div>

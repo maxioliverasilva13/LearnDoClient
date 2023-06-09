@@ -99,7 +99,7 @@ const CheckRoutes = ({children}) => {
         return null;
     }
   
-    return <div>
+    return <div className="w-full h-full">
         {typeof window !== "undefined" && children}
     </div>
 }

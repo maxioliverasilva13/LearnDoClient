@@ -105,15 +105,15 @@ export default function Cursos() {
                 Todos los eventos disponibles en nuestra plataforma
               </p>
             </div>
-            <div className="{ flex flex-col items-center px-40 mt-10 }">
+            <div className="flex flex-col items-center sm:px-0 lg:px-40 px-5 mt-10">
               <div
                 className={
-                  "w-full flex justify-between items-center	 px-10 py-10"
+                  "w-full flex justify-between items-center sm:flex-row flex-col gap-4	 px-10 py-10"
                 }
               >
                 <input
                   type="text"
-                  className="bg-transparent placeholder-white border-white border-2 py-2 px-4 text-white outline-none	rounded-full no-underline	hover:border-white"
+                  className="bg-transparent sm:w-[400px] w-full placeholder-white border-white border-2 py-2 px-4 text-white outline-none	rounded-full no-underline	hover:border-white"
                   placeholder="Buscar"
                   onChange={handleChangeSearch}
                   value={busqueda}
@@ -121,12 +121,12 @@ export default function Cursos() {
 
                 <div className={"flex items-center gap-5"}>
                   <Link href={appRoutes.mapaSeminarios()}>
-                    <div className="inline-flex cursor-pointer gap-x-3 text-white border rounded-full px-3 py-1">
+                    <div className="inline-flex items-center w-max cursor-pointer gap-x-3 text-white border rounded-full sm:px-3 sm:py-1 px-4 py-2">
                       <TfiMapAlt
-                        className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-white"
+                        className="-mr-1 ml-1 h-5 flex-shrink-0 text-white"
                         aria-hidden="true"
                       />
-                      Ver Ubicaciones
+                      <span>Ver Ubicaciones</span>
                     </div>
                   </Link>
                   <div

@@ -32,6 +32,7 @@
     "react-click-outside": "^3.0.1",
     "react-datepicker": "^4.11.0",
     "react-datetime": "^3.2.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
     "react-dropdown": "^1.11.0",
     "react-dynamic-virtual-scroll": "^1.4.0",

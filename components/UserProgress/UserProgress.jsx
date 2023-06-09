@@ -19,7 +19,7 @@ const UserProgress = ({ userImage, userName, aprobacion, porcentage, userId }) =
   }
 
   return (
-    <div className="w-full h-auto flex flex-row items-center justify-between">
+    <div className="w-full h-auto flex md:flex-row flex-col gap-4 items-center md:justify-between justify-center">
       <Link href={appRoutes.userInfoPage(userId)}>
       <div className="w-auto cursor-pointer h-auto flex flex-row items-center gap-4">
         <div className="w-[64px] relative rounded-full border border-white h-[64px] max-w-[64px] max-h-[64px]">
@@ -38,8 +38,7 @@ const UserProgress = ({ userImage, userName, aprobacion, porcentage, userId }) =
       </Link>
 
       <div
-        className="w-full flex flex-grow gap-2 items-center justify-end
-    "
+        className="w-full flex flex-grow gap-2 items-center md:justify-end justify-center"
       >
         <span className="text-white font-semibold">{formatPorcentaje()}</span>
         <div className="w-[230px] h-[18px] rounded-full border border-white flex flex-row items-center justify-start">
