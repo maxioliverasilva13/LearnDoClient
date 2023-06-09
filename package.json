@@ -21,6 +21,7 @@
     "firebase": "^9.22.1",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
+    "html-to-image": "^1.11.11",
     "lottie-react": "^2.4.0",
     "mapbox-gl": "^2.14.1",
     "moment": "^2.29.4",

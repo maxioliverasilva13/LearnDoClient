@@ -16,7 +16,7 @@ import { RxCopy } from "react-icons/rx"
 import { FcApproval } from "react-icons/fc"
 
 
-const ShareButton = React.memo(({ eventoId }) => {
+  const ShareButton = React.memo(({ eventoId }) => {
   const [openModal, setOpenModal] = useState(false);
   
   const [urlToShare, setUrlToShare] = useState(window.location.href);
@@ -72,13 +72,13 @@ const ShareButton = React.memo(({ eventoId }) => {
               <span className="text-white flex-grow w-full max-w-[100%] truncate overflow-hidden ">{urlToShare}</span>
               <RxCopy onClick={() => handleCopyLink()} size={20} color="white" className="cursor-pointer" />
             </div>
-            <FacebookShareButton url={urlToShare} title="Share Facebook">
+            <FacebookShareButton url={urlToShare}  title="Share Facebook">
               <FacebookIcon className="mx-2 file:rounded-full" />
             </FacebookShareButton>
             <WhatsappShareButton url={urlToShare} title="Share Whatsapp">
               <WhatsappIcon className="mx-2 file:rounded-full" />
             </WhatsappShareButton>
-            <TwitterShareButton url={urlToShare} title="Share Whatsapp">
+            <TwitterShareButton url={urlToShare} title="Share Whatsapp">  
               <TwitterIcon className="mx-2 file:rounded-full" />
             </TwitterShareButton>
           </div>

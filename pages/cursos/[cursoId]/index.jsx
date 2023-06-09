@@ -28,6 +28,12 @@ import { useCreateCertificateMutation } from "store/services/CertificadoService"
 
 import { useCanGetCertificateQuery } from "store/services/CursoService";
 import ShareButton from "components/ShareButton/ShareButton";
+import ShareProgress from "components/ShareProgress/ShareProgress";
+
+
+
+
+
 import {
   useLazyUsarCuponQuery,
   useValidarCuponQuery,
@@ -36,6 +42,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import DealsCard from "components/DealsCard/DealsCard";
 import { handleGeetDisccount } from "utils/cupon";
 import UserCard from "components/UserCard/UserCard";
+
 
 const CursoInfo = () => {
   const router = useRouter();
@@ -181,6 +188,7 @@ const CursoInfo = () => {
     );
   };
 
+
   const getCertificate = () => {
     setGettingCertificate(true);
     createCertificate({ curso_id: cursoId }).then(response => {
@@ -243,7 +251,16 @@ const CursoInfo = () => {
             <span>Progreso</span>
             <div className="md:w-[420px] h-[20px]">
               <Progress porcentage={progresoCurso} color={generateColorProggress(cursoInfo.porcentaje_aprobacion , progresoCurso)} />
+              
+              <ShareProgress nombreUsuario={userInfo?.nombre} progress={progresoCurso} courseName={cursoInfo?.nombre} averageApprove={cursoInfo?.porcentaje_aprobacion}></ShareProgress>
+
             </div>
+          </div>
+
+          <div className="flex flex-col text-white justify-center items-center">
+
+           
+            
           </div>
           { 
             !certificateID ? (
