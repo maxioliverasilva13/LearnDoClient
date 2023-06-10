@@ -52,7 +52,7 @@ const CursoInfo = () => {
 
   const { data, isLoading } = useGetCompleteCursoInfoQuery({ cursoId });
   const { data: canGetCertData } = useCanGetCertificateQuery({ cursoId });
-  const { handleSetLoading, userInfo } = useGlobalSlice();
+  const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
   const myCreditsNumber = userInfo?.creditos_number;
   const [canUseDiscount, setCanUseDiscount] = useState(false);
@@ -72,7 +72,6 @@ const CursoInfo = () => {
   const [activeModuloId, setActiveModulo] = useState(null);
   const cuponToken = query?.token;
 
-
   const [certificateID, setCertificateID] = useState(data?.certificateID);
 
   const stars = data?.stars;
@@ -84,7 +83,7 @@ const CursoInfo = () => {
 
   const esComprada = data?.comprado;
   const [gettingCertificate, setGettingCertificate] = useState(null);
-
+  const [showModal, setShowModal] = useState(false);
 
   const { data: tokenValidateResponse, isLoading: isLoadingValidateToken } =
     useValidarCuponQuery(
@@ -139,13 +138,15 @@ const CursoInfo = () => {
   useEffect(() => {
     if (canGetCertData) {
       setCanGetCertificate(canGetCertData.isApproved);
-      setProgresoCurso(canGetCertData.avgCalifications)
+      setProgresoCurso(canGetCertData.avgCalifications);
     }
   }, canGetCertData);
 
   const pagar = async (values) => {
     const response = await handlePay(values);
     if (response?.data?.ok == true) {
+      setShowModal(true);
+
       if (useDiscount) {
         handleSetUserInfo({
           ...userInfo,
@@ -155,8 +156,6 @@ const CursoInfo = () => {
       }
     }
   };
-
-  const [showModal, setShowModal] = useState(false);
 
   //   useGetCompleteCursoInfoQuery
   const renderStars = (
@@ -191,7 +190,7 @@ const CursoInfo = () => {
 
   const getCertificate = () => {
     setGettingCertificate(true);
-    createCertificate({ curso_id: cursoId }).then(response => {
+    createCertificate({ curso_id: cursoId }).then((response) => {
       const { data } = response;
       const { id } = data;
       const certificateDowloadURl = `http://localhost:8000/api/certificaciones/${id}/getCertificationPDF`;
@@ -199,7 +198,7 @@ const CursoInfo = () => {
       setCertificateID(id);
       setGettingCertificate(false);
     });
-  }
+  };
 
   const item = 1;
   const Categorias = useMemo(() => {
@@ -233,7 +232,6 @@ const CursoInfo = () => {
     });
     return cantClases;
   };
-
 
   const downloadCertificate = () => {
     if (!certificateID) {
@@ -294,9 +292,6 @@ const CursoInfo = () => {
 
         </div>
 
-
-
-
         {isAlreadyPuntuado ? (
           <div className="w-auto h-auto flex flex-row items-center gap-2 justify-center">
             <AiFillCheckCircle className="text-green-500 text-[18px]" />
@@ -328,7 +323,10 @@ const CursoInfo = () => {
     };
 
     return (
-      <PayPalScriptProvider className="appearsAnimation" options={initialOptions}>
+      <PayPalScriptProvider
+        className="appearsAnimation"
+        options={initialOptions}
+      >
         <PayPalButtons
           className="h-full appearsAnimation w-full z-[20]"
           fundingSource="paypal"
@@ -369,7 +367,6 @@ const CursoInfo = () => {
             //console.log("cvalues " + valuesPay.metodoPago)
             //console.log("cvalues " + valuesPay.monto)
             //console.log("cvalues " + cursoInfo.precio)
-            setShowModal(true);
             return;
             //return actions.order.capture().then((details) => {
             //
@@ -378,10 +375,7 @@ const CursoInfo = () => {
           }}
         />
       </PayPalScriptProvider>
-
     );
-
-
   };
 
   const handleReload = () => {
@@ -408,6 +402,31 @@ const CursoInfo = () => {
             openCalificarModal={openCalificarModal}
             setOpenCalificarModal={setOpenCalificarModal}
           />
+          <Modal
+            isVisible={showModal}
+            onClose={() => setShowModal(false)}
+            alto={"auto"}
+            ancho={"400px"}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <FaRegCheckCircle size={50} color="lime"></FaRegCheckCircle>
+              <p className="text-2xl text-white mt-8">¡Pago realizado!</p>
+              <p className="text-2xm text-white mb-8">Disfruta de tu curso</p>
+              <button
+                className="h-10 w-32 mb-8 rounded-full text-white"
+                style={{ backgroundColor: "#780EFF" }}
+                onClick={() => {
+                  setShowModal(false);
+                  //pagar(valuesPay);
+                }}
+                onClose={() => {
+                  setShowModal(false);
+                }}
+              >
+                Aceptar
+              </button>
+            </div>
+          </Modal>
           <div className="w-full appearsAnimation h-auto md:gap-[50px] flex flex-row items-start justify-center">
             <div className="flex flex-col gap-2">
               <div className="w-[520px] h-[350px] rounded-lg relative overflow-hidden">
@@ -460,16 +479,8 @@ const CursoInfo = () => {
                     >
                       Ir al foro
                     </span>
-
-
-
                   </Link>
-
                 </div>
-
-
-
-
               ) : (
                 <div className="w-full appearsAnimation h-auto flex flex-col gap-4">
                   {isValid === false && cuponToken && !esComprada && (
@@ -483,66 +494,63 @@ const CursoInfo = () => {
                       </span>
                     </div>
                   )}
-                  {canUseDiscount && !esComprada && !cuponToken && <div className="w-full my-4 appearsAnimation">
-                    <button onClick={() => setUseDiscount(!useDiscount)} className="text-white appearsAnimation transition-all cursor-pointer px-4 py-2 bg-indigo-500 rounded-[20px] shadow-md">{useDiscount && "No"} Usar 10 puntos</button>
-                  </div>}
+                  {canUseDiscount &&
+                    !esComprada &&
+                    !cuponToken &&
+                    cursoInfo?.es_pago === 1 && (
+                      <div className="w-full my-4 appearsAnimation">
+                        <button
+                          onClick={() => setUseDiscount(!useDiscount)}
+                          className="text-white appearsAnimation transition-all cursor-pointer px-4 py-2 bg-indigo-500 rounded-[20px] shadow-md"
+                        >
+                          {useDiscount && "No"} Usar 10 puntos
+                        </button>
+                      </div>
+                    )}
                   <div className="w-full appearsAnimation flex flex-row items-start justify-center gap-[60px]">
                     <span
                       className={clsx(
                         "text-white font-semibold flex flex-col gap-1 text-[20px]"
                       )}
                     >
-                      <span
-                        className={clsx(
-                          cuponToken && isValid && "line-through"
-                        )}
-                      >
-                        USD${precio}
-                      </span>
-                      {(isValid || useDiscount) && !esComprada && <DealsCard price={precio} />}
+                      {cursoInfo?.es_pago === 1 ? (
+                        <span
+                          className={clsx(
+                            cuponToken && isValid && "line-through"
+                          )}
+                        >
+                          USD${precio}
+                        </span>
+                      ) : (
+                        <div className="w-full h-auto flex flex-row items-center justify-start gap-4">
+                          <span>Gratuito</span>
+                          <span
+                            onClick={async () => {
+                              await pagar({
+                                ...valuesPay,
+                              });
+                            }}
+                            className="text-[20px] min-w-[300px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                          >
+                            Obtener
+                          </span>
+                        </div>
+                      )}
+
+                      {(isValid || useDiscount) && !esComprada && (
+                        <DealsCard price={precio} />
+                      )}
                     </span>
                     {userInfo?.id !== cursoInfo.organizador_id &&
                       cursoInfo?.es_pago === 1 && <PayPalButtonsWrapper />}
-                    <Modal
-                      isVisible={showModal}
-                      onClose={() => setShowModal(false)}
-                      alto={"30%"}
-                      ancho={"40%"}
-                    >
-                      <div className="flex flex-col items-center justify-center">
-                        <FaRegCheckCircle
-                          size={50}
-                          color="lime"
-                        ></FaRegCheckCircle>
-                        <p className="text-2xl text-white mt-8">
-                          ¡Pago realizado!
-                        </p>
-                        <p className="text-2xm text-white mb-8">
-                          Disfruta de tu curso
-                        </p>
-                        <button
-                          className="h-10 w-32 mb-8 rounded-full text-white"
-                          style={{ backgroundColor: "#780EFF" }}
-                          onClick={() => {
-                            setShowModal(false);
-                            handleReload();
-                            //pagar(valuesPay);
-                          }}
-                          onClose={() => {
-                            setShowModal(false);
-                            handleReload();
-                          }}
-                        >
-                          Aceptar
-                        </button>
-                      </div>
-                    </Modal>
                   </div>
                 </div>
               )}
-              {esComprada && <div className="w-full h-auto items-center mt-4 justify-start">
-                <ShareButton eventoId={cursoInfo?.id} />
-              </div>}
+              {esComprada && (
+                <div className="w-full h-auto items-center mt-4 justify-start">
+                  <ShareButton eventoId={cursoInfo?.id} />
+                </div>
+              )}
             </div>
           </div>
           {esComprada && renderEstudianteProgress()}

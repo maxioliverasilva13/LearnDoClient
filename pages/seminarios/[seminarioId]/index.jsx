@@ -36,10 +36,11 @@ const SeminarioInfo = () => {
   });
   const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
-  const esComprado = data?.comprado;
 
   const [canUseDiscount, setCanUseDiscount] = useState(false);
   const myCreditsNumber = userInfo?.creditos_number;
+
+  const esComprado = data?.comprado;
 
   useEffect(() => {
     if (myCreditsNumber >= 10) {
@@ -180,6 +181,11 @@ const SeminarioInfo = () => {
     window.location.reload();
   };
 
+  function onClickLink(){
+    router.replace(appRoutes.zoom(seminarioId))
+}
+
+
   const renderContent = () => {
     if (isLoading) {
       return null;
@@ -218,7 +224,7 @@ const SeminarioInfo = () => {
               <div className="flex my-[30px] w-full italic text-white font-semibold text-sm flex-col items-start justify-start gap-4">
                 <p>Modalidad: Virtual</p>
                 <p>Profesor: {data?.profesor}</p>
-                <p>URL acceso: {seminarioInfo?.link}</p>
+                <p onClick={()=> onClickLink()}>URL acceso: <a className="cursor-pointer text-sky-600	text-xl">acceder</a> </p>
 
                 {isValidCupon === false && cuponToken && !esComprado && (
                   <div className="w-full flex flex-row items-center justify-start gap-2">
@@ -232,7 +238,7 @@ const SeminarioInfo = () => {
                   </div>
                 )}
               </div>
-              {canUseDiscount && !esComprado && !cuponToken && (
+              {canUseDiscount && !esComprado && !cuponToken && seminarioInfo?.es_pago === 1 && (
                 <div className="w-full my-4 appearsAnimation">
                   <button
                     onClick={() => setUseDiscount(!useDiscount)}

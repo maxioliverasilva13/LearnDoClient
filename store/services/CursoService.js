@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import apiRoutes from "routes/apiRoutes";
 import { prepareHeaders } from "../../utils/prepareHeaders";
+import baseQueryWithError from "store/baseQueryWithError";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8000",
@@ -9,7 +10,7 @@ const baseQuery = fetchBaseQuery({
 
 export const CursoService = createApi({
   reducerPath: "CursoService",
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithError,
   tagTypes: ["Cursos","canGetCertificat"],
   endpoints: (builder) => ({
     canGetCertificate: builder.query({

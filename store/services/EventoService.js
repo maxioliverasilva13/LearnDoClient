@@ -1,15 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import apiRoutes from "routes/apiRoutes";
 import { prepareHeaders } from "../../utils/prepareHeaders";
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8000",
-  prepareHeaders,
-});
+import baseQueryWithError from "store/baseQueryWithError";
 
 export const EventoService = createApi({
   reducerPath: "EventoService",
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithError,
   tagTypes: [
     "Eventos",
     "EventoInfo",
@@ -281,7 +277,7 @@ export const EventoService = createApi({
       },
     }),
     getEventosComprados: builder.query({
-      query: (data) => apiRoutes.getEventosComprados(),
+      query: (data) => `${apiRoutes.getEventosComprados()}${data ? `?uid=${data}` : ``}`,
       provideTags: ["MisEventos"],
       transformResponse(value) {
         const response = value;
@@ -390,6 +386,13 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getEventoInfo: builder.query({
+      query: (eventoId) => `${apiRoutes.getEventoInfo(eventoId)}`,
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -426,5 +429,6 @@ export const {
   useLazyGetEventosAdminQuery,
   useUserIsStudentOrOwnerQuery,
   useCanGetCertificateQuery,
-  useLazyGetEventosCompradosQuery
+  useLazyGetEventosCompradosQuery,
+  useGetEventoInfoQuery,
 } = EventoService;

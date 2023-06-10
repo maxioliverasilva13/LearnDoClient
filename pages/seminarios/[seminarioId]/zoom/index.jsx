@@ -1,12 +1,51 @@
-import useGlobalSlice from "hooks/useGlobalSlice";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import NotFoundPage from "components/NotFoundPage/NotFoundPage";
+import useGlobalSlice from "hooks/useGlobalSlice";
+
+import { useRouter } from "next/router";
+
+import {
+  useGetCompleteSeminarioInfoQuery
+} from "store/services/EventoService";
+
+
 
 const Zoom = () => {
-  const [zoomMtgInstance, setZoomMtgInstace] = useState(null);
-  const { userInfo } = useGlobalSlice();
-  
-  async function getSignature(e) {
+  const router = useRouter();
+  const { query } = router;
+  const seminarioId = query?.seminarioId;
+
+  const { data, isLoading } = useGetCompleteSeminarioInfoQuery({
+    seminarioId
+  });
+
+  const [loadingZoom, setLoadingZoom ] = useState(true);
+  const seminarioInfo = data?.seminario;
+
+  const esComprado = data?.comprado;
+
+  const { handleSetLoading, userInfo} = useGlobalSlice();
+
+
+  useEffect(() => {
+    if (seminarioInfo && esComprado) {
+      const { link, zoomPass } = seminarioInfo;
+      const meetingNumber  = link.split("/").pop();
+      handleLoadZoom(meetingNumber,zoomPass);
+    }else{
+      setLoadingZoom(false);
+    }
+  }, [seminarioInfo,esComprado]);
+
+  useEffect(() => {
+    handleSetLoading(
+      isLoading || loadingZoom
+    );
+  }, [isLoading, loadingZoom]);
+
+
+  async function getSignature(meetingNumber,e) {
     // e.preventDefault();
     const authEndpoint = "http://localhost:4000";
 
@@ -14,7 +53,7 @@ const Zoom = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        meetingNumber: 77707848694,
+        meetingNumber: meetingNumber,
         role: 0,
       }),
     })
@@ -33,7 +72,7 @@ const Zoom = () => {
     return null;
   }
 
-  const handleLoadZoom = async () => {
+  const handleLoadZoom = async (meetingNumber, zoomPass) => {
     const { ZoomMtg } = await import("@zoomus/websdk");
 
     ZoomMtg.setZoomJSLib('https://source.zoom.us/2.13.0/lib', '/av');
@@ -42,10 +81,10 @@ const Zoom = () => {
     await ZoomMtg.prepareWebSDK();
     // ZoomMtg.setZoomJSLib("http://localhost:4000/node_modules/@zoomus/websdk/dist/lib", "/av");
 
-
-    const signature = await getSignature();
+    const signature = await getSignature(meetingNumber);
+    setLoadingZoom(false);
     if (signature) {
-    startMeeting(signature, ZoomMtg);
+      startMeeting(meetingNumber, zoomPass, signature, ZoomMtg);
 
     } else {
       toast.error("Error cargando zoom", {
@@ -55,19 +94,16 @@ const Zoom = () => {
     }
   };
 
-  function startMeeting(signature, ZoomMtg) {
+  function startMeeting(meetingNumber,zoomPass,signature, ZoomMtg) {
     document.getElementById('zmmtg-root').style.display = 'block'
-    console.log(ZoomMtg)
     ZoomMtg.init({
       leaveUrl: "http://localhost:3000/",
       success: (success) => {
-        console.log(success)
-
         ZoomMtg.join({
           signature: signature,
-          sdkKey: "B_jTenOR5Ovl9KNWo4Qeg",
-          meetingNumber: 77707848694,
-          passWord: "HyPD2a",
+          sdkKey: "9wkmEojHQpmSAXBLrGl6xQ", 
+          meetingNumber: meetingNumber,
+          passWord: zoomPass,
           userName: userInfo?.nombre,
           userEmail: userInfo?.email,
           tk: '',
@@ -87,11 +123,14 @@ const Zoom = () => {
     })
   }
 
-  useEffect(() => {
-    handleLoadZoom();
-  }, []);
 
-  return <h1>Meeting will be here</h1>;
+ 
+
+ 
+  return ( 
+    ( (!data?.ok || !esComprado) && !loadingZoom) && (   <NotFoundPage message="Seminario no encontrado" /> ) 
+
+   )
 };
 
 export default Zoom;

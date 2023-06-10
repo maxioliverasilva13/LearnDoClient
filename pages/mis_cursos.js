@@ -105,11 +105,11 @@ const Tarjeta = ({
               </span>
             )}
             <span className=" text-base font-medium text-white w-full">
-              US$ {precio}
+              USD$ {precio}
             </span>
           </>
         )}
-        { <BarraDeCarga
+        {tipo === "curso" && <BarraDeCarga
           porcentajeCarga={porcentajeCurso}
           ancho={40}
           colorFondo={bgProgressClass}

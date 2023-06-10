@@ -13,18 +13,26 @@ import { useRouter } from "next/router";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Dialog } from "@headlessui/react";
 import { RxCross1 } from "react-icons/rx";
+import { useFilterByNicknameOrEmailQuery } from "store/services/UserService";
+import NoResults from "components/NotFoundPage/NoResults";
+import { BiLinkExternal } from "react-icons/bi";
 
 export default function Navbar() {
   const { noReadsMessages } = useChats();
   const { userInfo } = useGlobalSlice();
   const [expandedMenu, setExpandedmenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const hasQuery = query != "" && query !== null && query != undefined;
+  const { data: filterUsuarios = [] } = useFilterByNicknameOrEmailQuery(query, {
+    skip: !hasQuery,
+  });
 
   const { rol } = useGlobalSlice();
 
   const hasNoReadsMessages = noReadsMessages?.length > 0;
   const points = userInfo?.creditos_number || 0;
-  
+
   const router = useRouter();
 
   useEffect(() => {
@@ -125,11 +133,59 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center px-4">
           <div className="relative">
             <input
+              value={query}
+              onChange={(e) => setQuery(e?.target?.value)}
               type="text"
               placeholder="Buscar"
-              className="text-white px-4 py-2 w-64 border border-white rounded-l-full rounded-r-full h-8 w-[200px]"
-              style={{ backgroundColor: "#31174A" }}
+              className="text-white px-4 h-[35px] py-2 outline-none border border-white bg-transparent rounded-l-full rounded-r-full w-[320px]"
             ></input>
+            {hasQuery && (
+              <div className="w-full h-auto absolute mt-1 top-full left-0 max-h-[400px] overflow-auto bg-white rounded-lg shadow-md p-4 appearsAnimation flex flex-col items-center justify-start gap-2">
+                {filterUsuarios?.length === 0 && (
+                  <NoResults
+                    customSizes="w-[200px]"
+                    message="No se encontraron usuarios"
+                  >
+                    <span className="text-gray-800 font-medium m-auto text-center w-full">
+                      No se encontraron usuarios
+                    </span>
+                  </NoResults>
+                )}
+                {filterUsuarios?.length > 0 &&
+                  filterUsuarios?.map((usuario) => {
+                    return (
+                      <div
+                        className="w-full"
+                        onClick={() => {
+                          router.push(appRoutes.userInfoPage(usuario?.id));
+                          setQuery("");
+                        }}
+                        key={`userCard-${usuario?.id}`}
+                      >
+                        <div className="flex w-full rounded-lg transition-all hover:bg-gray-100 p-2 cursor-pointer flex-row gap-2 items-center justify-start">
+                          <div className="relative overflow-hidden min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px]">
+                            <GlobalImage
+                              src={usuario?.imagen}
+                              layout="fill"
+                              objectFit="cover"
+                              className="rounded-full"
+                            />
+                          </div>
+                         <div className="w-full h-auto flex-grow max-w-full overflow-hidden flex flex-col items-start justify-center gap-1">
+                         <span className="text-gray-900 font-medium flex-grow max-w-full truncate">
+                            {usuario?.nickname}
+                          </span>
+                          <span className="text-gray-900 text-sm font-medium flex-grow max-w-full truncate">
+                            {usuario?.type === "estudiante" ? "Estudiante" : "Organizador"}
+                          </span>
+                         </div>
+                          <BiLinkExternal size={25} color="black" />
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
           </div>
           <div className="ml-4 relative flex flex-row items-center">
             <span className="text-white mx-2 text-[18px] font-semibold">
