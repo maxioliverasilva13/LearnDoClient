@@ -24,6 +24,7 @@ const apiRoutes = {
     createPost: () => "/api/publicaciones",
     getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso",
     uploadVideo: () => "/api/videos/upload-video",
+    getVideoBase64: (claseId) => `/api/videos/getBase64OfVideo?claseId=${claseId}`,
     puntuarCurso: () => "/api/puntuacion/",
     evaluacionInfo: (evaluacionId) => `/api/evaluaciones?evaluacionId=${evaluacionId}`,
     userIsStudentOrOwner: (eventoId) => `/api/eventos/${eventoId}/userIsStudentOrOwner`,

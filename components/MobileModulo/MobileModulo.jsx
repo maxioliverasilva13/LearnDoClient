@@ -17,6 +17,7 @@ const MobileModulo = ({
   id,
   cursoId,
   esComprada,
+  cursoInfo,
 }) => {
   const [isExpanded, setisExpanded] = useState(false);
   const [evaluacionToDo, setEvaluacionToDo] = useState(null);
@@ -62,7 +63,17 @@ const MobileModulo = ({
           )}
 
           {clases?.map((item) => {
-            return <SmallClaseCard item={item} cursoId={cursoId} />;
+            return (
+              <SmallClaseCard
+                moduloInfo={{
+                  nombre: nombre,
+                }}
+                esComprada={esComprada}
+                cursoInfo={cursoInfo}
+                item={item}
+                cursoId={cursoId}
+              />
+            );
           })}
 
           <div className="w-full my-4 h-auto flex items-center justify-start">

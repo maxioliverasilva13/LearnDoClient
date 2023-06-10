@@ -50,6 +50,8 @@ const CursoInfo = () => {
   const { data: canGetCertData } = useCanGetCertificateQuery({ cursoId });
   const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
+  const soyColaorador = data?.soyColaorador;
+
   const myCreditsNumber = userInfo?.creditos_number;
   const [canUseDiscount, setCanUseDiscount] = useState(false);
   const [useDiscount, setUseDiscount] = useState(false);
@@ -90,6 +92,7 @@ const CursoInfo = () => {
     );
   const [usarCupon, { isLoading: isLoadingUsingCupon }] =
     useLazyUsarCuponQuery();
+  const [handlePay, { isLoading: isLoadingPay }] = useComprareventoMutation();
 
   const isValid = tokenValidateResponse?.esValido == true;
   useEffect(() => {
@@ -110,7 +113,6 @@ const CursoInfo = () => {
     metodoPago: "paypal",
     eventoId: cursoId,
   });
-  const [handlePay, { isLoading: isLoadingPay }] = useComprareventoMutation();
 
   useEffect(() => {
     if (myCreditsNumber >= 10) {
@@ -258,8 +260,8 @@ const CursoInfo = () => {
               onClick={() => getCertificate()}
               className={
                 canGetCertificate
-                  ? "flex w-min items-center font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
-                  : "flex w-min items-center font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed"
+                  ? "flex w-min min-w-max items-center font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                  : "flex w-min min-w-max items-center font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed"
               }
               disabled={gettingCertificate || !canGetCertificate}
             >
@@ -584,12 +586,23 @@ const CursoInfo = () => {
             {data?.modulos?.map((item) => {
               return (
                 <MobileModulo
+                  cursoInfo={cursoInfo}
                   esComprada={esComprada}
                   cursoId={cursoId}
                   {...item}
                 />
               );
             })}
+          </div>
+
+          <div className="w-full h-auto flex items-center justify-end">
+            {soyColaorador && (
+              <Link href={appRoutes.cursoSugerir(cursoInfo?.id)}>
+              <button className="text-white my-5 px-4 py-2 border border-white rounded-full font-semibold cursor-pointer flex file:flex-row items-center transition-all transform hover:scale-105 text-base group-[]:">
+                Colaborar
+              </button>
+              </Link>
+            )}
           </div>
           {/* Calificaciones */}
           {data?.puntuaciones && data?.puntuaciones?.length > 0 && (

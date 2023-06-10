@@ -16,6 +16,8 @@ import { RxCross1 } from "react-icons/rx";
 import { useFilterByNicknameOrEmailQuery } from "store/services/UserService";
 import NoResults from "components/NotFoundPage/NoResults";
 import { BiLinkExternal } from "react-icons/bi";
+import { useWindowDimensions } from "hooks/useMediaQuery";
+import MobileNavbar from "./MobileNavbar";
 
 export default function Navbar() {
   const { noReadsMessages } = useChats();
@@ -44,6 +46,7 @@ export default function Navbar() {
     setExpandedmenu(!expandedMenu);
   };
   const { handleLogout } = useGlobalSlice();
+  const { isMobile, isTablet } = useWindowDimensions();
 
   const renderItems = () => {
     if (rol === "organizador") {
@@ -90,162 +93,252 @@ export default function Navbar() {
   return (
     <>
       {/* Navbar */}
-      <header className="flex bg-[#7b479e] sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px]">
-        {/* Logo */}
-        <div className="px-4">
-          {userInfo?.type === "estudiante" && (
-            <Link href={appRoutes.home()}>
-              <span className="select-none font-bold cursor-pointer text-[20px]">
-                Learn
-                <span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span>
-              </span>
-            </Link>
-          )}
-          {userInfo?.type === "organizador" && (
-            <Link href={appRoutes.dashboard()}>
-              <span className="select-none font-bold cursor-pointer text-[20px]">
-                Learn
-                <span className="px-1 py-2 bg-[#760eff83] rounded-lg">Do</span>
-              </span>
-            </Link>
-          )}
-        </div>
-        <div className="flex lg:hidden mr-5">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-            onClick={() => setMobileMenuOpen((current) => !current)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <RxHamburgerMenu
-              className="h-6 w-6"
-              aria-hidden="true"
-              color="white"
-              size={12}
-            />
-          </button>
-        </div>
-
-        {/* Navigation */}
-        <nav className="hidden lg:flex">{renderItems()}</nav>
-
-        {/* Search bar and user avatar */}
-        <div className="hidden lg:flex items-center px-4">
-          <div className="relative">
-            <input
-              value={query}
-              onChange={(e) => setQuery(e?.target?.value)}
-              type="text"
-              placeholder="Buscar"
-              className="text-white px-4 h-[35px] py-2 outline-none border border-white bg-transparent rounded-l-full rounded-r-full w-[320px]"
-            ></input>
-            {hasQuery && (
-              <div className="w-full h-auto absolute mt-1 top-full left-0 max-h-[400px] overflow-auto bg-white rounded-lg shadow-md p-4 appearsAnimation flex flex-col items-center justify-start gap-2">
-                {filterUsuarios?.length === 0 && (
-                  <NoResults
-                    customSizes="w-[200px]"
-                    message="No se encontraron usuarios"
-                  >
-                    <span className="text-gray-800 font-medium m-auto text-center w-full">
-                      No se encontraron usuarios
+      {isMobile || isTablet ? (
+        <>
+          <header className="flex bg-[#7b479e] sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px]">
+            {/* Logo */}
+            <div className="px-4">
+              {userInfo?.type === "estudiante" && (
+                <Link href={appRoutes.home()}>
+                  <span className="select-none font-bold cursor-pointer text-[20px]">
+                    Learn
+                    <span className="p-2 bg-[#760eff83] rounded-lg ml-1">
+                      Do
                     </span>
-                  </NoResults>
-                )}
-                {filterUsuarios?.length > 0 &&
-                  filterUsuarios?.map((usuario) => {
-                    return (
-                      <div
-                        className="w-full"
-                        onClick={() => {
-                          router.push(appRoutes.userInfoPage(usuario?.id));
-                          setQuery("");
-                        }}
-                        key={`userCard-${usuario?.id}`}
-                      >
-                        <div className="flex w-full rounded-lg transition-all hover:bg-gray-100 p-2 cursor-pointer flex-row gap-2 items-center justify-start">
-                          <div className="relative overflow-hidden min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px]">
-                            <GlobalImage
-                              src={usuario?.imagen}
-                              layout="fill"
-                              objectFit="cover"
-                              className="rounded-full"
-                            />
-                          </div>
-                         <div className="w-full h-auto flex-grow max-w-full overflow-hidden flex flex-col items-start justify-center gap-1">
-                         <span className="text-gray-900 font-medium flex-grow max-w-full truncate">
-                            {usuario?.nickname}
-                          </span>
-                          <span className="text-gray-900 text-sm font-medium flex-grow max-w-full truncate">
-                            {usuario?.type === "estudiante" ? "Estudiante" : "Organizador"}
-                          </span>
-                         </div>
-                          <BiLinkExternal size={25} color="black" />
-                        </div>
+                  </span>
+                </Link>
+              )}
+              {userInfo?.type === "organizador" && (
+                <Link href={appRoutes.dashboard()}>
+                  <span className="select-none font-bold cursor-pointer text-[20px]">
+                    Learn
+                    <span className="px-1 py-2 bg-[#760eff83] rounded-lg">
+                      Do
+                    </span>
+                  </span>
+                </Link>
+              )}
+            </div>
+            {/* Search bar and user avatar */}
+            <div className="flex items-center px-4">
+              <Link href={appRoutes.messages()}>
+                <div className="ml-4 relative">
+                  <button className="flex items-center relative text-sm border-2 border-transparent rounded-full">
+                    <BiMessageAlt size={30} />
+                    {hasNoReadsMessages && (
+                      <div className="absolute text-[8px] text-center flex items-center justify-center rounded-full border border-white right-0 bottom-0 w-[14px] h-[14px] bg-red-500">
+                        <span className="font-semibold">
+                          {noReadsMessages?.length}
+                        </span>
                       </div>
-                    );
-                  })}
-              </div>
-            )}
-          </div>
-          <div className="ml-4 relative flex flex-row items-center">
-            <span className="text-white mx-2 text-[18px] font-semibold">
-              {points}
-            </span>
-            <MdOutlineStars size={30} />
-          </div>
-          <Link href={appRoutes.messages()}>
-            <div className="ml-4 relative">
-              <button className="flex items-center relative text-sm border-2 border-transparent rounded-full">
-                <BiMessageAlt size={30} />
-                {hasNoReadsMessages && (
-                  <div className="absolute text-[8px] text-center flex items-center justify-center rounded-full border border-white right-0 bottom-0 w-[14px] h-[14px] bg-red-500">
-                    <span className="font-semibold">
-                      {noReadsMessages?.length}
+                    )}
+                  </button>
+                </div>
+              </Link>
+              <div className="ml-4 relative">
+                <div
+                  onClick={handleToggleExpandMenu}
+                  className="flex items-center cursor-pointer text-sm border-2 border-transparent rounded-full "
+                >
+                  <span className="mx-2 font-semibold text-[18px] max-w-[150px] overflow-hidden truncate">
+                    {userInfo?.nickname}
+                  </span>
+                  <div className="w-8 h-8 relative rounded-full">
+                    <GlobalImage
+                      src={userInfo?.imagen}
+                      loader={() => userInfo?.imagen}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-full"
+                    />
+                  </div>
+                </div>
+                {expandedMenu && (
+                  <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-white shadow-md flex flex-col items-start justify-start gap-2">
+                    <span
+                      onClick={() => router.push(appRoutes.profile())}
+                      className="text-gray-800 flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-200 rounded-lg"
+                    >
+                      <CgProfile className="mr-2" />
+                      Cuenta
+                    </span>
+                    <span
+                      onClick={() => handleLogout()}
+                      className="text-gray-800 flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-200 rounded-lg"
+                    >
+                      <BiLogOutCircle className="mr-2" />
+                      Salir
                     </span>
                   </div>
                 )}
-              </button>
-            </div>
-          </Link>
-          <div className="ml-4 relative">
-            <div
-              onClick={handleToggleExpandMenu}
-              className="flex items-center cursor-pointer text-sm border-2 border-transparent rounded-full "
-            >
-              <span className="mx-2 font-semibold text-[18px] max-w-[150px] overflow-hidden truncate">
-                {userInfo?.nickname}
-              </span>
-              <div className="w-8 h-8 relative rounded-full">
-                <GlobalImage
-                  src={userInfo?.imagen}
-                  loader={() => userInfo?.imagen}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full"
-                />
               </div>
             </div>
-            {expandedMenu && (
-              <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-white shadow-md flex flex-col items-start justify-start gap-2">
-                <span
-                  onClick={() => router.push(appRoutes.profile())}
-                  className="text-gray-800 flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-200 rounded-lg"
-                >
-                  <CgProfile className="mr-2" />
-                  Cuenta
+          </header>
+
+          <MobileNavbar />
+        </>
+      ) : (
+        <header className="flex bg-[#7b479e] sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px]">
+          {/* Logo */}
+          <div className="px-4">
+            {userInfo?.type === "estudiante" && (
+              <Link href={appRoutes.home()}>
+                <span className="select-none font-bold cursor-pointer text-[20px]">
+                  Learn
+                  <span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span>
                 </span>
-                <span
-                  onClick={() => handleLogout()}
-                  className="text-gray-800 flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-200 rounded-lg"
-                >
-                  <BiLogOutCircle className="mr-2" />
-                  Salir
+              </Link>
+            )}
+            {userInfo?.type === "organizador" && (
+              <Link href={appRoutes.dashboard()}>
+                <span className="select-none font-bold cursor-pointer text-[20px]">
+                  Learn
+                  <span className="px-1 py-2 bg-[#760eff83] rounded-lg">
+                    Do
+                  </span>
                 </span>
-              </div>
+              </Link>
             )}
           </div>
-        </div>
-      </header>
+          <div className="flex lg:hidden mr-5">
+            <button
+              type="button"
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+              onClick={() => setMobileMenuOpen((current) => !current)}
+            >
+              <span className="sr-only">Open main menu</span>
+              <RxHamburgerMenu
+                className="h-6 w-6"
+                aria-hidden="true"
+                color="white"
+                size={12}
+              />
+            </button>
+          </div>
+
+          {/* Navigation */}
+          <nav className="hidden lg:flex">{renderItems()}</nav>
+
+          {/* Search bar and user avatar */}
+          <div className="hidden lg:flex items-center px-4">
+            <div className="relative">
+              <input
+                value={query}
+                onChange={(e) => setQuery(e?.target?.value)}
+                type="text"
+                placeholder="Buscar"
+                className="text-white px-4 h-[35px] py-2 outline-none border border-white bg-transparent rounded-l-full rounded-r-full w-[320px]"
+              ></input>
+              {hasQuery && (
+                <div className="w-full h-auto absolute mt-1 top-full left-0 max-h-[400px] overflow-auto bg-white rounded-lg shadow-md p-4 appearsAnimation flex flex-col items-center justify-start gap-2">
+                  {filterUsuarios?.length === 0 && (
+                    <NoResults
+                      customSizes="w-[200px]"
+                      message="No se encontraron usuarios"
+                    >
+                      <span className="text-gray-800 font-medium m-auto text-center w-full">
+                        No se encontraron usuarios
+                      </span>
+                    </NoResults>
+                  )}
+                  {filterUsuarios?.length > 0 &&
+                    filterUsuarios?.map((usuario) => {
+                      return (
+                        <div
+                          className="w-full"
+                          onClick={() => {
+                            router.push(appRoutes.userInfoPage(usuario?.id));
+                            setQuery("");
+                          }}
+                          key={`userCard-${usuario?.id}`}
+                        >
+                          <div className="flex w-full rounded-lg transition-all hover:bg-gray-100 p-2 cursor-pointer flex-row gap-2 items-center justify-start">
+                            <div className="relative overflow-hidden min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px]">
+                              <GlobalImage
+                                src={usuario?.imagen}
+                                layout="fill"
+                                objectFit="cover"
+                                className="rounded-full"
+                              />
+                            </div>
+                            <div className="w-full h-auto flex-grow max-w-full overflow-hidden flex flex-col items-start justify-center gap-1">
+                              <span className="text-gray-900 font-medium flex-grow max-w-full truncate">
+                                {usuario?.nickname}
+                              </span>
+                              <span className="text-gray-900 text-sm font-medium flex-grow max-w-full truncate">
+                                {usuario?.type === "estudiante"
+                                  ? "Estudiante"
+                                  : "Organizador"}
+                              </span>
+                            </div>
+                            <BiLinkExternal size={25} color="black" />
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
+            </div>
+            <div className="ml-4 relative flex flex-row items-center">
+              <span className="text-white mx-2 text-[18px] font-semibold">
+                {points}
+              </span>
+              <MdOutlineStars size={30} />
+            </div>
+            <Link href={appRoutes.messages()}>
+              <div className="ml-4 relative">
+                <button className="flex items-center relative text-sm border-2 border-transparent rounded-full">
+                  <BiMessageAlt size={30} />
+                  {hasNoReadsMessages && (
+                    <div className="absolute text-[8px] text-center flex items-center justify-center rounded-full border border-white right-0 bottom-0 w-[14px] h-[14px] bg-red-500">
+                      <span className="font-semibold">
+                        {noReadsMessages?.length}
+                      </span>
+                    </div>
+                  )}
+                </button>
+              </div>
+            </Link>
+            <div className="ml-4 relative">
+              <div
+                onClick={handleToggleExpandMenu}
+                className="flex items-center cursor-pointer text-sm border-2 border-transparent rounded-full "
+              >
+                <span className="mx-2 font-semibold text-[18px] max-w-[150px] overflow-hidden truncate">
+                  {userInfo?.nickname}
+                </span>
+                <div className="w-8 h-8 relative rounded-full">
+                  <GlobalImage
+                    src={userInfo?.imagen}
+                    loader={() => userInfo?.imagen}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-full"
+                  />
+                </div>
+              </div>
+              {expandedMenu && (
+                <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-white shadow-md flex flex-col items-start justify-start gap-2">
+                  <span
+                    onClick={() => router.push(appRoutes.profile())}
+                    className="text-gray-800 flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-200 rounded-lg"
+                  >
+                    <CgProfile className="mr-2" />
+                    Cuenta
+                  </span>
+                  <span
+                    onClick={() => handleLogout()}
+                    className="text-gray-800 flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-200 rounded-lg"
+                  >
+                    <BiLogOutCircle className="mr-2" />
+                    Salir
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+      )}
       <Dialog
         as="div"
         className="lg:hidden"

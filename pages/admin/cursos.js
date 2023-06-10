@@ -75,7 +75,7 @@ const Tarjeta = ({
       </div>
       <div className="w-full flex flex-grow h-auto flex-col justify-center md:justify-start items-center">
         {tipo === "curso" && (
-          <div className="mb-4 w-full md:w-auto">
+          <div className="mb-4 w-auto flex md:justify-start justify-center">
             <Stars
               stars={stars}
               countStars={countPuntuaciones}
@@ -86,20 +86,20 @@ const Tarjeta = ({
           </div>
         )}
 
-        <span className=" w-full md:w-auto max-w-full truncate overflow-hidden text-2xl text-white mb-4">
+        <span className=" w-full md:w-auto max-w-full truncate overflow-hidden text-2xl text-white mb-4 md:text-left text-center">
           {nombreCurso}
         </span>
-        <span className=" text-base font-medium text-white w-full md:w-auto">
+        <span className=" text-base font-medium text-white w-full md:w-auto md:text-left text-center">
           {descripcionCurso}
         </span>
         {es_pago === 1 && (
           <>
             {tipo === "curso" && (
-              <span className=" text-base font-medium text-white w-full md:w-auto">
+              <span className=" text-base font-medium text-white w-full md:w-auto md:text-left text-center">
                 Estudiantes: {countEstudiantes}
               </span>
             )}
-            <span className=" text-base font-medium text-white w-full md:w-auto">
+            <span className=" text-base font-medium text-white w-full md:w-auto md:text-left text-center">
               US$ {precio}
             </span>
           </>

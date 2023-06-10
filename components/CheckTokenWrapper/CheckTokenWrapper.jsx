@@ -12,11 +12,15 @@ import { initPusher } from "utils/pusher";
 import { getToken } from "utils/tokenUtils";
 import "react-toastify/dist/ReactToastify.min.css";
 import clsx from "clsx";
+import { handleSetIsOffline, handleSetIsOnline } from "utils/offline";
+import { Database_Open, initializeDb } from "utils/indexesDb";
+import { useWindowDimensions } from "hooks/useMediaQuery";
 
 const CheckTokenWrapper = ({ children }) => {
-  const { userInfo, handleSetUserInfo } = useGlobalSlice();
+  const { userInfo, handleSetUserInfo, changeOnlineStatus } = useGlobalSlice();
   const { pathname, push } = useRouter();
   const [isChecking, setIsChecking] = useState(true);
+  const hasWindow = typeof window !== "undefined";
 
   const isPublicPath = listOfPublicPath.includes(pathname);
   const isAuthPage = listOfAuthPages.includes(pathname);
@@ -25,6 +29,21 @@ const CheckTokenWrapper = ({ children }) => {
       initPusher();
     }
   }, [userInfo]);
+
+  const { isMobile, isTablet } = useWindowDimensions();
+
+  const handleInitializeDB = async () => {
+    await Database_Open();
+  }
+
+  useEffect(() => {
+    if (hasWindow) {
+      // console.log("has window")
+      // initializeDb();
+      handleInitializeDB();
+    }
+  }, [hasWindow]);
+
   const isMessagePage = pathname === appRoutes.messages();
 
   const [loadCurrentUser, { isLoading }] = useLazyGetCurrentUserQuery();
@@ -69,6 +88,18 @@ const CheckTokenWrapper = ({ children }) => {
     }
   }, [userInfo, isPublicPath]);
 
+  useEffect(() => {
+    if (window) {
+      window.addEventListener("offline", () => {
+        changeOnlineStatus(false);
+      });
+
+      window.addEventListener("online", () => {
+        changeOnlineStatus(true);
+      });
+    }
+  }, []);
+
   if (isLoading || isChecking) {
     return <Spinner />;
   }
@@ -93,7 +124,9 @@ const CheckTokenWrapper = ({ children }) => {
         transition={Slide}
       />
       <div className="max-h-full flex-grow w-full h-full">
-        <div className={clsx(!isMessagePage ? "min-h-screen": "h-full")}>{children}</div>
+        <div className={clsx(!isMessagePage ? "min-h-screen" : "h-full", isMessagePage && (isMobile || isTablet) && "pb-[70px]")}>
+          {children}
+        </div>
         {!isPublicPath && !isMessagePage && <Footer />}
       </div>
     </div>

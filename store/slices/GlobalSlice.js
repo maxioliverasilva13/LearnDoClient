@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { clearToken } from "utils/tokenUtils";
+import { getUserInfoFromStorage, handleGetIsOnline } from "utils/offline";
 
 const initialState = {
-  userInfo: null,
+  userInfo: getUserInfoFromStorage() || null,
   isLoading: false,
   error: null,
+  isOnline: (handleGetIsOnline() || "true") === "true",
 };
 
 export const GlobalSlice = createSlice({
@@ -20,6 +21,9 @@ export const GlobalSlice = createSlice({
     },
     setError(state, {payload}) {
       state.error = payload;
+    },
+    setOnline(state, {payload}) {
+      state.isOnline = payload;
     }
   },
   extraReducers: {},
@@ -36,6 +40,10 @@ export const useGlobalActions = () => {
     dispatch(GlobalSlice.actions.setIsLoading(isLoading));
   };
 
+  const handleSetOnlineStatus = (value) => {
+    dispatch(GlobalSlice.actions.setOnline(value));
+  };
+
   const handleSetError = (error) => {
     dispatch(GlobalSlice.actions.setError(error));
   };
@@ -44,6 +52,7 @@ export const useGlobalActions = () => {
     handleSetUserInfo,
     handleSetLoading,
     handleSetError,
+    handleSetOnlineStatus,
   };
 };
 

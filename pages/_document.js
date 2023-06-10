@@ -8,11 +8,14 @@ class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <meta name="theme-color" content="#000000" />
-          <link rel="shortcut icon" href="/img/brand/favicon.ico" />
+          <link rel="shortcut icon" href="/learnDoLogo.png" />
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="icon" href="/learnDoLogo.png" />
+
           <link
             rel="apple-touch-icon"
             sizes="76x76"
-            href="/img/brand/apple-icon.png"
+            href="/learnDoLogo.png"
           />
         </Head>
         <body className="text-blueGray-700 antialiased">
