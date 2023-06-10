@@ -90,6 +90,8 @@ export default class MyApp extends App {
               rel="stylesheet"
             />
             <script src="https://cdn.tailwindcss.com"></script>
+            <script src="https://apis.google.com/js/api.js"></script>
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
           </Head>
           <CheckTokenWrapper>
             <LoadingWrapper>
