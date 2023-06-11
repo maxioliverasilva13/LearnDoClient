@@ -28,9 +28,12 @@ export default function Dashboard() {
   }, [prueba]);
 
   for (let i = 0; i < 7; i++) {
-    const month = subMonths(currentDate, i);
-    const formattedMonth = format(month, "MMMM yyyy");
-    months.push(formattedMonth);
+    if (subMonths) {
+      const month = subMonths(currentDate, i);
+      const formattedMonth = format(month, "MMMM yyyy");
+      months.push(formattedMonth);
+    }
+    
   }
 
   const handleSetAlumnos = () => {

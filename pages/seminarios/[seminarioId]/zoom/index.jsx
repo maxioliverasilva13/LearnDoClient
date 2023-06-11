@@ -84,6 +84,7 @@ const Zoom = () => {
     const signature = await getSignature(meetingNumber);
     setLoadingZoom(false);
     if (signature) {
+      // console.log(meetingNumber, zoomPass, signature, ZoomMtg)
       startMeeting(meetingNumber, zoomPass, signature, ZoomMtg);
 
     } else {
@@ -101,7 +102,7 @@ const Zoom = () => {
       success: (success) => {
         ZoomMtg.join({
           signature: signature,
-          sdkKey: "9wkmEojHQpmSAXBLrGl6xQ", 
+          sdkKey: "B_jTenOR5Ovl9KNWo4Qeg", 
           meetingNumber: meetingNumber,
           passWord: zoomPass,
           userName: userInfo?.nombre,

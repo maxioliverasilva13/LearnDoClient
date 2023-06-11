@@ -25,6 +25,7 @@ import DealsCard from "components/DealsCard/DealsCard";
 import clsx from "clsx";
 import { handleGeetDisccount } from "utils/cupon";
 import GoogleCalendarAuthBtn from "components/Button/GoogleCalendarAuthBtn";
+import CardGananciasAcumuladas from "components/Cards/CardGananciasAcumuladas";
 
 const SeminarioInfo = () => {
   const router = useRouter();
@@ -185,7 +186,7 @@ const SeminarioInfo = () => {
   };
 
   function onClickLink(){
-    router.replace(appRoutes.zoom(seminarioId))
+    router.push(appRoutes.zoom(seminarioId))
 }
 
 
@@ -211,7 +212,7 @@ const SeminarioInfo = () => {
               </div>
               <span className="text-white font-semibold text-[28px]">
                 {seminarioInfo?.nombre}
-              </span>
+              </span> 
 
               {
                 userInfo?.id == seminarioInfo.organizador_id && (
@@ -231,7 +232,7 @@ const SeminarioInfo = () => {
                 <p>Fecha: {seminarioInfo?.fecha}</p>
                 <p>Hora: {seminarioInfo?.hora}</p>
 
-                <p onClick={()=> onClickLink()}>URL acceso: <a className="cursor-pointer text-sky-600	text-xl">acceder</a> </p>
+                <p className="flex items-center gap-2" onClick={()=> onClickLink()}>URL acceso: <a className="cursor-pointer text-sky-600	text-xl">Link</a> </p>
 
                 {isValidCupon === false && cuponToken && !esComprado && (
                   <div className="w-full flex flex-row items-center justify-start gap-2">
@@ -293,14 +294,7 @@ const SeminarioInfo = () => {
                         </span>
                       </Link>
                     ) : (
-                      <a
-                        className="cursor-pointer h-full"
-                        href={`https://` + seminarioInfo.link}
-                      >
-                        <p className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
-                          Acceder a la página
-                        </p>
-                      </a>
+                      <div />
                     ))}
                 </div>
  
