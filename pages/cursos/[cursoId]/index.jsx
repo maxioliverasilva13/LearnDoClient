@@ -43,6 +43,8 @@ import DealsCard from "components/DealsCard/DealsCard";
 import { handleGeetDisccount } from "utils/cupon";
 import UserCard from "components/UserCard/UserCard";
 
+import { isMobile } from "react-device-detect";
+import MobileModulo from "components/MobileModulo/MobileModulo";
 
 const CursoInfo = () => {
   const router = useRouter();
@@ -53,6 +55,8 @@ const CursoInfo = () => {
   const { data, isLoading } = useGetCompleteCursoInfoQuery({ cursoId });
   const { data: canGetCertData } = useCanGetCertificateQuery({ cursoId });
   const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
+
+  const soyColaorador = data?.soyColaorador;
 
   const myCreditsNumber = userInfo?.creditos_number;
   const [canUseDiscount, setCanUseDiscount] = useState(false);
@@ -94,6 +98,7 @@ const CursoInfo = () => {
     );
   const [usarCupon, { isLoading: isLoadingUsingCupon }] =
     useLazyUsarCuponQuery();
+  const [handlePay, { isLoading: isLoadingPay }] = useComprareventoMutation();
 
   const isValid = tokenValidateResponse?.esValido == true;
   useEffect(() => {
@@ -114,7 +119,6 @@ const CursoInfo = () => {
     metodoPago: "paypal",
     eventoId: cursoId,
   });
-  const [handlePay, { isLoading: isLoadingPay }] = useComprareventoMutation();
 
   useEffect(() => {
     if (myCreditsNumber >= 10) {
@@ -243,48 +247,71 @@ const CursoInfo = () => {
 
   const renderEstudianteProgress = () => {
     return (
-      <div className="w-full md: px-[150px]  my-10 flex flex-row items-center justify-between ">
-        <div className="flex gap-5 items-center">
-          <div className="w-auto h-auto flex text-white gap-4 flex-row items-center justify-start">
+      <div className="w-full lg:px-[150px] px-5  my-10 gap-5 flex lg:flex-row flex-col items-center justify-between ">
+        <div className="flex lg:flex-row flex-col gap-5 items-center">
+          <div className="w-auto h-auto flex text-white md:flex-row flex-col gap-5 items-center justify-start">
             <span>Progreso</span>
             <div className="md:w-[420px] h-[20px]">
-              <Progress porcentage={progresoCurso} color={generateColorProggress(cursoInfo.porcentaje_aprobacion, progresoCurso)} />
+              <Progress
+                porcentage={progresoCurso}
+                color={generateColorProggress(
+                  cursoInfo.porcentaje_aprobacion,
+                  progresoCurso
+                )}
+              />
 
-              <ShareProgress nombreUsuario={userInfo?.nombre} progress={progresoCurso} courseName={cursoInfo?.nombre} averageApprove={cursoInfo?.porcentaje_aprobacion}></ShareProgress>
-
+              <ShareProgress
+                nombreUsuario={userInfo?.nombre}
+                progress={progresoCurso}
+                courseName={cursoInfo?.nombre}
+                averageApprove={cursoInfo?.porcentaje_aprobacion}
+              ></ShareProgress>
             </div>
           </div>
 
-          <div className="flex flex-col text-white justify-center items-center">
-
-
-
-          </div>
-          {
-            !certificateID ? (
-              <button type="button" onClick={() => getCertificate()} className={canGetCertificate ? 'flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]' : 'flex items-center w-full font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed'} disabled={gettingCertificate || !canGetCertificate}>
-                Obtener Certificado
-                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
-                </svg>
-                {
-                  gettingCertificate && (
-                    <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-[#780EFF] fill-[#780EFF]" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                      <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                    </svg>
-                  )
-                }
-
-              </button>
-            ) : <button type="button" onClick={() => downloadCertificate()} className={'flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]'}>
+          <div className="flex flex-col text-white justify-center items-center"></div>
+          {!certificateID ? (
+            <button
+              type="button"
+              onClick={() => getCertificate()}
+              className={
+                canGetCertificate
+                  ? "flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                  : "flex items-center w-full font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed"
+              }
+              disabled={gettingCertificate || !canGetCertificate}
+            >
+              Obtener Certificado
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="ml-2 w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"
+                />
+              </svg>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => downloadCertificate()}
+              className={
+                "flex items-center w- font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+              }
+            >
               Descargar certificado
               <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
               </svg>
 
 
-            </button>
+            </button>)
 
 
           }
@@ -427,14 +454,14 @@ const CursoInfo = () => {
               </button>
             </div>
           </Modal>
-          <div className="w-full appearsAnimation h-auto md:gap-[50px] flex flex-row items-start justify-center">
-            <div className="flex flex-col gap-2">
-              <div className="w-[520px] h-[350px] rounded-lg relative overflow-hidden">
+          <div className="w-full appearsAnimation h-auto md:gap-[50px] flex lg:flex-row flex-col lg:items-start items-center justify-center">
+            <div className="flex lg:w-auto w-full flex-col lg:items-start items-center lg:mb-0 mb-5 gap-2">
+              <div className="md:w-[520px] md:min-w-[520px] max-w-[520px] w-full h-[350px] rounded-[20px] relative overflow-hidden">
                 <GlobalImage
                   src={cursoImage}
                   loader={() => cursoImage}
                   className="w-full h-full"
-                  objectFit="object-scale-down"
+                  objectFit="cover"
                   layout="fill"
                 />
               </div>
@@ -547,7 +574,7 @@ const CursoInfo = () => {
                 </div>
               )}
               {esComprada && (
-                <div className="w-full h-auto items-center mt-4 justify-start">
+                <div className="lg:w-full w-auto h-auto items-center mt-4 justify-start">
                   <ShareButton eventoId={cursoInfo?.id} />
                 </div>
               )}
@@ -556,101 +583,27 @@ const CursoInfo = () => {
           {esComprada && renderEstudianteProgress()}
           {Categorias}
 
-          <div className="w-full mt-[50px] flex h-auto flex-row items-start justify-start">
-            <div className="flex flex-col flex-grow w-full">
-              <span className="w-auto mb-6 text-[30px] font-semibold text-white pl-3 border-l-4 border-[#780EFF]">
-                Modulos
-              </span>
+          <div className="w-full mt-5  h-auto flex flex-col gap-2 items-center overflow-auto justify-start">
+            {data?.modulos?.map((item) => {
+              return (
+                <MobileModulo
+                  cursoInfo={cursoInfo}
+                  esComprada={esComprada}
+                  cursoId={cursoId}
+                  {...item}
+                />
+              );
+            })}
+          </div>
 
-              <div className="w-full h-auto flex flex-col itesm-start justify-start gap-y-[30px]">
-                {data?.modulos &&
-                  data.modulos?.map((modulo) => {
-                    const isActiveModule = modulo?.id === activeModuloId;
-                    return (
-                      <div
-                        onClick={() => setActiveModulo(modulo?.id)}
-                        className={clsx(
-                          "md:w-[90%] cursor-pointer relative bg-opacity-50 rounded-[12px] h-[120px] p-4 flex flex-row items-start justify-start",
-                          isActiveModule
-                            ? "moduloContainerActive"
-                            : "moduloContainer"
-                        )}
-                      >
-                        <div className="border-b-[4px] border-[#780EFF] flex-grow h-full flex flex-col items-center justify-start">
-                          <span className="w-auto text-[18px] text-center max-w-full font-semibold text-white ">
-                            {modulo.nombre}
-                          </span>
-                          <span className="w-auto text-[14px] my-4 text-center max-w-full font-semibold text-white ">
-                            Clases:{modulo.clases?.length}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                {data?.modulos?.length === 0 && (
-                  <div className="my-10 w-full py-4 flex items-center justify-center">
-                    <span className="text-white">
-                      No se encontraron modulos para este curso
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col flex-grow w-full">
-              <span className="w-auto mb-6 text-[30px] font-semibold text-white pl-3 border-l-4 border-[#780EFF]">
-                Clases
-              </span>
-              <div className="w-full h-auto flex flex-col itesm-start justify-start gap-y-[30px]">
-                {activeModulo &&
-                  activeModulo?.clases?.map((clase) => {
-                    return (
-                      <div
-                        key={`clase-${clase?.id}`}
-                        onClick={() =>
-                          router.push(
-                            appRoutes.clasePage(clase?.id, cursoInfo?.id)
-                          )
-                        }
-                      >
-                        <ClaseCard clase={clase} />
-                      </div>
-                    );
-                  })}
-
-                {activeModulo?.evaluacionId && esComprada && (
-                  <div className="w-full flex items-center flex-col gap-2 justify-center">
-                    {activeModulo?.calificacion > 0 && (
-                      <div className="flex flex-row items-center gap-1">
-                        <AiFillCheckCircle className="text-green-500 text-[18px]" />
-                        <span className="text-white font-medium">
-                          Calificacion en este modulo:{" "}
-                          <PuntuacionText
-                            puntuacion={activeModulo?.calificacion}
-                          />
-                        </span>
-                      </div>
-                    )}
-                    <span
-                      onClick={() =>
-                        setEvaluacionToDo(activeModulo?.evaluacionId)
-                      }
-                      className="text-[20px] cursor-pointer w-[260px] font-Gotham text-center py-3 text-white rounded-full border-0 bg-[#780EFF]"
-                    >
-                      {activeModulo?.calificacion === 0
-                        ? "Realizar evaluacion"
-                        : "Rehacer evaluacion"}
-                    </span>
-                  </div>
-                )}
-                {(!activeModulo || activeModulo?.clases?.length === 0) && (
-                  <div className="my-10 w-full py-4 flex items-center justify-center">
-                    <span className="text-white">
-                      No se encontraron clases para este modulo
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className="w-full h-auto flex items-center justify-end">
+            {soyColaorador && (
+              <Link href={appRoutes.cursoSugerir(cursoInfo?.id)}>
+                <button className="text-white my-5 px-4 py-2 border border-white rounded-full font-semibold cursor-pointer flex file:flex-row items-center transition-all transform hover:scale-105 text-base group-[]:">
+                  Colaborar
+                </button>
+              </Link>
+            )}
           </div>
           {/* Calificaciones */}
           {data?.puntuaciones && data?.puntuaciones?.length > 0 && (
@@ -658,7 +611,7 @@ const CursoInfo = () => {
               <span className="text-white font-semibold text-[30px]">
                 Puntuaciones
               </span>
-              <div className="w-auto h-auto bg-opacity-20 gap-x-8 flex px-10 py-8 rounded-[18px] bg-gray-50 flex-row items-center justify-center">
+              <div className="w-auto h-auto bg-opacity-20 gap-x-8 flex px-10 py-8 rounded-[18px] bg-gray-50 flex-row items-center justify-center flex-wrap">
                 {data?.puntuaciones?.map((item, index) => {
                   if (index > 2) return null;
                   return (

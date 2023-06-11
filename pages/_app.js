@@ -6,7 +6,7 @@ import Head from "next/head";
  
 // import PageChange from "components/PageChange/PageChange.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "styles/tailwind.css";
+// import "styles/tailwind.css";
 import { Provider } from "react-redux";
 import store from "store/store";
 import CheckTokenWrapper from "components/CheckTokenWrapper/CheckTokenWrapper";
@@ -63,7 +63,6 @@ export default class MyApp extends App {
   }
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
-
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
@@ -90,6 +89,8 @@ export default class MyApp extends App {
               rel="stylesheet"
             />
             <script src="https://cdn.tailwindcss.com"></script>
+            <script src="https://apis.google.com/js/api.js"></script>
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
           </Head>
           <CheckTokenWrapper>
             <LoadingWrapper>

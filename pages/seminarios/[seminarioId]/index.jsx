@@ -24,7 +24,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import DealsCard from "components/DealsCard/DealsCard";
 import clsx from "clsx";
 import { handleGeetDisccount } from "utils/cupon";
-import CardGananciasAcumuladas from "components/Cards/CardGananciasAcumuladas";
+import GoogleCalendarAuthBtn from "components/Button/GoogleCalendarAuthBtn";
 
 const SeminarioInfo = () => {
   const router = useRouter();
@@ -94,6 +94,9 @@ const SeminarioInfo = () => {
     const response = await handlePay({
       ...values,
       useDiscount: useDiscount,
+    })
+    .then((res) => {
+      // createEvent
     });
     if (response?.data?.ok == true) {
       if (useDiscount) {
@@ -113,10 +116,10 @@ const SeminarioInfo = () => {
       return null;
     }
     return (
-      <div className="w-full h-auto flex flex-col items-start justify-center gap-y-4 md:px-28">
+      <div className="lg:w-full mt-10 m-auto w-[80%] h-auto flex flex-col items-start justify-center gap-y-4 lg:px-28">
         <span className="text-white font-semibold text-[20px]">Categorias</span>
 
-        <div className="w-full h-auto flex flex-row items-center justify-start flex-wrap gap-2">
+        <div className="lg:w-full w-[80%] h-auto flex flex-row items-center justify-start flex-wrap gap-2">
           {data?.categorias?.map((categoria, index) => {
             return (
               <span
@@ -194,10 +197,10 @@ const SeminarioInfo = () => {
       return <NotFoundPage message="Seminario no encontrado" />;
     } else {
       return (
-        <div className="flex flex-col w-full h-auto sm:px-12 pt-28">
-          <div className="w-full h-auto md:gap-14 flex flex-col flex-wrap md:flex-nowrap md:flex-row items-center justify-center">
-            <div className="flex flex-col gap-2">
-              <div className="w-[520px] h-[350px] rounded-lg relative overflow-hidden">
+        <div className="flex flex-col w-full h-auto px-5 lg:px-12 pt-28">
+          <div className="w-full h-auto lg:gap-14 flex flex-col flex-wrap lg:flex-nowrap lg:flex-row items-center justify-center">
+            <div className="flex lg:w-auto w-[80%] flex-col gap-2">
+              <div className="lg:m-0 m-auto w-full lg:w-[520px] lg:min-w-[520px] h-[350px] rounded-lg relative overflow-hidden">
                 <GlobalImage
                   src={seminarioInfo?.imagen}
                   loader={() => seminarioInfo?.imagen}
@@ -217,7 +220,7 @@ const SeminarioInfo = () => {
               }
             </div>
 
-            <div className="w-full md:max-w-[500px] flex flex-col md:items-center justify-start">
+            <div className="w-[80%] lg:mt-0 mt-4 lg:max-w-[500px] flex flex-col lg:items-center justify-start">
               <span className="text-white italic font-normal text-[28px] leading-[30px]">
                 {formatCursoDescripcion(seminarioInfo?.descripcion)}
               </span>
@@ -248,8 +251,9 @@ const SeminarioInfo = () => {
                   </button>
                 </div>
               )}
-              <div className="w-full flex items-center gap-6">
-                <div className="flex items-center h-full">
+
+              <div className="w-auto flex lg:flex-row flex-col  lg:items-center items-start lg:gap-6 gap-2">
+                <div className="flex h-full lg:flex-row flex-col lg:items-center items-start">
                   {!esComprado &&
                     (seminarioInfo?.es_pago === 1 ? (
                       <span
@@ -265,12 +269,10 @@ const SeminarioInfo = () => {
                         Gratuito
                       </span>
                     ))}
-                </div>
-                <div className="h-max">
-                  {!esComprado && seminarioInfo?.es_pago === 0 && (
+                    {!esComprado && seminarioInfo?.es_pago === 0 && (
                     <span
                       onClick={() => pagar(valuesPay)}
-                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF]"
                     >
                       Comprar
                     </span>
@@ -282,20 +284,32 @@ const SeminarioInfo = () => {
                         className="cursor-pointer"
                         href={appRoutes.mapaSeminarios()} // falta implementar una forma/modal de ver la ubicación sólo de éste seminario en específico
                       >
-                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
+                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-5 py-3 text-white rounded-full border-0 bg-[#780EFF]">
                           Ver la Ubicación
                         </span>
                       </Link>
                     ) : (
                       <a
-                        className="cursor-pointer"
+                        className="cursor-pointer h-full"
                         href={`https://` + seminarioInfo.link}
                       >
-                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
+                        <p className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
                           Acceder a la página
-                        </span>
+                        </p>
                       </a>
                     ))}
+                </div>
+ 
+                <div>
+                  { (esComprado || seminarioInfo?.es_pago === 0) &&
+                  <GoogleCalendarAuthBtn 
+                    nombre={seminarioInfo?.nombre}
+                    descripcion={seminarioInfo?.descripcion}
+                    duracion={seminarioInfo?.duracion}
+                    fecha={seminarioInfo?.fecha}
+                    hora={seminarioInfo?.hora}
+                    link={seminarioInfo?.link}
+                    />}
                 </div>
                 <div className="">
                   {userInfo?.id !== seminarioInfo.organizador_id &&

@@ -2,7 +2,7 @@ import useGlobalSlice from "hooks/useGlobalSlice";
 import { useEffect } from "react";
 import { useGetMessagesQuery } from "store/services/MessageService";
 import { formatChannelMessageSendName, subscribe } from "utils/pusher";
-import messageSound from "../../sounds/Notification.mp3";
+// import messageSound from "../../sounds/Notification.mp3";
 import useSound from "use-sound";
 import useChats from "hooks/useChats";
 import Image from "next/image";
@@ -13,7 +13,7 @@ import { listOfPublicPath } from "utils/pageUtils";
 let addedEvents = false;
 const MessageWrapper = ({ children }) => {
   const { userInfo } = useGlobalSlice();
-  const [play] = useSound(messageSound);
+  // const [play] = useSound(messageSound);
   const {
     handleAddMessage,
     handleAddTemporalMessage,
@@ -48,7 +48,7 @@ const MessageWrapper = ({ children }) => {
 
         subscription.bind("createMessage", (data) => {
           const newMessage = data?.message;
-          play();
+          // play();
           handleAddMessage({
             chatId: item?.chatId,
             message: newMessage,

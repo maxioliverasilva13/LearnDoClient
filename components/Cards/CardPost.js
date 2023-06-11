@@ -114,26 +114,24 @@ export default function CardPost({
     <>
       <div className="flex flex-col w-[80%] justify-center items-center p-4 gap-4 rounded-lg transition ease-in-out delay-150 ">
         <div
-          className="flex justify-between  rounded-lg mx-4 md:mx-auto px-4  w-full py-8 bg-[#31174a9f]"
+          className="md:flex-row flex-col flex justify-between  rounded-lg mx-4 md:mx-auto px-4  w-full py-8 bg-[#31174a9f]"
           key={post.id}
         >
-          <div className="flex items-start px-4 py-6">
+          <div className="flex md:flex-row flex-col md:items-start items-center px-4 py-6">
             <img
               className="w-28 h-28 rounded-full object-cover mr-4 shadow "
               src={post.user.imagen}
               alt="avatar"
             />
-            <div className="w-full ml-3">
-              <div className="flex items-center justify-between w-full">
-                <h2 className="text-lg font-semibold text-white font-medium mt-1 text-2xl">
+            <div className="w-full md:ml-3 flex flex-col md:items-start items-center">
+                <h2 className="text-white w-full md:text-left text-center font-medium mt-1 text-2xl">
                   {post.nombre}{" "}
                 </h2>
-              </div>
-              <div className="mt-3 text-left text-white text-sm  ">{post.contenido}</div>
+              <div className="md:mt-3 md:text-left text-center text-white text-sm  ">{post.contenido}</div>
             </div>
           </div>
-          <div className="mt-4 flex flex-col justify-between items-end">
-            <div className="flex justify-center items-center">
+          <div className="mt-4 flex flex-col justify-between md:items-end items-center">
+            <div className="flex justify-center md:w-auto w-full items-center">
               <p className="text-white mr-5 min-w-fit max-w-[200px] overflow-hidden truncate"> {post.user.nombre} </p>
               <p className="text-white mr-5 min-w-fit max-w-[200px] overflow-hidden truncate"> {formatDate(post.created_at)} </p>
 
@@ -193,7 +191,7 @@ export default function CardPost({
             </div>
 
             <div
-              className="flex mr-2 text-white text-sm mr-8"
+              className="flex text-white text-sm md:my-0 my-4 md:mr-8"
               onClick={toggleComments}
             >
               <svg
@@ -295,7 +293,7 @@ export default function CardPost({
                             </div>
                           </footer>
 
-                          <div className="flex justify-start ml-16">
+                          <div className="flex justify-start md:ml-16 ml-2">
                             <p className="text-white text-left dark:text-gray-400">
                               {comment.contenido}
                             </p>
