@@ -216,6 +216,9 @@ const SeminarioInfo = () => {
                 <p>Modalidad: Virtual</p>
                 <p>Profesor: {data?.profesor}</p>
                 <p>URL acceso: {seminarioInfo?.link}</p>
+                <p>Fecha: {seminarioInfo?.fecha}</p>
+                <p>Hora: {seminarioInfo?.hora}</p>
+
 
                 {isValidCupon === false && cuponToken && !esComprado && (
                   <div className="w-full flex flex-row items-center justify-start gap-2">

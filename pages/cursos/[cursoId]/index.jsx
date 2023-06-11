@@ -246,7 +246,7 @@ const CursoInfo = () => {
         <div className="flex lg:flex-row flex-col gap-5 items-center">
           <div className="w-auto h-auto flex text-white md:flex-row flex-col gap-5 items-center justify-start">
             <span>Progreso</span>
-            <div className="md:w-[420px] h-[20px]">
+            <div className="md:w-[420px] h-[20px] w-[300px]">
               <Progress
                 porcentage={progresoCurso}
                 color={generateColorProggress(
@@ -254,13 +254,6 @@ const CursoInfo = () => {
                   progresoCurso
                 )}
               />
-
-              <ShareProgress
-                nombreUsuario={userInfo?.nombre}
-                progress={progresoCurso}
-                courseName={cursoInfo?.nombre}
-                averageApprove={cursoInfo?.porcentaje_aprobacion}
-              ></ShareProgress>
             </div>
           </div>
 
@@ -573,6 +566,15 @@ const CursoInfo = () => {
             </div>
           </div>
           {esComprada && renderEstudianteProgress()}
+          {esComprada && <div className="w-full my-4 md:m-0 m-auto md:w-auto w-full">
+          <ShareProgress
+                nombreUsuario={userInfo?.nombre}
+                progress={progresoCurso}
+                courseName={cursoInfo?.nombre}
+                averageApprove={cursoInfo?.porcentaje_aprobacion}
+              ></ShareProgress>
+          </div>}
+
           {Categorias}
 
           <div className="w-full mt-5  h-auto flex flex-col gap-2 items-center overflow-auto justify-start">
