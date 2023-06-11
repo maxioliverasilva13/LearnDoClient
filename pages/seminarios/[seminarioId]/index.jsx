@@ -36,10 +36,11 @@ const SeminarioInfo = () => {
   });
   const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
-  const esComprado = data?.comprado;
 
   const [canUseDiscount, setCanUseDiscount] = useState(false);
   const myCreditsNumber = userInfo?.creditos_number;
+
+  const esComprado = data?.comprado;
 
   useEffect(() => {
     if (myCreditsNumber >= 10) {
@@ -183,6 +184,11 @@ const SeminarioInfo = () => {
     window.location.reload();
   };
 
+  function onClickLink(){
+    router.replace(appRoutes.zoom(seminarioId))
+}
+
+
   const renderContent = () => {
     if (isLoading) {
       return null;
@@ -206,6 +212,12 @@ const SeminarioInfo = () => {
               <span className="text-white font-semibold text-[28px]">
                 {seminarioInfo?.nombre}
               </span>
+
+              {
+                userInfo?.id == seminarioInfo.organizador_id && (
+                  <CardGananciasAcumuladas gananciasAcumuladas={seminarioInfo.ganancias_acumuladas}></CardGananciasAcumuladas>
+                )
+              }
             </div>
 
             <div className="w-[80%] lg:mt-0 mt-4 lg:max-w-[500px] flex flex-col lg:items-center justify-start">
@@ -219,6 +231,7 @@ const SeminarioInfo = () => {
                 <p>Fecha: {seminarioInfo?.fecha}</p>
                 <p>Hora: {seminarioInfo?.hora}</p>
 
+                <p onClick={()=> onClickLink()}>URL acceso: <a className="cursor-pointer text-sky-600	text-xl">acceder</a> </p>
 
                 {isValidCupon === false && cuponToken && !esComprado && (
                   <div className="w-full flex flex-row items-center justify-start gap-2">
