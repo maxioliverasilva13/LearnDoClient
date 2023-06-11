@@ -241,7 +241,7 @@ const SeminarioInfo = () => {
               )}
 
               <div className="w-auto flex lg:flex-row flex-col  lg:items-center items-start lg:gap-6 gap-2">
-                <div className="flex lg:flex-row flex-col lg:items-center items-start h-auto">
+                <div className="flex h-full lg:flex-row flex-col lg:items-center items-start">
                   {!esComprado &&
                     (seminarioInfo?.es_pago === 1 ? (
                       <span
@@ -257,9 +257,7 @@ const SeminarioInfo = () => {
                         Gratuito
                       </span>
                     ))}
-                </div>
-                <div className="h-max">
-                  {!esComprado && seminarioInfo?.es_pago === 0 && (
+                    {!esComprado && seminarioInfo?.es_pago === 0 && (
                     <span
                       onClick={() => pagar(valuesPay)}
                       className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF]"
@@ -280,15 +278,16 @@ const SeminarioInfo = () => {
                       </Link>
                     ) : (
                       <a
-                        className="cursor-pointer"
+                        className="cursor-pointer h-full"
                         href={`https://` + seminarioInfo.link}
                       >
-                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
+                        <p className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
                           Acceder a la página
-                        </span>
+                        </p>
                       </a>
                     ))}
                 </div>
+ 
                 <div>
                   { (esComprado || seminarioInfo?.es_pago === 0) &&
                   <GoogleCalendarAuthBtn 
