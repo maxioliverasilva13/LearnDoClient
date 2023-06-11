@@ -6,56 +6,46 @@ import { useGetCompradosOwnerQuery } from "store/services/EventoService";
 import { useState, useEffect } from "react";
 import { array } from "prop-types";
 import { data } from "autoprefixer";
-import useGlobalSlice from "hooks/useGlobalSlice";
 
+function ObtenerAlumnos() {
+  const { data } = useGetCompradosOwnerQuery();
+  return data;
+}
 
 export default function Dashboard() {
+  const Alumnos = ObtenerAlumnos();
   const [nombreTabla, setNombreTabla] = useState("Alumnos Nuevos");
   const { format, subMonths } = require("date-fns");
   const currentDate = new Date();
   const months = [];
-  const { data: Alumnos, isLoading } = useGetCompradosOwnerQuery();
   const [Data, setData] = useState();
   const [prueba, setPrueba] = useState();
   const [tipoTabla, setTipoTabla] = useState("Alumnos");
-  const { handleSetLoading } = useGlobalSlice();
 
   useEffect(() => {
     setData(prueba);
+    console.log(prueba);
   }, [prueba]);
 
-  useEffect(() => {
-    handleSetLoading(isLoading)
-  }, [isLoading])
-
   for (let i = 0; i < 7; i++) {
-    if (subMonths) {
-      const month = subMonths(currentDate, i);
-      const formattedMonth = format(month, "MMMM yyyy");
-      months.push(formattedMonth);
-    }
-    
+    const month = subMonths(currentDate, i);
+    const formattedMonth = format(month, "MMMM yyyy");
+    months.push(formattedMonth);
   }
 
   const handleSetAlumnos = () => {
-    setNombreTabla("Alumnos nuevos");
-
     setTipoTabla("Alumnos");
     setPrueba(Alumnos?.NuevosAlumnos);
     console.log("Nuevos :,(");
   };
 
   const handleSetGanancias = () => {
-    setNombreTabla("Ganancias del mes");
-
     setTipoTabla("Ganancias");
     setPrueba(Alumnos?.Ganancias);
     console.log("Ganancias:,(");
   };
 
   const handleSetVendidos = () => {
-    setNombreTabla("Ventas del mes");
-
     setTipoTabla("Ventas");
     setPrueba(Alumnos?.CantidadVentas);
     console.log("Ventas :,(");
@@ -91,15 +81,11 @@ export default function Dashboard() {
     }
   };
 
-  if (isLoading) {
-    return null;
-  }
-
   return (
     <>
       <div className="w-full py-8 md:px-10 px-0 justify-start">
         <div className="w-full h-auto flex flex-col items-center justify-center pt-5 gap-y-10">
-          <h2 className="self-start md:px-0 px-5 text-white text-5xl font-semibold">
+          <h2 className="self-start text-white text-5xl font-semibold">
             Dashboard
           </h2>
           <div className="w-full flex flex-wrap justify-around items-between gap-8">
@@ -112,7 +98,7 @@ export default function Dashboard() {
             <div onClick={handleSetGanancias}>
               <CardDashboardItem
                 title="Ganancias del Mes"
-                data={`USD ${Alumnos?.Ganancias[0]}`}
+                data={Alumnos?.Ganancias[0]}
               />
             </div>
             <div onClick={handleSetVendidos}>
