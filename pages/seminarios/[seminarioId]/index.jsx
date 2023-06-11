@@ -24,6 +24,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import DealsCard from "components/DealsCard/DealsCard";
 import clsx from "clsx";
 import { handleGeetDisccount } from "utils/cupon";
+import GoogleCalendarAuthBtn from "components/Button/GoogleCalendarAuthBtn";
 
 const SeminarioInfo = () => {
   const router = useRouter();
@@ -35,10 +36,11 @@ const SeminarioInfo = () => {
   });
   const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
-  const esComprado = data?.comprado;
 
   const [canUseDiscount, setCanUseDiscount] = useState(false);
   const myCreditsNumber = userInfo?.creditos_number;
+
+  const esComprado = data?.comprado;
 
   useEffect(() => {
     if (myCreditsNumber >= 10) {
@@ -92,6 +94,9 @@ const SeminarioInfo = () => {
     const response = await handlePay({
       ...values,
       useDiscount: useDiscount,
+    })
+    .then((res) => {
+      // createEvent
     });
     if (response?.data?.ok == true) {
       if (useDiscount) {
@@ -179,6 +184,11 @@ const SeminarioInfo = () => {
     window.location.reload();
   };
 
+  function onClickLink(){
+    router.replace(appRoutes.zoom(seminarioId))
+}
+
+
   const renderContent = () => {
     if (isLoading) {
       return null;
@@ -202,6 +212,12 @@ const SeminarioInfo = () => {
               <span className="text-white font-semibold text-[28px]">
                 {seminarioInfo?.nombre}
               </span>
+
+              {
+                userInfo?.id == seminarioInfo.organizador_id && (
+                  <CardGananciasAcumuladas gananciasAcumuladas={seminarioInfo.ganancias_acumuladas}></CardGananciasAcumuladas>
+                )
+              }
             </div>
 
             <div className="w-[80%] lg:mt-0 mt-4 lg:max-w-[500px] flex flex-col lg:items-center justify-start">
@@ -211,7 +227,7 @@ const SeminarioInfo = () => {
               <div className="flex my-[30px] w-full italic text-white font-semibold text-sm flex-col items-start justify-start gap-4">
                 <p>Modalidad: Virtual</p>
                 <p>Profesor: {data?.profesor}</p>
-                <p>URL acceso: {seminarioInfo?.link}</p>
+                <p onClick={()=> onClickLink()}>URL acceso: <a className="cursor-pointer text-sky-600	text-xl">acceder</a> </p>
 
                 {isValidCupon === false && cuponToken && !esComprado && (
                   <div className="w-full flex flex-row items-center justify-start gap-2">
@@ -235,8 +251,9 @@ const SeminarioInfo = () => {
                   </button>
                 </div>
               )}
+
               <div className="w-auto flex lg:flex-row flex-col  lg:items-center items-start lg:gap-6 gap-2">
-                <div className="flex lg:flex-row flex-col lg:items-center items-start h-auto">
+                <div className="flex h-full lg:flex-row flex-col lg:items-center items-start">
                   {!esComprado &&
                     (seminarioInfo?.es_pago === 1 ? (
                       <span
@@ -252,12 +269,10 @@ const SeminarioInfo = () => {
                         Gratuito
                       </span>
                     ))}
-                </div>
-                <div className="h-max">
-                  {!esComprado && seminarioInfo?.es_pago === 0 && (
+                    {!esComprado && seminarioInfo?.es_pago === 0 && (
                     <span
                       onClick={() => pagar(valuesPay)}
-                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF]"
                     >
                       Comprar
                     </span>
@@ -269,20 +284,32 @@ const SeminarioInfo = () => {
                         className="cursor-pointer"
                         href={appRoutes.mapaSeminarios()} // falta implementar una forma/modal de ver la ubicación sólo de éste seminario en específico
                       >
-                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
+                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-5 py-3 text-white rounded-full border-0 bg-[#780EFF]">
                           Ver la Ubicación
                         </span>
                       </Link>
                     ) : (
                       <a
-                        className="cursor-pointer"
+                        className="cursor-pointer h-full"
                         href={`https://` + seminarioInfo.link}
                       >
-                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
+                        <p className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
                           Acceder a la página
-                        </span>
+                        </p>
                       </a>
                     ))}
+                </div>
+ 
+                <div>
+                  { (esComprado || seminarioInfo?.es_pago === 0) &&
+                  <GoogleCalendarAuthBtn 
+                    nombre={seminarioInfo?.nombre}
+                    descripcion={seminarioInfo?.descripcion}
+                    duracion={seminarioInfo?.duracion}
+                    fecha={seminarioInfo?.fecha}
+                    hora={seminarioInfo?.hora}
+                    link={seminarioInfo?.link}
+                    />}
                 </div>
                 <div className="">
                   {userInfo?.id !== seminarioInfo.organizador_id &&

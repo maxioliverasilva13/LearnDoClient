@@ -16,7 +16,7 @@ import { RxCopy } from "react-icons/rx"
 import { FcApproval } from "react-icons/fc"
 
 
-const ShareButton = React.memo(({ eventoId }) => {
+  const ShareButton = React.memo(({ eventoId }) => {
   const [openModal, setOpenModal] = useState(false);
   
   const [urlToShare, setUrlToShare] = useState(window.location.href);

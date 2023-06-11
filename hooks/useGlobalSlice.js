@@ -14,11 +14,11 @@ const useGlobalSlice = () => {
   );
   const rol = userInfo?.type;
 
-  useEffect(() => {
-    if (userInfo) {
-      handleStorageUserInfo(userInfo);
-    }
-  }, [userInfo]);
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     handleStorageUserInfo(userInfo);
+  //   }
+  // }, [userInfo]);
 
   const { handleSetUserInfo, handleSetOnlineStatus, handleSetLoading } =
     useGlobalActions();

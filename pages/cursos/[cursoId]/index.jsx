@@ -28,6 +28,12 @@ import { useCreateCertificateMutation } from "store/services/CertificadoService"
 
 import { useCanGetCertificateQuery } from "store/services/CursoService";
 import ShareButton from "components/ShareButton/ShareButton";
+import ShareProgress from "components/ShareProgress/ShareProgress";
+import CardGananciasAcumuladas from "components/Cards/CardGananciasAcumuladas";
+
+
+
+
 import {
   useLazyUsarCuponQuery,
   useValidarCuponQuery,
@@ -105,7 +111,7 @@ const CursoInfo = () => {
     if (data?.certificateID) {
       setCertificateID(data.certificateID);
     }
-  }, [data]);
+  }, [data])
 
   const [valuesPay, setValuePay] = useState({
     userId: userInfo?.id,
@@ -149,7 +155,7 @@ const CursoInfo = () => {
         handleSetUserInfo({
           ...userInfo,
           creditos_number: userInfo.creditos_number - 10,
-        });
+        })
         // handleUpdateUserInfo
       }
     }
@@ -184,6 +190,7 @@ const CursoInfo = () => {
       </div>
     );
   };
+
 
   const getCertificate = () => {
     setGettingCertificate(true);
@@ -244,7 +251,7 @@ const CursoInfo = () => {
         <div className="flex lg:flex-row flex-col gap-5 items-center">
           <div className="w-auto h-auto flex text-white md:flex-row flex-col gap-5 items-center justify-start">
             <span>Progreso</span>
-            <div className="md:w-[420px] w-[300px] h-[20px]">
+            <div className="md:w-[420px] h-[20px]">
               <Progress
                 porcentage={progresoCurso}
                 color={generateColorProggress(
@@ -252,16 +259,25 @@ const CursoInfo = () => {
                   progresoCurso
                 )}
               />
+
+              <ShareProgress
+                nombreUsuario={userInfo?.nombre}
+                progress={progresoCurso}
+                courseName={cursoInfo?.nombre}
+                averageApprove={cursoInfo?.porcentaje_aprobacion}
+              ></ShareProgress>
             </div>
           </div>
+
+          <div className="flex flex-col text-white justify-center items-center"></div>
           {!certificateID ? (
             <button
               type="button"
               onClick={() => getCertificate()}
               className={
                 canGetCertificate
-                  ? "flex w-min min-w-max items-center font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
-                  : "flex w-min min-w-max items-center font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed"
+                  ? "flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                  : "flex items-center w-full font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed"
               }
               disabled={gettingCertificate || !canGetCertificate}
             >
@@ -280,24 +296,6 @@ const CursoInfo = () => {
                   d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"
                 />
               </svg>
-              {gettingCertificate && (
-                <svg
-                  aria-hidden="true"
-                  class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-[#780EFF] fill-[#780EFF]"
-                  viewBox="0 0 100 101"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                    fill="currentColor"
-                  />
-                  <path
-                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                    fill="currentFill"
-                  />
-                </svg>
-              )}
             </button>
           ) : (
             <button
@@ -308,22 +306,17 @@ const CursoInfo = () => {
               }
             >
               Descargar certificado
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="ml-2 w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
               </svg>
-            </button>
-          )}
+
+
+            </button>)
+
+
+          }
+
+
         </div>
 
         {isAlreadyPuntuado ? (
@@ -390,7 +383,7 @@ const CursoInfo = () => {
           onApprove={async (data, actions) => {
             await pagar({
               ...valuesPay,
-              useDiscount: useDiscount,
+              useDiscount: useDiscount
             });
             await usarCupon({
               token: cuponToken,
@@ -475,6 +468,14 @@ const CursoInfo = () => {
               <span className="text-white appearsAnimation font-semibold text-[28px]">
                 {cursoNombre}
               </span>
+
+              {
+                userInfo?.id == cursoInfo.organizador_id && (
+                  <CardGananciasAcumuladas gananciasAcumuladas={cursoInfo.ganancias_acumuladas}></CardGananciasAcumuladas>
+                 
+                )
+              }
+
             </div>
 
             <div className="w-[400px] appearsAnimation max-w-[400px] flex flex-col items-center justify-start">
@@ -598,9 +599,9 @@ const CursoInfo = () => {
           <div className="w-full h-auto flex items-center justify-end">
             {soyColaorador && (
               <Link href={appRoutes.cursoSugerir(cursoInfo?.id)}>
-              <button className="text-white my-5 px-4 py-2 border border-white rounded-full font-semibold cursor-pointer flex file:flex-row items-center transition-all transform hover:scale-105 text-base group-[]:">
-                Colaborar
-              </button>
+                <button className="text-white my-5 px-4 py-2 border border-white rounded-full font-semibold cursor-pointer flex file:flex-row items-center transition-all transform hover:scale-105 text-base group-[]:">
+                  Colaborar
+                </button>
               </Link>
             )}
           </div>
@@ -614,10 +615,7 @@ const CursoInfo = () => {
                 {data?.puntuaciones?.map((item, index) => {
                   if (index > 2) return null;
                   return (
-                    <Link
-                      href={appRoutes.userInfoPage(item?.estudiante_id)}
-                      key={`puntuacionItem-${index}`}
-                    >
+                    <Link href={appRoutes.userInfoPage(item?.estudiante_id)} key={`puntuacionItem-${index}`}>
                       <div className="w-[160px] cursor-pointer gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
                         <div className="min-h-[130px] w-[130px] h-[130px] relative rounded-full overflow-hidden">
                           <GlobalImage

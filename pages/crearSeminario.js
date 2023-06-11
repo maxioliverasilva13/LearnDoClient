@@ -31,6 +31,7 @@ const CrearSeminario = () => {
       fecha: "",
       hora: "",
       link: "",
+      zoomPass: "",
       duracion: 0,
       capacidad: 0,
       ubicacion: {
@@ -119,6 +120,7 @@ const CrearSeminario = () => {
         !formValues?.hora ||
         formValues?.duracion === 0 ||
         !formValues?.link ||
+        !formValues?.zoomPass ||
         (!checkedGratis && formValues?.precio === 0) ||
         !/^https:\/\/[\w-]*\.?zoom.us\/(j|my)\/[\d\w?=-]+/.test(
           formValues?.link || ""
@@ -138,6 +140,7 @@ const CrearSeminario = () => {
               !/^https:\/\/[\w-]*\.?zoom.us\/(j|my)\/[\d\w?=-]+/.test(
                 formValues?.link || ""
               ),
+            zoomPass: !formValues?.zoomPass,
             precio: !checkedGratis && formValues?.precio === 0,
             capacidad: !formValues?.capacidad || formValues?.capacidad === 0,
             duracion: formValues?.duracion === 0,
@@ -181,7 +184,7 @@ const CrearSeminario = () => {
     handleSetLoading(true);
     const newImage = await handleUpload(selectedFile);
     const prepareData = {
-      ...formValues,
+      ...formValues, 
       isOnline: checkedOnline,
       es_pago: !checkedGratis,
       organizador: userInfo?.id,
@@ -318,7 +321,15 @@ const CrearSeminario = () => {
               value={formValues?.link}
               placeholder="Zoom Link"
             />
+             <InputText
+              hasError={getValidationError("zoomPass")}
+              onChange={(e) => handleChangeValue("zoomPass", e?.target?.value)}
+              value={formValues?.zoomPass}
+              placeholder="Zoom Pass"
+            />
             </div>
+
+            
           
           )}
         </div>
