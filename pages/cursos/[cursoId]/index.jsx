@@ -29,6 +29,10 @@ import { useCreateCertificateMutation } from "store/services/CertificadoService"
 import { useCanGetCertificateQuery } from "store/services/CursoService";
 import ShareButton from "components/ShareButton/ShareButton";
 import ShareProgress from "components/ShareProgress/ShareProgress";
+import CardGananciasAcumuladas from "components/Cards/CardGananciasAcumuladas";
+
+
+
 
 import {
   useLazyUsarCuponQuery,
@@ -107,7 +111,7 @@ const CursoInfo = () => {
     if (data?.certificateID) {
       setCertificateID(data.certificateID);
     }
-  }, [data]);
+  }, [data])
 
   const [valuesPay, setValuePay] = useState({
     userId: userInfo?.id,
@@ -151,7 +155,7 @@ const CursoInfo = () => {
         handleSetUserInfo({
           ...userInfo,
           creditos_number: userInfo.creditos_number - 10,
-        });
+        })
         // handleUpdateUserInfo
       }
     }
@@ -186,6 +190,7 @@ const CursoInfo = () => {
       </div>
     );
   };
+
 
   const getCertificate = () => {
     setGettingCertificate(true);
@@ -301,22 +306,17 @@ const CursoInfo = () => {
               }
             >
               Descargar certificado
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="ml-2 w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
               </svg>
-            </button>
-          )}
+
+
+            </button>)
+
+
+          }
+
+
         </div>
 
         {isAlreadyPuntuado ? (
@@ -383,7 +383,7 @@ const CursoInfo = () => {
           onApprove={async (data, actions) => {
             await pagar({
               ...valuesPay,
-              useDiscount: useDiscount,
+              useDiscount: useDiscount
             });
             await usarCupon({
               token: cuponToken,
@@ -468,6 +468,14 @@ const CursoInfo = () => {
               <span className="text-white appearsAnimation font-semibold text-[28px]">
                 {cursoNombre}
               </span>
+
+              {
+                userInfo?.id == cursoInfo.organizador_id && (
+                  <CardGananciasAcumuladas gananciasAcumuladas={cursoInfo.ganancias_acumuladas}></CardGananciasAcumuladas>
+                 
+                )
+              }
+
             </div>
 
             <div className="w-[400px] appearsAnimation max-w-[400px] flex flex-col items-center justify-start">
@@ -607,10 +615,7 @@ const CursoInfo = () => {
                 {data?.puntuaciones?.map((item, index) => {
                   if (index > 2) return null;
                   return (
-                    <Link
-                      href={appRoutes.userInfoPage(item?.estudiante_id)}
-                      key={`puntuacionItem-${index}`}
-                    >
+                    <Link href={appRoutes.userInfoPage(item?.estudiante_id)} key={`puntuacionItem-${index}`}>
                       <div className="w-[160px] cursor-pointer gap-y-4 h-[270px] flex flex-col items-center justify-start gap-1">
                         <div className="min-h-[130px] w-[130px] h-[130px] relative rounded-full overflow-hidden">
                           <GlobalImage
