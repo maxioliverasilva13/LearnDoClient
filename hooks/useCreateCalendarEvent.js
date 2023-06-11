@@ -1,5 +1,7 @@
-const useCreateCalendarEvent = async (token, eventData) => {
-    try {
+const useCreateCalendarEvent = () => {
+
+    const handleCreateEvent = async (token, eventData) => {
+       try {
       const response = await fetch(
         'https://www.googleapis.com/calendar/v3/calendars/primary/events',
         // 'https://www.googleapis.com/calendar/v3/calendars/dea787183a303740a6e9a94a1a5f7b284759f814ae02a9fdade5acde7aa0e583@group.calendar.google.com/events',
@@ -30,7 +32,10 @@ const useCreateCalendarEvent = async (token, eventData) => {
       console.error(error);
       throw error;
     }
+    }
+
+    return { handleCreateEvent }
   };
   
-  export { useCreateCalendarEvent };
+export default useCreateCalendarEvent;
   

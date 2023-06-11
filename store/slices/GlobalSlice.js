@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { getUserInfoFromStorage, handleGetIsOnline } from "utils/offline";
 
 const initialState = {
-  userInfo: getUserInfoFromStorage() || null,
+  userInfo: null,
   isLoading: false,
   error: null,
   isOnline: (handleGetIsOnline() || "true") === "true",

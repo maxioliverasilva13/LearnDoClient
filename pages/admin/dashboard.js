@@ -70,7 +70,7 @@ export default function Dashboard() {
     <>
       <div className="w-full py-8 md:px-10 px-0 justify-start">
         <div className="w-full h-auto flex flex-col items-center justify-center pt-5 gap-y-10">
-          <h2 className="self-start text-white text-5xl font-semibold">Dashboard</h2>
+          <h2 className="self-start md:px-0 px-5 text-white text-5xl font-semibold">Dashboard</h2>
           <div className="w-full flex flex-wrap justify-around items-between gap-8">
             <div onClick={handleSetAlumnos} className="cursor-pointer">
               <CardDashboardItem title="Alumnos Nuevos" data={Alumnos?.NuevosAlumnos[0]} />
