@@ -305,3 +305,89 @@ body {
   margin-top: auto;
   margin-bottom: auto;
 }
+
+.containerProgressImage {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  border: 20px solid black;
+  height: 500px;
+  color: white;
+  background: #2e1251;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.certificate {
+  background-color: #f2f2f2;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.date {
+  font-size: 16px;
+  margin-bottom: 50px;
+}
+
+.signature {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+  .logo {
+      color: white;
+      font-size: 30px;
+  }
+  .logo__sub{
+     color: #780EFF;
+  }
+  .marquee {
+      color: white;
+      font-size: 28px;
+      margin: 20px;
+  }
+  .assignment {
+      margin: 20px;
+  }
+  .person {
+      border-bottom: 2px solid white;
+      font-size: 32px;
+      font-style: italic;
+      margin: 20px auto;
+      width: 400px;
+  }
+  .reason {
+      margin: 20px;
+      margin-top: 30px;
+  }
+
+
+
+.course_name {
+  font-size: 30px;
+}
+
+.cursoImage{
+  width: 80%;
+  margin: auto;
+}
