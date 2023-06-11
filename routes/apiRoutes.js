@@ -24,12 +24,12 @@ const apiRoutes = {
     createPost: () => "/api/publicaciones",
     getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso",
     uploadVideo: () => "/api/videos/upload-video",
+    getVideoBase64: (claseId) => `/api/videos/getBase64OfVideo?claseId=${claseId}`,
     puntuarCurso: () => "/api/puntuacion/",
     evaluacionInfo: (evaluacionId) => `/api/evaluaciones?evaluacionId=${evaluacionId}`,
     userIsStudentOrOwner: (eventoId) => `/api/eventos/${eventoId}/userIsStudentOrOwner`,
     claseInfo: (claseId, cursoId) => `/api/clases?clase_id=${claseId}&curso_id=${cursoId}`,
     correjirEvaluacion: () => "/api/calificacion/",
-    getCompleteCursoInfo: () => "/api/cursos/getCompleteInfoCurso",
     changeUserRole: () => `/api/auth/changeRole`,
     getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
     createSugerencia: () => `/api/sugerencias/createSugerencia`,
@@ -41,7 +41,6 @@ const apiRoutes = {
     isUserColaborador: () => `/api/colaboraciones/isUserColaborador`,
     getEventosAdmin: (organizadorId) => `/api/eventos/getEventosAdmin?organizadorId=${organizadorId}`,
     changeStatusSugerencia: () => `/api/sugerencias/changeStatus`,
-    getCursoAndClases: (cursoId) => `/api/cursos/getCursoAndClases?cursoId=${cursoId}`,
     updateCursoInfo: () => '/api/cursos/updateCursoInfo',
     updateAllOfModulo: () => '/api/modulos/updateAllOfModulo',
     getCompleteInfoSeminario: () => "/api/seminarios/getCompleteInfoSeminario",
@@ -52,6 +51,7 @@ const apiRoutes = {
     validarCupon: () => "/api/cupon/validarCupon",
     crearCupon: () => "/api/cupon/generateCupon", 
     getEventoInfo: (eventoId) => `/api/eventos/getEventoInfo?eventoId=${eventoId}`, 
+    listarComprados: () => "/api/cursos/listarComprados"
 }
 
 export default apiRoutes;

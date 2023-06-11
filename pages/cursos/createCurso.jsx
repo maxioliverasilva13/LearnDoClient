@@ -29,6 +29,7 @@ import AddModuloModal from "components/Modals/AddModuloModal";
 import EditModuloModal from "components/Modals/EditModuloModal";
 import appRoutes from "routes/appRoutes";
 import GlobalImage from "components/GlobalImage/GlobalImage";
+import { toast } from "react-toastify";
 
 export default function CreateCurso({
   cursoInfo,
@@ -360,6 +361,9 @@ export default function CreateCurso({
         })
       );
     }
+    toast.success("Evento actualizado correctamente", {
+      theme: "colored"
+    })
   };
 
   const handleCreateCurso = async (e) => {
@@ -464,9 +468,9 @@ export default function CreateCurso({
           <p className="text-5xl text-white px-16 pb-4">Agregar un curso</p>
 
           <div className="px-16 w-full gap-8 flex flex-col lg:flex-row justify-center text-white font-light">
-            <div className="flex flex-col gap-4 w-full sm:w-1/3">
+            <div className="flex flex-col md:mt-0 gap-4 w-full sm:w-1/3">
               {/* INICIO columna 1 */}
-              <div className="flex flex-col gap-y-4">
+              <div className="flex flex-col gap-y-4 md:mt-0 mt-10">
                 <div className="flex w-full justify-center h-[300px]">
                   <img
                     src={cursoImage}
@@ -547,7 +551,7 @@ export default function CreateCurso({
               </div>
             </div>
             {/* FIN columna 1 */}
-            <div className="flex flex-col gap-4 w-full sm:w-1/3">
+            <div className="flex flex-col gap-4 w-full md:mt-0 mt-10 sm:w-1/3">
               {/* INICIO columna 2 */}
               <div className="flex items-center justify-between">
                 <p className="text-lg font-normal">Módulos</p>
@@ -605,7 +609,7 @@ export default function CreateCurso({
             {/* FIN columna 2 */}
             <div className="flex flex-col gap-4 w-full sm:w-1/3">
               {/* INICIO columna 3 */}
-              <div className="flex items-center justify-between">
+              <div className="flex md:flex-row flex-col md:gap-2 gap-5 items-center justify-between">
                 <p className="text-lg font-normal">Colaboradores</p>
                 <button
                   className="w-max self-center active:bg-purple-800 text-white font-semibold

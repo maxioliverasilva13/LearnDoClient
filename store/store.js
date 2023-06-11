@@ -14,6 +14,7 @@ import { ClaseService } from "./services/ClaseService";
 import { CertificadoService } from "./services/CertificadoService";
 import { CursoService } from "./services/CursoService";
 import { CuponService } from "./services/CuponService";
+import { VideoService } from "./services/VideoService";
 
 const store = configureStore({ 
   reducer: {
@@ -28,8 +29,9 @@ const store = configureStore({
    [ClaseService.reducerPath]: ClaseService.reducer,
    [CertificadoService.reducerPath]: CertificadoService.reducer,
    [CursoService.reducerPath] : CursoService.reducer,
-
+   [VideoService.reducerPath]: VideoService.reducer,
    [CuponService.reducerPath]: CuponService.reducer,
+
    
   },
   middleware: getDefaultMiddleware =>
@@ -44,6 +46,8 @@ const store = configureStore({
         CertificadoService.middleware,
         CursoService.middleware,
         CuponService.middleware,
+        VideoService.middleware,
+
     ),
 });
 

@@ -25,7 +25,7 @@ const appRoutes = {
     selectRole: () => `/selectrole`,
     userInfoPage: (uid) => `/users/${uid ? uid : "[userId]"}`,
     zoom: () => `/zoom`,
-
+    guardados: () => `/savedClases`,
 }
 
 export default appRoutes;
