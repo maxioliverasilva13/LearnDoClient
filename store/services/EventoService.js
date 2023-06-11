@@ -393,6 +393,13 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    getCompradosOwner: builder.query({
+      query: apiRoutes.listarComprados, // Corrección: pasar la función sin llamarla
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -431,4 +438,5 @@ export const {
   useCanGetCertificateQuery,
   useLazyGetEventosCompradosQuery,
   useGetEventoInfoQuery,
+  useGetCompradosOwnerQuery
 } = EventoService;
