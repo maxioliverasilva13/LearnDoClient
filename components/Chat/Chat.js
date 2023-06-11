@@ -14,8 +14,9 @@ import {
   useCreateMessageMutation,
 } from "store/services/MessageService";
 import { MessageIsRead } from "utils/messages";
+import { IoMdArrowBack } from "react-icons/io";
 
-const MessageItem = ({ isFromMe = false, contenido, created_at }) => {
+const MessageItem = ({ isFromMe = false, contenido, created_at, isMobile }) => {
   const hour = moment(created_at).format("hh:mm");
   return (
     <div
@@ -39,9 +40,9 @@ const MessageItem = ({ isFromMe = false, contenido, created_at }) => {
   );
 };
 
-const Chat = () => {
+const Chat = ({ isMobile }) => {
   const { userInfo } = useGlobalSlice();
-  const { activeChatInfo, activeChatId, handleAddMessage, handleChangeIsRead } =
+  const { activeChatInfo, activeChatId, handleAddMessage, handleChangeIsRead, handleSetChatId } =
     useChats();
   const { formValues, handleChangeValue } = useForm({
     message: "",
@@ -140,23 +141,30 @@ const Chat = () => {
   };
 
   return (
-    <div className="w-full min-h-screen max-h-screen transition-all flex flex-col items-start justify-start flex-grow overflow-auto">
-      <Link href={appRoutes.userInfoPage(activeChatInfo?.chatId)}>
-        <div className="w-full cursor-pointer shadow-md h-auto transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5">
-          <div className="w-[90px] transition-all h-[90px] relative max-w-[90px] max-h-[90px]">
-            <GlobalImage
-              src={activeChatInfo?.userImage}
-              loader={() => activeChatInfo?.userImage}
-              layout="fill"
-              objectFit="cover"
-              className="rounded-full transition-all w-full h-full"
-            />
-          </div>
-          <p className="text-white transition-all text-[46px] font-semibold">
-            {activeChatInfo?.userName}
-          </p>
-        </div>
-      </Link>
+    <div
+      className={clsx(
+        "w-full min-h-full max-h-full transition-all flex flex-col items-start justify-start flex-grow overflow-auto",
+        isMobile ? "absolute inset-0 z-[30] siteBg messageModalAppearsAnimation" : "relative"
+      )}
+    >
+      <div className="w-full cursor-pointer shadow-md h-auto transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5">
+        {isMobile && <IoMdArrowBack className="cursor-pointer" onClick={() => handleSetChatId(null)} size={40} color="white" />}
+        <Link href={appRoutes.userInfoPage(activeChatInfo?.chatId)}>
+          <>
+            <div className="w-[90px] transition-all h-[90px] relative max-w-[90px] max-h-[90px]">
+              <GlobalImage
+                src={activeChatInfo?.userImage}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full transition-all w-full h-full"
+              />
+            </div>
+            <p className="text-white transition-all text-[46px] font-semibold">
+              {activeChatInfo?.userName}
+            </p>
+          </>
+        </Link>
+      </div>
 
       {renderMessages()}
       <form

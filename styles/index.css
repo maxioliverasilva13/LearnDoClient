@@ -36,6 +36,10 @@
   box-sizing: border-box;
 }
 
+.siteBg {
+  background: linear-gradient(180deg, #9a5ceb 0%, #905ad7 60.04%, #8651cb 100%)!important;
+}
+
 body {
   margin: 0px;
   padding: 0px;
@@ -133,6 +137,21 @@ body {
 
 .messageAppearsAnimationMe {
   animation: messageAppearsMe .5s ease;
+}
+
+@keyframes messageModalAPpears {
+  from {
+    margin-left: -500px;
+    opacity: 0;
+  }
+  to {
+    margin-left: 0px;
+    opacity: 1;
+  }
+}
+
+.messageModalAppearsAnimation {
+  animation: messageModalAPpears .5s ease;
 }
 
 
@@ -268,4 +287,21 @@ body {
 
 .claseGradient {
   background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+}
+
+
+.itemExpanded::after {
+  transition: all .3s linear;
+  content: '';
+  width: 0; 
+  height: 0; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  
+  border-bottom: 8px solid #31174aaa;
+  position: absolute;
+  right: 20px;
+  top: -8px;
+  margin-top: auto;
+  margin-bottom: auto;
 }

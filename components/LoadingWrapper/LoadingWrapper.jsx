@@ -4,10 +4,10 @@ import useGlobalSlice from "hooks/useGlobalSlice";
 const LoadingWrapper = ({ children }) => {
     const { isLoading } = useGlobalSlice();
   return (
-    <>
+    <div className="w-full h-full">
       {isLoading && <Spinner />}
       {children}
-    </>
+    </div>
   );
 };
 

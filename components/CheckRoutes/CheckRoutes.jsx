@@ -28,7 +28,7 @@ const organizadorPaths = [
     appRoutes.progresoEstudiantes(),
     appRoutes.userInfoPage(),
     appRoutes.zoom(),
-
+    appRoutes.guardados(),
 ]
 
 const estudiantesPaths = [
@@ -48,7 +48,7 @@ const estudiantesPaths = [
     appRoutes.seminarioPage(),
     appRoutes.userInfoPage(),
     appRoutes.zoom(),
-
+    appRoutes.guardados(),
 ]
 
 const CheckRoutes = ({children}) => {
@@ -99,7 +99,7 @@ const CheckRoutes = ({children}) => {
         return null;
     }
   
-    return <div>
+    return <div className="w-full h-full">
         {typeof window !== "undefined" && children}
     </div>
 }

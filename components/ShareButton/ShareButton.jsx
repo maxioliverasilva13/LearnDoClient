@@ -73,13 +73,13 @@ const ShareButton = React.memo(({ eventoId }) => {
               <RxCopy onClick={() => handleCopyLink()} size={20} color="white" className="cursor-pointer" />
             </div>
             <FacebookShareButton url={urlToShare} title="Share Facebook">
-              <FacebookIcon className="mx-2 file:rounded-full" />
+              <FacebookIcon className="mx-2 rounded-full" />
             </FacebookShareButton>
             <WhatsappShareButton url={urlToShare} title="Share Whatsapp">
-              <WhatsappIcon className="mx-2 file:rounded-full" />
+              <WhatsappIcon className="mx-2 rounded-full" />
             </WhatsappShareButton>
             <TwitterShareButton url={urlToShare} title="Share Whatsapp">
-              <TwitterIcon className="mx-2 file:rounded-full" />
+              <TwitterIcon className="mx-2 rounded-full" />
             </TwitterShareButton>
           </div>
         )}

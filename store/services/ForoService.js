@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import apiRoutes from "routes/apiRoutes";
 import { prepareHeaders } from "../../utils/prepareHeaders";
+import baseQueryWithError from "store/baseQueryWithError";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8000",
@@ -9,7 +10,7 @@ const baseQuery = fetchBaseQuery({
 
 export const ForoService = createApi({
   reducerPath: "ForoService",
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithError,
   tagTypes: ["ForoInfo"],
   endpoints: (builder) => ({
     getForo: builder.query({
@@ -38,87 +39,9 @@ export const ForoService = createApi({
         return response;
       },
     }),
-    createEvento: builder.mutation({
-      query: (data) => ({
-        url: `${apiRoutes.createEvento()}`,
-        method: "POST",
-        body: {
-          nombre: data?.nombre,
-          descripcion: data?.descripcion,
-          imagen: data?.imagen,
-          es_pago: data?.es_pago,
-          precio: data?.precio,
-          organizador: data?.organizador,
-          porcentaje_aprobacion: data?.porcentaje_aprobacion,
-          tipo: data?.tipo,
-        },
-      }),
-      transformResponse(value) {
-        const response = value;
-        return response;
-      },
-      invalidatesTags: ["ListEventos"],
-    }),
-    crearSeminario: builder.mutation({
-      query: (data) => {
-        return {
-          url: apiRoutes.createEvento(),
-          method: "POST",
-          body: data,
-        };
-      },
-      invalidatesTags: ["ListEventos"],
-      transformResponse(value) {
-        const response = value;
-        return response;
-      },
-    }),
-    createModulo: builder.mutation({
-      query: (data) => ({
-        url: `${apiRoutes.createModulo()}`,
-        method: "POST",
-        body: {
-          curso_id: data?.curso_id,
-          nombre: data?.nombre,
-          clases: data?.clases,
-          estado: data?.estado,
-        },
-      }),
-      transformResponse(value) {
-        const response = value;
-        return response;
-      },
-    }),
-    createColaboraciones: builder.mutation({
-      query: (data) => ({
-        url: `${apiRoutes.createColaboraciones()}`,
-        method: "POST",
-        body: {
-          evento_id: data?.evento_id,
-          colaboradores: data?.colaboradores,
-        },
-      }),
-      transformResponse(value) {
-        const response = value;
-        return response;
-      },
-    }),
-    getSeminariosPresenciales: builder.query({
-      query: () => "/publicaciones/",
-      providesTags: ["Categorias", "EventosPresenciales"],
-      transformResponse(value) {
-        const response = value;
-        return response;
-      },
-    }),
   }),
 });
 
 export const {
-  useListarEventosQuery,
-  useCreateEventoMutation,
-  useCreateModuloMutation,
-  useCreateColaboracionesMutation,
-  useCrearSeminarioMutatio,
-  useGetSeminariosPresencialesQuery,
-} = EventoService;
+  useGetForoQuery,
+} = ForoService;

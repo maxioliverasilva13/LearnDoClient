@@ -1,6 +1,7 @@
 import React from "react";
 import CardLineChart from "components/Cards/CardLineChart.js";
 import CardDashboardItem from "components/Cards/CardDashboardItem";
+import Link from "next/link";
 import { useGetCompradosOwnerQuery } from "store/services/EventoService";
 import { useState, useEffect } from "react";
 import { array } from "prop-types";
@@ -64,8 +65,7 @@ export default function Dashboard() {
     }
   }
 
-  handleSetAlumnos
-  return (
+S  return (
     <>
       <div className="w-full py-8 md:px-10 px-0 justify-start">
         <div className="w-full h-auto flex flex-col items-center justify-center pt-5 gap-y-10">

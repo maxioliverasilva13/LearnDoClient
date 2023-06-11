@@ -9,7 +9,7 @@ import appRoutes from "routes/appRoutes";
 export default function CardProfile({ userInfo }) {
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words bg-white md: w-[800px] mb-6 shadow-xl rounded-lg mt-[80px]">
+      <div className="relative flex flex-col min-w-0 break-words bg-white md: lg:w-[800px] w-[85%] mb-6 shadow-xl rounded-lg mt-[80px]">
         <div className="px-6">
           <div className="flex flex-wrap justify-center">
             <div className="w-full px-4 flex justify-center">

@@ -6,7 +6,7 @@ import Head from "next/head";
  
 // import PageChange from "components/PageChange/PageChange.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "styles/tailwind.css";
+// import "styles/tailwind.css";
 import { Provider } from "react-redux";
 import store from "store/store";
 import CheckTokenWrapper from "components/CheckTokenWrapper/CheckTokenWrapper";
@@ -17,6 +17,9 @@ import "react-dropdown/style.css";
 import MessageWrapper from "components/MessageWrapper/MessageWrapper";
 import Footer from "components/Footers/Footer";
 import CheckRoutes from "components/CheckRoutes/CheckRoutes";
+import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // Router.events.on("routeChangeStart", (url) => {
 //   console.log(`Loading: ${url}`);
@@ -60,7 +63,6 @@ export default class MyApp extends App {
   }
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
-
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
@@ -93,7 +95,7 @@ export default class MyApp extends App {
               <CheckRoutes>
               <MessageWrapper>
                 <Layout>
-                  <Component {...pageProps} />
+                  {typeof window !== "undefiend" && <Component {...pageProps} />}
         {/* <Footer /> */}
 
                 </Layout>

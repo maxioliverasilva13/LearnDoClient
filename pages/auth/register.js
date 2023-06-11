@@ -233,6 +233,42 @@ export default function Register() {
                     method="POST"
                     onSubmit={handleSubmit}
                   >
+                                        <div className="flex flex-col sm:flex-row relative w-full mb-3 gap-y-3">
+                      <div className="w-full sm:w-4/6">
+                        <label
+                          className="block uppercase text-blueGray-600 text-xs font-bold mb-2 bg-rose-600! md:bg-blue-700!"
+                          htmlFor="foto"
+                        >
+                          Foto perfil
+                        </label>
+                        <input
+                          type="file"
+                          id="foto"
+                          name="image"
+                          onChange={onImageChange}
+                          className="border-0 px-6 py-3 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          //required
+                        />
+                      </div>
+
+                      <div className="w-full sm:w-2/6">
+                        <div className="flex w-full justify-center">
+                          {!profileImage ? (
+                            <img
+                              src="/img/profileIMG.png"
+                              alt="vista previa imagen"
+                              className="shadow rounded-full h-[120px] w-[120px] min-w-[120px] min-h-[120px] align-middle border-none"
+                            />
+                          ) : (
+                            <img
+                              src={profileImage}
+                              alt="vista previa imagen de perfil"
+                              className="shadow rounded-full h-[120px] w-[120px] min-w-[120px] min-h-[120px] align-middle border-none"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
                     <div className="relative w-full mb-3">
                       <label
                         className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -429,43 +465,6 @@ export default function Register() {
                         value={"estudiante"}
                         placeholder="Select an option"
                       />
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row relative w-full mb-3 gap-y-3">
-                      <div className="w-full sm:w-4/6">
-                        <label
-                          className="block uppercase text-blueGray-600 text-xs font-bold mb-2 bg-rose-600! md:bg-blue-700!"
-                          htmlFor="foto"
-                        >
-                          Foto perfil
-                        </label>
-                        <input
-                          type="file"
-                          id="foto"
-                          name="image"
-                          onChange={onImageChange}
-                          className="border-0 px-6 py-3 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                          //required
-                        />
-                      </div>
-
-                      <div className="w-full sm:w-2/6">
-                        <div className="flex w-full justify-center">
-                          {!profileImage ? (
-                            <img
-                              src="/img/profileIMG.png"
-                              alt="vista previa imagen"
-                              className="shadow rounded-full h-[120px] w-[120px] min-w-[120px] min-h-[120px] align-middle border-none"
-                            />
-                          ) : (
-                            <img
-                              src={profileImage}
-                              alt="vista previa imagen de perfil"
-                              className="shadow rounded-full h-[120px] w-[120px] min-w-[120px] min-h-[120px] align-middle border-none"
-                            />
-                          )}
-                        </div>
-                      </div>
                     </div>
 
                     <div className="text-center mt-6">

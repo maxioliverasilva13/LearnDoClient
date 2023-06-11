@@ -22,7 +22,7 @@ const Home = () => {
     <div className="w-full py-4 md:px-10 px-4 h-auto justify-start">
       <SwiperCursos />
 
-      <div className="mt-[140px] md:px-20 w-full h-auto flex flex-row items-start justify-center md:gap-x-[40px]">
+      <div className="mt-[140px] md:px-20 w-full h-auto flex lg:flex-row flex-col items-start justify-center md:gap-x-[40px]">
         <div className="flex w-full h-auto flex-col gap-y-[120px]">
           <CourseGroup
             cursos={agregadosRecientemente}
@@ -33,7 +33,7 @@ const Home = () => {
 
           <CourseGroup cursos={tendencias} title={"Tendencias"} link={appRoutes.cursos()} loading={isLoading} />
         </div>
-        <div className="min-w-[500px] w-[500px]">
+        <div className="m-auto min-w-[500px] lg:mt-0 mt-10 w-[500px]">
           <SeminarioGroup seminarios={seminarios} loading={isLoading} />
         </div>
       </div>

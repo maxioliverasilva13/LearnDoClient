@@ -25,7 +25,7 @@ const cursos = [
 
 const SwiperCursos = () => {
   return (
-    <div className="w-[70%] m-auto px-20 overflow-hidden">
+    <div className="w-full md:w-[70%] m-auto px-10 md:px-20 overflow-hidden">
       <Swiper
         spaceBetween={30}
         effect={"fade"}
@@ -35,7 +35,7 @@ const SwiperCursos = () => {
         }}
         loop={true}
         modules={[EffectFade, Navigation, Pagination]}
-        className="mySwiper max-h-[500px] h-[500px] w-full"
+        className="mySwiper md:max-h-[500px] md:h-[500px] max-h-[400px] h-[400px] w-full"
       >
         {cursos?.map((item) => {
           return (

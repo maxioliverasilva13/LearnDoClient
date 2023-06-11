@@ -2,6 +2,7 @@ import clsx from "clsx";
 import GlobalImage from "components/GlobalImage/GlobalImage";
 import useChats from "hooks/useChats";
 import useGlobalSlice from "hooks/useGlobalSlice";
+import moment from "moment";
 import Image from "next/image";
 import { useRef } from "react";
 import { MessageIsRead } from "utils/messages";
@@ -22,14 +23,18 @@ const UserChat = ({
     return firstPart + lastMessage?.contenido;
   };
   const { handleSetChatId, activeChatId } = useChats();
-  const { userInfo } = useGlobalSlice()
+  const { userInfo } = useGlobalSlice();
   const isActiveChat = activeChatId === chatId;
 
   const handleActiveChat = () => {
     handleSetChatId(chatId);
   };
 
-  const isReadLastMessage = !lastMessage ? true : MessageIsRead(lastMessage, userInfo?.id);
+  const isReadLastMessage = !lastMessage
+    ? true
+    : MessageIsRead(lastMessage, userInfo?.id);
+
+  const fromNow = moment(lastMessage?.created_at).fromNow();
 
   return (
     <div
@@ -65,9 +70,12 @@ const UserChat = ({
           {getLastMessage()}
         </span>
       </div>
-      {!isReadLastMessage && <div className="w-[12px] min-w-[12px] min-h-[12px] h-[12px] rounded-full bg-indigo-500">
-        
-      </div>}
+      <div className="w-auto h-auto flex flex-col items-center justify-center gap-2">
+        {!isReadLastMessage && (
+          <div className="w-[12px] min-w-[12px] min-h-[12px] h-[12px] rounded-full bg-indigo-500"></div>
+        )}
+        <span className="text-white text-[12px] min-w-max">{fromNow}</span>
+      </div>
     </div>
   );
 };

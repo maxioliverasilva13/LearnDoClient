@@ -11,7 +11,9 @@ import { MdOutlineMessage } from "react-icons/md";
 import { Tooltip } from "react-tooltip";
 import NewMessage from "components/NewMessage/NewMessage";
 import { useFindUserByIdQuery } from "store/services/UserService";
-
+import clsx from "clsx";
+import { useWindowDimensions } from "hooks/useMediaQuery";
+// import { isMobile } from "react-device-detect";
 const Message = () => {
   const { userInfo } = useGlobalSlice();
   const { chats, activeChatId, handleSetChatId, handleAddChat } = useChats();
@@ -21,6 +23,11 @@ const Message = () => {
   });
   const [activeNewChat, setActiveNewChat] = useState(false);
   const router = useRouter();
+  const { isTablet, isMobile: isMobileScreen } = useWindowDimensions();
+  const isMobile = isMobileScreen || isTablet;
+  const [query, setQuery] = useState("");
+  const hasQuery = query != undefined && query != "";
+  const [results, setResults] = useState([]);
 
   const { asPath = "" } = useRouter();
   const sortedChats = sortChats(chats);
@@ -71,6 +78,20 @@ const Message = () => {
     }
   }, [loadeduserInfo]);
 
+  const handleFiltersItems = (query) => {
+    const newItems = sortedChats?.filter((item) => {
+      return item?.userName?.toLowerCase()?.includes(query?.toLowerCase());
+    })
+    setResults(newItems);
+  }
+
+  useEffect(() => {
+    if (hasQuery) {
+      handleFiltersItems(query);
+    }
+  }, [hasQuery, query])
+
+
   if (isLoading || isLoadingUserInfo) {
     return <Spinner />;
   }
@@ -79,11 +100,15 @@ const Message = () => {
     setActiveNewChat(!activeNewChat);
   };
 
+  const valuesToUse = hasQuery ? results : sortedChats
+
   return (
-    <div className="min-h-screen border-b-white border-b-2 max-h-full w-full flex flex-col items-start justify-start">
-      <div className="w-full flex flex-grow min-h-screen h-full flex-row items-start justify-start">
+    <div className="min-h-full h-full md:border-b-white border-0 border-b-2 max-h-full w-full flex flex-col items-start justify-start">
+      <div className="w-full relative flex flex-grow min-h-full h-full flex-row items-start justify-start">
         {/* Chats List */}
-        <div className="md:w-[450px] w-[300px] min-h-screen flex-grow flex flex-col border-r-[4px] border-white relative">
+        <div className={clsx("md:w-[450px] w-[300px] min-h-full flex-grow flex flex-col border-white relative",
+          isMobile ? "border-r-0" : "border-r-[4px]"
+        )}>
           {activeNewChat && (
             <NewMessage handleClose={handleToggleOpenNewChat} />
           )}
@@ -93,6 +118,8 @@ const Message = () => {
             </p>
             <div className="w-full h-auto flex flex-row items-center justify-center gap-4">
               <input
+                value={query}
+                onChange={(e) => setQuery(e?.target?.value)}
                 type="text"
                 className="w-full px-4 placeholder-white rounded-full outline-0 my-4 py-2 border-2 border-white bg-transparent text-white text-base"
                 placeholder="Buscar"
@@ -109,20 +136,22 @@ const Message = () => {
               </div>
             </div>
 
-            {sortedChats?.map((item) => {
+            {valuesToUse?.map((item) => {
               return <UserChat key={`ChatItem-${item?.chatId}`} {...item} />;
             })}
           </div>
         </div>
         {/* Chat comments */}
         {activeChatId ? (
-          <Chat />
+          <Chat isMobile={isMobile} />
         ) : (
-          <div className="w-full h-full flex-grow min-h-screen flex flex-col items-center justify-center">
+          <div className={clsx("w-full h-full flex-grow flex flex-col items-center justify-center",
+            isMobile && "hidden",
+          )}>
             <img
               src="/img/MessageIlustration.png"
               alt="Image"
-              className="object-cover w-auto h-auto m-0"
+              className="object-cover w-auto h-auto ml-5 max-h-[150px] m-0"
             />
             <p className="text-white text-[36px] mt-5 font-bold">
               Learn

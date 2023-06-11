@@ -217,9 +217,9 @@ export default function SugerirModulo() {
       )}
       <div className="w-full py-4 md:px-10 px-4 h-auto justify-start item-no-scrollbar">
         <div className="w-full h-auto flex flex-col items-start justify-center">
-          <p className="text-5xl text-white px-16 pb-4">Crear Sugerencia</p>
+          <p className="text-5xl text-white md:px-16 px-4 pb-4">Crear Sugerencia</p>
 
-          <div className="px-16 w-full gap-8 flex flex-col lg:flex-row justify-center text-white font-light">
+          <div className="md:px-16 px-4 w-full gap-8 flex flex-col lg:flex-row justify-center text-white font-light">
             <div className="flex flex-col gap-4 w-full sm:w-1/3">
               {/* INICIO columna 1 */}
               <div className="flex flex-col gap-y-4">
