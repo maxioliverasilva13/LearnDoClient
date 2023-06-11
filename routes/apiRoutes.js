@@ -50,7 +50,8 @@ const apiRoutes = {
     listarTendencias: () => "/api/eventos/listarTendencias",
     usarCupon: () => "/api/cupon/usarCupon",
     validarCupon: () => "/api/cupon/validarCupon",
-    crearCupon: () => "/api/cupon/generateCupon", 
+    crearCupon: () => "/api/cupon/generateCupon",
+    listarComprados: () => "/api/cursos/listarComprados"
 }
 
 export default apiRoutes;

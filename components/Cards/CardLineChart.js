@@ -1,26 +1,26 @@
 import React from "react";
 import Chart from "chart.js";
 
-export default function CardLineChart({title}) {
+export default function CardLineChart({title, month, data}) {
   React.useEffect(() => {
     var config = {
       type: "line",
       data: {
         labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
+          month[6],
+          month[5],
+          month[4],
+          month[3],
+          month[2],
+          month[1],
+          month[0],
         ],
         datasets: [
           {
-            label: new Date().getFullYear(),
+            //label: new Date().getFullYear(),
             backgroundColor: "#780EFF",
             borderColor: "#780EFF",
-            data: [65, 78, 66, 44, 56, 67, 75],
+            data: [ data[6], data[5], data[4], data[3], data[2], data[1], data[0]],
             fill: false,
           },
           // {
@@ -105,10 +105,10 @@ export default function CardLineChart({title}) {
     };
     var ctx = document.getElementById("line-chart").getContext("2d");
     window.myLine = new Chart(ctx, config);
-  }, []);
+  }, [data]);
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-[#242424] p-10">
+      <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-[#242424] md:p-10 p-4 ">
         <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
           <div className="flex flex-wrap items-center">
             <div className="relative w-full max-w-full flex-grow flex-1 p-">
