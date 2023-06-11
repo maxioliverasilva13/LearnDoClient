@@ -24,6 +24,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import DealsCard from "components/DealsCard/DealsCard";
 import clsx from "clsx";
 import { handleGeetDisccount } from "utils/cupon";
+import GoogleCalendarAuthBtn from "components/Button/GoogleCalendarAuthBtn";
 
 const SeminarioInfo = () => {
   const router = useRouter();
@@ -92,6 +93,9 @@ const SeminarioInfo = () => {
     const response = await handlePay({
       ...values,
       useDiscount: useDiscount,
+    })
+    .then((res) => {
+      // createEvent
     });
     if (response?.data?.ok == true) {
       if (useDiscount) {
@@ -235,6 +239,7 @@ const SeminarioInfo = () => {
                   </button>
                 </div>
               )}
+
               <div className="w-auto flex lg:flex-row flex-col  lg:items-center items-start lg:gap-6 gap-2">
                 <div className="flex lg:flex-row flex-col lg:items-center items-start h-auto">
                   {!esComprado &&
@@ -257,7 +262,7 @@ const SeminarioInfo = () => {
                   {!esComprado && seminarioInfo?.es_pago === 0 && (
                     <span
                       onClick={() => pagar(valuesPay)}
-                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF]"
                     >
                       Comprar
                     </span>
@@ -269,7 +274,7 @@ const SeminarioInfo = () => {
                         className="cursor-pointer"
                         href={appRoutes.mapaSeminarios()} // falta implementar una forma/modal de ver la ubicación sólo de éste seminario en específico
                       >
-                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]">
+                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-5 py-3 text-white rounded-full border-0 bg-[#780EFF]">
                           Ver la Ubicación
                         </span>
                       </Link>
@@ -283,6 +288,17 @@ const SeminarioInfo = () => {
                         </span>
                       </a>
                     ))}
+                </div>
+                <div>
+                  { (esComprado || seminarioInfo?.es_pago === 0) &&
+                  <GoogleCalendarAuthBtn 
+                    nombre={seminarioInfo?.nombre}
+                    descripcion={seminarioInfo?.descripcion}
+                    duracion={seminarioInfo?.duracion}
+                    fecha={seminarioInfo?.fecha}
+                    hora={seminarioInfo?.hora}
+                    link={seminarioInfo?.link}
+                    />}
                 </div>
                 <div className="">
                   {userInfo?.id !== seminarioInfo.organizador_id &&
