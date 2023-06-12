@@ -120,11 +120,11 @@ const CrearSeminario = () => {
         !formValues?.hora ||
         formValues?.duracion === 0 ||
         !formValues?.link ||
-        !formValues?.zoomPass ||
-        (!checkedGratis && formValues?.precio === 0) ||
-        !/^https:\/\/[\w-]*\.?zoom.us\/(j|my)\/[\d\w?=-]+/.test(
-          formValues?.link || ""
-        )
+        !formValues?.zoomPass
+        // (!checkedGratis && formValues?.precio === 0) ||
+        // !/^https:\/\/[\w-]*\.?zoom.us\/(j|my)\/[\d\w?=-]+/.test(
+        //   formValues?.link || ""
+        // )
       ) {
         setError({
           type: "required",
@@ -135,11 +135,11 @@ const CrearSeminario = () => {
             descripcion: !formValues?.descripcion,
             fecha: !formValues?.fecha,
             hora: !formValues?.hora,
-            link:
-              !formValues?.link ||
-              !/^https:\/\/[\w-]*\.?zoom.us\/(j|my)\/[\d\w?=-]+/.test(
-                formValues?.link || ""
-              ),
+            // link:
+            //   !formValues?.link ||
+            //   !/^https:\/\/[\w-]*\.?zoom.us\/(j|my)\/[\d\w?=-]+/.test(
+            //     formValues?.link || ""
+            //   ),
             zoomPass: !formValues?.zoomPass,
             precio: !checkedGratis && formValues?.precio === 0,
             capacidad: !formValues?.capacidad || formValues?.capacidad === 0,
