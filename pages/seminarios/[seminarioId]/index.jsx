@@ -49,15 +49,19 @@ const SeminarioInfo = () => {
   }, [myCreditsNumber]);
 
   const cuponToken = query?.token;
-  const { data: tokenValidateResponse, isLoading: isLoadingValidateToken } =
-    useValidarCuponQuery(
-      { token: cuponToken, cursoId: seminarioId },
-      {
-        skip: !cuponToken || !seminarioId || isLoading || esComprado,
-      }
-    );
-  const [usarCupon, { isLoading: isLoadingUsingCupon }] =
-    useLazyUsarCuponQuery();
+  const {
+    data: tokenValidateResponse,
+    isLoading: isLoadingValidateToken,
+  } = useValidarCuponQuery(
+    { token: cuponToken, cursoId: seminarioId },
+    {
+      skip: !cuponToken || !seminarioId || isLoading || esComprado,
+    }
+  );
+  const [
+    usarCupon,
+    { isLoading: isLoadingUsingCupon },
+  ] = useLazyUsarCuponQuery();
 
   const isValidCupon = tokenValidateResponse?.esValido == true;
 
@@ -270,7 +274,7 @@ const SeminarioInfo = () => {
                     (seminarioInfo?.es_pago === 1 ? (
                       <p
                         className={clsx(
-                          "text-white font-semibold text-[20px]",
+                          "text-white font-semibold text-[20px] mt-2",
                           (isValidCupon || useDiscount) && "line-through"
                         )}
                       >
@@ -284,7 +288,7 @@ const SeminarioInfo = () => {
                   {!esComprado && seminarioInfo?.es_pago === 0 && (
                     <span
                       onClick={() => pagar(valuesPay)}
-                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF] ml-8"
                     >
                       Adquirir
                     </span>
@@ -306,15 +310,16 @@ const SeminarioInfo = () => {
                 </div>
 
                 <div>
-                  { esComprado &&
-                  <GoogleCalendarAuthBtn 
-                    nombre={seminarioInfo?.nombre}
-                    descripcion={seminarioInfo?.descripcion}
-                    duracion={seminarioInfo?.duracion}
-                    fecha={seminarioInfo?.fecha}
-                    hora={seminarioInfo?.hora}
-                    link={seminarioInfo?.link}
-                    />}
+                  {esComprado && (
+                    <GoogleCalendarAuthBtn
+                      nombre={seminarioInfo?.nombre}
+                      descripcion={seminarioInfo?.descripcion}
+                      duracion={seminarioInfo?.duracion}
+                      fecha={seminarioInfo?.fecha}
+                      hora={seminarioInfo?.hora}
+                      link={seminarioInfo?.link}
+                    />
+                  )}
                 </div>
                 <div className="">
                   {userInfo?.id !== seminarioInfo.organizador_id &&

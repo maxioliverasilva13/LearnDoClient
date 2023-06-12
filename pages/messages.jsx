@@ -107,7 +107,7 @@ const Message = () => {
       <div className="w-full relative flex flex-grow min-h-full h-full flex-row items-start justify-start">
         {/* Chats List */}
         <div className={clsx("md:w-[450px] w-[300px] min-h-full flex-grow flex flex-col border-white relative",
-          isMobile ? "border-r-0" : "border-r-[4px]"
+          isMobile ? "border-r-0" : "border-r-[1px]"
         )}>
           {activeNewChat && (
             <NewMessage handleClose={handleToggleOpenNewChat} />
@@ -161,10 +161,7 @@ const Message = () => {
               chat
             </p>
             <span className="text-white mt-5 text-center md:px-20 ">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
-              quae optio reiciendis dolorem sequi laboriosam, quas ipsum
-              molestiae tempore totam tempora sit sint fuga reprehenderit in
-              porro harum odio! Quos!
+              Bienvenido al chat de LearnDo, selecciona un chat o selecciona Nuevo Mensaje
             </span>
           </div>
         )}

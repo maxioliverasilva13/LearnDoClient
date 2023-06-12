@@ -113,7 +113,7 @@ export default function Cursos() {
               >
                 <input
                   type="text"
-                  className="bg-transparent sm:w-[400px] w-full placeholder-white border-white border-2 py-2 px-4 text-white outline-none	rounded-full no-underline	hover:border-white"
+                  className="bg-transparent sm:w-2/6 placeholder-white border-white border-2 py-2 px-4 text-white outline-none rounded-full no-underline	hover:border-white"
                   placeholder="Buscar"
                   onChange={handleChangeSearch}
                   value={busqueda}
@@ -121,7 +121,7 @@ export default function Cursos() {
 
                 <div className={"flex items-center gap-5"}>
                   <Link href={appRoutes.mapaSeminarios()}>
-                    <div className="inline-flex items-center w-max cursor-pointer gap-x-3 text-white border rounded-full sm:px-3 sm:py-1 px-4 py-2">
+                    <div className="inline-flex items-center w-max cursor-pointer gap-x-3 text-white border rounded-full sm:px-3 sm:py-1 px-4 py-2 hover:bg-gray-700">
                       <TfiMapAlt
                         className="-mr-1 ml-1 h-5 flex-shrink-0 text-white"
                         aria-hidden="true"
@@ -130,7 +130,7 @@ export default function Cursos() {
                     </div>
                   </Link>
                   <div
-                    className={"flex items-center"}
+                    className={"inline-flex items-center w-max cursor-pointer gap-x-3 text-white border rounded-full sm:px-3 sm:py-1 px-4 py-2 hover:bg-gray-700 "}
                     onClick={openModalFilters}
                   >
                     <p className={"mr-2"}>Filtros</p>

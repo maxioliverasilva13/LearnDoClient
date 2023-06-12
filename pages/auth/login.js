@@ -22,6 +22,7 @@ import {
 } from "../../firebase.js";
 import { useLinkedIn } from "react-linkedin-login-oauth2";
 import axios from "axios";
+import { transparent } from "tailwindcss/colors";
 
 export default function Login() {
   const [showAlert, setShowAlert] = React.useState(false);
@@ -189,15 +190,15 @@ export default function Login() {
             </div>
           ) : null}
           <div className="w-full">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
+            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl border-0 bg-gray-800 ">
               <div className="flex-auto px-4 lg:px-10 py-10">
-                <div className="text-blueGray-400 text-center mb-3 font-bold">
+                <div className="text-blueGray-400 text-center mb-3 font-bold text-xl">
                   <small>Inicia sesión utilizando tus credenciales</small>
                 </div>
                 <form action="#" method="POST" onSubmit={handleSubmit}>
                   <div className="relative w-full mb-3">
                     <label
-                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
                       htmlFor="user"
                     >
                       Email o Nickname
@@ -207,7 +208,7 @@ export default function Login() {
                       id="user"
                       name="user"
                       autoComplete="username"
-                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email o Nickname"
                       required
                       value={values.email}
@@ -219,7 +220,7 @@ export default function Login() {
 
                   <div className="relative w-full mb-3">
                     <label
-                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
                       htmlFor="password"
                     >
                       Contraseña
@@ -229,7 +230,7 @@ export default function Login() {
                       id="password"
                       name="password"
                       autoComplete="current-password"
-                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Contraseña"
                       value={values.password}
                       onChange={(e) =>
@@ -245,9 +246,9 @@ export default function Login() {
                         type="checkbox"
                         name="remember"
                         value={"yes"}
-                        className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
+                        className="form-checkbox border-0 rounded  ml-1 w-5 h-5 ease-linear transition-all duration-150"
                       />
-                      <span className="ml-2 text-sm font-semibold text-blueGray-600">
+                      <span className="ml-2 text-sm font-semibold text-blueGray-400 ">
                         Recordar mis credenciales
                       </span>
                     </label>
@@ -255,7 +256,7 @@ export default function Login() {
 
                   <div className="text-center mt-6">
                     <button
-                      className="bg-blue-800 text-white active:bg-blue-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                      className="bg-red-700 text-white active:bg-red-800 text-sm font-bold uppercase px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="submit"
                     >
                       Iniciar sesión
@@ -265,7 +266,7 @@ export default function Login() {
                   <button
                     onClick={handleLoginWithGoogle}
                     type="button"
-                    className="bg-white mt-2 w-full py-2 rounded-md border border-gray-200 flex flex-row items-center justify-center gap-4"
+                    className="bg-white mt-2 w-full py-2 rounded-full border border-gray-200 flex flex-row items-center justify-center gap-4"
                   >
                     <div className="relative w-[30px] h-[32px]">
                       <Image src={GoogleIcon} layout="fill" objectFit="cover" />
@@ -276,7 +277,7 @@ export default function Login() {
                   <button
                     onClick={handleLoginWithFacebook}
                     type="button"
-                    className="bg-white mt-2 w-full py-2 rounded-md border border-gray-200 flex flex-row items-center justify-center gap-4"
+                    className="bg-white mt-2 w-full py-2 rounded-full border border-gray-200 flex flex-row items-center justify-center gap-4"
                   >
                     <div className="relative w-[30px] h-[30px]">
                       <Image
@@ -292,7 +293,7 @@ export default function Login() {
                     <button
                       onClick={handleTwitterLogin}
                       type="button"
-                      className="bg-white mt-2 w-full py-2 rounded-md border border-gray-200 flex flex-row items-center justify-center gap-4"
+                      className="bg-white mt-2 w-full py-2 rounded-full border border-gray-200 flex flex-row items-center justify-center gap-4"
                     >
                       <div className="relative w-[30px] h-[30px]">
                         <Image
@@ -312,13 +313,13 @@ export default function Login() {
                 <a
                   href="#pablo"
                   onClick={(e) => e.preventDefault()}
-                  className="text-gray-800"
+                  className="text-gray-400"
                 >
                 </a>
               </div>
               <div className="w-1/2 text-right">
                 <Link href="/auth/register">
-                  <a href="#pablo" className="text-gray-800">
+                  <a href="#pablo" className="text-gray-400">
                     <small>Crear cuenta</small>
                   </a>
                 </Link>

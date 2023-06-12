@@ -385,7 +385,7 @@ const EvaluationPage = ({
           <div className="flex justify-center">
             <button
               onClick={handleAddQuestion}
-              className="w-max self-center active:bg-purple-800 hover:bg-purple-900 text-white font-semibold
+              className="w-max self-center active:bg-purple-800 hover:bg-gray-700 text-white font-semibold
               hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
             >
               Agregar Pregunta

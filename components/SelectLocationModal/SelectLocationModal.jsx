@@ -82,18 +82,18 @@ const SelectLocationModal = ({ setOpen, open, setLatLng }) => {
   return (
     <div
       className={clsx(
-        "appearsAnimation w-full h-full flex items-center justify-center inset-0 z-[50] fixed bg-black bg-opacity-50 ",
+        "appearsAnimation w-full h-full flex items-center justify-center inset-0 z-[50] fixed bg-black-800/200 backdrop-blur-md ",
         !open && "hidden"
       )}
     >
-      <div className="md:w-[700px] relative bg-white bg-opacity-100 w-[85%] h-auto flex flex-col items-center justify-start p-4 rounded-lg shadow-md">
+      <div className="md:w-[700px] relative w-[85%] h-auto flex flex-col items-center justify-start p-4 rounded-lg shadow-md bg-[#272831]">
         <IoMdClose
           onClick={handleClose}
           size={30}
           color="black"
-          className="absolute right-2 top-2 cursor-pointer text-black"
+          className="absolute right-2 top-2 cursor-pointer text-white"
         />
-        <p className="my-[40px] text-[24px] font-semibold text-gray-950">
+        <p className="my-[40px] text-[24px] font-semibold text-white">
           Seleccionar Ubicacion
         </p>
 

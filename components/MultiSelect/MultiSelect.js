@@ -64,7 +64,7 @@ const MultiSelect = ({ options, value, setValue, }) => {
       <div className="w-full mb-2 h-auto flex flex-row items-center justify-start gap-1 max-w-full flex-wrap">
         {value?.map((item, index) => {
           return (
-            <span key={index} className="w-auto transition-all appearsAnimation h-auto px-2 py-3 text-white bg-gray-500 rounded-lg relative">
+            <span key={index} className="w-auto transition-all appearsAnimation h-auto px-2 py-3 text-white bg-gray-700 rounded-lg relative">
               {item?.label}
               <IoMdClose
                 onClick={() => handleRemoveItem(item)}
@@ -77,14 +77,14 @@ const MultiSelect = ({ options, value, setValue, }) => {
         })}
       </div>
       {isExpanded && (
-        <div className="w-full appearsAnimation max-h-[200px] overflow-auto h-auto p-2 flex flex-col rounded-lg shadow-md absolute top-[55px] bg-white">
+        <div className="w-full appearsAnimation max-h-[200px] overflow-auto h-auto p-2 flex flex-col rounded-lg shadow-md absolute top-[55px] bg-[#272831]">
           {
           valuesToMap?.map((item, index) => {
             return (
               <span
                 onClick={() => handleClickOnItem(item)}
                 key={index}
-                className="w-full hover:bg-gray-100 transition-all cursor-pointer px-2 py-2 text-gray-900 text-left my-2 rounded-lg"
+                className="w-full hover:bg-gray-700 transition-all cursor-pointer px-2 py-2 text-white text-left my-2 rounded-lg"
               >
                 {item?.label}
               </span>

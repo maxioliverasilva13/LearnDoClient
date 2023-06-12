@@ -89,7 +89,7 @@ export default function Dashboard() {
             Dashboard
           </h2>
           <div className="w-full flex flex-wrap justify-around items-between gap-8">
-            <div onClick={handleSetAlumnos} className="cursor-pointer">
+            <div onClick={handleSetAlumnos}>
               <CardDashboardItem
                 title="Alumnos Nuevos"
                 data={Alumnos?.NuevosAlumnos[0]}

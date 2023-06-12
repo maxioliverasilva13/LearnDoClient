@@ -41,7 +41,7 @@ const UserChat = ({
       id={`chatId${chatId}`}
       onClick={handleActiveChat}
       className={clsx(
-        "bg-opacity-60  w-full cursor-pointer hover:bg-white px-4 py-4 rounded-md transition-all bg-red h-auto gap-x-2 flex flex-row items-center justify-start max-w-full"
+        " w-full cursor-pointer hover:bg-gray-700 py-4 rounded-md transition-all bg-red h-auto gap-x-2 flex flex-row items-center justify-start max-w-full"
       )}
     >
       <div
@@ -50,7 +50,7 @@ const UserChat = ({
           isActiveChat && "bg-indigo-500 rounded-md"
         )}
       ></div>
-      <div className="w-[90px] max-h-[90px] min-w-[90px] min-h-[90px] relative max-w-[90px] h-[90px] rounded-full overflow-hidden">
+      <div className="w-[60px] max-h-[90px] min-w-[60px] min-h-[60px] relative max-w-[90px] h-[60px] rounded-full overflow-hidden">
         <GlobalImage
           src={userImage}
           loader={() => userImage}
@@ -63,14 +63,14 @@ const UserChat = ({
         ref={ref}
         className="w-full max-w-full overflow-hidden flex-grow flex flex-col items-start justify-start "
       >
-        <p className="text-white max-w-full truncate text-[36px] font-semibold">
+        <p className="text-white max-w-full truncate text-16 font-semibold">
           {userName}
         </p>
         <span className="text-white text-left w-full max-w-full truncate font-medium">
           {getLastMessage()}
         </span>
       </div>
-      <div className="w-auto h-auto flex flex-col items-center justify-center gap-2">
+      <div className="w-auto h-auto flex flex-col items-center justify-center gap-2 mr-4">
         {!isReadLastMessage && (
           <div className="w-[12px] min-w-[12px] min-h-[12px] h-[12px] rounded-full bg-indigo-500"></div>
         )}

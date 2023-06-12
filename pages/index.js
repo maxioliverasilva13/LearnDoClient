@@ -42,7 +42,7 @@ export default function LandingPage() {
               </div>
               <Link href="/auth/register">
                 <p
-                  className="w-max cursor-pointer self-center active:bg-purple-800 text-white
+                  className="w-max self-center active:bg-red-700 text-white
                 hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                 >
                   Registrarme
@@ -63,14 +63,13 @@ export default function LandingPage() {
                 </div>
               </div>
               {/* SPACER */}
-              <Link href="/auth/login">
-                <p
-                  className="w-max cursor-pointer self-center bg-purple-700 active:bg-purple-800 text-white
-                 hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                >
-                  Iniciar Sesión
-                </p>
-              </Link>
+              <a
+                className="w-max self-center bg-red-700 active:bg-red-800 text-white
+                hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                href="/auth/login"
+              >
+                Iniciar Sesión
+              </a>
             </div>
           </div>
 
