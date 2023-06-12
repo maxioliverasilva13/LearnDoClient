@@ -263,21 +263,21 @@ const SeminarioInfo = () => {
                     (seminarioInfo?.es_pago === 1 ? (
                       <span
                         className={clsx(
-                          "text-white font-semibold text-[20px]",
+                          "text-white font-semibold text-[20px] mt-2",
                           (isValidCupon || useDiscount) && "line-through"
                         )}
                       >
                         USD${seminarioInfo?.precio}
                       </span>
                     ) : (
-                      <span className="text-white font-semibold text-[20px]">
+                      <span className="text-white font-semibold text-[20px] mt-2">
                         Gratuito
                       </span>
                     ))}
                     {!esComprado && seminarioInfo?.es_pago === 0 && (
                     <span
                       onClick={() => pagar(valuesPay)}
-                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF] ml-8"
                     >
                       Comprar
                     </span>

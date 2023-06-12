@@ -7,7 +7,7 @@ const CourseGroup = ({ title, cursos, link, loading }) => {
   return (
     <div className="w-full h-auto flex flex-col md:items-start items-center justify-start">
       <div className="w-full mb-6 h-auto flex items-center justify-start">
-        <span className="text-[36px] pl-2 border-l-4 border-[#780EFF] leading-8 font-medium text-white">
+        <span className="text-[36px] pl-2 border-l-4 border-red-700 leading-8 font-medium text-white">
           {title}
         </span>
       </div>

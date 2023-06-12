@@ -22,19 +22,19 @@ const MobileNavbar = () => {
   };
 
   return (
-    <div className="w-full h-[76px] fixed border-t-2 border-white bottom-0 left-0 bg-[#7b479e] z-[50] flex flex-row items-center justify-center gap-4">
+    <div className="w-full h-[76px] fixed border-t-2 border-[#272831] bottom-0 left-0 bg-[#272831] z-[50] flex flex-row items-center justify-center gap-4">
       {userInfo?.type === "estudiante" && (
         <div className="w-full px-10 h-auto flex flex-row items-center justify-around">
           <Link href={appRoutes.home()}>
             <div className="w-auto cursor-pointer h-auto flex flex-col items-center justify-center gap-1">
-              <BsCardChecklist size={22} color={getColor("/home")} />
-
+              
+              <AiOutlineHome size={22} color={getColor("/home")} />
               <span
                 className={`hover:text-gray-400 font-semibold cursor-pointer text-[${getColor(
                   "/home"
                 )}]`}
               >
-                Cursos
+                Inicio
               </span>
             </div>
           </Link>
@@ -53,14 +53,14 @@ const MobileNavbar = () => {
           </Link>
           <Link href={appRoutes.cursos()}>
             <div className="w-auto cursor-pointer h-auto flex flex-col items-center justify-center gap-1">
-              <AiOutlineHome size={22} color={getColor("/cursos")} />
+              <BsCardChecklist size={22} color={getColor("/cursos")} />
 
               <span
                 className={`hover:text-gray-400 font-semibold cursor-pointer text-[${getColor(
                   "/cursos"
                 )}]`}
               >
-                Inicio
+                Cursos
               </span>
             </div>
           </Link>

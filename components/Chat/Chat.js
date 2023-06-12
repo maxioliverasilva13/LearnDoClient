@@ -125,7 +125,7 @@ const Chat = ({ isMobile }) => {
       <div
         id="ScrollChats"
         ref={refChat}
-        className="w-full px-4 py-4 chat gap-y-8 flex-grow flex h-full marker: flex-col max-h-full overflow-auto"
+        className="w-full px-4 py-4 chat gap-y-8 flex-grow flex h-full marker: flex-col max-h-full overflow-auto bg-[#1F2129]"
       >
         {activeChatInfo?.messages?.map((message) => {
           return (
@@ -147,11 +147,11 @@ const Chat = ({ isMobile }) => {
         isMobile ? "absolute inset-0 z-[30] siteBg messageModalAppearsAnimation" : "relative"
       )}
     >
-      <div className="w-full cursor-pointer shadow-md h-auto transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5">
+      <div className="w-full cursor-pointer shadow-md h-20 transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5 bg-[#1F2129]">
         {isMobile && <IoMdArrowBack className="cursor-pointer" onClick={() => handleSetChatId(null)} size={40} color="white" />}
         <Link href={appRoutes.userInfoPage(activeChatInfo?.chatId)}>
           <>
-            <div className="w-[90px] transition-all h-[90px] relative max-w-[90px] max-h-[90px]">
+            <div className="w-[60px] transition-all h-[60px] relative max-w-[90px] max-h-[90px]">
               <GlobalImage
                 src={activeChatInfo?.userImage}
                 layout="fill"
@@ -159,7 +159,7 @@ const Chat = ({ isMobile }) => {
                 className="rounded-full transition-all w-full h-full"
               />
             </div>
-            <p className="text-white transition-all text-[46px] font-semibold">
+            <p className="text-white transition-all text-[26px] font-semibold">
               {activeChatInfo?.userName}
             </p>
           </>
@@ -169,13 +169,13 @@ const Chat = ({ isMobile }) => {
       {renderMessages()}
       <form
         onSubmit={handleMessageNew}
-        className="w-full p-4 h-auto flex items-center gap-2 justify-start"
+        className="w-full p-4 h-auto flex items-center gap-2 justify-center bg-[#1F2129]"
       >
         <input
           onChange={(e) => handleChangeValue("message", e?.target?.value)}
           value={formValues.message}
           placeholder="Escribe un mensaje..."
-          className="w-full placeholder-white flex-grow outline-none px-4 h-[60px] text-white bg-transparent border border-white rounded-full"
+          className="w-2/4 min-w-[300px] placeholder-white  outline-none px-4 h-14 text-white bg-transparent border border-white rounded-full"
         />
 
         <button

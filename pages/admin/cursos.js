@@ -54,7 +54,7 @@ const Tarjeta = ({
   console.log(tipo);
   return (
     <div
-      className="md:h-72 w-4/5 flex flex-col md:flex-row bg-slate-900 bg-opacity-50 gap-5 justify-start items-center rounded-[12px] p-8"
+      className="md:h-72 w-4/5 flex flex-col md:flex-row bg-[#2A2B36] gap-5 justify-start items-center rounded-[12px] p-8 shadow-lg"
       // style={{ backgroundColor: "#780EFF" }}
     >
       <div className="h-48 w-48 min-h-48 min-w-[192px] rounded-md relative">
@@ -73,9 +73,9 @@ const Tarjeta = ({
           layout="fill"
         />
       </div>
-      <div className="w-full flex flex-grow h-auto flex-col justify-center md:justify-start items-center">
+      <div className="w-full flex flex-grow h-auto flex-col justify-center md:justify-start items-center ">
         {tipo === "curso" && (
-          <div className="mb-4 w-auto flex md:justify-start justify-center">
+          <div className="mb-4 w-full flex md:justify-start justify-center">
             <Stars
               stars={stars}
               countStars={countPuntuaciones}
@@ -113,17 +113,17 @@ const Tarjeta = ({
           {tipo === "curso" && (
             <>
               <Link href={appRoutes.cursoPage(eventoId)}>
-                <span className="bg-indigo-700 shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
+                <span className="bg-[#3FB2A5] shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
                   Ver curso
                 </span>
               </Link>
               <Link href={appRoutes.editCurso(eventoId)}>
-                <span className="bg-indigo-700 shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
+                <span className="bg-[#3FB2A5] shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
                   Editar curso
                 </span>
               </Link>
               <Link href={appRoutes.progresoEstudiantes(eventoId)}>
-                <span className="bg-indigo-700 shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
+                <span className="bg-[#3FB2A5] shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
                   Progreso Estudiantes
                 </span>
               </Link>
@@ -131,7 +131,7 @@ const Tarjeta = ({
           )}
           {(tipo === "seminarioP" || tipo === "seminarioV") && (
             <Link href={appRoutes.seminarioPage(eventoId)}>
-              <span className="bg-indigo-700 shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
+              <span className="bg-[#3FB2A5] shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
                 Ver seminario
               </span>
             </Link>
@@ -169,14 +169,14 @@ export default function MisCursos() {
             Mis Eventos (Admin)
           </p>
         </div>
-        <div className="w-full flex md:px-36 md:justify-start justify-center gap-5">
+        <div className="w-full flex md:px-36 md:justify-start justify-center gap-5 ml-20">
           <Link href={appRoutes.createCurso()}>
-            <span className="bg-indigo-700 shadow-md cursor-pointer transition-all transform hover:scale-105 my-2 px-6 py-2 w-max text-xl text-white block rounded-full ">
+            <span className="bg-[#3FB2A5] shadow-md cursor-pointer transition-all transform hover:scale-105 my-2 px-6 py-2 w-max text-xl text-white block rounded-full ">
               Crear Curso
             </span>
           </Link>
           <Link href={appRoutes.createSeminario()}>
-            <span className="bg-indigo-700 shadow-md cursor-pointer transition-all transform hover:scale-110 my-2 px-6 py-2 w-max text-xl text-white block rounded-full ">
+            <span className="bg-[#3FB2A5] shadow-md cursor-pointer transition-all transform hover:scale-110 my-2 px-6 py-2 w-max text-xl text-white block rounded-full ">
               Crear Seminario
             </span>
           </Link>

@@ -59,7 +59,7 @@ const Tarjeta = ({
 
   return (
     <div
-      className="lg:h-72 w-4/5 flex flex-col lg:flex-row bg-slate-900 bg-opacity-50 gap-5 justify-start items-center rounded-[12px] p-8"
+      className="lg:h-72 w-4/5 flex flex-col lg:flex-row bg-[#272831] shadow-md gap-5 justify-start items-center rounded-[12px] p-8"
       // style={{ backgroundColor: "#780EFF" }}
     >
       <div className="h-48 w-48 min-h-48 min-w-[192px] rounded-md relative">
@@ -80,7 +80,7 @@ const Tarjeta = ({
       </div>
       <div className="w-full flex-grow h-auto flex flex-col justify-center lg:justify-start lg:items-start items-center">
         {tipo === "curso" && (
-          <div className="mb-4 w-auto">
+          <div className="mb-4 w-full">
             <Stars
               stars={stars}
               countStars={countPuntuaciones}

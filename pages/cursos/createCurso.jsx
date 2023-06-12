@@ -463,7 +463,7 @@ export default function CreateCurso({
           setModulos={setModulos}
         />
       )}
-      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start item-no-scrollbar">
+      <div className="w-full py-4 md:px-10 h-auto justify-start item-no-scrollbar">
         <div className="w-full h-auto flex flex-col items-start justify-center">
           <p className="text-5xl text-white px-16 pb-4">Agregar un curso</p>
 
@@ -484,7 +484,7 @@ export default function CreateCurso({
                   name="image"
                   accept="image/*"
                   onChange={handleFileChange}
-                  className="border-0 px-6 py-3 text-white bg-[#780EFF] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  className="border-0 px-6 py-3 text-white bg-[#780EFF] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 file:bg-[#272831] file:rounded-lg file:text-white file:border-0"
                 />
               </div>
               <div className="flex flex-col gap-y-4">

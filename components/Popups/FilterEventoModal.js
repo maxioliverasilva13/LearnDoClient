@@ -79,9 +79,9 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent,categorias}) =>
        
             <form action="#" method="get"  tabIndex="-1" aria-hidden="true" >
        <div className={"relative w-full h-full max-w-md md:h-auto"}>
-           <div className={"relative bg-white rounded-lg shadow dark:bg-gray-800 w-[500px] h-auto"}>
+           <div className={"relative rounded-lg shadow bg-[#272831] w-[500px] h-auto"}>
                <div className={"flex items-start justify-between px-6 py-4 rounded-t"}>
-                   <h3 className={"text-lg font-normal text-gray-500 dark:text-gray-400"}>
+                   <h3 className={"text-lg font-normal text-white dark:text-gray-400"}>
                        Aplicar filtros para eventos:
                    </h3>
                    <button type="button"
@@ -105,7 +105,7 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent,categorias}) =>
                        <div>
                            <label className={"relative inline-flex items-center cursor-pointer"}>
                               
-                               <span className={"ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"}>
+                               <span className={"ml-3 text-sm font-medium text-white dark:text-gray-300"}>
                                    Tipo de evento</span>
                            </label>
                        </div>
@@ -142,7 +142,7 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent,categorias}) =>
                        <div>
                            <label className={"relative inline-flex items-center cursor-pointer"}>
                               
-                               <span className={"ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"}>
+                               <span className={"ml-3 text-sm font-medium text-white dark:text-gray-300"}>
                                    Categorias</span>
                            </label>
                        </div>
@@ -170,10 +170,10 @@ const FilterEventoModal = ({ show, updateShowModal,onFilterEvent,categorias}) =>
    
    
                </div>
-               <div className={"flex items-center p-6 space-x-4 rounded-b dark:border-gray-600"}>
+               <div className={"flex items-center justify-center p-6 space-x-4 rounded-b dark:border-gray-600"}>
                   
                    <button type="reset" onClick={onFilter}
-                       className={"w-full py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"}>
+                       className={"w-1/3 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"}>
                        Filtrar
                    </button>
                </div>

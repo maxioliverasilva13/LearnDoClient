@@ -4,7 +4,7 @@ import clsx from "clsx";
 const Button = ({ disabled, type, text, isLoading }) => {
   return (
     <button
-      className={clsx("bg-blue-800 flex flex-row items-center justify-center gap-x-4 text-white active:bg-blue-600 text-sm font-bold uppercase px-6 py-3 rounded-md shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150",
+      className={clsx(" w-8  max-w-8 bg-red-700 flex flex-row items-center justify-center gap-x-4 text-white active:bg-blue-600 text-sm font-bold uppercase px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150",
         isLoading && "bg-opacity-60"
       )}
       type={type || "submit"}

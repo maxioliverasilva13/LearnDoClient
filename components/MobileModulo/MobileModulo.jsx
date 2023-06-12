@@ -30,7 +30,7 @@ const MobileModulo = ({
         setIsOpen={() => setEvaluacionToDo(null)}
         isEditing={false}
       />
-      <div className="w-full h-auto flex flex-row items-center justify-start gap-2 bg-[#31174aaa] rounded-[16px] p-5">
+      <div className="w-full h-auto flex flex-row items-center justify-start gap-2 bg-[#272831] rounded-[16px] p-5">
         <div className="w-full flex-grow h-auto flex flex-col items-start justify-start gap-1 text-white ">
           <span className="text-[18px] font-bold">{nombre}</span>
           <span className="text-[16px] font-medium">
@@ -43,7 +43,7 @@ const MobileModulo = ({
           onClick={() => setisExpanded(!isExpanded)}
           size={30}
           className={clsx(
-            "cursor-pointer select-none transition-all transform",
+            "cursor-pointer select-none transition-all transform ",
             isExpanded && "rotate-180"
           )}
           color="white"
@@ -52,7 +52,7 @@ const MobileModulo = ({
       <div className="w-full relative">
         <div
           className={clsx(
-            " w-full mt-2 flex flex-col items-center justify-start rounded-[16px] bg-[#31174aaa] px-4 gap-2 overflow-hidden transition-all",
+            " w-full mt-2 flex flex-col items-center justify-start rounded-[16px] bg-[#31174aaa] px-4 gap-2 overflow-hidden transition-all bg-[#272831]",
             !isExpanded ? "h-0" : "h-auto itemExpanded py-2"
           )}
         >

@@ -11,7 +11,7 @@ const Stars = ({
   return (
     <div
       className={clsx(
-        "w-full h-auto flex flex-row gap-1 items-center",
+        "w-full h-auto flex flex-row gap-1 items-end justify-end",
         justifyStart ? "justify-start" : "justify-center"
       )}
     >

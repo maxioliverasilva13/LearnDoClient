@@ -9,7 +9,7 @@ import appRoutes from "routes/appRoutes";
 export default function CardProfile({ userInfo }) {
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words bg-white md: lg:w-[800px] w-[85%] mb-6 shadow-xl rounded-lg mt-[80px]">
+      <div className="relative flex flex-col min-w-0 break-words bg-[#272831] md: lg:w-[800px] w-[85%] mb-6 shadow-xl rounded-lg mt-[80px]">
         <div className="px-6">
           <div className="flex flex-wrap justify-center">
             <div className="w-full px-4 flex justify-center">
@@ -23,29 +23,29 @@ export default function CardProfile({ userInfo }) {
                 />
               </div>
             </div>
-            <h3 className="text-xl font-semibold mt-20 leading-normal text-blueGray-700 mb-2">
+            <h3 className="text-xl font-semibold mt-20 leading-normal text-white mb-2">
               {userInfo.nombre}
             </h3>
             <div className="w-full px-4 text-center">
               <div className="flex justify-center py-4 lg:pt-4 pt-8">
                 <div className="mr-4 p-3 text-center">
-                  <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                  <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-300">
                     22
                   </span>
                   <span className="text-sm text-blueGray-400">Seminarios</span>
                 </div>
                 <div className="mr-4 p-3 text-center">
-                  <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                  <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-300">
                     10
                   </span>
                   <span className="text-sm text-blueGray-400">Cursos</span>
                 </div>
               </div>
               <Link href={appRoutes.messageWithId(userInfo?.id)}>
-              <div className="w-full h-auto gap-2 cursor-pointer flex items-center justify-center">
-              <AiOutlineMessage className="cursor-pointer" size={30} />
-              <span>Enviar Mensaje</span>
-              </div>  
+                <div className="w-full h-auto gap-2 cursor-pointer flex items-center justify-center">
+                  <AiOutlineMessage className="cursor-pointer" size={30} color="white" />
+                  <span className="text-blueGray-300">Enviar Mensaje</span>
+                </div>
               </Link>
             </div>
           </div>
@@ -64,26 +64,30 @@ export default function CardProfile({ userInfo }) {
             </a>
             {userInfo?.type === "organizador" && (
               <div className="mb-2 mt-0 text-blueGray-600">
-                <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                Organizador - LearnDo
+                <i className="fas fa-briefcase mr-2 text-lg text-blueGray-300"></i>
+                <a className="text-blueGray-300">
+                  Organizador - LearnDo
+                </a>
               </div>
             )}
             {userInfo?.type === "estudiante" && (
               <div className="mb-2 mt-0 text-blueGray-600">
-                <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-                Estudiante - LearnDo
+                <i className="fas fa-university mr-2 text-lg text-blueGray-300 "></i>
+                <a className="text-blueGray-300">
+                  Estudiante - LearnDo
+                </a>
               </div>
             )}
           </div>
           {userInfo?.biografia && (
-            <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
+            <div className="mt-10 py-10 border-t border-gray-600 text-center">
               <div className="flex flex-wrap justify-center">
                 <div className="w-full lg:w-9/12 px-4">
-                  <span className="flex flex-row items-center justify-center gap-2 font-medium m-auto ">
-                    <AiOutlineUser size={20} />
+                  <span className="flex flex-row items-center justify-center gap-2 font-medium m-auto text-blueGray-300">
+                    <AiOutlineUser size={20} color="white" />
                     Biografia:
                   </span>
-                  <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
+                  <p className="mb-4 text-lg leading-relaxed text-blueGray-300">
                     {userInfo?.biografia}
                   </p>
                   {/* <a
