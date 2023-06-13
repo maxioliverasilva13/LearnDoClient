@@ -94,8 +94,8 @@ export default function Login() {
         email: user?.email,
         telefono: user?.phoneNumber,
         nickname: user?.displayName,
+        uid: user?.uid,
       };
-
       const response = await signUpWithExternalService(newDataUsser);
       if (response?.data?.token) {
         setShowAlert(false);
