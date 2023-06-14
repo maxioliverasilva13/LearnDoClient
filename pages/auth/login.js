@@ -190,7 +190,7 @@ export default function Login() {
             </div>
           ) : null}
           <div className="w-full">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl border-0 bg-gray-800 ">
+            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl border-0 bg-[#272831]">
               <div className="flex-auto px-4 lg:px-10 py-10">
                 <div className="text-blueGray-400 text-center mb-3 font-bold text-xl">
                   <small>Inicia sesión utilizando tus credenciales</small>
@@ -246,7 +246,7 @@ export default function Login() {
                         type="checkbox"
                         name="remember"
                         value={"yes"}
-                        className="form-checkbox border-0 rounded  ml-1 w-5 h-5 ease-linear transition-all duration-150"
+                        className="form-checkbox  rounded  ml-1 w-4 h-4 ease-linear transition-all duration-150"
                       />
                       <span className="ml-2 text-sm font-semibold text-blueGray-400 ">
                         Recordar mis credenciales

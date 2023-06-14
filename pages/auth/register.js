@@ -209,7 +209,7 @@ export default function Register() {
       <div className="container mx-auto px-4 h-full">
         <div className="py-10 transition-all m-auto content-center justify-center h-full">
           <div className="w-full transition-all m-auto lg:w-6/12 px-4">
-            <div className="relative transition-all flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl bg-gray-800 border-0">
+            <div className="relative transition-all flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl bg-[#272831] border-0">
               {userCreatedCorrect ? (
                 <VerifyAccount email={formValues.email} />
               ) : (
@@ -458,9 +458,9 @@ export default function Register() {
                       ></textarea>
                     </div>
                     <div className="relative w-full mb-3 border-[1px] border-white bg-transparent rounded-full">
-                      <Dropdown
+                    <Dropdown
                         options={rolOptions}
-                        className="rounded-md!"
+                        controlClassName="bg-transparent rounded-full text-white"
                         onChange={(val) => handleChangeValue("rol", val?.value)}
                         value={"estudiante"}
                         placeholder="Select an option"
