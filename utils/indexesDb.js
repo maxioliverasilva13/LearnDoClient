@@ -57,6 +57,7 @@ export function Database_Open() {
       clasesStore.createIndex("cursoId", "cursoId", { unique: false });
       clasesStore.createIndex("cursoInfo", "cursoInfo", { unique: false });
       clasesStore.createIndex("moduloInfo", "moduloInfo", { unique: false });
+      clasesStore.createIndex("type", "type", { unique: false });
 
       resolve(dbReq);
     };
@@ -85,6 +86,7 @@ export const storeItemOnIndexes = async (item) => {
       cursoId: item?.cursoId,
       cursoInfo: item?.cursoInfo,
       moduloInfo: item?.moduloInfo,
+      type: item?.type,
     });
   };
 };
@@ -98,15 +100,41 @@ export const loadSavedClases = async (item) => {
         const transaction = meDatabase.transaction("clases", "readwrite");
         const clases = transaction.objectStore("clases");
         const items = await clases?.getAll();
-        items.onsuccess = function(event){
+        items.onsuccess = function (event) {
           resolve(event?.target?.result);
-        }
-        items.onerror = function(){
+        };
+        items.onerror = function () {
           resolve([]);
-        }
+        };
       };
     } catch (error) {
       reject(error);
     }
   });
+};
+
+export const get_url_extension = (url, type) => {
+  const fileExtension = url.split(/[#?]/)[0].split(".").pop().trim();
+  return `${type}/${fileExtension}`;
+};
+
+export const removeItemFromDB = async (item, onSuccess) => {
+  var dbReq = indexedDB.open("SavedClases", 1);
+  dbReq.onsuccess = function (event) {
+    let meDatabase = event.target.result;
+    const transaction = meDatabase.transaction("clases", "readwrite");
+    const clases = transaction.objectStore("clases");
+    var index = clases.index("id");
+    var request = index.openCursor(IDBKeyRange.only(item?.id));
+    request.onsuccess = function () {
+      var cursor = request.result;
+      if (onSuccess) {
+        onSuccess();
+      }
+      if (cursor) {
+        cursor.delete();
+        cursor.continue();
+      }
+    };
+  };
 };

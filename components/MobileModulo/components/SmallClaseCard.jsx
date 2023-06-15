@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import appRoutes from "routes/appRoutes";
 import { BiDownload } from "react-icons/bi";
-import { storeItemOnIndexes } from "utils/indexesDb";
+import { get_url_extension, storeItemOnIndexes } from "utils/indexesDb";
 import { useLazyGetBase64OfVideoQuery } from "store/services/VideoService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import { toast } from "react-toastify";
@@ -38,37 +38,66 @@ const SmallClaseCard = ({
   };
 
   const handleStorageInIndexDb = async () => {
-    const response = await getBase64Video({
-      claseId: item?.id,
-    });
-    console.log("response", response);
-    if (response?.data?.url) {
-      const itemsToSend = {
-        id: item?.id,
-        nombre: item?.nombre,
-        video: response?.data?.url,
-        cursoId: cursoInfo?.id,
-        cursoInfo: cursoInfo,
-        moduloInfo: moduloInfo,
-      };
-      storeItemOnIndexes(itemsToSend);
-      toast.success("Curso guardado correctamente", {
-        theme: "colored",
+    const video = item?.video;
+
+    handleSetLoading(true);
+    fetch(`http://localhost:8000/api/videos/getBase64OfVideo?claseId=${item?.id}`)
+      .then((res) => {
+        console.log("xd1")
+        console.log(res)
+        return res.blob()
+      }) // Gets the response and returns it as a blob
+      .then((blob) => {
+        handleSetLoading(false);
+        console.log("blob is", blob)
+        var reader = new FileReader();
+        reader.readAsDataURL(blob); 
+        reader.onloadend = function() {
+          var base64data = reader.result;                
+
+          const itemsToSend = {
+             id: item?.id,
+             nombre: item?.nombre,
+             video: base64data,
+             cursoId: cursoInfo?.id,
+             cursoInfo: cursoInfo,
+             moduloInfo: moduloInfo,
+             type: get_url_extension(video, 'video')
+           };
+           storeItemOnIndexes(itemsToSend);
+           toast.success("Curso guardado correctamente", {
+             theme: "colored",
+           });
+        }
+      })
+      .catch((err) => {
+        console.log("xd2")
+        handleSetLoading(false);
       });
-    } else {
-      toast.error("Error descargando video", {
-        theme: "colored",
-      });
-    }
-    // console.log(videoRef?.current)
-    // const itemsToSend = {
-    //   id: item?.id,
-    //   nombre: item?.nombre,
-    //   video: videoRef?.current,
-    //   cursoId: cursoInfo?.id,
-    //   cursoInfo: cursoInfo,
-    // };
-    // storeItemOnIndexes(itemsToSend);
+
+    // const response = await getBase64Video({
+    //   claseId: item?.id,
+    // });
+    // console.log("response", response);
+    // if (response?.data?.url) {
+    //   const itemsToSend = {
+    //     id: item?.id,
+    //     nombre: item?.nombre,
+    //     video: response?.data?.url,
+    //     cursoId: cursoInfo?.id,
+    //     cursoInfo: cursoInfo,
+    //     moduloInfo: moduloInfo,
+    //     type: response?.data?.type,
+    //   };
+    //   storeItemOnIndexes(itemsToSend);
+    //   toast.success("Curso guardado correctamente", {
+    //     theme: "colored",
+    //   });
+    // } else {
+    //   toast.error("Error descargando video", {
+    //     theme: "colored",
+    //   });
+    // }
   };
 
   return (
@@ -82,9 +111,12 @@ const SmallClaseCard = ({
           className="w-full h-full overflow-hidden object-cover"
         />
       </div>
-      <div className={clsx("w-full flex-grow flex flex-col justify-center",
-        isMobile ? "items-center" : "items-start"
-      )}>
+      <div
+        className={clsx(
+          "w-full flex-grow flex flex-col justify-center",
+          isMobile ? "items-center" : "items-start"
+        )}
+      >
         <span className="text-white font-bold text-base mb-2">
           Nombre: {item?.nombre}
         </span>
@@ -106,7 +138,8 @@ const SmallClaseCard = ({
 
         <div
           onClick={() => handleStorageInIndexDb()}
-          className={clsx("cursor-pointer",
+          className={clsx(
+            "cursor-pointer",
             isMobile ? "relative" : "  md:right-5 right-4 md:bottom-5 bottom-2"
           )}
         >

@@ -26,7 +26,7 @@ import { useComprareventoMutation } from "store/services/EventoService";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { useCreateCertificateMutation } from "store/services/CertificadoService";
 
-import { useCanGetCertificateQuery } from "store/services/CursoService";
+import { useCanGetCertificateQuery } from "store/services/EventoService";
 import ShareButton from "components/ShareButton/ShareButton";
 import ShareProgress from "components/ShareProgress/ShareProgress";
 import CardGananciasAcumuladas from "components/Cards/CardGananciasAcumuladas";
@@ -144,7 +144,7 @@ const CursoInfo = () => {
       setCanGetCertificate(canGetCertData.isApproved);
       setProgresoCurso(canGetCertData.avgCalifications);
     }
-  }, canGetCertData);
+  }, [canGetCertData]);
 
   const pagar = async (values) => {
     const response = await handlePay(values);

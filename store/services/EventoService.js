@@ -17,11 +17,11 @@ export const EventoService = createApi({
     "MisCursos",
     "MisEventosAdmin",
     "ListSugerencias",
+    "canGetCertificate",
   ],
   endpoints: (builder) => ({
     listarEventos: builder.query({
       query: (data) => {
-  
         const { page, rowsNumbers, filterData = null, busqueda = "" } = data;
 
         let query = `${apiRoutes.listarEventos()}?page=${page}&maxRows=${rowsNumbers}`;
@@ -35,10 +35,15 @@ export const EventoService = createApi({
               .join("&");
             query = `${query}${categoriasArrQry}`;
           }
-          if(filterData.tipo){
-            const tipoQuery = filterData.tipo == "Curso" ? "curso" : 
-            filterData.tipo == "SeminarioOnline" ? "seminarioV" : 
-            filterData.tipo == "SeminarioPresencial" ? "seminarioP" : ""; 
+          if (filterData.tipo) {
+            const tipoQuery =
+              filterData.tipo == "Curso"
+                ? "curso"
+                : filterData.tipo == "SeminarioOnline"
+                ? "seminarioV"
+                : filterData.tipo == "SeminarioPresencial"
+                ? "seminarioP"
+                : "";
 
             query = `${query}&tipo=${tipoQuery}`;
           }
@@ -56,7 +61,7 @@ export const EventoService = createApi({
     }),
 
     userIsStudentOrOwner: builder.query({
-      query: ({eventoId}) => {
+      query: ({ eventoId }) => {
         return apiRoutes.userIsStudentOrOwner(eventoId);
       },
 
@@ -65,7 +70,7 @@ export const EventoService = createApi({
         const response = value;
         return response;
       },
-      invalidatesTags: ["userIsStudentOrOwner"]
+      invalidatesTags: ["userIsStudentOrOwner"],
     }),
     createEvento: builder.mutation({
       query: (data) => ({
@@ -270,14 +275,15 @@ export const EventoService = createApi({
           body: data,
         };
       },
-      invalidatesTags: ["SelectedCursoInfo"],
+      invalidatesTags: ["SelectedCursoInfo", "canGetCertificate"],
       transformResponse(value) {
         const response = value;
         return response;
       },
     }),
     getEventosComprados: builder.query({
-      query: (data) => `${apiRoutes.getEventosComprados()}${data ? `?uid=${data}` : ``}`,
+      query: (data) =>
+        `${apiRoutes.getEventosComprados()}${data ? `?uid=${data}` : ``}`,
       provideTags: ["MisEventos"],
       transformResponse(value) {
         const response = value;
@@ -373,7 +379,10 @@ export const EventoService = createApi({
       },
     }),
     getProgresoEstudiantes: builder.query({
-      query: (data) => `${apiRoutes.getProgresoEstudiantes()}?userId=${data?.userId}&cursoId=${data?.cursoId}`,
+      query: (data) =>
+        `${apiRoutes.getProgresoEstudiantes()}?userId=${data?.userId}&cursoId=${
+          data?.cursoId
+        }`,
       transformResponse(value) {
         const response = value;
         return response;
@@ -400,6 +409,16 @@ export const EventoService = createApi({
         return response;
       },
     }),
+    canGetCertificate: builder.query({
+      query: ({ cursoId }) => {
+        return apiRoutes.canGetCertificate(cursoId);
+      },
+      providesTags: ["canGetCertificate"],
+      transformResponse(value) {
+        const response = value;
+        return response;
+      },
+    }),
   }),
 });
 
@@ -416,8 +435,6 @@ export const {
   useGetEvaluacionInfoQuery,
   useCorrejirEvaluacionMutation,
   useGetEventosCompradosQuery,
-  useGetCursosCompradosQuery,
-  useLazyGetCursosCompradosQuery,
   useGetCursoAndClasesQuery,
   useCreateSugerenciaMutation,
   useComprareventoMutation,
@@ -435,8 +452,8 @@ export const {
   useGetTendenciasQuery,
   useLazyGetEventosAdminQuery,
   useUserIsStudentOrOwnerQuery,
-  useCanGetCertificateQuery,
   useLazyGetEventosCompradosQuery,
   useGetEventoInfoQuery,
-  useGetCompradosOwnerQuery
+  useGetCompradosOwnerQuery,
+  useCanGetCertificateQuery,
 } = EventoService;

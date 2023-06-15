@@ -468,7 +468,7 @@ export default function CreateCurso({
           <p className="text-5xl text-white px-16 pb-4">Agregar un curso</p>
 
           <div className="px-16 w-full gap-8 flex flex-col lg:flex-row justify-center text-white font-light">
-            <div className="flex flex-col md:mt-0 gap-4 w-full sm:w-1/3">
+            <div className="flex md:min-w-[300px] flex-col md:mt-0 gap-4 w-full sm:w-1/3">
               {/* INICIO columna 1 */}
               <div className="flex flex-col gap-y-4 md:mt-0 mt-10">
                 <div className="flex w-full justify-center h-[300px]">
