@@ -314,7 +314,6 @@ export default function Login() {
                   onClick={(e) => e.preventDefault()}
                   className="text-gray-800"
                 >
-                  <small>Olvidaste Contrasña?</small>
                 </a>
               </div>
               <div className="w-1/2 text-right">

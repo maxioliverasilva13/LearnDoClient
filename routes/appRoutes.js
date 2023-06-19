@@ -5,7 +5,7 @@ const appRoutes = {
     home: () => "/home",
     seminarios: () => "/seminarios",
     seminarioPage: (seminarioId) => `/seminarios/${seminarioId ? seminarioId : "[seminarioId]"}`,
-    cursos: () => "/cursos",
+    cursos: () => "/eventos",
     landing: () => "/",
     messages: () => "/messages",
     messageWithId: (uid) => `/messages?uid=${uid}`,

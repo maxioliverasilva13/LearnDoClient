@@ -281,6 +281,7 @@ const CrearSeminario = () => {
           type="textarea"
         />
         <CustomDateTime
+          isOnline={checkedOnline}
           hasError={getValidationError("hora") || getValidationError("fecha")}
           setValues={(fecha, hora) => {
             handleChangeValueMultipleValues("fecha", fecha, "hora", hora);

@@ -11,7 +11,7 @@ import welcome from "public/img/welcome.svg";
 import { useGetTendenciasQuery } from "store/services/EventoService";
 import useGlobalSlice from "hooks/useGlobalSlice";
 import appRoutes from "routes/appRoutes";
-
+import Link from "next/link";
 
 export default function LandingPage() {
   const { data, isLoading } = useGetTendenciasQuery();
@@ -40,13 +40,14 @@ export default function LandingPage() {
                   ¡Las posibilidades son infinitas! ¿Qué esperas?
                 </p>
               </div>
-              <a
-                className="w-max self-center active:bg-purple-800 text-white
+              <Link href="/auth/register">
+                <p
+                  className="w-max cursor-pointer self-center active:bg-purple-800 text-white
                 hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                href="/auth/register"
-              >
-                Registrarme
-              </a>
+                >
+                  Registrarme
+                </p>
+              </Link>
               <div className="w-full flex justify-center gap-x-2">
                 {/* SPACER */}
                 <div className="flex items-center" aria-hidden="true">
@@ -62,13 +63,14 @@ export default function LandingPage() {
                 </div>
               </div>
               {/* SPACER */}
-              <a
-                className="w-max self-center bg-purple-700 active:bg-purple-800 text-white
-                hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                href="/auth/login"
-              >
-                Iniciar Sesión
-              </a>
+              <Link href="/auth/login">
+                <p
+                  className="w-max cursor-pointer self-center bg-purple-700 active:bg-purple-800 text-white
+                 hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                >
+                  Iniciar Sesión
+                </p>
+              </Link>
             </div>
           </div>
 

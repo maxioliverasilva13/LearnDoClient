@@ -53,7 +53,6 @@ const CursoInfo = () => {
   const [openCalificarModal, setOpenCalificarModal] = useState(false);
 
   const { data, isLoading } = useGetCompleteCursoInfoQuery({ cursoId });
-  const { data: canGetCertData } = useCanGetCertificateQuery({ cursoId });
   const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
   const soyColaorador = data?.soyColaorador;
@@ -85,7 +84,12 @@ const CursoInfo = () => {
     data?.puntuaciones?.find((item) => item?.estudiante_id === userInfo?.id) !==
     undefined;
 
-  const esComprada = data?.comprado;
+  const esComprada = data?.comprado || false;
+
+  const { data: canGetCertData } = useCanGetCertificateQuery({ cursoId }, {
+    skip: userInfo?.type === "organizador" || esComprada === false,
+  });
+
   const [gettingCertificate, setGettingCertificate] = useState(null);
   const [showModal, setShowModal] = useState(false);
 

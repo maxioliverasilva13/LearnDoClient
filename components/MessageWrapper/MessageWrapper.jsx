@@ -45,6 +45,7 @@ const MessageWrapper = ({ children }) => {
           userInfo?.id
         );
         const subscription = subscribe(channelName);
+        console.log("subscribed")
 
         subscription.bind("createMessage", (data) => {
           const newMessage = data?.message;

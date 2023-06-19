@@ -46,7 +46,7 @@ export default function Profile() {
     if (error) {
       //redirect to page 500
     }
-  }, []);
+  }, [data, userInfo]);
 
   useEffect(() => {
     handleSetLoading(isLoading)
@@ -78,7 +78,7 @@ export default function Profile() {
 
   async function onSave() {
     try {
-      let userAvatare = null;
+      let userAvatare = userInfo?.imagen;
       if (avatarImported) {
         const urlResult = await uploadFile(avatarImported);
         setUserAvatar(urlResult);
@@ -113,29 +113,6 @@ export default function Profile() {
                           objectFit="cover"
                           className="w-full h-full rounded-full"
                         />
-                      </div>
-                    </div>
-
-                    <div className="w-full lg:w-4/12 px-4 lg:order-1">
-                      <div className="flex justify-center py-4 lg:pt-4 pt-8">
-                        <div className="mr-4 p-3 text-center">
-                          <span className="text-xl font-bold block uppercase tracking-wide ">
-                            22
-                          </span>
-                          <span className="text-sm ">Cursos</span>
-                        </div>
-                        <div className="mr-4 p-3 text-center">
-                          <span className="text-xl font-bold block uppercase tracking-wide">
-                            10
-                          </span>
-                          <span className="text-sm ">Photos</span>
-                        </div>
-                        <div className="lg:mr-4 p-3 text-center">
-                          <span className="text-xl font-bold block uppercase tracking-wide ">
-                            89
-                          </span>
-                          <span className="text-sm ">Comments</span>
-                        </div>
                       </div>
                     </div>
                   </div>
