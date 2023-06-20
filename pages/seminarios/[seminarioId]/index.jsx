@@ -258,28 +258,28 @@ const SeminarioInfo = () => {
               )}
 
               <div className="w-auto flex lg:flex-row flex-col  lg:items-center items-start lg:gap-6 gap-2">
-                <div className="flex h-full lg:flex-row flex-col lg:items-center items-start">
+                <div className="flex h-full lg:flex-row flex-col lg:items-center gap-3">
                   {!esComprado &&
                     (seminarioInfo?.es_pago === 1 ? (
-                      <span
+                      <p
                         className={clsx(
                           "text-white font-semibold text-[20px]",
                           (isValidCupon || useDiscount) && "line-through"
                         )}
                       >
-                        USD${seminarioInfo?.precio}
-                      </span>
+                        USD ${seminarioInfo?.precio}
+                      </p>
                     ) : (
-                      <span className="text-white font-semibold text-[20px]">
+                      <p className="text-white font-semibold text-[20px]">
                         Gratuito
-                      </span>
+                      </p>
                     ))}
                     {!esComprado && seminarioInfo?.es_pago === 0 && (
                     <span
                       onClick={() => pagar(valuesPay)}
                       className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF]"
                     >
-                      Comprar
+                      Adquirir
                     </span>
                   )}
                   {esComprado &&
@@ -299,7 +299,7 @@ const SeminarioInfo = () => {
                 </div>
  
                 <div>
-                  { (esComprado || seminarioInfo?.es_pago === 0) &&
+                  { esComprado &&
                   <GoogleCalendarAuthBtn 
                     nombre={seminarioInfo?.nombre}
                     descripcion={seminarioInfo?.descripcion}

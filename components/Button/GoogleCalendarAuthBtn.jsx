@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import googleConfig from "pages/api/google-auth";
 import { useEffect } from "react";
 import useCreateCalendarEvent from "hooks/useCreateCalendarEvent";
+import { toast } from "react-toastify";
 
 import moment from "moment";
 import "moment/locale/es";
@@ -56,37 +57,17 @@ const GoogleCalendarAuthBtn = ({
           if (tokenResponse && tokenResponse.access_token) {
             console.log("response del login: ", tokenResponse);
 
-            await handleCreateEvent(tokenResponse.access_token, eventData);
-
-            /* try {
-              const response = await fetch(
-                "https://www.googleapis.com/calendar/v3/calendars/primary/events",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + tokenResponse.access_token,
-                  },
-                  body: JSON.stringify(eventData),
-                }
-              )
-                .then((data) => {
-                  return data.json();
-                })
-                .then((data) => {
-                  console.log("resp: ", data);
-                  console.log("evento creado, chequea tu calendario");
-                })
-                .catch((error) => {
-                  console.log("errooor: ", error);
-                });
-
-              const data = await response?.json();
-              return data;
-            } catch (error) {
-              console.error(error);
-              throw error;
-            } */
+            await handleCreateEvent(tokenResponse.access_token, eventData).then(() => {
+              toast.success("Recordatorio creado correctamente.", {
+                theme: "colored"
+              })
+            }).catch((error) => {
+              console.log("error al crear el recordatorio en google calendar", error)
+              toast.error("Error al crear el recordatorio.", {
+                theme: "colored",
+                delay: 5000,
+              })
+            });
           }
         },
       })
@@ -95,7 +76,6 @@ const GoogleCalendarAuthBtn = ({
 
   return (
     <>
-      {/* <div id="signInDiv" className=""></div> */}
       <button
         onClick={createEvento}
         className="cursor-pointer w-full font-Gotham text-center px-6 py-3 text-white rounded-full border-0 bg-[#780EFF] text-lg"
