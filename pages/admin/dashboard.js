@@ -6,26 +6,27 @@ import { useGetCompradosOwnerQuery } from "store/services/EventoService";
 import { useState, useEffect } from "react";
 import { array } from "prop-types";
 import { data } from "autoprefixer";
+import useGlobalSlice from "hooks/useGlobalSlice";
 
-function ObtenerAlumnos() {
-  const { data } = useGetCompradosOwnerQuery();
-  return data;
-}
 
 export default function Dashboard() {
-  const Alumnos = ObtenerAlumnos();
   const [nombreTabla, setNombreTabla] = useState("Alumnos Nuevos");
   const { format, subMonths } = require("date-fns");
   const currentDate = new Date();
   const months = [];
+  const { data: Alumnos, isLoading } = useGetCompradosOwnerQuery();
   const [Data, setData] = useState();
   const [prueba, setPrueba] = useState();
   const [tipoTabla, setTipoTabla] = useState("Alumnos");
+  const { handleSetLoading } = useGlobalSlice();
 
   useEffect(() => {
     setData(prueba);
-    console.log(prueba);
   }, [prueba]);
+
+  useEffect(() => {
+    handleSetLoading(isLoading)
+  }, [isLoading])
 
   for (let i = 0; i < 7; i++) {
     if (subMonths) {
@@ -89,6 +90,10 @@ export default function Dashboard() {
       );
     }
   };
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <>
