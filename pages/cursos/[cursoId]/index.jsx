@@ -487,7 +487,7 @@ const CursoInfo = () => {
                   justifyStart={true}
                   countStars={countStars}
                 />
-                <p>Total Clases:{getCantClases()}</p>
+                <p>Total de Clases: {getCantClases()}</p>
                 <p>Modalidad: Virtual</p>
                 <UserCard user={profesor} isProfesor />
               </div>
