@@ -66,7 +66,7 @@ const PuntuarModal = ({ openCalificarModal, setOpenCalificarModal, cursoId }) =>
           />
         )}
        </div>
-        <a className="text-2xl text-white">¿Que te parece este curso?</a>
+        <p className="text-2xl text-white">¿Que te parece este curso?</p>
         <div className="flex flex-row mt-8 mb-8">
           <StarRating handleSetRating={setRating} />
         </div>

@@ -37,7 +37,6 @@ const SeminarioInfo = () => {
   });
   const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
-
   const [canUseDiscount, setCanUseDiscount] = useState(false);
   const myCreditsNumber = userInfo?.creditos_number;
 
@@ -95,8 +94,7 @@ const SeminarioInfo = () => {
     const response = await handlePay({
       ...values,
       useDiscount: useDiscount,
-    })
-    .then((res) => {
+    }).then((res) => {
       // createEvent
     });
     if (response?.data?.ok == true) {
@@ -185,10 +183,9 @@ const SeminarioInfo = () => {
     window.location.reload();
   };
 
-  function onClickLink(){
-    router.push(appRoutes.zoom(seminarioId))
-}
-
+  function onClickLink() {
+    router.push(appRoutes.zoom(seminarioId));
+  }
 
   const renderContent = () => {
     if (isLoading) {
@@ -212,13 +209,13 @@ const SeminarioInfo = () => {
               </div>
               <span className="text-white font-semibold text-[28px]">
                 {seminarioInfo?.nombre}
-              </span> 
+              </span>
 
-              {
-                userInfo?.id == seminarioInfo.organizador_id && (
-                  <CardGananciasAcumuladas gananciasAcumuladas={seminarioInfo.ganancias_acumuladas}></CardGananciasAcumuladas>
-                )
-              }
+              {userInfo?.id == seminarioInfo.organizador_id && (
+                <CardGananciasAcumuladas
+                  gananciasAcumuladas={seminarioInfo.ganancias_acumuladas}
+                ></CardGananciasAcumuladas>
+              )}
             </div>
 
             <div className="w-[80%] lg:mt-0 mt-4 lg:max-w-[500px] flex flex-col lg:items-center justify-start">
@@ -228,12 +225,19 @@ const SeminarioInfo = () => {
               <div className="flex my-[30px] w-full italic text-white font-semibold text-sm flex-col items-start justify-start gap-4">
                 <p>Modalidad: Virtual</p>
                 <p>Profesor: {data?.profesor}</p>
-                <p>URL acceso: {seminarioInfo?.link}</p>
+                {esComprado && <p>URL acceso: {seminarioInfo?.link}</p>}
                 <p>Fecha: {seminarioInfo?.fecha}</p>
                 <p>Hora: {seminarioInfo?.hora}</p>
 
-                <p className="flex items-center gap-2" onClick={()=> onClickLink()}>URL acceso: <a className="cursor-pointer text-sky-600	text-xl">Link</a> </p>
-
+                {esComprado && seminarioInfo?.link && (
+                  <p
+                    className="flex items-center gap-2"
+                    onClick={() => onClickLink()}
+                  >
+                    URL acceso:{" "}
+                    <a className="cursor-pointer text-sky-600	text-xl">Link</a>{" "}
+                  </p>
+                )}
                 {isValidCupon === false && cuponToken && !esComprado && (
                   <div className="w-full flex flex-row items-center justify-start gap-2">
                     <AiOutlineInfoCircle
@@ -246,16 +250,19 @@ const SeminarioInfo = () => {
                   </div>
                 )}
               </div>
-              {canUseDiscount && !esComprado && !cuponToken && seminarioInfo?.es_pago === 1 && (
-                <div className="w-full my-4 appearsAnimation">
-                  <button
-                    onClick={() => setUseDiscount(!useDiscount)}
-                    className="text-white appearsAnimation transition-all cursor-pointer px-4 py-2 bg-indigo-500 rounded-[20px] shadow-md"
-                  >
-                    {useDiscount && "No"} Usar 10 puntos
-                  </button>
-                </div>
-              )}
+              {canUseDiscount &&
+                !esComprado &&
+                !cuponToken &&
+                seminarioInfo?.es_pago === 1 && (
+                  <div className="w-full my-4 appearsAnimation">
+                    <button
+                      onClick={() => setUseDiscount(!useDiscount)}
+                      className="text-white appearsAnimation transition-all cursor-pointer px-4 py-2 bg-indigo-500 rounded-[20px] shadow-md"
+                    >
+                      {useDiscount && "No"} Usar 10 puntos
+                    </button>
+                  </div>
+                )}
 
               <div className="w-auto flex lg:flex-row flex-col  lg:items-center items-start lg:gap-6 gap-2">
                 <div className="flex h-full lg:flex-row flex-col lg:items-center gap-3">
@@ -274,7 +281,7 @@ const SeminarioInfo = () => {
                         Gratuito
                       </p>
                     ))}
-                    {!esComprado && seminarioInfo?.es_pago === 0 && (
+                  {!esComprado && seminarioInfo?.es_pago === 0 && (
                     <span
                       onClick={() => pagar(valuesPay)}
                       className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF]"
@@ -297,7 +304,7 @@ const SeminarioInfo = () => {
                       <div />
                     ))}
                 </div>
- 
+
                 <div>
                   { esComprado &&
                   <GoogleCalendarAuthBtn 

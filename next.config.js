@@ -1,13 +1,19 @@
-const runtimeCaching = require("next-pwa/cache");
-const withPWA = require("next-pwa")({
-  dest: "public",
-  register: true,
-  skipWaiting: true,
-  runtimeCaching,
-  buildExcludes: [/middleware-manifest.json$/],
-});
+// const runtimeCaching = require("next-pwa/cache");
+// const withPWA = require("next-pwa")({
+//   dest: "public",
+//   register: true,
+//   skipWaiting: true,
+//   runtimeCaching,
+//   buildExcludes: [/middleware-manifest.json$/],
+// });
 
-const nextConfig = withPWA({
+// const nextConfig = withPWA({
   
-});
+// });
+// module.exports = nextConfig;
+
+const nextConfig = {
+
+}
+
 module.exports = nextConfig;

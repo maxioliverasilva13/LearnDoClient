@@ -77,7 +77,7 @@ export default function Navbar() {
           </li>
           <li className="px-4">
             <Link href={appRoutes.cursos()} className="hover:text-gray-400">
-              Cursos
+              Eventos
             </Link>
           </li>
           <li className="px-4">

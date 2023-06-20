@@ -5,7 +5,7 @@ import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import { MdAccessTime } from "react-icons/md";
 
-const CustomDateTime = ({ min, max, disabled = false, setValues, hasError }) => {
+const CustomDateTime = ({ min, max, disabled = false, setValues, hasError, isOnline }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [openCalendar, setOpenCalendar] = useState(false);
 
@@ -60,7 +60,7 @@ const CustomDateTime = ({ min, max, disabled = false, setValues, hasError }) => 
         dropdownMode="select"
         autoComplete="off"
         initialViewDate={selectedTime}
-        isValidDate={(currentDate, selectedDate) => currentDate.isAfter(moment(new Date()).add("day", 1))}
+        isValidDate={(currentDate, selectedDate) => isOnline ? true : currentDate.isAfter(moment(new Date()).add("day", 1))}
       />
       <button
         className=""

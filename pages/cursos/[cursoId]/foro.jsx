@@ -36,12 +36,7 @@ export default function Foro() {
   const [formHasError, setFormHasError] = useState(false);
   const [openAddPostModal, setOpenAddPostModal] = useState(false);
   const [userIsStudentOrOwner, setUserIsStudentOrOwner] = useState(true);
-  const { data: eventoInfoResponse, isLoading: isLoadingEventoInfo } =
-    useGetEventoInfoQuery(curso_id, {
-      skip: !curso_id,
-    });
-  const eventoInfo = eventoInfoResponse?.eventoInfo;
-
+ 
   const [createPost] = useCreatePostMutation();
   const [deletePost] = useDeletePostMutation();
   const [deleteComment] = useDeleteCommentMutation();
@@ -52,6 +47,9 @@ export default function Foro() {
   const { data: isStudentOrOwnerRes } = useUserIsStudentOrOwnerQuery({
     eventoId: foroId,
   });
+
+  const eventoInfo = isStudentOrOwnerRes?.eventoInfo;
+
 
   const [hasMore, setHasMore] = useState(true);
   const [validationsMessage, setValidationsMessage] = useState([]);
