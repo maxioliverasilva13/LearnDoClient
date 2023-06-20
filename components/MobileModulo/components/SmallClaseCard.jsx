@@ -10,6 +10,7 @@ import useGlobalSlice from "hooks/useGlobalSlice";
 import { toast } from "react-toastify";
 import clsx from "clsx";
 import { useWindowDimensions } from "hooks/useMediaQuery";
+import { baseUrl } from "store/baseQueryWithError";
 
 const SmallClaseCard = ({
   item,
@@ -41,7 +42,7 @@ const SmallClaseCard = ({
     const video = item?.video;
 
     handleSetLoading(true);
-    fetch(`http://localhost:8000/api/videos/getBase64OfVideo?claseId=${item?.id}`)
+    fetch(`${baseUrl}/api/videos/getBase64OfVideo?claseId=${item?.id}`)
       .then((res) => {
         console.log("xd1")
         console.log(res)

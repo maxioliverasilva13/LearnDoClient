@@ -45,6 +45,7 @@ import UserCard from "components/UserCard/UserCard";
 
 import { isMobile } from "react-device-detect";
 import MobileModulo from "components/MobileModulo/MobileModulo";
+import { baseUrl } from "store/baseQueryWithError";
 
 const CursoInfo = () => {
   const router = useRouter();
@@ -201,7 +202,7 @@ const CursoInfo = () => {
     createCertificate({ curso_id: cursoId }).then((response) => {
       const { data } = response;
       const { id } = data;
-      const certificateDowloadURl = `http://localhost:8000/api/certificaciones/${id}/getCertificationPDF`;
+      const certificateDowloadURl = `${baseUrl}/api/certificaciones/${id}/getCertificationPDF`;
       window.open(certificateDowloadURl);
       setCertificateID(id);
       setGettingCertificate(false);
@@ -245,7 +246,7 @@ const CursoInfo = () => {
     if (!certificateID) {
       return;
     }
-    const certificateDowloadURl = `http://localhost:8000/api/certificaciones/${certificateID}/getCertificationPDF`;
+    const certificateDowloadURl = `${baseUrl}/api/certificaciones/${certificateID}/getCertificationPDF`;
     window.open(certificateDowloadURl);
   };
 
