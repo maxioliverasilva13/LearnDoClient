@@ -43,7 +43,12 @@ const Activate = () => {
     const token = response.access_token;
     storageToken(token);
     handleSetUserInfo(userInfo);
-    window.location.href = appRoutes.home();
+    if (userInfo?.type === "organizador") {
+      window.location.href = appRoutes.dashboard();
+    } else {
+      window.location.href = appRoutes.home();
+
+    }
   };
 
   if (customIsLoading === true) {
