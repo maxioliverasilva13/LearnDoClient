@@ -5,7 +5,7 @@ import store from "./store";
 import { prepareHeaders } from "utils/prepareHeaders";
 import { toast } from "react-toastify";
 
-export const baseUrl = "http://192.168.1.2:8000";
+export const baseUrl = "http://localhost:8000";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,
