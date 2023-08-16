@@ -190,15 +190,15 @@ export default function Login() {
             </div>
           ) : null}
           <div className="w-full">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl border-0 bg-[#272831]">
+            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl border-0 bg-[#4444]">
               <div className="flex-auto px-4 lg:px-10 py-10">
-                <div className="text-blueGray-400 text-center mb-3 font-bold text-xl">
-                  <small>Inicia sesión utilizando tus credenciales</small>
+                <div className="text-white text-center mb-3 font-bold text-[30px]">
+                  <small>Iniciar sesión</small>
                 </div>
                 <form action="#" method="POST" onSubmit={handleSubmit}>
                   <div className="relative w-full mb-3">
                     <label
-                      className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
+                      className="block uppercase text-xs font-bold mb-2"
                       htmlFor="user"
                     >
                       Email o Nickname
@@ -220,7 +220,7 @@ export default function Login() {
 
                   <div className="relative w-full mb-3">
                     <label
-                      className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
+                      className="block uppercase text-xs font-bold mb-2"
                       htmlFor="password"
                     >
                       Contraseña
@@ -256,7 +256,7 @@ export default function Login() {
 
                   <div className="text-center mt-6">
                     <button
-                      className="bg-red-700 text-white active:bg-red-800 text-sm font-bold uppercase px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                      className="bgPrincipal text-white active:bg-red-800 text-sm font-bold uppercase px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="submit"
                     >
                       Iniciar sesión
@@ -319,8 +319,8 @@ export default function Login() {
               </div>
               <div className="w-1/2 text-right">
                 <Link href="/auth/register">
-                  <a href="#pablo" className="text-gray-400">
-                    <small>Crear cuenta</small>
+                  <a href="#pablo" className="colorSecundario">
+                    <small>Crear Cuenta</small>
                   </a>
                 </Link>
               </div>

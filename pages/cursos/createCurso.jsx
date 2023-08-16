@@ -484,7 +484,7 @@ export default function CreateCurso({
                   name="image"
                   accept="image/*"
                   onChange={handleFileChange}
-                  className="border-0 px-6 py-3 text-white bg-[#780EFF] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 file:bg-[#272831] file:rounded-lg file:text-white file:border-0"
+                  className="border-0 px-6 py-3 text-white bgPrincipal rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 file:bg-[#4444] file:rounded-lg file:text-white file:border-0"
                 />
               </div>
               <div className="flex flex-col gap-y-4">
@@ -556,7 +556,7 @@ export default function CreateCurso({
               <div className="flex items-center justify-between">
                 <p className="text-lg font-normal">Módulos</p>
                 <button
-                  className="w-max self-center active:bg-purple-800 text-white font-semibold
+                  className="w-max self-center active:bg-[#78A132] text-white font-semibold
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                   onClick={() => {
                     // console.log(modulos);
@@ -571,7 +571,7 @@ export default function CreateCurso({
                   return (
                     <div
                       key={index}
-                      className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
+                      className="flex w-full py-4 px-6 bgPrincipal rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <p>{item.nombre}</p>
                       <div className="flex gap-4">
@@ -612,7 +612,7 @@ export default function CreateCurso({
               <div className="flex md:flex-row flex-col md:gap-2 gap-5 items-center justify-between">
                 <p className="text-lg font-normal">Colaboradores</p>
                 <button
-                  className="w-max self-center active:bg-purple-800 text-white font-semibold
+                  className="w-max self-center active:bg-[#78A132] text-white font-semibold
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                   onClick={() => {
                     handleOpenModal(modals.colaboradores);
@@ -626,7 +626,7 @@ export default function CreateCurso({
                   return (
                     <div
                       key={index}
-                      className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
+                      className="flex w-full py-4 px-6 bgPrincipal rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <div className="w-[30px] mr-2 h-[30px] overflow-hidden rounded-full relative">
                         <GlobalImage
@@ -668,7 +668,7 @@ export default function CreateCurso({
           <div className="flex justify-center w-full">
             <button
               type="submit"
-              className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mt-4 ease-linear transition-all duration-150"
+              className="w-max bgPrincipal active:bg-[#78A132] text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mt-4 ease-linear transition-all duration-150"
               onClick={(e) => {
                 if (isEdit) {
                   handleEditCurso(e);

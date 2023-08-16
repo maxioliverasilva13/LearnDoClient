@@ -127,7 +127,7 @@ const CheckTokenWrapper = ({ children }) => {
         <div className={clsx(!isMessagePage ? "min-h-screen" : "h-full", isMessagePage && (isMobile || isTablet) && "pb-[70px]")}>
           {children}
         </div>
-        {!isPublicPath && !isMessagePage && <Footer />}
+        {/* {!isPublicPath && !isMessagePage && <Footer />} */}
       </div>
     </div>
   );

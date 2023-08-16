@@ -17,9 +17,9 @@ export default function CardLineChart({title, month, data}) {
         ],
         datasets: [
           {
-            //label: new Date().getFullYear(),
-            backgroundColor: "#780EFF",
-            borderColor: "#780EFF",
+            label: "Últimos 6 Meses",
+            backgroundColor: "#97ca3f",
+            borderColor: "#97ca3f",
             data: [ data[6], data[5], data[4], data[3], data[2], data[1], data[0]],
             fill: false,
           },

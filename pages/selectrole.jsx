@@ -76,7 +76,7 @@ const SelectRole = () => {
 
       <button
         type="submit"
-        className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md text-lg px-6 py-2 shadow-md rounded-full sm:mr-2 mt-4 ease-linear transition-all duration-150"
+        className="w-max bgPrincipal active:bg-[#78A132] text-white font-semibold hover:shadow-md text-lg px-6 py-2 shadow-md rounded-full sm:mr-2 mt-4 ease-linear transition-all duration-150"
         onClick={handleSelectRole}
       >
         Guardar

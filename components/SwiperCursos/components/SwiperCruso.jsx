@@ -17,7 +17,7 @@ const SwiperCurso = ({imagen, nombre, clases, mainCategoria}) => {
             </div>
             <p className="text-white font-medium md:text-[48px] text-[32px] leading-[45px]">{nombre}</p>
             <p className="text-white md:text-base text-sm">{clases} Clases</p>
-            <div className="font-medium mt-6 leading-4 md:text-base text-sm text-white px-2 py-3 rounded-[30px] bg-[#780EFF]">
+            <div className="font-medium mt-6 leading-4 md:text-base text-sm text-white px-2 py-3 rounded-[30px] bgPrincipal">
                 Mas informacion
             </div>
         </div>

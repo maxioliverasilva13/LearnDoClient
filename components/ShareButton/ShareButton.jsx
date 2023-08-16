@@ -91,7 +91,7 @@ import { FcApproval } from "react-icons/fc"
         <IoIosShare
           className="transition-all transform hover:scale-125 cursor-pointer hover:text-white"
           size={30}
-          color="#780EFF"
+          color="#78A132"
           fontSize="20"
           fontWeight="700"
         />

@@ -59,8 +59,8 @@ const Tarjeta = ({
 
   return (
     <div
-      className="lg:h-72 w-4/5 flex flex-col lg:flex-row bg-[#272831] shadow-md gap-5 justify-start items-center rounded-[12px] p-8"
-      // style={{ backgroundColor: "#780EFF" }}
+      className="lg:h-72 w-4/5 flex flex-col lg:flex-row bg-[#4444] shadow-md gap-5 justify-start items-center rounded-[12px] p-8"
+      // style={{ backgroundColor: "#78A132" }}
     >
       <div className="h-48 w-48 min-h-48 min-w-[192px] rounded-md relative">
         <div
@@ -118,7 +118,7 @@ const Tarjeta = ({
           {tipo === "curso" && (
             <>
               <Link href={appRoutes.cursoPage(eventoId)}>
-                <span className="bg-indigo-700 shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
+                <span className="bgPrincipal shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
                   Ver curso
                 </span>
               </Link>
@@ -127,7 +127,7 @@ const Tarjeta = ({
           )}
           {(tipo === "seminarioP" || tipo === "seminarioV") && (
             <Link href={appRoutes.seminarioPage(eventoId)}>
-              <span className="bg-indigo-700 shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
+              <span className="bgPrincipal shadow-md  cursor-pointer transition-all transform hover:scale-110 my-2 px-4 py-2 w-max text-white block rounded-full ">
                 Ver seminario
               </span>
             </Link>

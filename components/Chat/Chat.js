@@ -30,7 +30,7 @@ const MessageItem = ({ isFromMe = false, contenido, created_at, isMobile }) => {
       <div
         className={clsx(
           "w-auto h-auto max-w-fit px-4 py-2 rounded-[24px] flex flex-row items-center justify-start gap-2 font-medium text-[20px]",
-          isFromMe ? "bg-[#EAEAEA] text-black" : "bg-[#780EFF] text-white"
+          isFromMe ? "bg-[#EAEAEA] text-black" : "bgPrincipal text-white"
         )}
       >
         <span>{contenido}</span>

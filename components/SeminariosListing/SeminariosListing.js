@@ -4,7 +4,7 @@ const SeminarioListing = ({ seminarios }) => {
   return (
     <div className="w-full h-auto flex flex-col items-start justify-start">
       <div className="w-full mb-6 h-auto flex items-center justify-between">
-        {/* <span className="text-[36px] pl-2 border-l-4 border-[#780EFF] leading-8 font-medium text-white">
+        {/* <span className="text-[36px] pl-2 border-l-4 border-[#78A132] leading-8 font-medium text-white">
           {title}
         </span> */}
       </div>

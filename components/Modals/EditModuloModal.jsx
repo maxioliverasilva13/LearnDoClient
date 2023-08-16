@@ -212,12 +212,12 @@ export default function EditModuloModal({
                           id="nombreModulo"
                           name="nombreModulo"
                           defaultValue={currentModule?.modulo?.nombre}
-                          className="border border-white max-w-md self-center px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                          className="border border-white max-w-md self-center px-6 py-3 text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#78A132] w-full ease-linear transition-all duration-150"
                           placeholder="Nombre para el Módulo"
                         />
                         {!estaSugiriendo && (
                           <button
-                            className="w-max self-center active:bg-purple-800 text-white font-semibold
+                            className="w-max self-center active:bg-[#78A132] text-white font-semibold
                           hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                             onClick={() =>
                               setIsEvalModuloOpen((current) => !current)
@@ -272,7 +272,7 @@ export default function EditModuloModal({
                                   onChange={(e) =>
                                     handleInputVideoChange(e, index)
                                   }
-                                  className="border-0 max-w-xs text-white rounded text-sm shadow bg-[#1E1E1E] focus:outline-none focus:ring ring-[#780EFF] ease-linear transition-all duration-150"
+                                  className="border-0 max-w-xs text-white rounded text-sm shadow bg-[#1E1E1E] focus:outline-none focus:ring ring-[#78A132] ease-linear transition-all duration-150"
                                 />
                               )}
                               <div className="flex flex-col items-center justify-center gap-2 w-2/3 sm:w-2/4">
@@ -283,7 +283,7 @@ export default function EditModuloModal({
                                   maxLength={80}
                                   value={clase.nombre}
                                   onChange={(e) => handleInputChange(e, index)}
-                                  className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs text-white placeholder:text-white bg-[#1E1E1E] rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                                  className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs text-white placeholder:text-white bg-[#1E1E1E] rounded-full text-sm shadow focus:outline-none focus:ring ring-[#78A132] w-full ease-linear transition-all duration-150"
                                   placeholder="Nombre para la Clase"
                                   autoComplete={"off"}
                                 />
@@ -294,7 +294,7 @@ export default function EditModuloModal({
                                   maxLength={200}
                                   value={clase.descripcion}
                                   onChange={(e) => handleInputChange(e, index)}
-                                  className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs max-h-24 min-h-12 text-white placeholder:text-white bg-[#1E1E1E] rounded-3xl text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                                  className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs max-h-24 min-h-12 text-white placeholder:text-white bg-[#1E1E1E] rounded-3xl text-sm shadow focus:outline-none focus:ring ring-[#78A132] w-full ease-linear transition-all duration-150"
                                   placeholder="Breve descripción"
                                   autoComplete={"off"}
                                 />
@@ -309,7 +309,7 @@ export default function EditModuloModal({
                           );
                         })}
                         <button
-                          className="w-max self-center active:bg-purple-800 text-white font-semibold
+                          className="w-max self-center active:bg-[#78A132] text-white font-semibold
                       hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                           onClick={handleAddLine}
                         >
@@ -321,7 +321,7 @@ export default function EditModuloModal({
                   <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                     <button
                       type="submit"
-                      className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
+                      className="inline-flex w-full justify-center rounded-md bgPrincipal px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
                       onClick={(e) => {
                         handleSaveModulo(e);
                       }}

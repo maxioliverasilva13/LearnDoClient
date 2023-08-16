@@ -82,7 +82,7 @@ const PuntuarModal = ({ openCalificarModal, setOpenCalificarModal, cursoId }) =>
         <button
           type="submit"
           className="h-10 w-32 mb-8 px-4 py-2 rounded-full text-white"
-          style={{ backgroundColor: "#780EFF" }}
+          style={{ backgroundColor: "#78A132" }}
         >
           Calificar
         </button>

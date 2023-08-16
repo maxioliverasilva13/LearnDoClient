@@ -269,7 +269,7 @@ export default function SugerirModulo() {
               <div className="flex items-center justify-between">
                 <p className="text-lg font-normal">Módulos</p>
                 <button
-                  className="w-max self-center active:bg-purple-800 text-white font-semibold
+                  className="w-max self-center active:bg-[#78A132] text-white font-semibold
                             hover:shadow-md shadow text-sm px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                   onClick={() => {
                     // console.log(modulos);
@@ -284,7 +284,7 @@ export default function SugerirModulo() {
                   return (
                     <div
                       key={index}
-                      className="flex w-full py-4 px-6 bg-[#780EFF] rounded-full justify-between items-center hover:shadow-xl"
+                      className="flex w-full py-4 px-6 bgPrincipal rounded-full justify-between items-center hover:shadow-xl"
                     >
                       <p>{item.nombre}</p>
                       <div className="flex gap-4">
@@ -336,7 +336,7 @@ export default function SugerirModulo() {
           <div className="flex justify-center w-full">
             <button
               type="submit"
-              className="w-max bg-[#780EFF] active:bg-purple-800 text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mt-4 ease-linear transition-all duration-150"
+              className="w-max bgPrincipal active:bg-[#78A132] text-white font-semibold hover:shadow-md shadow text-lg px-6 py-4 rounded-full sm:mr-2 mt-4 ease-linear transition-all duration-150"
               onClick={(e) => {
                 handleCreateSugerencia(e);
                 // console.log("modulos: ", modulos);

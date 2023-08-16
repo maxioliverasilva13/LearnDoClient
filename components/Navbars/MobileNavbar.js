@@ -22,7 +22,7 @@ const MobileNavbar = () => {
   };
 
   return (
-    <div className="w-full h-[76px] fixed border-t-2 border-[#272831] bottom-0 left-0 bg-[#272831] z-[50] flex flex-row items-center justify-center gap-4">
+    <div className="w-full h-[76px] fixed border-t-2 border-[#272831] bottom-0 left-0 bg-[#4444] z-[50] flex flex-row items-center justify-center gap-4">
       {userInfo?.type === "estudiante" && (
         <div className="w-full px-10 h-auto flex flex-row items-center justify-around">
           <Link href={appRoutes.home()}>

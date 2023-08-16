@@ -86,7 +86,7 @@ const SelectLocationModal = ({ setOpen, open, setLatLng }) => {
         !open && "hidden"
       )}
     >
-      <div className="md:w-[700px] relative w-[85%] h-auto flex flex-col items-center justify-start p-4 rounded-lg shadow-md bg-[#272831]">
+      <div className="md:w-[700px] relative w-[85%] h-auto flex flex-col items-center justify-start p-4 rounded-lg shadow-md bg-[#4444]">
         <IoMdClose
           onClick={handleClose}
           size={30}

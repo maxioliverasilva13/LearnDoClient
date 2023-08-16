@@ -30,7 +30,7 @@ const ClaseCard = ({ clase }) => {
           className="w-full h-full overflow-hidden object-cover"
         />
       </div>
-      <div className="mx-5 h-full w-[3px] bg-[#780EFF]" />
+      <div className="mx-5 h-full w-[3px] bgPrincipal" />
       <div className="flex-grow h-full flex flex-col items-center justify-between">
         <div className="w-full flex flex-col gap-1">
           <span className="w-auto text-[16px] text-left max-w-full font-semibold text-white ">

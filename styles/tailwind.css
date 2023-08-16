@@ -4257,7 +4257,7 @@ video {
   background-color: rgb(71 85 105 / var(--tw-bg-opacity)) !important;
 }
 
-.active\:bg-indigo-600:active {
+.active\:bgPrincipal:active {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(79 70 229 / var(--tw-bg-opacity)) !important;
 }

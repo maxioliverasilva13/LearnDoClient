@@ -78,7 +78,7 @@ const GoogleCalendarAuthBtn = ({
     <>
       <button
         onClick={createEvento}
-        className="cursor-pointer w-full font-Gotham text-center px-6 py-3 text-white rounded-full border-0 bg-[#780EFF] text-lg"
+        className="cursor-pointer w-full font-Gotham text-center px-6 py-3 text-white rounded-full border-0 bgPrincipal text-lg"
       >
         Crear recordatorio
       </button>

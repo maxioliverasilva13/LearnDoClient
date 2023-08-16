@@ -385,7 +385,7 @@ const EvaluationPage = ({
           <div className="flex justify-center">
             <button
               onClick={handleAddQuestion}
-              className="w-max self-center active:bg-purple-800 hover:bg-gray-700 text-white font-semibold
+              className="w-max self-center active:bg-[#78A132] hover:bg-gray-700 text-white font-semibold
               hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
             >
               Agregar Pregunta
@@ -395,7 +395,7 @@ const EvaluationPage = ({
         {isEditing ? (
           <div className="flex justify-center mt-4">
             <button
-              className="w-max self-center bg-[#780EFF] active:bg-purple-800 text-white font-semibold
+              className="w-max self-center bgPrincipal active:bg-[#78A132] text-white font-semibold
             hover:shadow-md shadow text-md px-5 py-3 rounded-full sm:mr-2 mb-1 ease-linear transition-all duration-150"
               onClick={handleSave}
             >

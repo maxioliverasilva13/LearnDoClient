@@ -274,7 +274,7 @@ const CursoInfo = () => {
               onClick={() => getCertificate()}
               className={
                 canGetCertificate
-                  ? "flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                  ? "flex items-center w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bgPrincipal"
                   : "flex items-center w-full font-Gotham text-center px-10 py-3 text-dark rounded-full border-0 bg-[#dedede] opacity-50 cursor-not-allowed"
               }
               disabled={gettingCertificate || !canGetCertificate}
@@ -300,7 +300,7 @@ const CursoInfo = () => {
               type="button"
               onClick={() => downloadCertificate()}
               className={
-                "flex items-center w- font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                "flex items-center w- font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bgPrincipal"
               }
             >
               Descargar certificado
@@ -439,7 +439,7 @@ const CursoInfo = () => {
               <p className="text-2xm text-white mb-8">Disfruta de tu curso</p>
               <button
                 className="h-10 w-32 mb-8 rounded-full text-white"
-                style={{ backgroundColor: "#780EFF" }}
+                style={{ backgroundColor: "#78A132" }}
                 onClick={() => {
                   setShowModal(false);
                   //pagar(valuesPay);
@@ -500,7 +500,7 @@ const CursoInfo = () => {
                   >
                     <span
                       to={appRoutes.foroPage(data?.foroId)}
-                      className="text-[20px] min-w-[300px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                      className="text-[20px] min-w-[300px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bgPrincipal"
                     >
                       Ir al foro
                     </span>
@@ -555,7 +555,7 @@ const CursoInfo = () => {
                                 ...valuesPay,
                               });
                             }}
-                            className="text-[20px] min-w-[300px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bg-[#780EFF]"
+                            className="text-[20px] min-w-[300px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bgPrincipal"
                           >
                             Obtener
                           </span>

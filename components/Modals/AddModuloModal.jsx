@@ -206,7 +206,7 @@ export default function AddModuloModal({
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative transform overflow-hidden rounded-lg font-light bg-[#272831] px-6 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-5xl sm:p-6">
+                <Dialog.Panel className="relative transform overflow-hidden rounded-lg font-light bg-[#4444] px-6 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-5xl sm:p-6">
                   <div>
                     <div className="text-center flex flex-col gap-2 text-white item-no-scrollbar">
                       <Dialog.Title
@@ -220,14 +220,14 @@ export default function AddModuloModal({
                           type="text"
                           id="nombreModulo"
                           name="nombreModulo"
-                          className="border border-white max-w-md self-center px-6 py-3 text-white placeholder:text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                          className="border border-white max-w-md self-center px-6 py-3 text-white placeholder:text-white bg-inherit rounded-full text-sm shadow focus:outline-none focus:ring ring-[#78A132] w-full ease-linear transition-all duration-150"
                           placeholder="Nombre para el Módulo"
                           value={moduloName || null}
                           disabled={isSugerenciaShow}
                         />
                         {!estaSugiriendo && (
                           <button
-                            className="w-max self-center active:bg-purple-800 text-white font-semibold
+                            className="w-max self-center active:bg-[#78A132] text-white font-semibold
                         hover:shadow-md shadow text-md px-5 py-2 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                             onClick={handleOpenModal}
                           >
@@ -281,7 +281,7 @@ export default function AddModuloModal({
                                   onChange={(e) =>
                                     handleInputVideoChange(e, index)
                                   }
-                                  className="border-0 max-w-xs text-white rounded text-sm shadow bg-[#1E1E1E] focus:outline-none focus:ring ring-[#780EFF] ease-linear transition-all duration-150 file:bg-[#272831] file:rounded-lg file:text-white file:border-0"
+                                  className="border-0 max-w-xs text-white rounded text-sm shadow bg-[#1E1E1E] focus:outline-none focus:ring ring-[#78A132] ease-linear transition-all duration-150 file:bg-[#4444] file:rounded-lg file:text-white file:border-0"
                                 />
                               )}
                               <div className="flex flex-col items-center justify-center gap-2 w-2/3 sm:w-2/4">
@@ -292,7 +292,7 @@ export default function AddModuloModal({
                                   maxLength={80}
                                   value={clase.nombre}
                                   onChange={(e) => handleInputChange(e, index)}
-                                  className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs text-white placeholder:text-white bg-transparent rounded-full text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                                  className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs text-white placeholder:text-white bg-transparent rounded-full text-sm shadow focus:outline-none focus:ring ring-[#78A132] w-full ease-linear transition-all duration-150"
                                   placeholder="Nombre de la Clase"
                                   autoComplete={"off"}
                                   disabled={isSugerenciaShow}
@@ -304,7 +304,7 @@ export default function AddModuloModal({
                                   maxLength={200}
                                   value={clase.descripcion}
                                   onChange={(e) => handleInputChange(e, index)}
-                                  className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs max-h-24 min-h-12 text-white placeholder:text-white bg-transparent rounded-xl text-sm shadow focus:outline-none focus:ring ring-[#780EFF] w-full ease-linear transition-all duration-150"
+                                  className="border border-white px-3 py-3 max-w-[240px] md:max-w-xs max-h-24 min-h-12 text-white placeholder:text-white bg-transparent rounded-xl text-sm shadow focus:outline-none focus:ring ring-[#78A132] w-full ease-linear transition-all duration-150"
                                   placeholder="Breve descripción"
                                   autoComplete={"off"}
                                   disabled={isSugerenciaShow}
@@ -346,7 +346,7 @@ export default function AddModuloModal({
                     </button>
                     <button
                       type="submit"
-                      className="inline-flex w-3/6 justify-center rounded-full bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
+                      className="inline-flex w-3/6 justify-center rounded-full bgPrincipal px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
                       onClick={(e) => {
                         handleSaveModulo(e);
                       }}

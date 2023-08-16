@@ -209,12 +209,12 @@ export default function Register() {
       <div className="container mx-auto px-4 h-full">
         <div className="py-10 transition-all m-auto content-center justify-center h-full">
           <div className="w-full transition-all m-auto lg:w-6/12 px-4">
-            <div className="relative transition-all flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl bg-[#272831] border-0">
+            <div className="relative transition-all flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl bg-[#4444] border-0">
               {userCreatedCorrect ? (
                 <VerifyAccount email={formValues.email} />
               ) : (
                 <div className="flex-auto px-4 lg:px-10 py-9">
-                  <div className="text-blueGray-400 text-center text-xl mb-3 font-bold">
+                  <div className="text-white text-center text-xl mb-3 font-bold">
                     <small>Registra una cuenta con tus credenciales</small>
                   </div>
                   <div className="my-2">
@@ -236,7 +236,7 @@ export default function Register() {
                     <div className="flex flex-col sm:flex-row relative w-full mb-3 gap-y-3">
                       <div className="w-full sm:w-4/6">
                         <label
-                          className="block uppercase text-blueGray-400 text-xs font-bold mb-2 bg-rose-600! md:bg-blue-700!"
+                          className="block uppercase text-white text-xs font-bold mb-2 bg-rose-600! md:bg-blue-700!"
                           htmlFor="foto"
                         >
                           Foto perfil
@@ -246,7 +246,7 @@ export default function Register() {
                           id="foto"
                           name="image"
                           onChange={onImageChange}
-                          className="border-[1px] border-white bg-transparent rounded-full px-6 py-3 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 file:bg-red-700 file:rounded-lg file:text-white file:border-0"
+                          className="border-[1px] border-white bg-transparent rounded-full px-6 py-3 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 file:bg-[#78A132] file:rounded-lg file:text-white file:border-0"
                           //required
                         />
                       </div>
@@ -271,7 +271,7 @@ export default function Register() {
                     </div>
                     <div className="relative w-full mb-3">
                       <label
-                        className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
+                        className="block uppercase text-white text-xs font-bold mb-2"
                         htmlFor="nickname"
                       >
                         Nickname
@@ -284,7 +284,7 @@ export default function Register() {
                         onChange={(e) =>
                           handleChangeValue("nickname", e.target.value)
                         }
-                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Nickname"
                         required
                       />
@@ -319,7 +319,7 @@ export default function Register() {
 
                     <div className="relative w-full mb-3">
                       <label
-                        className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
+                        className="block uppercase text-white text-xs font-bold mb-2"
                         htmlFor="email"
                       >
                         Email
@@ -329,7 +329,7 @@ export default function Register() {
                         id="email"
                         name="email"
                         autoComplete="username"
-                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Email"
                         required
                         value={formValues.email}
@@ -341,7 +341,7 @@ export default function Register() {
 
                     <div className="relative w-full mb-3">
                       <label
-                        className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
+                        className="block uppercase text-white text-xs font-bold mb-2"
                         htmlFor="telefono"
                       >
                         Teléfono
@@ -367,7 +367,7 @@ export default function Register() {
                         onChange={(e) =>
                           handleChangeValue("telefono", e.target.value)
                         }
-                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Teléfono"
                         required
                       />
@@ -375,7 +375,7 @@ export default function Register() {
 
                     <div className="relative w-full mb-3">
                       <label
-                        className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
+                        className="block uppercase text-white text-xs font-bold mb-2"
                         htmlFor="nombre"
                       >
                         Nombre Completo
@@ -385,7 +385,7 @@ export default function Register() {
                         id="nombre"
                         name="nombre"
                         autoComplete="name"
-                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Nombre completo"
                         required
                         value={formValues.nombre}
@@ -398,7 +398,7 @@ export default function Register() {
                     <div className="flex flex-col sm:flex-row justify-between relative w-full gap-4 mb-3">
                       <div className="flex-grow w-full">
                         <label
-                          className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
+                          className="block uppercase text-white text-xs font-bold mb-2"
                           htmlFor="password"
                         >
                           Contraseña
@@ -418,7 +418,7 @@ export default function Register() {
                       </div>
                       <div className="flex-grow w-full">
                         <label
-                          className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
+                          className="block uppercase text-white text-xs font-bold mb-2"
                           htmlFor="confirmPassword"
                         >
                           Repetir Contraseña
@@ -432,7 +432,7 @@ export default function Register() {
                           onChange={(e) =>
                             handleChangeValue("confirmPassword", e.target.value)
                           }
-                          className="border-[1px] border-white bg-transparent rounded-full px-4 py-3 placeholder-blueGray-300 text-blueGray-400  text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          className="border-[1px] border-white bg-transparent rounded-full px-4 py-3 placeholder-blueGray-300 text-white  text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Confirmar Contraseña"
                           required
                         />
@@ -440,7 +440,7 @@ export default function Register() {
                     </div>
                     <div className="relative w-full mb-3">
                       <label
-                        className="block uppercase text-blueGray-400 text-xs font-bold mb-2"
+                        className="block uppercase text-white text-xs font-bold mb-2"
                         htmlFor="biografia"
                       >
                         Biografía
@@ -448,7 +448,7 @@ export default function Register() {
                       <textarea
                         type="text"
                         id="biografia"
-                        className="border-[1px] border-white bg-transparent rounded-lg px-3 py-3 placeholder-blueGray-300 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-lg px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         rows="4"
                         placeholder="Breve biografía."
                         value={formValues.biografia}
@@ -481,10 +481,10 @@ export default function Register() {
                       {/*                     <p>{percent} "% done"</p> */}
                       {/* eliminar */}
                     </div>
-                    <p className="text-blueGray-400 text-center my-2 px-6 font-medium mt-6 flex cursor-pointer gap-2 items-center justify-center">
+                    <p className="text-white text-center my-2 px-6 font-medium mt-6 flex cursor-pointer gap-2 items-center justify-center">
                       Ya tienes una cuenta ?
                       <a
-                        className="text-yellow-800 underline"
+                        className="text-[#97ca3f] underline"
                         href={appRoutes.login()}
                       >
                         Iniciar sesion

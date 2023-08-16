@@ -6,7 +6,7 @@ export default function CardDashboardItem ({title, data, clickable = true}) {
         <div className="w-96 relative h-40 overflow-hidden ">
             <div className="flex flex-col text-left p-5 gap-y-4">
                 <p className="w-full text-white font-medium text-2xl max-w-full truncate">{title}</p>
-                <p className="w-full text-[#780EFF] font-bold text-5xl max-w-full truncate">{data}</p>
+                <p className="w-full colorSecundario font-bold text-5xl max-w-full truncate">{data}</p>
             </div>
         </div>
     </div>)

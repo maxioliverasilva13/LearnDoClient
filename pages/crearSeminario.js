@@ -367,7 +367,7 @@ const CrearSeminario = () => {
         />
         <button
           type="submit"
-          className="px-6 py-4 text-white rounded-full font-semibold bg-[#780EFF]"
+          className="px-6 py-4 text-white rounded-full font-semibold bgPrincipal"
         >
           Guardar
         </button>

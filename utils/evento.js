@@ -39,7 +39,7 @@ export const formatTitle = (tipoCurso) => {
 export const fomratColorCurso = (tipoCurso) => {
     // console.log(tipoCurso)
     if (tipoCurso == EventosType.curso) {
-        return "#780EFF";
+        return "#78A132";
     }
     if (tipoCurso == EventosType.seminarioP) {
         return "#0E8BFF";

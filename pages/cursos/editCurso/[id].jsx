@@ -120,7 +120,7 @@ export default function EditCurso() {
                   </span>
                   <div className="w-full h-auto flex flex-row items-center justify-start flex-wrap">
                   {item?.modulos?.map((modulo, index) => {
-                    return <span onClick={() => setSelectedInfoSugerencia(modulo)} className="text-yellow-300 cursor-pointer transition-all mb-1 border-b border-transparent hover:border-[#780EFF] font-medium text-lg">
+                    return <span onClick={() => setSelectedInfoSugerencia(modulo)} className="text-yellow-300 cursor-pointer transition-all mb-1 border-b border-transparent hover:border-[#78A132] font-medium text-lg">
                       {modulo?.nombre}
                       {index + 1 !== item?.modulos?.length && ", "}
                     </span>

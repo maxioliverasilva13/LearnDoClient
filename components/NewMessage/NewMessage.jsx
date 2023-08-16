@@ -65,7 +65,7 @@ const NewMessage = ({ handleClose }) => {
   }
 
   return (
-    <div className={clsx("w-full p-4 z-[30] top-0 linear messageAppearsAnimationMe h-full absolute bg-[#780EFF] bg-opacity-25 backdrop-blur-md flex flex-col items-center justify-start overflow-hidden transition-all ",
+    <div className={clsx("w-full p-4 z-[30] top-0 linear messageAppearsAnimationMe h-full absolute bg-[#1f2129] bg-opacity-10 backdrop-blur-md flex flex-col items-center justify-start overflow-hidden transition-all ",
       shouldClose ? "-left-[450px]" : 'left-0'
     )}>
       <div className="w-full flex flex-row items-center jsutify-start p-4 gap-5">

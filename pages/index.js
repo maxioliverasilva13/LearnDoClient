@@ -64,7 +64,7 @@ export default function LandingPage() {
               </div>
               {/* SPACER */}
               <a
-                className="w-max self-center bg-red-700 active:bg-red-800 text-white
+                className="w-max self-center bgPrincipal active:bg-red-800 text-white
                 hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
                 href="/auth/login"
               >

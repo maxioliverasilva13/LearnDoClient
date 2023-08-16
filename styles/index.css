@@ -29,6 +29,26 @@
     }
   }
 
+  .bgPrincipal {
+    background-color: #78A132 !important;
+  }
+
+  .bgSecundario {
+    background-color: #97ca3f !important;
+  }
+  
+  .colorPrincipal {
+    color: #78A132 !important;
+  }
+
+  .colorSecundario {
+    color: #97ca3f !important;
+  }
+
+  label {
+    color: white !important;
+  }
+
 
 * { 
   padding: 0px;
@@ -198,7 +218,7 @@ body {
  
 /* Handle */
 .item-no-scrollbar ::-webkit-scrollbar-thumb {
-  background: #780EFF; /* color de la barra */ 
+  background: #78A132; /* color de la barra */ 
   border-radius: 100px;
 }
 
@@ -359,7 +379,7 @@ body {
       font-size: 30px;
   }
   .logo__sub{
-     color: #780EFF;
+     color: #78A132;
   }
   .marquee {
       color: white;

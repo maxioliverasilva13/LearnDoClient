@@ -114,7 +114,7 @@ export default function CardPost({
     <>
       <div className="flex flex-col w-[80%] justify-center items-center p-4 gap-4 rounded-lg transition ease-in-out delay-150 ">
         <div
-          className="md:flex-row flex-col flex justify-between  rounded-lg mx-4 md:mx-auto px-4  w-full py-8 bg-[#31174a9f]"
+          className="md:flex-row flex-col flex justify-between  rounded-lg mx-4 md:mx-auto px-4  w-full py-8 bg-[#4444]"
           key={post.id}
         >
           <div className="flex md:flex-row flex-col md:items-start items-center px-4 py-6">
@@ -242,7 +242,7 @@ export default function CardPost({
                     {comments.map((comment) => {
                       return (
                         <article
-                          className="p-6 mb-6 text-base bg-[#31174a74] rounded-lg flex flex-col"
+                          className="p-6 mb-6 text-base bg-[#4444] rounded-lg flex flex-col"
                           key={comment.id}
                         >
                           <footer className="flex justify-between items-center mb-2">
@@ -325,7 +325,7 @@ export default function CardPost({
                         disabled={
                           submitNewComment || inputComment.trim().length <= 0
                         }
-                        className="bg-white cursor-pointer hover:bg-blue-700 text-dark hover:bg-[#8244bd] font-bold py-2 px-4 rounded"
+                        className="flex justify-end items-center py-3 px-9 text-sm font-medium text-center text-dark bgPrincipal text-white rounded-[14px] focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900"
                       >
                         Comentar
                         {submitNewComment && (

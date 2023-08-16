@@ -77,7 +77,7 @@ const MultiSelect = ({ options, value, setValue, }) => {
         })}
       </div>
       {isExpanded && (
-        <div className="w-full appearsAnimation max-h-[200px] overflow-auto h-auto p-2 flex flex-col rounded-lg shadow-md absolute top-[55px] bg-[#272831]">
+        <div className="w-full appearsAnimation max-h-[200px] overflow-auto h-auto p-2 flex flex-col rounded-lg shadow-md absolute top-[55px] bg-[#4444]">
           {
           valuesToMap?.map((item, index) => {
             return (

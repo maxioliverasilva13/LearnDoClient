@@ -98,7 +98,7 @@ export default function ColaboradoresModal({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#272831] px-6 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#4444] px-6 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <div>
                   <div className="text-center flex flex-col gap-2 text-white item-no-scrollbar">
                     <Dialog.Title
@@ -128,7 +128,7 @@ export default function ColaboradoresModal({
                         return (
                           <div
                             key={index}
-                            className="flex flex-col sm:flex-row w-full py-2 px-6 bg-[#780EFF] rounded-full justify-between items-center"
+                            className="flex flex-col sm:flex-row w-full py-2 px-6 bgPrincipal rounded-full justify-between items-center"
                           >
                             <div className="w-[30px] mr-2 h-[30px] overflow-hidden rounded-full relative">
                             <GlobalImage 
@@ -161,7 +161,7 @@ export default function ColaboradoresModal({
                         return (
                           <div
                             key={index}
-                            className="flex flex-col sm:flex-row w-full py-2 px-6 bg-[#780EFF] rounded-full justify-between items-center"
+                            className="flex flex-col sm:flex-row w-full py-2 px-6 bgPrincipal rounded-full justify-between items-center"
                           >
                             <div className="w-[30px] mr-2 h-[30px] overflow-hidden rounded-full relative">
                             <GlobalImage 
@@ -198,7 +198,7 @@ export default function ColaboradoresModal({
                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-full bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
+                    className="inline-flex w-full justify-center rounded-full bgPrincipal px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
                     onClick={() => setIsOpen(false)}
                   >
                     Guardar

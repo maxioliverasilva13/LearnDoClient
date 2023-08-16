@@ -103,10 +103,10 @@ const Message = () => {
   const valuesToUse = hasQuery ? results : sortedChats
 
   return (
-    <div className="min-h-full h-full md:border-b-white border-0 border-b-2 max-h-full w-full flex flex-col items-start justify-start">
+    <div className="min-h-full h-full md:border-b-[#444444] border-0 border-b-2 max-h-full w-full flex flex-col items-start justify-start">
       <div className="w-full relative flex flex-grow min-h-full h-full flex-row items-start justify-start">
         {/* Chats List */}
-        <div className={clsx("md:w-[450px] w-[300px] min-h-full flex-grow flex flex-col border-white relative",
+        <div className={clsx("md:w-[450px] w-[300px] min-h-full flex-grow flex flex-col border-[#444444] relative",
           isMobile ? "border-r-0" : "border-r-[1px]"
         )}>
           {activeNewChat && (
@@ -155,7 +155,7 @@ const Message = () => {
             />
             <p className="text-white text-[36px] mt-5 font-bold">
               Learn
-              <span className="bg-indigo-700 px-2 py-1 m-1 rounded-lg">
+              <span className="bgPrincipal px-2 py-1 m-1 rounded-lg">
                 Do
               </span>{" "}
               chat

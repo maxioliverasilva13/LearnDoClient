@@ -162,8 +162,8 @@ export default function Foro() {
           alto="auto"
           ancho="auto"
         >
-          <div className="flex md:w-[600px] w-[90%] justify-center p-4  ">
-            <form className="mb-6 w-full p-4 rounded transition">
+          <div className="flex md:w-[600px] w-[90%] justify-center p-4 pb-0">
+            <form className=" w-full p-4 rounded transition">
               {formHasError && (
                 <div
                   className="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
@@ -231,12 +231,12 @@ export default function Foro() {
                   required
                 ></textarea>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-center">
                 <button
                   type="button"
                   onClick={onCreatePost}
                   disabled={submitNewPost}
-                  className="flex  justify-end items-center py-4 px-8 text-sm font-medium text-center text-dark bg-white rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                  className="flex  justify-end items-center py-4 px-10 mt-2 text-sm font-medium text-center text-dark bgPrincipal text-white rounded-[14px] focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900"
                 >
                   Publicar
                   {submitNewPost && (
@@ -279,7 +279,7 @@ export default function Foro() {
               </h1>
 
               <button
-                className="bg-[#780EFF] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5"
+                className="bgPrincipal hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5"
                 onClick={() => (window.location.href = appRoutes.home())}
               >
                 Ir al inicio
@@ -293,7 +293,7 @@ export default function Foro() {
                 Para acceder al foro necesitas obtener el curso{" "}
               </h1>
 
-              <button className="bg-[#780EFF] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">
+              <button className="bgPrincipal hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">
                 Ir al curso
               </button>
             </div>

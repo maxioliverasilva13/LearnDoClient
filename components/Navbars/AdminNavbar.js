@@ -102,7 +102,7 @@ export default function Navbar() {
                 <Link href={appRoutes.home()}>
                   <span className="select-none font-bold cursor-pointer text-[20px]">
                     Learn
-                    <span className="p-2 bg-[#760eff83] rounded-lg ml-1">
+                    <span className="p-1 bgSecundario rounded-lg ml-1">
                       Do
                     </span>
                   </span>
@@ -112,7 +112,7 @@ export default function Navbar() {
                 <Link href={appRoutes.dashboard()}>
                   <span className="select-none font-bold cursor-pointer text-[20px]">
                     Learn
-                    <span className="px-1 py-2 bg-[#760eff83] rounded-lg">
+                    <span className="p-1 bgSecundario rounded-lg">
                       Do
                     </span>
                   </span>
@@ -154,7 +154,7 @@ export default function Navbar() {
                   </div>
                 </div>
                 {expandedMenu && (
-                  <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-[#272831] shadow-md flex flex-col items-start justify-start gap-2">
+                  <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-[#4444] shadow-md flex flex-col items-start justify-start gap-2">
                     <span
                       onClick={() => router.push(appRoutes.profile())}
                       className="text-white flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-200 rounded-lg"
@@ -185,7 +185,7 @@ export default function Navbar() {
                 <Link href={appRoutes.home()}>
                   <span className="select-none font-bold cursor-pointer text-[20px]">
                     Learn
-                    <span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span>
+                    <span className="p-1 bgSecundario rounded-lg ml-1">Do</span>
                   </span>
                 </Link>
               )}
@@ -193,7 +193,7 @@ export default function Navbar() {
                 <Link href={appRoutes.dashboard()}>
                   <span className="select-none font-bold cursor-pointer text-[20px]">
                     Learn
-                    <span className="px-1 py-2 bg-[#760eff83] rounded-lg">
+                    <span className="p-1 bgSecundario rounded-lg">
                       Do
                     </span>
                   </span>
@@ -230,7 +230,7 @@ export default function Navbar() {
                 className="text-white px-4 h-9 outline-none border border-white bg-transparent rounded-l-full rounded-r-full w-56"
               ></input>
               {hasQuery && (
-                <div className="w-full h-auto absolute mt-1 top-full left-0 max-h-[400px] overflow-auto bg-[#272831] rounded-lg shadow-md p-4 appearsAnimation flex flex-col items-center justify-start gap-2">
+                <div className="w-full h-auto absolute mt-1 top-full left-0 max-h-[400px] overflow-auto bg-[#4444] rounded-lg shadow-md p-4 appearsAnimation flex flex-col items-center justify-start gap-2">
                   {filterUsuarios?.length === 0 && (
                     <NoResults
                       customSizes="w-[200px]"
@@ -318,7 +318,7 @@ export default function Navbar() {
                 </div>
               </div>
               {expandedMenu && (
-                <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-[#272831] shadow-md flex flex-col items-start justify-start gap-2">
+                <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-[#4444] shadow-md flex flex-col items-start justify-start gap-2">
                   <span
                     onClick={() => router.push(appRoutes.profile())}
                     className="text-white flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-700 rounded-lg"

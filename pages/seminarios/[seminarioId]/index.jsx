@@ -288,7 +288,7 @@ const SeminarioInfo = () => {
                   {!esComprado && seminarioInfo?.es_pago === 0 && (
                     <span
                       onClick={() => pagar(valuesPay)}
-                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bg-[#780EFF] ml-8"
+                      className="text-[18px] cursor-pointer w-full font-Gotham text-center px-8 py-3 text-white rounded-full border-0 bgPrincipal ml-8"
                     >
                       Adquirir
                     </span>
@@ -300,7 +300,7 @@ const SeminarioInfo = () => {
                         className="cursor-pointer"
                         href={appRoutes.mapaSeminarios()} // falta implementar una forma/modal de ver la ubicación sólo de éste seminario en específico
                       >
-                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-5 py-3 text-white rounded-full border-0 bg-[#780EFF]">
+                        <span className="text-[18px] cursor-pointer w-full font-Gotham text-center px-5 py-3 text-white rounded-full border-0 bgPrincipal">
                           Ver la Ubicación
                         </span>
                       </Link>
@@ -348,7 +348,7 @@ const SeminarioInfo = () => {
                     </p>
                     <button
                       className="h-10 w-32 mb-8 rounded-full text-white"
-                      style={{ backgroundColor: "#780EFF" }}
+                      style={{ backgroundColor: "#78A132" }}
                       onClick={() => {
                         setShowModal(false);
                         // handleReload();

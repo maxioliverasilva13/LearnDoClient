@@ -92,25 +92,25 @@ export default function Dashboard() {
             <div onClick={handleSetAlumnos}>
               <CardDashboardItem
                 title="Alumnos Nuevos"
-                data={Alumnos?.NuevosAlumnos[0]}
+                data={Alumnos?.NuevosAlumnos[0] || 0}
               />
             </div>
             <div onClick={handleSetGanancias}>
               <CardDashboardItem
                 title="Ganancias del Mes"
-                data={Alumnos?.Ganancias[0]}
+                data={`USD ${Alumnos?.Ganancias[0] || 0}`}
               />
             </div>
             <div onClick={handleSetVendidos}>
               <CardDashboardItem
                 title="Cursos Vendidos este mes"
-                data={Alumnos?.CantidadVentas[0]}
+                data={Alumnos?.CantidadVentas[0] || 0}
               />
             </div>
             <div>
               <CardDashboardItem
                 title="Alumnos Totales"
-                data={Alumnos?.AlumnosTotales}
+                data={Alumnos?.AlumnosTotales || 0}
                 clickable={false}
               />
             </div>
