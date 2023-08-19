@@ -3614,12 +3614,12 @@ video {
   -moz-osx-font-smoothing: auto !important;
 }
 
-.placeholder-blueGray-300::-webkit-input-placeholder {
+.placeholder-white::-webkit-input-placeholder {
   --tw-placeholder-opacity: 1 !important;
   color: rgb(203 213 225 / var(--tw-placeholder-opacity)) !important;
 }
 
-.placeholder-blueGray-300::placeholder {
+.placeholder-white::placeholder {
   --tw-placeholder-opacity: 1 !important;
   color: rgb(203 213 225 / var(--tw-placeholder-opacity)) !important;
 }

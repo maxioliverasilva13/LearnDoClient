@@ -210,7 +210,7 @@ export default function Foro() {
                   value={postTitle}
                   disabled={submitNewPost}
                   onChange={(e) => setPostTitle(e.target.value)}
-                  className="px-0 w-full bg-[#31174a] text-sm text-white border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                  className="px-0 w-full bg-[#31174a] text-sm text-white border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-white dark:bg-gray-800"
                   placeholder="Escribe un titulo"
                   required
                 />
@@ -226,7 +226,7 @@ export default function Foro() {
                   value={postContent}
                   disabled={submitNewPost}
                   onChange={(e) => setPostContent(e.target.value)}
-                  className="px-0 w-full bg-[#31174a] text-sm text-white border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                  className="px-0 w-full bg-[#31174a] text-sm text-white border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-white dark:bg-gray-800"
                   placeholder="Escribe el contenido de la publicacion..."
                   required
                 ></textarea>

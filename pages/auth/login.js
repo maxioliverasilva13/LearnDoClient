@@ -192,7 +192,7 @@ export default function Login() {
           <div className="w-full">
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl border-0 bg-[#4444]">
               <div className="flex-auto px-4 lg:px-10 py-10">
-                <div className="text-white text-center mb-3 font-bold text-[30px]">
+                <div className="text-white text-center mb-3 font-bold text-[40px]">
                   <small>Iniciar sesión</small>
                 </div>
                 <form action="#" method="POST" onSubmit={handleSubmit}>
@@ -208,7 +208,7 @@ export default function Login() {
                       id="user"
                       name="user"
                       autoComplete="username"
-                      className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-white text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email o Nickname"
                       required
                       value={values.email}
@@ -230,7 +230,7 @@ export default function Login() {
                       id="password"
                       name="password"
                       autoComplete="current-password"
-                      className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-white text-blueGray-400 text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Contraseña"
                       value={values.password}
                       onChange={(e) =>

@@ -313,7 +313,7 @@ export default function CardPost({
                         value={inputComment}
                         disabled={submitNewComment}
                         onChange={(e) => setInputComment(e.target.value)}
-                        className="px-0 p-4 w-full min-h-[100px] max-h-[100px] bg-[#31174a] text-sm text-white border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                        className="px-0 p-4 w-full min-h-[100px] max-h-[100px] bg-[#31174a] text-sm text-white border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-white dark:bg-gray-800"
                         placeholder="Escribe un comentario..."
                         required
                       ></textarea>

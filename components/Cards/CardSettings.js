@@ -33,7 +33,7 @@ export default function CardSettings() {
                   </label>
                   <input
                     type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    className="border-0 px-3 py-3 placeholder-white text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="lucky.jesse"
                   />
                 </div>
@@ -48,7 +48,7 @@ export default function CardSettings() {
                   </label>
                   <input
                     type="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    className="border-0 px-3 py-3 placeholder-white text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="jesse@example.com"
                   />
                 </div>
@@ -63,7 +63,7 @@ export default function CardSettings() {
                   </label>
                   <input
                     type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    className="border-0 px-3 py-3 placeholder-white text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="Lucky"
                   />
                 </div>
@@ -78,7 +78,7 @@ export default function CardSettings() {
                   </label>
                   <input
                     type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    className="border-0 px-3 py-3 placeholder-white text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="Jesse"
                   />
                 </div>
@@ -101,7 +101,7 @@ export default function CardSettings() {
                   </label>
                   <input
                     type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    className="border-0 px-3 py-3 placeholder-white text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
                   />
                 </div>
@@ -116,7 +116,7 @@ export default function CardSettings() {
                   </label>
                   <input
                     type="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    className="border-0 px-3 py-3 placeholder-white text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="New York"
                   />
                 </div>
@@ -131,7 +131,7 @@ export default function CardSettings() {
                   </label>
                   <input
                     type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    className="border-0 px-3 py-3 placeholder-white text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="United States"
                   />
                 </div>
@@ -146,7 +146,7 @@ export default function CardSettings() {
                   </label>
                   <input
                     type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    className="border-0 px-3 py-3 placeholder-white text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="Postal Code"
                   />
                 </div>
@@ -169,7 +169,7 @@ export default function CardSettings() {
                   </label>
                   <textarea
                     type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    className="border-0 px-3 py-3 placeholder-white text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     rows="4"
                     defaultValue="A beautiful UI Kit and Admin for NextJS & Tailwind CSS. It is Free
                     and Open Source."

@@ -153,7 +153,7 @@ export default function Profile() {
                           disabled
                           type="text"
                           id="first_name"
-                          className="md:min-w-[500px] bg-transparent text-white border-2   text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="md:min-w-[500px] bg-transparent text-white border-2   text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Nickname"
                           required
                         />
@@ -162,7 +162,7 @@ export default function Profile() {
                           value={userData?.email}
                           type="text"
                           id="first_name"
-                          className="md:min-w-[500px] bg-transparent text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="md:min-w-[500px] bg-transparent text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Correo"
                           required
                         />
@@ -178,7 +178,7 @@ export default function Profile() {
                           }
                           type="text"
                           id="first_name"
-                          className="md:min-w-[500px] bg-transparent  text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="md:min-w-[500px] bg-transparent  text-white border-2  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Nombre"
                           required
                         />
@@ -194,7 +194,7 @@ export default function Profile() {
                           }
                           type="text"
                           id="first_name"
-                          className="md:min-w-[500px] bg-transparent  text-white border-2  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="md:min-w-[500px] bg-transparent  text-white border-2  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-200 dark:placeholder-white dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Telefono"
                           required
                         />

@@ -66,8 +66,10 @@ body {
   box-sizing: border-box;
   width: 100%!important;
   height: 100vh!important;
-  background: rgb(31, 33, 41) !important;
-/* background-color: #760eff43; */
+  background-image: url("../public/img/BgTwo.jpg");
+  background-position: fixed;
+  background-size: cover;
+/*  background: rgb(31, 33, 41) !important; */
 }
 
 #__next { 

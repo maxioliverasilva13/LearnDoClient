@@ -19,6 +19,7 @@ import {
 import VerifyAccount from "components/VerifyAccount/VerifyAccount";
 import appRoutes from "routes/appRoutes";
 import { rolOptions } from "utils/rol";
+import Link from "next/link";
 let timer = null;
 
 const availableTypes = {
@@ -247,7 +248,7 @@ export default function Register() {
                           name="image"
                           onChange={onImageChange}
                           className="border-[1px] border-white bg-transparent rounded-full px-6 py-3 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 file:bg-[#78A132] file:rounded-lg file:text-white file:border-0"
-                          //required
+                        //required
                         />
                       </div>
 
@@ -284,7 +285,7 @@ export default function Register() {
                         onChange={(e) =>
                           handleChangeValue("nickname", e.target.value)
                         }
-                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-white text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Nickname"
                         required
                       />
@@ -329,7 +330,7 @@ export default function Register() {
                         id="email"
                         name="email"
                         autoComplete="username"
-                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-white text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Email"
                         required
                         value={formValues.email}
@@ -367,7 +368,7 @@ export default function Register() {
                         onChange={(e) =>
                           handleChangeValue("telefono", e.target.value)
                         }
-                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-white text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Teléfono"
                         required
                       />
@@ -385,7 +386,7 @@ export default function Register() {
                         id="nombre"
                         name="nombre"
                         autoComplete="name"
-                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-full px-3 py-3 placeholder-white text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Nombre completo"
                         required
                         value={formValues.nombre}
@@ -407,7 +408,7 @@ export default function Register() {
                           type="password"
                           id="password"
                           autoComplete="new-password"
-                          className="border-[1px] border-white bg-transparent px-4 py-3 placeholder-blueGray-300 text-black rounded-full text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          className="border-[1px] border-white bg-transparent px-4 py-3 placeholder-white text-black rounded-full text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Contraseña"
                           required
                           value={formValues.password}
@@ -432,7 +433,7 @@ export default function Register() {
                           onChange={(e) =>
                             handleChangeValue("confirmPassword", e.target.value)
                           }
-                          className="border-[1px] border-white bg-transparent rounded-full px-4 py-3 placeholder-blueGray-300 text-white  text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          className="border-[1px] border-white bg-transparent rounded-full px-4 py-3 placeholder-white text-white  text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Confirmar Contraseña"
                           required
                         />
@@ -448,7 +449,7 @@ export default function Register() {
                       <textarea
                         type="text"
                         id="biografia"
-                        className="border-[1px] border-white bg-transparent rounded-lg px-3 py-3 placeholder-blueGray-300 text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className="border-[1px] border-white bg-transparent rounded-lg px-3 py-3 placeholder-white text-white text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         rows="4"
                         placeholder="Breve biografía."
                         value={formValues.biografia}
@@ -458,7 +459,7 @@ export default function Register() {
                       ></textarea>
                     </div>
                     <div className="relative w-full mb-3 border-[1px] border-white bg-transparent rounded-full">
-                    <Dropdown
+                      <Dropdown
                         options={rolOptions}
                         controlClassName="bg-transparent rounded-full text-white"
                         onChange={(val) => handleChangeValue("rol", val?.value)}
@@ -483,12 +484,15 @@ export default function Register() {
                     </div>
                     <p className="text-white text-center my-2 px-6 font-medium mt-6 flex cursor-pointer gap-2 items-center justify-center">
                       Ya tienes una cuenta ?
-                      <a
-                        className="text-[#97ca3f] underline"
+                      <Link
                         href={appRoutes.login()}
                       >
-                        Iniciar sesion
-                      </a>
+                        <span
+                          className="text-[#97ca3f] underline"
+                        >
+                          Iniciar sesion
+                        </span>
+                      </Link>
                     </p>
                   </form>
                 </div>

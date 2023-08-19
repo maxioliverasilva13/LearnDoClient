@@ -125,7 +125,7 @@ const Chat = ({ isMobile }) => {
       <div
         id="ScrollChats"
         ref={refChat}
-        className="w-full px-4 py-4 chat gap-y-8 flex-grow flex h-full marker: flex-col max-h-full overflow-auto bg-[#1F2129]"
+        className="w-full px-4 py-4 chat gap-y-8 flex-grow flex h-full marker: flex-col max-h-full overflow-auto bg-black-500/200 backdrop-blur-md"
       >
         {activeChatInfo?.messages?.map((message) => {
           return (
@@ -147,7 +147,7 @@ const Chat = ({ isMobile }) => {
         isMobile ? "absolute inset-0 z-[30] siteBg messageModalAppearsAnimation" : "relative"
       )}
     >
-      <div className="w-full cursor-pointer shadow-md h-20 transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5 bg-[#1F2129]">
+      <div className="w-full cursor-pointer shadow-md h-20 transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5 bg-black-500/200 backdrop-blur-md">
         {isMobile && <IoMdArrowBack className="cursor-pointer" onClick={() => handleSetChatId(null)} size={40} color="white" />}
         <Link href={appRoutes.userInfoPage(activeChatInfo?.chatId)}>
           <>
@@ -169,7 +169,7 @@ const Chat = ({ isMobile }) => {
       {renderMessages()}
       <form
         onSubmit={handleMessageNew}
-        className="w-full p-4 h-auto flex items-center gap-2 justify-center bg-[#1F2129]"
+        className="w-full p-4 h-auto flex items-center gap-2 justify-center bg-black-500/200 backdrop-blur-md"
       >
         <input
           onChange={(e) => handleChangeValue("message", e?.target?.value)}

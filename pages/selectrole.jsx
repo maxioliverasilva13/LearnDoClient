@@ -46,7 +46,7 @@ const SelectRole = () => {
       <span className="text-white font-semibold text-[30px] my-4">
         Bienvenido a{" "}
         <span className="select-none font-bold text-[30px]">
-          Learn<span className="p-2 bg-[#760eff83] rounded-lg ml-1">Do</span>
+          Learn<span className="p-2 bg-[#78A132] rounded-lg ml-1">Do</span>
         </span>
       </span>
       <span className="w-auto text-center max-w-[600px] text-white mt-4 text-lg">
