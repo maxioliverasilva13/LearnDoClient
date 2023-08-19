@@ -408,7 +408,7 @@ export default function Register() {
                           type="password"
                           id="password"
                           autoComplete="new-password"
-                          className="border-[1px] border-white bg-transparent px-4 py-3 placeholder-white text-black rounded-full text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          className="border-[1px] border-white text-white bg-transparent px-4 py-3 placeholder-white text-black rounded-full text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Contraseña"
                           required
                           value={formValues.password}
