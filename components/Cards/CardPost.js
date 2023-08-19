@@ -114,7 +114,7 @@ export default function CardPost({
     <>
       <div className="flex flex-col w-[80%] justify-center items-center p-4 gap-4 rounded-lg transition ease-in-out delay-150 ">
         <div
-          className="md:flex-row flex-col flex justify-between  rounded-lg mx-4 md:mx-auto px-4  w-full py-8 bg-[#4444]"
+          className="md:flex-row flex-col flex justify-between  rounded-lg mx-4 md:mx-auto px-4 backdrop-blur-md w-full py-8 bg-[#4444]"
           key={post.id}
         >
           <div className="flex md:flex-row flex-col md:items-start items-center px-4 py-6">

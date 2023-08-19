@@ -23,8 +23,8 @@ export default function LandingPage() {
   }, [isLoading]);
   return (
     <>
-      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start">
-        <div className="w-full h-auto flex flex-col items-start justify-center pt-28 gap-y-28">
+      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start landingBGImage">
+        <div className="w-full h-auto flex flex-col items-start justify-center pt-6 gap-y-28">
           <div className="flex flex-col lg:flex-row gap-16">
             <div className="flex w-full md:w-1/2">
               <Image priority src={welcome} alt="¡Bienvenido a LearnDo!" />
@@ -42,7 +42,7 @@ export default function LandingPage() {
               </div>
               <Link href="/auth/register">
                 <p
-                  className="w-max cursor-pointer self-center active:bg-red-700 text-white
+                  className="w-max cursor-pointer self-center active:bgPrincipal text-white
                 hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
                 >
                   Registrarme

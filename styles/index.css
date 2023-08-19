@@ -45,6 +45,20 @@
     color: #97ca3f !important;
   }
 
+.landingBGImage {
+  background-image:
+    /*url("https://www.pngmart.com/files/12/Abstract-Green-Wave-PNG-Clipart.png"),*/ /*lineas verdes*/
+    url("https://global-uploads.webflow.com/642ed403044d8378fabb82a6/644f5895442c99b19bc90273_BG.svg"),
+    linear-gradient(to right, #0e1a21, #172e3b);
+  background-position: top right;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: contain;
+
+  text-align: center;
+}
+
+
   label {
     color: white !important;
   }

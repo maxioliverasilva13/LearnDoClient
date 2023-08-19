@@ -303,7 +303,7 @@ export default function Foro() {
       {foroExist && userIsStudentOrOwner && (
         <div className="relatve z-10">
           <div className="w-screen sticky top-[64px] h-[400px] z-0">
-            <div className="w-full h-full pb-5 pl-5 bg-gray-900 bg-opacity-50 backdrop-blur-md absolute top-0 left-0 z-20 flex items-start flex-col justify-end">
+            <div className="w-full h-full pb-5 pl-5 bg-gray-900 bg-opacity-50 backdrop-blur-md absolute top-0 left-0 z-20 flex items-start flex-col justify-center">
             <h1 className="text-white text-5xl text-center p-6">
                 Foro del curso : {eventoInfo?.nombre}
               </h1>
@@ -318,7 +318,7 @@ export default function Foro() {
             
           </div>
           <div className="z-[10] relative">
-            <div className="my-16"></div>
+            <div className="my-10"></div>
             <div className="w-[75%] m-auto flex items-center z-20 justify-end">
               <button
                 onClick={() => setOpenAddPostModal(!openAddPostModal)}
