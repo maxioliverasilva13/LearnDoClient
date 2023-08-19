@@ -319,9 +319,9 @@ export default function Login() {
               </div>
               <div className="w-1/2 text-right">
                 <Link href="/auth/register">
-                  <a href="#pablo" className="colorSecundario">
+                  <span className="colorSecundario cursor-pointer">
                     <small>Crear Cuenta</small>
-                  </a>
+                  </span>
                 </Link>
               </div>
             </div>
