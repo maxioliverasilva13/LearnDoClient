@@ -150,7 +150,7 @@ const Chat = ({ isMobile }) => {
       <div className="w-full cursor-pointer shadow-md h-20 transition-all flex flex-row items-center justif-start gap-2 py-4 pl-5 bg-black-500/200 backdrop-blur-md">
         {isMobile && <IoMdArrowBack className="cursor-pointer" onClick={() => handleSetChatId(null)} size={40} color="white" />}
         <Link href={appRoutes.userInfoPage(activeChatInfo?.chatId)}>
-          <>
+          <div className="flex flex-row items-center justify-center gap-4">
             <div className="w-[60px] transition-all h-[60px] relative max-w-[90px] max-h-[90px]">
               <GlobalImage
                 src={activeChatInfo?.userImage}
@@ -162,7 +162,7 @@ const Chat = ({ isMobile }) => {
             <p className="text-white transition-all text-[26px] font-semibold">
               {activeChatInfo?.userName}
             </p>
-          </>
+          </div>
         </Link>
       </div>
 
