@@ -105,7 +105,7 @@ export default function Profile() {
                 <div className="px-6">
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full px-4 lg:order-2 flex justify-center">
-                      <div className="relative w-[250px] h-[250px]">
+                      <div className="relative min-w-[250px] w-[250px] min-h-[250px]">
                         <GlobalImage
                           src={userAvatar}
                           loader={() => userAvatar}

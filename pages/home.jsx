@@ -9,15 +9,21 @@ import useGlobalSlice from "hooks/useGlobalSlice";
 import appRoutes from "routes/appRoutes";
 
 const Home = () => {
-  const { data, isLoading } = useGetTendenciasQuery();
+  const { data, isFetching, refetch } = useGetTendenciasQuery();
   const { handleSetLoading } = useGlobalSlice();
   const tendencias = data?.eventosMasComprados || [];
   const agregadosRecientemente = data?.cursosRecientes || [];
   const seminarios = data?.seminariosRandom || [];
 
+  
   useEffect(() => {
-    handleSetLoading(isLoading);
-  }, [isLoading]);
+    refetch()
+  }, [])
+
+  useEffect(() => {
+    handleSetLoading(isFetching);
+  }, [isFetching]);
+
   return (
     <div className="w-full py-4 md:px-10 px-4 h-auto justify-start">
       <SwiperCursos />
@@ -28,13 +34,13 @@ const Home = () => {
             cursos={agregadosRecientemente}
             title={"Agregados Recientemente"}
             link={appRoutes.cursos()}
-            loading={isLoading}
+            loading={isFetching}
           />
 
-          <CourseGroup cursos={tendencias} title={"Tendencias"} link={appRoutes.cursos()} loading={isLoading} />
+          <CourseGroup cursos={tendencias} title={"Tendencias"} link={appRoutes.cursos()} loading={isFetching} />
         </div>
         <div className="m-auto min-w-[500px] lg:mt-0 mt-10 w-[500px]">
-          <SeminarioGroup seminarios={seminarios} loading={isLoading} />
+          <SeminarioGroup seminarios={seminarios} loading={isFetching} />
         </div>
       </div>
     </div>
