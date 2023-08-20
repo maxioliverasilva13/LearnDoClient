@@ -67,8 +67,8 @@
     "yarn": "^1.22.19"
   },
   "scripts": {
-    "start": "next start --openssl-legacy-provider start",
-    "build": "next build --openssl-legacy-provider start",
+    "start": "next start start",
+    "build": "next build start",
     "dev": "next dev",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run build:tailwind && npm run dev",
     "build:tailwind": "tailwind build styles/index.css -o styles/tailwind.css"
