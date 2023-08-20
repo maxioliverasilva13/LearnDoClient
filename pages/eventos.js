@@ -101,14 +101,14 @@ export default function Cursos() {
         <div className="w-full">
           <div className={"pt-12"} style={{ minHeight: "100vh" }}>
             <div className={" mt-10 "}>
-              <p className={" text-white text-center 	text-5xl font-semibold "}>
+              <p className={" text-white text-center 	md:text-5xl text-[26px] md:px-0 px-4 font-semibold "}>
                 Todos los eventos disponibles en nuestra plataforma
               </p>
             </div>
             <div className="flex flex-col items-center sm:px-0 lg:px-40 px-5 mt-10">
               <div
                 className={
-                  "w-full flex justify-between items-center sm:flex-row flex-col gap-4	 px-10 py-10"
+                  "w-full flex justify-between items-center sm:flex-row flex-col gap-4	 px-10 md:py-10 py-4"
                 }
               >
                 <input

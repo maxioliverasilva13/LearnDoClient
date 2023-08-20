@@ -4,8 +4,11 @@ import appRoutes from "routes/appRoutes";
 
 const SeminarioItem = ({ imagen, nombre, id }) => {
   return (
+    
+    <div className="w-full">
+
     <Link href={appRoutes.seminarioPage(id)}>
-    <div className="min-w-[500px] w-[500px] transition-all transform hover:scale-110 h-auto overflow-hidden flex flex-col items-start justify-center relative gap-y-4">
+    <div className="md:min-w-[500px] md:w-[500px] min-w-[100%] w-[100%] transition-all transform hover:scale-110 h-auto overflow-hidden flex flex-col items-start justify-center relative gap-y-4">
       <div className="w-full relative h-[270px] overflow-hidden rounded-[12px] gap-y-5 shadow-md">
         <div className="w-full h-full absolute cursoOverlay z-[2] " />
         <Image
@@ -21,6 +24,7 @@ const SeminarioItem = ({ imagen, nombre, id }) => {
       </p>
     </div>
     </Link>
+    </div>
   );
 };
 

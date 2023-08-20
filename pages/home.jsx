@@ -39,7 +39,7 @@ const Home = () => {
 
           <CourseGroup cursos={tendencias} title={"Tendencias"} link={appRoutes.cursos()} loading={isFetching} />
         </div>
-        <div className="m-auto min-w-[500px] lg:mt-0 mt-10 w-[500px]">
+        <div className="m-auto md:min-w-[500px] w-full lg:mt-0 mt-10">
           <SeminarioGroup seminarios={seminarios} loading={isFetching} />
         </div>
       </div>

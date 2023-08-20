@@ -124,7 +124,7 @@ const CheckTokenWrapper = ({ children }) => {
         transition={Slide}
       />
       <div className="max-h-full flex-grow w-full h-full">
-        <div className={clsx(!isMessagePage ? "min-h-screen" : "h-full", isMessagePage && (isMobile || isTablet) && "pb-[70px]")}>
+        <div className={clsx("md:pb-0 !pb-[100px]",!isMessagePage ? "min-h-screen" : "h-full", isMessagePage && (isMobile || isTablet) && "pb-[70px]")}>
           {children}
         </div>
         {/* {!isPublicPath && !isMessagePage && <Footer />} */}
