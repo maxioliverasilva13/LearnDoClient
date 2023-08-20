@@ -53,7 +53,7 @@ const CursoInfo = () => {
   const cursoId = query?.cursoId;
   const [openCalificarModal, setOpenCalificarModal] = useState(false);
 
-  const { data, isLoading } = useGetCompleteCursoInfoQuery({ cursoId });
+  const { data, isFetching: isLoading } = useGetCompleteCursoInfoQuery({ cursoId });
   const { handleSetLoading, userInfo, handleSetUserInfo } = useGlobalSlice();
 
   const soyColaorador = data?.soyColaorador;
@@ -87,7 +87,7 @@ const CursoInfo = () => {
 
   const esComprada = data?.comprado || false;
 
-  const { data: canGetCertData } = useCanGetCertificateQuery({ cursoId }, {
+  const { data: canGetCertData, isLoading: isLoadingCertificate } = useCanGetCertificateQuery({ cursoId }, {
     skip: userInfo?.type === "organizador" || esComprada === false,
   });
 
@@ -108,9 +108,9 @@ const CursoInfo = () => {
   const isValid = tokenValidateResponse?.esValido == true;
   useEffect(() => {
     handleSetLoading(
-      isLoading || isLoadingValidateToken || isLoadingPay || isLoadingUsingCupon
+      isLoading || isLoadingValidateToken || isLoadingPay || isLoadingUsingCupon || isLoadingCertificate
     );
-  }, [isLoading, isLoadingValidateToken, isLoadingPay, isLoadingUsingCupon]);
+  }, [isLoading, isLoadingValidateToken, isLoadingPay, isLoadingUsingCupon, isLoadingCertificate]);
 
   useEffect(() => {
     if (data?.certificateID) {

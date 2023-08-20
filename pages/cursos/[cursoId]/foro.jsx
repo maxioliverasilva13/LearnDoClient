@@ -21,6 +21,8 @@ import {
 import NotFoundPage from "components/NotFoundPage/NotFoundPage";
 import Modal from "components/Modal/modal";
 import GlobalImage from "components/GlobalImage/GlobalImage";
+import Spinner from "components/Spinner/Spinner";
+import useGlobalSlice from "hooks/useGlobalSlice";
 
 export default function Foro() {
   const router = useRouter();
@@ -29,6 +31,8 @@ export default function Foro() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [foroExist, setForoExist] = useState(true);
+
+  const { handleSetLoading } = useGlobalSlice();
 
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
@@ -69,6 +73,10 @@ export default function Foro() {
       }
     }
   }, [data]);
+
+  useEffect(() => {
+    handleSetLoading(isLoading)
+  }, [isLoading])
 
   useEffect(() => {
     if (isStudentOrOwnerRes) {
@@ -149,7 +157,8 @@ export default function Foro() {
     }
   }
 
-  if ((!eventoInfo && !isLoading) || !foroExist) {
+
+  if (!foroExist) {
     return <NotFoundPage />;
   }
 
