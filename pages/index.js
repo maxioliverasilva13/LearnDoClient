@@ -23,13 +23,13 @@ export default function LandingPage() {
   }, [isLoading]);
   return (
     <>
-      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start landingBGImage">
+      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start landingBGImage !h-screen">
         <div className="w-full h-auto flex flex-col items-start justify-center pt-6 gap-y-28">
           <div className="flex flex-col lg:flex-row gap-16">
             <div className="flex w-full md:w-1/2">
               <Image priority src={welcome} alt="¡Bienvenido a LearnDo!" />
             </div>
-            <div className="flex flex-col my-auto overflow-hidden w-full md:w-2/5 px-12 gap-y-4 font-light text-lg">
+            <div className="flex flex-col my-auto  w-full md:w-2/5 px-12 gap-y-4 font-light text-lg">
               <div className="flex flex-col gap-y-4 w-full mb-8 text-center">
                 <p className="text-white">
                   Accede a cientos de cursos, seminarios con los mejores
@@ -40,15 +40,17 @@ export default function LandingPage() {
                   ¡Las posibilidades son infinitas! ¿Qué esperas?
                 </p>
               </div>
-              <Link href="/auth/register">
-                <p
-                  className="w-max cursor-pointer self-center active:bgPrincipal text-white
-                hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline outline-1 sm:mr-2 mb-1 ease-linear transition-all duration-150"
+              <Link
+                href="/auth/register"
+              >
+                <span
+                  className="w-max cursor-pointer self-center border border-white text-white
+                hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
                 >
                   Registrarme
-                </p>
+                </span>
               </Link>
-              <div className="w-full flex justify-center gap-x-2">
+              <div className="w-full flex justify-center my-4 gap-x-2">
                 {/* SPACER */}
                 <div className="flex items-center" aria-hidden="true">
                   <div className="w-24 border-t border-gray-300" />
@@ -66,12 +68,12 @@ export default function LandingPage() {
               <Link
                 href="/auth/login"
               >
-              <span
-                className="w-max cursor-pointer self-center bgPrincipal active:bg-red-800 text-white
+                <span
+                  className="w-max cursor-pointer self-center bgPrincipal text-white
                 hover:shadow-md shadow text-normal px-20 py-4 rounded-full outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-              >
-                Iniciar Sesión
-              </span>
+                >
+                  Iniciar Sesión
+                </span>
               </Link>
             </div>
           </div>

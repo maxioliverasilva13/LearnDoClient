@@ -55,6 +55,11 @@
   background-attachment: scroll;
   background-size: contain;
   text-align: center;
+  height: 100vh;
+}
+
+.h-full {
+  height: 100%!important;
 }
 
 
