@@ -53,9 +53,9 @@
   background-position: top right;
   background-repeat: no-repeat;
   background-attachment: scroll;
-  background-size: contain;
+  background-size: cover;
   text-align: center;
-  height: 100vh;
+  height: 100%!important;
 }
 
 .h-full {

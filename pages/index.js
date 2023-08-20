@@ -23,7 +23,7 @@ export default function LandingPage() {
   }, [isLoading]);
   return (
     <>
-      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start landingBGImage !h-screen">
+      <div className="w-full py-4 md:px-10 px-4 h-auto justify-start landingBGImage !h-full !min-h-screen">
         <div className="w-full h-auto flex flex-col items-start justify-center pt-6 gap-y-28">
           <div className="flex flex-col lg:flex-row gap-16">
             <div className="flex w-full md:w-1/2">
