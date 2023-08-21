@@ -264,7 +264,7 @@ export default function Register() {
                             <img
                               src={profileImage}
                               alt="vista previa imagen de perfil"
-                              className="shadow rounded-full h-[120px] w-[120px] min-w-[120px] min-h-[120px] align-middle border-none"
+                              className="shadow rounded-full object-cover h-[120px] w-[120px] min-w-[120px] min-h-[120px] align-middle border-none"
                             />
                           )}
                         </div>
