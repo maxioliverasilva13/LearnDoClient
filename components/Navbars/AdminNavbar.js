@@ -95,7 +95,7 @@ export default function Navbar() {
       {/* Navbar */}
       {isMobile || isTablet ? (
         <>
-          <header className="flex bg-[#1F2129] border-b-2 border-[#272831] sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px]">
+          <header className="flex bg-[#1F2028] border-b-[1px] border-white sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px]">
             {/* Logo */}
             <div className="px-4 ">
               {userInfo?.type === "estudiante" && (
@@ -154,7 +154,7 @@ export default function Navbar() {
                   </div>
                 </div>
                 {expandedMenu && (
-                  <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-[#4444] shadow-md flex flex-col items-start justify-start gap-2">
+                  <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-[#444444] shadow-md flex flex-col items-start justify-start gap-2">
                     <span
                       onClick={() => router.push(appRoutes.profile())}
                       className="text-white flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-200 rounded-lg"
@@ -178,7 +178,7 @@ export default function Navbar() {
           <MobileNavbar />
         </>
       ) : (
-        <header className="flex bg-[#1F2129] border-b-2 border-[#272831] sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px] ">
+        <header className="flex bg-[#1F2028] border-b-[1px] border-white sticky top-0 left-0 z-[50] w-full justify-between items-center text-white h-16 min-h-[64px] ">
           {/* Logo */}
             <div className="px-4">
               {userInfo?.type === "estudiante" && (
@@ -230,7 +230,7 @@ export default function Navbar() {
                 className="text-white px-4 h-9 outline-none border border-white bg-transparent rounded-l-full rounded-r-full w-56"
               ></input>
               {hasQuery && (
-                <div className="w-full h-auto absolute mt-1 top-full left-0 max-h-[400px] overflow-auto bg-[#4444] rounded-lg shadow-md p-4 appearsAnimation flex flex-col items-center justify-start gap-2">
+                <div className="w-full h-auto absolute mt-1 top-full left-0 max-h-[400px] overflow-auto bg-[#444444] rounded-lg shadow-md p-4 appearsAnimation flex flex-col items-center justify-start gap-2">
                   {filterUsuarios?.length === 0 && (
                     <NoResults
                       customSizes="w-[200px]"
@@ -304,7 +304,7 @@ export default function Navbar() {
                 onClick={handleToggleExpandMenu}
                 className="flex items-center cursor-pointer text-sm border-2 border-transparent rounded-full "
               >
-                <span className="mx-2 font-semibold text-[18px] max-w-[150px] overflow-hidden truncate">
+                <span className="mx-2 font-semibold text-md max-w-[150px] overflow-hidden truncate">
                   {userInfo?.nickname}
                 </span>
                 <div className="w-8 h-8 relative rounded-full">
@@ -318,7 +318,7 @@ export default function Navbar() {
                 </div>
               </div>
               {expandedMenu && (
-                <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-[#4444] shadow-md flex flex-col items-start justify-start gap-2">
+                <div className="w-[200px] appearsAnimation absolute top-[30px] right-[30px] rounded-lg p-2 bg-[#444444] shadow-md flex flex-col items-start justify-start gap-2">
                   <span
                     onClick={() => router.push(appRoutes.profile())}
                     className="text-white flex flex-row items-center w-full text-base cursor-pointer px-2 py-1 font-semibold transition-all hover:bg-gray-700 rounded-lg"

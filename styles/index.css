@@ -84,10 +84,9 @@ body {
   box-sizing: border-box;
   width: 100%!important;
   height: 100vh!important;
-  background-image: url("../public/img/BgTwo.jpg");
   background-position: fixed;
   background-size: cover;
-/*  background: rgb(31, 33, 41) !important; */
+  background: #1F2028 !important;
 }
 
 #__next { 
