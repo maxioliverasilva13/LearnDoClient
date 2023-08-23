@@ -83,6 +83,8 @@ const SeminarioInfo = () => {
 
   const [useDiscount, setUseDiscount] = useState(false);
 
+  const isFree = seminarioInfo?.precio <= 0;
+
   useEffect(() => {
     if (seminarioInfo) {
       setValuePay({
@@ -274,7 +276,7 @@ const SeminarioInfo = () => {
                     (seminarioInfo?.es_pago === 1 ? (
                       <p
                         className={clsx(
-                          "text-white font-semibold text-[20px] mt-2",
+                          "text-white font-semibold text-[20px] -mt-[1px]",
                           (isValidCupon || useDiscount) && "line-through"
                         )}
                       >
@@ -324,7 +326,20 @@ const SeminarioInfo = () => {
                 <div className="">
                   {userInfo?.id !== seminarioInfo.organizador_id &&
                     !esComprado &&
-                    seminarioInfo?.es_pago === 1 && <PayPalButtonsWrapper />}
+                    seminarioInfo?.es_pago === 1 && !isFree && <PayPalButtonsWrapper />}
+
+                    {
+                      isFree && !esComprado && <span
+                      onClick={async () => {
+                        await pagar({
+                          ...valuesPay,
+                        });
+                      }}
+                      className="text-[20px] min-w-[300px] cursor-pointer w-full font-Gotham text-center px-10 py-3 text-white rounded-full border-0 bgPrincipal"
+                    >
+                      Obtener
+                    </span>
+                    }
                 </div>
               </div>
               <div className="w-full h-auto flex items-center justify-start">

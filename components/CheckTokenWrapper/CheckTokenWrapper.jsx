@@ -100,6 +100,8 @@ const CheckTokenWrapper = ({ children }) => {
     }
   }, []);
 
+  const isLandingPage = pathname === "/";
+
   if (isLoading || isChecking) {
     return <Spinner />;
   }
@@ -124,7 +126,7 @@ const CheckTokenWrapper = ({ children }) => {
         transition={Slide}
       />
       <div className="max-h-full flex-grow w-full h-full">
-        <div className={clsx("md:pb-0 !pb-[100px]",!isMessagePage ? "min-h-screen" : "h-full", isMessagePage && (isMobile || isTablet) && "pb-[70px]")}>
+        <div className={clsx("md:pb-0",!isMessagePage ? "min-h-screen" : "h-full", isMessagePage && (isMobile || isTablet) && "pb-[70px]", !isLandingPage && "!pb-[100px]" )}>
           {children}
         </div>
         {/* {!isPublicPath && !isMessagePage && <Footer />} */}

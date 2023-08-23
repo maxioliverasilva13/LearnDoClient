@@ -47,7 +47,7 @@ const Zoom = () => {
 
   async function getSignature(meetingNumber,e) {
     // e.preventDefault();
-    const authEndpoint = "http://localhost:4000";
+    const authEndpoint = "https://zoomintegration-production.up.railway.app/";
 
     const response = await fetch(authEndpoint, {
       method: "POST",
@@ -79,7 +79,6 @@ const Zoom = () => {
     // await ZoomMtg.setZoomJSLib("https://source.zoom.us/lib", "/av");
     await ZoomMtg.preLoadWasm();
     await ZoomMtg.prepareWebSDK();
-    // ZoomMtg.setZoomJSLib("http://localhost:4000/node_modules/@zoomus/websdk/dist/lib", "/av");
 
     const signature = await getSignature(meetingNumber);
     setLoadingZoom(false);
