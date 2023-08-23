@@ -24,7 +24,7 @@ export const EventoService = createApi({
       query: (data) => {
         const { page, rowsNumbers, filterData = null, busqueda = "" } = data;
 
-        let query = `${apiRoutes.listarEventos()}?page=${page}&maxRows=${rowsNumbers}`;
+        let query = `${apiRoutes.listarEventos()}?page=${page}&maxRows=${100000}`;
 
         if (filterData) {
           if (filterData.categoriasIds && filterData.categoriasIds.length > 0) {

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import moment from "moment";
 import { useRef, useState } from "react";
+import NoImage from "components/NoImage/NoImage";
 
 const ClaseCard = ({ clase }) => {
   const videoRef = useRef(null);
@@ -22,13 +23,14 @@ const ClaseCard = ({ clase }) => {
       )}
     >
       <div className="md:w-[50%] min-w-[50%] h-full relative rounded-lg overflow-hidden">
-        <video
+        {/* <video
           onLoadedMetadata={handleSetDuration}
           ref={videoRef}
           src={clase?.video}
           controls={false}
           className="w-full h-full overflow-hidden object-cover"
-        />
+        /> */}
+        <NoImage />
       </div>
       <div className="mx-5 h-full w-[3px] bgPrincipal" />
       <div className="flex-grow h-full flex flex-col items-center justify-between">
@@ -41,7 +43,7 @@ const ClaseCard = ({ clase }) => {
           </span>
         </div>
         <span className="w-full text-[14px] my-4 text-left max-w-full font-semibold text-white ">
-          Duracion: {duration}
+          Duracionaa: {duration}
         </span>
       </div>
     </div>

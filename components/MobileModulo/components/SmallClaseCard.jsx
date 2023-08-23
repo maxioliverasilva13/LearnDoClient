@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import clsx from "clsx";
 import { useWindowDimensions } from "hooks/useMediaQuery";
 import { baseUrl } from "store/baseQueryWithError";
+import NoImage from "components/NoImage/NoImage";
 
 const SmallClaseCard = ({
   item,
@@ -44,35 +45,35 @@ const SmallClaseCard = ({
     handleSetLoading(true);
     fetch(`${baseUrl}/api/videos/getBase64OfVideo?claseId=${item?.id}`)
       .then((res) => {
-        console.log("xd1")
-        console.log(res)
-        return res.blob()
+        console.log("xd1");
+        console.log(res);
+        return res.blob();
       }) // Gets the response and returns it as a blob
       .then((blob) => {
         handleSetLoading(false);
-        console.log("blob is", blob)
+        console.log("blob is", blob);
         var reader = new FileReader();
-        reader.readAsDataURL(blob); 
+        reader.readAsDataURL(blob);
         reader.onloadend = function() {
-          var base64data = reader.result;                
+          var base64data = reader.result;
 
           const itemsToSend = {
-             id: item?.id,
-             nombre: item?.nombre,
-             video: base64data,
-             cursoId: cursoInfo?.id,
-             cursoInfo: cursoInfo,
-             moduloInfo: moduloInfo,
-             type: get_url_extension(video, 'video')
-           };
-           storeItemOnIndexes(itemsToSend);
-           toast.success("Curso guardado correctamente", {
-             theme: "colored",
-           });
-        }
+            id: item?.id,
+            nombre: item?.nombre,
+            video: base64data,
+            cursoId: cursoInfo?.id,
+            cursoInfo: cursoInfo,
+            moduloInfo: moduloInfo,
+            type: get_url_extension(video, "video"),
+          };
+          storeItemOnIndexes(itemsToSend);
+          toast.success("Curso guardado correctamente", {
+            theme: "colored",
+          });
+        };
       })
       .catch((err) => {
-        console.log("xd2")
+        console.log("xd2");
         handleSetLoading(false);
       });
 
@@ -104,13 +105,14 @@ const SmallClaseCard = ({
   return (
     <div className="w-full relative h-auto p-4 flex sm:flex-row flex-col items-center justify-start gap-4">
       <div className="md:w-[150px] md:h-[150px] md:min-w-[150px] min-w-[100px] w-[100px] h-[100px] relative rounded-[20px] overflow-hidden">
-        <video
+        {/* <video
           onLoadedMetadata={handleSetDuration}
           ref={videoRef}
           src={item?.video}
           controls={false}
           className="w-full h-full overflow-hidden object-cover"
-        />
+        /> */}
+        <NoImage />
       </div>
       <div
         className={clsx(

@@ -14,8 +14,8 @@ export const SugerenciaType = {
 }
 
 const seminariosTipo = {
-    seminarioP: "Seminario Presencial",
-    seminarioV: "Seminario Virtual",
+    seminarioP: "Sem. Presencial",
+    seminarioV: "Sem. Virtual",
     curso: "Curso",
 }
 
