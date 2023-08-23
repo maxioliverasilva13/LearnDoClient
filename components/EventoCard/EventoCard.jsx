@@ -26,6 +26,14 @@ const EventoCard = ({ curso, index }) => {
           >
             {formatTitle(curso?.tipo)}
           </div>
+          <div
+            className={clsx(
+              "w-min  absolute z-[20] right-0 top-4 px-4 py-1 font-semibold text-white max-w-full truncate rounded-l-md",
+              curso?.precio > 0 ? `bg-slate-600/60` : `bg-teal-700/60`
+            )}
+          >
+            {curso?.precio > 0 ? curso?.precio + " US$" : "Gratis" }
+          </div>
           <GlobalImage
             src={curso?.imagen}
             loader={() => curso?.imagen}
@@ -34,7 +42,7 @@ const EventoCard = ({ curso, index }) => {
           />
           <div className="absolute bottom-0 left-0 w-full z-20 bg-black bg-opacity-50 p-4 flex flex-row items-center justify-between">
             <p className="text-xl text-left text-white flex-grow font-medium max-w-full overflow-hidden truncate mt-2">{curso.nombre}</p>
-            <span className="text-[20px] max-w-full w-auto truncate overflow-hidden text-yellow-500">${curso?.precio}</span>
+            {/* <span className="text-[20px] max-w-full w-auto truncate overflow-hidden text-yellow-500">{curso?.precio > 0 ? "$"+curso?.precio : "Gratis" }</span> */}
           </div>
         </div>
       </div>
